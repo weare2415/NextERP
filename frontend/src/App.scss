@@ -1,0 +1,48 @@
+@import url("https://cdn.jsdelivr.net/gh/fonts-archive/AppleSDGothicNeo/AppleSDGothicNeo.css");
+@import url(//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSansNeo.css);
+
+// 1. SCSS 변수 설정
+$primary-color: #3c485a;     // 메인 색상 (스튜디오블랙800)
+$secondary-color: #929fb4;   // 보조 색상 (스튜디오블랙300)
+$background-color: #f5f7fa;  // 기본 배경
+$error-color:red;
+
+// 폰트 설정
+$font-primary: "Apple SD Gothic Neo", sans-serif;
+$font-secondary: "Spoqa Han Sans Neo", sans-serif;
+
+// 브레이크포인트
+$breakpoints: (
+    "mobile": 576px,
+    "tablet": 768px,
+    "desktop": 1024px,
+);
+
+// 2. 반응형 믹스인
+@mixin respond-to($breakpoint) {
+  @media (max-width: map-get($breakpoints, $breakpoint)) {
+    @content;
+  }
+}
+
+// 3. 기본 스타일
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: $font-primary;
+}
+
+body {
+  width: 100%;
+  height: 100%; // 추가: 화면 전체 높이 설정
+  background-color: $background-color;
+  margin: 0; // 추가: 기본 여백 제거
+  padding: 0; // 추가: 기본 여백 제거
+  box-sizing: border-box; // 추가: 경계 크기 포함
+  font-family: $font-primary;
+  line-height: 1.6;
+
+  // 중앙 정렬 설정 제거
+  display: block;
+}

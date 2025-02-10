@@ -1,0 +1,141 @@
+@import "../../../App.scss";
+
+.modal-container {
+  background-color: white;
+  border-radius: 4px;
+  width: 90%;
+  max-width: 800px;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  font-family: $font-primary;
+
+  .modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    background-color: $primary-color;
+    color: white;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+
+    h2 {
+      margin: 0;
+      font-size: 18px;
+      font-weight: 500;
+    }
+
+    .close-button {
+      background: none;
+      border: none;
+      color: white;
+      font-size: 20px;
+      cursor: pointer;
+      padding: 0 5px;
+
+      &:hover {
+        opacity: 0.8;
+      }
+    }
+  }
+
+  .modal-content {
+    padding: 20px;
+    overflow-y: auto;
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 15px;
+
+      .form-group {
+        &.full-width {
+          grid-column: 1 / -1;
+        }
+
+        label {
+          display: block;
+          margin-bottom: 5px;
+          color: $primary-color;
+          font-weight: 500;
+        }
+
+        input,
+        select,
+        textarea {
+          width: 100%;
+          padding: 8px;
+          border: 1px solid $secondary-color;
+          border-radius: 4px;
+          font-family: $font-primary;
+
+          &:focus {
+            outline: none;
+            border-color: $primary-color;
+          }
+        }
+
+        .input-with-button {
+          display: flex;
+          gap: 10px;
+
+          input {
+            flex: 1;
+          }
+
+          button {
+            padding: 8px 15px;
+            background-color: $secondary-color;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+
+            &:hover {
+              background-color: darken($secondary-color, 10%);
+            }
+          }
+        }
+
+        textarea {
+          min-height: 100px;
+          resize: vertical;
+        }
+      }
+    }
+
+    .button-container {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 20px;
+
+      button {
+        padding: 8px 24px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-family: $font-primary;
+
+        &.update-button {
+          background-color: #2196f3;
+          color: white;
+
+          &:hover {
+            background-color: darken(#2196f3, 10%);
+          }
+        }
+
+        &.delete-button {
+          background-color: $error-color;
+          color: white;
+
+          &:hover {
+            background-color: darken($error-color, 10%);
+          }
+        }
+      }
+    }
+  }
+}

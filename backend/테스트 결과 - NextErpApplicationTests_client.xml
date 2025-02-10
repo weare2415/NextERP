@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?><testrun duration="382" footerText="25. 1. 28. 오전 2:21에서 IntelliJ IDEA(으)로 생성" name="NextErpApplicationTests">
+    <count name="total" value="4"/>
+    <count name="passed" value="4"/>
+    <config configId="GradleRunConfiguration" name="NextErpApplicationTests">
+        <ExternalSystemSettings>
+            <option name="executionName"/>
+            <option name="externalProjectPath" value="/Users/paesir/Desktop/git/NextERP/backend"/>
+            <option name="externalSystemIdString" value="GRADLE"/>
+            <option name="scriptParameters" value=""/>
+            <option name="taskDescriptions">
+                <list/>
+            </option>
+            <option name="taskNames">
+                <list>
+                    <option value=":test"/>
+                    <option value="--tests"/>
+                    <option value="&quot;com.nexterp.NextErpApplicationTests&quot;"/>
+                </list>
+            </option>
+            <option name="vmOptions"/>
+        </ExternalSystemSettings>
+        <ExternalSystemDebugServerProcess/>
+        <ExternalSystemReattachDebugProcess/>
+        <DebugAllEnabled/>
+        <RunAsTest/>
+        <method v="2"/>
+    </config>
+    <suite duration="382" locationUrl="java:suite://com.nexterp.NextErpApplicationTests" name="NextErpApplicationTests" status="passed">
+        <test duration="321" locationUrl="java:test://com.nexterp.NextErpApplicationTests/getClientById_Success" name="getClientById_Success" status="passed">
+            <output type="stdout">
+              2025-01-28T02:21:14.194+09:00 INFO 50143 --- [ Test worker]
+              com.nexterp.NextErpApplicationTests : 테스트 초기화 중: Employee 조회
+              2025-01-28T02:21:14.206+09:00 INFO 50143 --- [ Test worker]
+              com.nexterp.NextErpApplicationTests : 테스트용 Employee 조회 완료:
+              com.nexterp.employee.entity.Employee@64db8a3
+              2025-01-28T02:21:14.208+09:00 INFO 50143 --- [ Test worker]
+              com.nexterp.NextErpApplicationTests : === ID로 거래처 조회 테스트 시작 ===
+              2025-01-28T02:21:14.208+09:00 INFO 50143 --- [ Test worker]
+              com.nexterp.NextErpApplicationTests : 저장할 클라이언트 코드:
+              TEST1737998474208
+              2025-01-28T02:21:14.229+09:00 INFO 50143 --- [ Test worker]
+              com.nexterp.NextErpApplicationTests : 저장된 거래처 ID: 15
+              2025-01-28T02:21:14.236+09:00 INFO 50143 --- [ Test worker]
+              com.nexterp.NextErpApplicationTests : 조회된 거래처:
+              ClientDTO(clientName=Test Company, clientCode=TEST1737998474208,
+              clientPhone=010-1234-5678, zipCode=12345, clientAddress=서울시 강남구,
+              clientDetailedAddress=테헤란로 123, clientEmail=test@example.com,
+              registrationNumber=123-45-67890, clientBank=국민은행,
+              clientAccountNumber=110-1234-5678, clientAccountOwner=홍길동,
+              memo=테스트 메모, employeeId=12341234)
+              2025-01-28T02:21:14.238+09:00 INFO 50143 --- [ Test worker]
+              com.nexterp.NextErpApplicationTests : === ID로 거래처 조회 테스트 종료 ===
+
+              2025-01-28T02:21:14.246+09:00 INFO 50143 --- [ Test worker]
+              com.nexterp.NextErpApplicationTests : 테스트 초기화 중: Employee 조회
+              2025-01-28T02:21:14.249+09:00 INFO 50143 --- [ Test worker]
+              com.nexterp.NextErpApplicationTests : 테스트용 Employee 조회 완료:
+              com.nexterp.employee.entity.Employee@4169db10
+              2025-01-28T02:21:14.249+09:00 INFO 50143 --- [ Test worker]
+              com.nexterp.NextErpApplicationTests : === 전체 거래처 조회 테스트 시작 ===
+              2025-01-28T02:21:14.253+09:00 INFO 50143 --- [ Test worker]
+              com.nexterp.NextErpApplicationTests : 저장된 거래처 1:
+              com.nexterp.client.entity.Client@270b527f, 거래처 2:
+              com.nexterp.client.entity.Client@37533190
+              2025-01-28T02:21:14.259+09:00 INFO 50143 --- [ Test worker]
+              com.nexterp.NextErpApplicationTests : 조회된 전체 거래처 수: 3
+              2025-01-28T02:21:14.260+09:00 INFO 50143 --- [ Test worker]
+              com.nexterp.NextErpApplicationTests : === 전체 거래처 조회 테스트 종료 ===
+
+              2025-01-28T02:21:14.262+09:00 INFO 50143 --- [ Test worker]
+              com.nexterp.NextErpApplicationTests : 테스트 초기화 중: Employee 조회
+              2025-01-28T02:21:14.265+09:00 INFO 50143 --- [ Test worker]
+              com.nexterp.NextErpApplicationTests : 테스트용 Employee 조회 완료:
+              com.nexterp.employee.entity.Employee@1d302061
+              2025-01-28T02:21:14.265+09:00 INFO 50143 --- [ Test worker]
+              com.nexterp.NextErpApplicationTests : === 거래처 생성 테스트 시작 ===
+              2025-01-28T02:21:14.265+09:00 INFO 50143 --- [ Test worker]
+              com.nexterp.NextErpApplicationTests : 생성할 클라이언트 코드:
+              TEST1737998474265
+              2025-01-28T02:21:14.272+09:00 INFO 50143 --- [ Test worker]
+              com.nexterp.NextErpApplicationTests : 생성된 클라이언트:
+              ClientDTO(clientName=Test Company, clientCode=TEST1737998474265,
+              clientPhone=010-1234-5678, zipCode=12345, clientAddress=서울시 강남구,
+              clientDetailedAddress=테헤란로 123, clientEmail=test@example.com,
+              registrationNumber=123-45-67890, clientBank=국민은행,
+              clientAccountNumber=110-1234-5678, clientAccountOwner=홍길동,
+              memo=테스트 메모, employeeId=12341234)
+              2025-01-28T02:21:14.273+09:00 INFO 50143 --- [ Test worker]
+              com.nexterp.NextErpApplicationTests : === 거래처 생성 테스트 종료 ===
+
+              2025-01-28T02:21:14.276+09:00 INFO 50143 --- [ Test worker]
+              com.nexterp.NextErpApplicationTests : 테스트 초기화 중: Employee 조회
+              2025-01-28T02:21:14.279+09:00 INFO 50143 --- [ Test worker]
+              com.nexterp.NextErpApplicationTests : 테스트용 Employee 조회 완료:
+              com.nexterp.employee.entity.Employee@7df63a2d
+              2025-01-28T02:21:14.279+09:00 INFO 50143 --- [ Test worker]
+              com.nexterp.NextErpApplicationTests : === 거래처 승인 테스트 시작 ===
+              2025-01-28T02:21:14.286+09:00 INFO 50143 --- [ Test worker]
+              com.nexterp.NextErpApplicationTests : 저장된 부모 거래처:
+              com.nexterp.client.entity.Client@2682fe42, 임시 거래처:
+              com.nexterp.client.entity.Client@4d6f8691
+              2025-01-28T02:21:14.303+09:00 INFO 50143 --- [ Test worker]
+              com.nexterp.NextErpApplicationTests : 승인된 거래처:
+              ClientDTO(clientName=Updated Company,
+              clientCode=ORIG1737998474279, clientPhone=null, zipCode=null,
+              clientAddress=null, clientDetailedAddress=null, clientEmail=null,
+              registrationNumber=null, clientBank=null,
+              clientAccountNumber=null, clientAccountOwner=null, memo=null,
+              employeeId=12341234)
+              2025-01-28T02:21:14.306+09:00 INFO 50143 --- [ Test worker]
+              com.nexterp.NextErpApplicationTests : === 거래처 승인 테스트 종료 ===
+            </output>
+        </test>
+    </suite>
+</testrun>

@@ -1,0 +1,67 @@
+@import url("https://cdn.jsdelivr.net/gh/fonts-archive/AppleSDGothicNeo/AppleSDGothicNeo.css");
+@import url(//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSansNeo.css);
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Apple SD Gothic Neo", sans-serif;
+}
+
+body {
+  width: 100%;
+  height: 100%;
+  background-color: #f5f7fa;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Apple SD Gothic Neo", sans-serif;
+  line-height: 1.6;
+  display: block;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  margin-top: 20px;
+}
+.pagination button {
+  background-color: white;
+  color: #666;
+  border: 1px solid #ddd;
+  padding: 8px 12px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.pagination button:hover:not(:disabled) {
+  background-color: #f8f9fa;
+}
+.pagination button:disabled {
+  background-color: #f8f9fa;
+  color: #ccc;
+  cursor: not-allowed;
+}
+.pagination .page-numbers {
+  display: flex;
+  gap: 3px;
+}
+.pagination .page-numbers button {
+  background: white;
+  border: 1px solid #ddd;
+  padding: 8px 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.pagination .page-numbers button:hover {
+  background-color: #f8f9fa;
+}
+.pagination .page-numbers button.active {
+  background-color: #4a5568;
+  color: white;
+  border-color: #4a5568;
+  z-index: 1;
+}
+
+/*# sourceMappingURL=Pagination.css.map */
