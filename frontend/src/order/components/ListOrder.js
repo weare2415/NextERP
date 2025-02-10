@@ -4,16 +4,19 @@ import { getEmployeeById } from "../../member/api/memberApi";
 import { getClientById } from "../../client/api/clientApi";
 import { getProductById } from "../../product/api/productApi";
 import SearchOrder from "./SearchOrder";
-import { fetchOrdersByClientCode, fetchOrdersByEmployeeId } from "../../product/api/purchaseApi";
+import {
+  fetchOrdersByClientCode,
+  fetchOrdersByEmployeeId
+} from '../api/orderApi';
 
 const ListOrder = ({ orders, activeTab }) => {
   const [employeeNames, setEmployeeNames] = useState({});
   const [clientNames, setClientNames] = useState({});
   const [productNames, setProductNames] = useState({});
-  const [selectedOrders, setSelectedOrders] = useState([]);
   const [selectedTab, setSelectedTab] = useState("ALL"); // 기본값 "ALL"로 설정
   const [selectedOrders, setSelectedOrders] = useState([]); // 선택된 주문 ID 관리
   const [resetSearchTerm, setResetSearchTerm] = useState(false); // 탭 전환 시 검색어 초기화
+  const [searchResults, setSearchResults] = useState()
 
   useEffect(() => {
     const fetchNames = async () => {
@@ -69,12 +72,6 @@ const ListOrder = ({ orders, activeTab }) => {
     }
   }, [orders]);
 
-  const filteredOrders = orders.filter((order) => {
-    if (activeTab === "전체") return true;
-    if (activeTab === "판매") return order.orderType === "SALE";
-    if (activeTab === "구매") return order.orderType === "PURCHASE";
-    return true;
-  });
   const handleTabClick = (tab) => {
     setSelectedTab(tab);
     setSearchResults(null); // 탭을 변경할 때마다 검색 결과를 초기화

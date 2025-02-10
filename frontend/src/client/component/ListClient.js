@@ -6,9 +6,6 @@ import Pagination from "../../common/util/Pagination";
 import { paginate } from "../../common/util/paginationUtils";
 
 const ListClient = ({ clients, onClientSelect }) => {
-  const [employeeNames, setEmployeeNames] = useState({}); // employeeId -> name 매핑
-  const [currentPage, setCurrentPage] = useState(1); // 현재 페이지 상태
-  const pageSize = 7; // 한 페이지당 5개씩 표시
   const [employeeNames, setEmployeeNames] = useState({});
   const [currentPage, setCurrentPage] = useState(1); 
   const pageSize = 7;
