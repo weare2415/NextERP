@@ -1,0 +1,53 @@
+@import "../../../App";
+
+.payroll-table-container {
+  background-color: white;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  overflow-x: auto;
+  padding: 16px;
+  margin-top: 20px; // ✅ 테이블 위쪽 간격 추가
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+
+    th, td {
+      padding: 12px 15px;
+      text-align: center !important;  // ✅ 중앙 정렬 강제 적용
+      display: table-cell;  // ✅ 테이블 셀 속성 유지
+      border-bottom: 1px solid black;
+      font-family: $font-primary;
+    }
+
+    th {
+      background-color: $primary-color;
+      color: white;
+      font-weight: 500;
+
+      &:hover {
+        background-color: darken($primary-color, 10%);
+      }
+    }
+
+    td {
+      vertical-align: middle; // ✅ 데이터 중앙 정렬 유지
+    }
+
+    // ✅ 버튼 스타일 (직원 상세 조회 버튼)
+    .detail-btn {
+      background: none;
+      border: none;
+      color: $primary-color;
+      cursor: pointer;
+      padding: 0;
+      font-family: $font-primary;
+      text-decoration: underline;
+      font-size: 14px;
+
+      &:hover {
+        color: darken($primary-color, 10%);
+      }
+    }
+  }
+}

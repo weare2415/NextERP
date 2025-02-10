@@ -1,0 +1,20 @@
+@import url("https://cdn.jsdelivr.net/gh/fonts-archive/AppleSDGothicNeo/AppleSDGothicNeo.css");
+@import url(//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSansNeo.css);
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Apple SD Gothic Neo", sans-serif;
+}
+
+body {
+  width: 100%;
+  background-color: #f5f7fa;
+  line-height: 1.6;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+/*# sourceMappingURL=App.css.map */

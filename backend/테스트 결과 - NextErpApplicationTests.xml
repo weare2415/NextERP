@@ -1,0 +1,363 @@
+<?xml version="1.0" encoding="UTF-8"?><testrun duration="326" footerText="25. 1. 23. 오후 5:25에서 IntelliJ IDEA(으)로 생성" name="NextErpApplicationTests">
+    <count name="total" value="3"/>
+    <count name="passed" value="3"/>
+    <config configId="GradleRunConfiguration" name="NextErpApplicationTests">
+        <ExternalSystemSettings>
+            <option name="executionName"/>
+            <option name="externalProjectPath" value="/Users/paesir/Desktop/git/NextERP/backend"/>
+            <option name="externalSystemIdString" value="GRADLE"/>
+            <option name="scriptParameters" value=""/>
+            <option name="taskDescriptions">
+                <list/>
+            </option>
+            <option name="taskNames">
+                <list>
+                    <option value=":test"/>
+                    <option value="--tests"/>
+                    <option value="&quot;com.nexterp.NextErpApplicationTests&quot;"/>
+                </list>
+            </option>
+            <option name="vmOptions"/>
+        </ExternalSystemSettings>
+        <ExternalSystemDebugServerProcess/>
+        <ExternalSystemReattachDebugProcess/>
+        <DebugAllEnabled/>
+        <RunAsTest/>
+        <method v="2"/>
+    </config>
+    <suite duration="326" locationUrl="java:suite://com.nexterp.NextErpApplicationTests" name="NextErpApplicationTests" status="passed">
+        <test duration="286" locationUrl="java:test://com.nexterp.NextErpApplicationTests/testGetSalariesByEmployeeId" name="testGetSalariesByEmployeeId" status="passed">
+            <output type="stdout">========== 특정 직원 급여 내역 조회 테스트 시작 ==========
+Hibernate:
+    select
+        e1_0.employee_id,
+        e1_0.address,
+        e1_0.birth_date,
+        e1_0.department_id,
+        e1_0.email,
+        e1_0.gender,
+        e1_0.hire_date,
+        e1_0.name,
+        e1_0.phone,
+        e1_0.position_id,
+        e1_0.termination_date
+    from
+        employee e1_0
+Hibernate:
+    select
+        d1_0.department_id,
+        d1_0.contact_email,
+        d1_0.name
+    from
+        department d1_0
+    where
+        d1_0.department_id=?
+Hibernate:
+    select
+        p1_0.position_id,
+        p1_0.role,
+        p1_0.title
+    from
+        positions p1_0
+    where
+        p1_0.position_id=?
+Hibernate:
+    select
+        d1_0.department_id,
+        d1_0.contact_email,
+        d1_0.name
+    from
+        department d1_0
+    where
+        d1_0.department_id=?
+Hibernate:
+    select
+        p1_0.position_id,
+        p1_0.role,
+        p1_0.title
+    from
+        positions p1_0
+    where
+        p1_0.position_id=?
+-&gt; 조회된 직원 ID: 10000000, 이름: John Doe
+Hibernate:
+    select
+        e1_0.employee_id,
+        e1_0.address,
+        e1_0.birth_date,
+        d1_0.department_id,
+        d1_0.contact_email,
+        d1_0.name,
+        e1_0.email,
+        e1_0.gender,
+        e1_0.hire_date,
+        e1_0.name,
+        e1_0.phone,
+        p1_0.position_id,
+        p1_0.role,
+        p1_0.title,
+        e1_0.termination_date
+    from
+        employee e1_0
+    left join
+        department d1_0
+            on d1_0.department_id=e1_0.department_id
+    left join
+        positions p1_0
+            on p1_0.position_id=e1_0.position_id
+    where
+        e1_0.employee_id=?
+Hibernate:
+    select
+        s1_0.id,
+        s1_0.base_salary,
+        s1_0.bonus,
+        s1_0.created_at,
+        s1_0.deductions,
+        s1_0.employee_id,
+        s1_0.payment_date,
+        s1_0.status,
+        s1_0.total_salary,
+        s1_0.updated_at
+    from
+        salaries s1_0
+    where
+        s1_0.employee_id=?
+직원 ID: 10000000의 급여 데이터 개수: 1
+-&gt; 급여 데이터: SalaryDTO(id=2, employeeId=10000000, baseSalary=5000000.00, bonus=500000.00, deductions=200000.00, totalSalary=5300000.00, status=PAID, paymentDate=2025-01-21)
+========== 특정 직원 급여 내역 조회 테스트 종료 ==========
+</output>
+        </test>
+        <test duration="28" locationUrl="java:test://com.nexterp.NextErpApplicationTests/testDeleteSalaryById" name="testDeleteSalaryById" status="passed">
+            <output type="stdout">========== 특정 급여 데이터 삭제 테스트 시작 ==========
+Hibernate:
+    select
+        s1_0.id,
+        s1_0.base_salary,
+        s1_0.bonus,
+        s1_0.created_at,
+        s1_0.deductions,
+        s1_0.employee_id,
+        s1_0.payment_date,
+        s1_0.status,
+        s1_0.total_salary,
+        s1_0.updated_at
+    from
+        salaries s1_0
+Hibernate:
+    select
+        e1_0.employee_id,
+        e1_0.address,
+        e1_0.birth_date,
+        d1_0.department_id,
+        d1_0.contact_email,
+        d1_0.name,
+        e1_0.email,
+        e1_0.gender,
+        e1_0.hire_date,
+        e1_0.name,
+        e1_0.phone,
+        p1_0.position_id,
+        p1_0.role,
+        p1_0.title,
+        e1_0.termination_date
+    from
+        employee e1_0
+    left join
+        department d1_0
+            on d1_0.department_id=e1_0.department_id
+    left join
+        positions p1_0
+            on p1_0.position_id=e1_0.position_id
+    where
+        e1_0.employee_id=?
+Hibernate:
+    select
+        e1_0.employee_id,
+        e1_0.address,
+        e1_0.birth_date,
+        d1_0.department_id,
+        d1_0.contact_email,
+        d1_0.name,
+        e1_0.email,
+        e1_0.gender,
+        e1_0.hire_date,
+        e1_0.name,
+        e1_0.phone,
+        p1_0.position_id,
+        p1_0.role,
+        p1_0.title,
+        e1_0.termination_date
+    from
+        employee e1_0
+    left join
+        department d1_0
+            on d1_0.department_id=e1_0.department_id
+    left join
+        positions p1_0
+            on p1_0.position_id=e1_0.position_id
+    where
+        e1_0.employee_id=?
+Hibernate:
+    select
+        e1_0.employee_id,
+        e1_0.address,
+        e1_0.birth_date,
+        d1_0.department_id,
+        d1_0.contact_email,
+        d1_0.name,
+        e1_0.email,
+        e1_0.gender,
+        e1_0.hire_date,
+        e1_0.name,
+        e1_0.phone,
+        p1_0.position_id,
+        p1_0.role,
+        p1_0.title,
+        e1_0.termination_date
+    from
+        employee e1_0
+    left join
+        department d1_0
+            on d1_0.department_id=e1_0.department_id
+    left join
+        positions p1_0
+            on p1_0.position_id=e1_0.position_id
+    where
+        e1_0.employee_id=?
+-&gt; 삭제 대상 급여 ID: 1
+Hibernate:
+    select
+        s1_0.id,
+        s1_0.base_salary,
+        s1_0.bonus,
+        s1_0.created_at,
+        s1_0.deductions,
+        s1_0.employee_id,
+        e1_0.employee_id,
+        e1_0.address,
+        e1_0.birth_date,
+        d1_0.department_id,
+        d1_0.contact_email,
+        d1_0.name,
+        e1_0.email,
+        e1_0.gender,
+        e1_0.hire_date,
+        e1_0.name,
+        e1_0.phone,
+        p1_0.position_id,
+        p1_0.role,
+        p1_0.title,
+        e1_0.termination_date,
+        s1_0.payment_date,
+        s1_0.status,
+        s1_0.total_salary,
+        s1_0.updated_at
+    from
+        salaries s1_0
+    join
+        employee e1_0
+            on e1_0.employee_id=s1_0.employee_id
+    left join
+        department d1_0
+            on d1_0.department_id=e1_0.department_id
+    left join
+        positions p1_0
+            on p1_0.position_id=e1_0.position_id
+    where
+        s1_0.id=?
+Hibernate:
+    delete
+    from
+        salaries
+    where
+        id=?
+-&gt; 급여 ID 1 삭제 완료
+Hibernate:
+    select
+        count(*)
+    from
+        salaries s1_0
+    where
+        s1_0.id=?
+========== 특정 급여 데이터 삭제 테스트 종료 ==========
+</output>
+        </test>
+        <test duration="12" locationUrl="java:test://com.nexterp.NextErpApplicationTests/testGetAllSalaries" name="testGetAllSalaries" status="passed">
+            <output type="stdout">========== 모든 급여 데이터 확인 테스트 시작 ==========
+Hibernate:
+    select
+        s1_0.id,
+        s1_0.base_salary,
+        s1_0.bonus,
+        s1_0.created_at,
+        s1_0.deductions,
+        s1_0.employee_id,
+        s1_0.payment_date,
+        s1_0.status,
+        s1_0.total_salary,
+        s1_0.updated_at
+    from
+        salaries s1_0
+Hibernate:
+    select
+        e1_0.employee_id,
+        e1_0.address,
+        e1_0.birth_date,
+        d1_0.department_id,
+        d1_0.contact_email,
+        d1_0.name,
+        e1_0.email,
+        e1_0.gender,
+        e1_0.hire_date,
+        e1_0.name,
+        e1_0.phone,
+        p1_0.position_id,
+        p1_0.role,
+        p1_0.title,
+        e1_0.termination_date
+    from
+        employee e1_0
+    left join
+        department d1_0
+            on d1_0.department_id=e1_0.department_id
+    left join
+        positions p1_0
+            on p1_0.position_id=e1_0.position_id
+    where
+        e1_0.employee_id=?
+Hibernate:
+    select
+        e1_0.employee_id,
+        e1_0.address,
+        e1_0.birth_date,
+        d1_0.department_id,
+        d1_0.contact_email,
+        d1_0.name,
+        e1_0.email,
+        e1_0.gender,
+        e1_0.hire_date,
+        e1_0.name,
+        e1_0.phone,
+        p1_0.position_id,
+        p1_0.role,
+        p1_0.title,
+        e1_0.termination_date
+    from
+        employee e1_0
+    left join
+        department d1_0
+            on d1_0.department_id=e1_0.department_id
+    left join
+        positions p1_0
+            on p1_0.position_id=e1_0.position_id
+    where
+        e1_0.employee_id=?
+조회된 급여 데이터 개수: 2
+-&gt; 급여 데이터: SalaryDTO(id=2, employeeId=10000000, baseSalary=5000000.00, bonus=500000.00, deductions=200000.00, totalSalary=5300000.00, status=PAID, paymentDate=2025-01-21)
+-&gt; 급여 데이터: SalaryDTO(id=3, employeeId=10000001, baseSalary=5000000.00, bonus=500000.00, deductions=200000.00, totalSalary=5300000.00, status=PAID, paymentDate=2025-01-21)
+========== 모든 급여 데이터 확인 테스트 종료 ==========
+</output>
+        </test>
+    </suite>
+</testrun>
