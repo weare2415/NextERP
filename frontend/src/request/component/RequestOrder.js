@@ -1,6 +1,11 @@
 import React, { useEffect, useState } from "react";
 import "../component/scss/RequestOrder.scss"; // 스타일링
-import { approveOrder, rejectOrder } from "../../order/api/orderApi";
+import {
+  approvePurchaseOrder,
+  approveSaleOrder,
+  rejectPurchaseOrder,
+  rejectSaleOrder,
+} from "../../order/api/orderApi";
 import { getProductById } from "../../product/api/productApi";
 
 const RequestOrder = ({ order, onClose, onUpdateSuccess }) => {
@@ -27,7 +32,11 @@ const RequestOrder = ({ order, onClose, onUpdateSuccess }) => {
   // ✅ 구매/판매 승인 처리
   const handleApprove = async () => {
     try {
-      await approveOrder(order.transactionId);
+      if (order.orderType === "SALE") {
+        await approveSaleOrder(order.transactionId);
+      } else if (order.orderType === "PURCHASE") {
+        await approvePurchaseOrder(order.transactionId);
+      }
       alert("거래 요청이 승인되었습니다.");
       onUpdateSuccess(order.transactionId); // 승인된 주문 반영
       onClose();
@@ -40,7 +49,11 @@ const RequestOrder = ({ order, onClose, onUpdateSuccess }) => {
   // ✅ 구매/판매 반려 처리
   const handleReject = async () => {
     try {
-      await rejectOrder(order.transactionId);
+      if (order.orderType === "SALE") {
+        await rejectSaleOrder(order.transactionId);
+      } else if (order.orderType === "PURCHASE") {
+        await rejectPurchaseOrder(order.transactionId);
+      }
       alert("거래 요청이 반려되었습니다.");
       onUpdateSuccess(order.transactionId); // 반려된 주문 반영
       onClose();
@@ -83,7 +96,11 @@ const RequestOrder = ({ order, onClose, onUpdateSuccess }) => {
 
             <div className="form-group">
               <label>판매/구매</label>
-              <input type="text" value={order.orderType === "SALE" ? "판매" : "구매"} readOnly />
+              <input
+                type="text"
+                value={order.orderType === "SALE" ? "판매" : "구매"}
+                readOnly
+              />
             </div>
 
             <div className="form-group">

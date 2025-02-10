@@ -122,8 +122,8 @@ const ListRequestOrder = ({ orders, onUpdateSuccess }) => {
 
   return (
     <>
-      <div className="order-list-container">
-        <div className="order-list">
+      <div className="request-product-list-wrapper">
+        <div className="product-table-section">
           <table>
             <thead>
               <tr>
@@ -142,7 +142,7 @@ const ListRequestOrder = ({ orders, onUpdateSuccess }) => {
                     <td>{order.productId}</td>
                     <td>
                       <button
-                        className="order-name-btn"
+                        className="product-table-name-btn"
                         onClick={() => handleOrderClick(order)}
                       >
                         {productNames[order.productId] || "Loading..."}
@@ -150,7 +150,7 @@ const ListRequestOrder = ({ orders, onUpdateSuccess }) => {
                     </td>
                     <td>
                       <button
-                        className="order-name-btn"
+                        className="product-table-name-btn"
                         onClick={() => handleOrderClick(order)}
                       >
                         {clientNames[order.clientCode] || "Loading..."}

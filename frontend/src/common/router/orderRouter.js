@@ -1,8 +1,6 @@
 import { lazy, Suspense } from "react";
 
-const OrderPage = lazy(() =>
-  import("../../order/pages/OrderPage")
-);
+const OrderPage = lazy(() => import("../../order/pages/OrderPage"));
 
 const orderRouter = () => {
   return [
@@ -13,7 +11,7 @@ const orderRouter = () => {
           <OrderPage />
         </Suspense>
       ),
-    }
+    },
   ];
 };
 

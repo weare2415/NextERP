@@ -31,23 +31,25 @@ const RequestPage = () => {
   };
 
   const handleUpdateSuccess = (approvedClientCode) => {
-    setClients(prevClients => prevClients.filter(client => client.clientCode !== approvedClientCode));
+    setClients((prevClients) =>
+      prevClients.filter((client) => client.clientCode !== approvedClientCode)
+    );
     setShowDetailForm(false);
     setSelectedClient(null);
   };
 
   return (
     <BasicLayout>
-      <div className="Request-page">
+      <div className="request-client-page-container">
         <div className="page-header">
-          <h2>거래처 승인 요청 관리</h2>
+          <h1>거래처 승인 요청 관리</h1>
         </div>
-        
+
         <ListRequestClient
-        clients={clients}
+          clients={clients}
           onClientSelect={handleClientClick}
-           />
-        
+        />
+
         {showDetailForm && selectedClient && (
           <div className="modal-overlay">
             <RequestClient

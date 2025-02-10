@@ -1,44 +1,62 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import { updateProduct, deleteProduct } from "../api/productApi";
-import "../scss/ProductDetail.scss";
-import {getEmployeeById} from '../../employee/api/employeeApi';
+import { getEmployeeById } from "../../employee/api/employeeApi"; // 직원 정보 조회 API
+import Decimal from "decimal.js"; // decimal.js 라이브러리 추가
+import "../scss/ProductDetail.scss"; // ✅ SCSS 적용
 
-const ProductDetail = ({ product, onClose, onDeleteSuccess, onUpdateSuccess }) => {
+const ProductDetail = ({
+  product,
+  onClose,
+  onDeleteSuccess,
+  onUpdateSuccess,
+}) => {
+  const [editedProduct, setEditedProduct] = useState(
+    product || {
+      id: "",
+      productName: "",
+      purchasePrice: "", // String으로 설정
+      salePrice: "", // String으로 설정
+      stock: "",
+      specifications: "",
+      createdDate: "",
+      employee: { name: "담당자 없음" },
+      memo: "",
+    }
+  );
+  const [error, setError] = useState(null);
 
-  const [editedProduct, setEditedProduct] = useState(product || {
-    id: "",
-    productName: "",
-    purchasePrice: "",
-    salePrice: "",
-    stock: "",
-    specifications: "",
-    createdDate: "",
-    employeeId: "",
-    employeeName:"",
-    memo: ""
-  });
+  // 직원 정보를 불러오는 함수
+  const fetchEmployee = async (employeeId) => {
+    try {
+      const employee = await getEmployeeById(employeeId);
+      setEditedProduct((prevProduct) => ({
+        ...prevProduct,
+        employee: employee || { name: "담당자 없음" },
+      }));
+    } catch (error) {
+      console.error("직원 정보 불러오기 실패:", error);
+      setError("담당자 정보를 불러오는 중 오류가 발생했습니다.");
+    }
+  };
 
   useEffect(() => {
-    const fetchEmployee = async () => {
-      if (editedProduct.employeeId) {
-        try {
-          const employeeData = await getEmployeeById(editedProduct.employeeId);
-          setEditedProduct((prev) => ({
-            ...prev,
-            employeeName: employeeData.name || "담당자 없음",
-          }));
-          console.log("Employee ID: ", employeeData);
-        } catch (error) {
-          console.error("❌ 직원 정보 불러오기 실패:", error);
-        }
-      }
-    };
-
-    fetchEmployee();
-  }, [editedProduct.employeeId]);
+    if (product && product.employeeId) {
+      fetchEmployee(product.employeeId);
+    }
+  }, [product]);
 
   const handleChange = (e) => {
-    setEditedProduct({ ...editedProduct, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    let newValue = value;
+
+    if (name === "purchasePrice" || name === "salePrice") {
+      newValue = value ? value : ""; // 값을 공백이 아니라 ""으로 설정
+    }
+
+    setEditedProduct({
+      ...editedProduct,
+      [name]: newValue,
+    });
   };
 
   const handleUpdate = async () => {
@@ -66,71 +84,112 @@ const ProductDetail = ({ product, onClose, onDeleteSuccess, onUpdateSuccess }) =
   };
 
   return (
-    <div className="modal-overlay" onClick={onClose}>
-      <div className="modal-container" onClick={(e) => e.stopPropagation()}>
-        {/* 헤더 영역 */}
-        <div className="modal-header">
-          <h2>제품 상세 정보</h2>
-          <button className="close-button" onClick={onClose}>×</button>
-        </div>
-
-        {/* 제품 상세 내용 */}
-        <div className="modal-content">
-          <div className="form-grid">
-            <div className="form-group">
-              <label>제품 ID</label>
-              <input type="text" value={editedProduct.id} readOnly />
-            </div>
-
-            <div className="form-group">
-              <label>제품명</label>
-              <input type="text" name="productName" value={editedProduct.productName} onChange={handleChange} />
-            </div>
-
-            <div className="form-group">
-              <label>매입 가격</label>
-              <input type="number" name="purchasePrice" value={editedProduct.purchasePrice} onChange={handleChange} />
-            </div>
-
-            <div className="form-group">
-              <label>판매 가격</label>
-              <input type="number" name="salePrice" value={editedProduct.salePrice} onChange={handleChange} />
-            </div>
-
-            <div className="form-group">
-              <label>재고 수량</label>
-              <input type="number" name="stock" value={editedProduct.stock} onChange={handleChange} />
-            </div>
-
-            <div className="form-group">
-              <label>제품 규격</label>
-              <input type="text" name="specifications" value={editedProduct.specifications} onChange={handleChange} />
-            </div>
-
-            <div className="form-group">
-              <label>등록 날짜</label>
-              <input type="text" value={editedProduct.createdDate} readOnly />
-            </div>
-
-            <div className="form-group">
-              <label>담당자</label>
-              <input type="text" value={editedProduct.employeeName || "담당자 없음"} readOnly />
-            </div>
-
-            <div className="form-group full-width">
-              <label>메모</label>
-              <textarea name="memo" value={editedProduct.memo} onChange={handleChange}></textarea>
-            </div>
-          </div>
-        </div>
-
-        {/* 버튼 컨테이너 */}
-        <div className="button-container">
-          <button className="update-button" onClick={handleUpdate}>수정</button>
-          <button className="delete-button" onClick={handleDelete}>삭제</button>
-          <button className="close-button" onClick={onClose}>닫기</button>
-        </div>
+    <div className="product-detail-form" onClick={onClose}>
+      <div className="product-detail-header">
+        <h2>제품 상세 정보</h2>
+        <button className="close-button" onClick={onClose}>
+          ×
+        </button>
       </div>
+
+      <form onClick={(e) => e.stopPropagation()}>
+        <div className="form-group">
+          <label>제품 ID</label>
+          <input type="text" value={editedProduct.id} readOnly />
+        </div>
+
+        <div className="form-group">
+          <label>제품명</label>
+          <input
+            type="text"
+            name="productName"
+            value={editedProduct.productName}
+            onChange={handleChange}
+          />
+        </div>
+
+        <div className="form-group">
+          <label>매입 가격</label>
+          <input
+            type="text" // 숫자가 아니라 문자열로 입력받음
+            name="purchasePrice"
+            value={editedProduct.purchasePrice || ""}
+            onChange={handleChange}
+          />
+        </div>
+
+        <div className="form-group">
+          <label>판매 가격</label>
+          <input
+            type="text" // 숫자가 아니라 문자열로 입력받음
+            name="salePrice"
+            value={editedProduct.salePrice || ""}
+            onChange={handleChange}
+          />
+        </div>
+
+        <div className="form-group">
+          <label>재고 수량</label>
+          <input
+            type="number"
+            name="stock"
+            value={editedProduct.stock}
+            onChange={handleChange}
+          />
+        </div>
+
+        <div className="form-group">
+          <label>제품 규격</label>
+          <input
+            type="text"
+            name="specifications"
+            value={editedProduct.specifications}
+            onChange={handleChange}
+          />
+        </div>
+
+        <div className="form-group">
+          <label>등록 날짜</label>
+          <input type="text" value={editedProduct.createdDate} readOnly />
+        </div>
+
+        <div className="form-group">
+          <label>담당자</label>
+          <input
+            type="text"
+            value={editedProduct.employee?.name || "담당자 없음"}
+            readOnly
+          />
+        </div>
+
+        <div className="form-group">
+          <label>메모</label>
+          <textarea
+            name="memo"
+            value={editedProduct.memo}
+            onChange={handleChange}
+          ></textarea>
+        </div>
+
+        <div className="product-detail-buttons">
+          <button
+            type="button"
+            className="update-button"
+            onClick={handleUpdate}
+          >
+            수정
+          </button>
+          <button
+            type="button"
+            className="delete-button"
+            onClick={handleDelete}
+          >
+            삭제
+          </button>
+        </div>
+      </form>
+
+      {error && <div className="error-message">{error}</div>}
     </div>
   );
 };

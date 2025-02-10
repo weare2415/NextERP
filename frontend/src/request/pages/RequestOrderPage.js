@@ -19,7 +19,7 @@ const RequestOrderPage = () => {
   useEffect(() => {
     fetchOrders();
   }, []);
-  
+
   // ✅ 승인 또는 반려 후 목록에서 제거
   const handleUpdateSuccess = (updatedTransactionId) => {
     setOrders((prevOrders) =>
@@ -29,12 +29,15 @@ const RequestOrderPage = () => {
 
   return (
     <BasicLayout>
-      <div className="Request-page">
+      <div className="request-order-page-container">
         <div className="page-header">
-          <h2>주문 승인 요청 관리</h2>
+          <h1>주문 승인 요청 관리</h1>
         </div>
 
-        <ListRequestOrder orders={orders} onUpdateSuccess={handleUpdateSuccess} />
+        <ListRequestOrder
+          orders={orders}
+          onUpdateSuccess={handleUpdateSuccess}
+        />
       </div>
     </BasicLayout>
   );
