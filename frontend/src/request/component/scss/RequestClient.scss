@@ -1,17 +1,16 @@
 @import "../../../App.scss";
 
-.request-client-detail-form {
+.modal-container {
   background-color: white;
   border-radius: 4px;
   width: 90%;
-  max-width: 700px;
+  max-width: 800px;
   max-height: 90vh;
-  padding: 0;
-  font-family: $font-primary;
   display: flex;
   flex-direction: column;
+  font-family: $font-primary;
 
-  .request-client-detail-header {
+  .modal-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -20,13 +19,11 @@
     color: white;
     border-top-left-radius: 4px;
     border-top-right-radius: 4px;
-    width: 100%;
 
     h2 {
       margin: 0;
       font-size: 18px;
       font-weight: 500;
-      color: white;
     }
 
     .close-button {
@@ -43,125 +40,101 @@
     }
   }
 
-  form {
+  .modal-content {
     padding: 20px;
     overflow-y: auto;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 0;
-    align-items: center;
 
-    .form-group {
-      display: flex;
-      align-items: center;
-      margin-bottom: 1px;
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 15px;
 
-      label {
-        width: 140px;
-        background-color: #e9edf4;
-        padding: 8px 15px;
-        font-size: 14px;
-        color: $primary-color;
-        text-align: center;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin: 0;
-      }
-
-      input,
-      select,
-      textarea {
-        flex: 1;
-        padding: 8px 10px;
-        border: 1px solid #e9edf4;
-        font-family: $font-primary;
-        font-size: 14px;
-        height: 35px;
-        width: 100%;
-        border-radius: 0;
-        margin: 0;
-
-        &:focus {
-          outline: none;
-          border-color: $secondary-color;
+      .form-group {
+        &.full-width {
+          grid-column: 1 / -1;
         }
-      }
-
-      &:has(input[name="zipCode"]) {
-        grid-column: 1 / -1;
-        display: flex;
-        align-items: center;
-
-        input {
-          flex: 1;
-        }
-
-        button {
-          margin-left: 5px;
-          width: 100px;
-          height: 35px;
-          background-color: $secondary-color;
-          color: white;
-          border: none;
-          font-size: 13px;
-          cursor: pointer;
-
-          &:hover {
-            background-color: darken($secondary-color, 10%);
-          }
-        }
-      }
-
-      &:has(input[name="clientAddress"]),
-      &:has(input[name="clientDetailedAddress"]),
-      &:has(input[name="clientAccountNumber"]) {
-        grid-column: 1 / -1;
-      }
-
-      &:has(textarea[name="memo"]) {
-        grid-column: 1 / -1;
-        display: flex;
-        align-items: flex-start;
 
         label {
-          height: 100px;
-          justify-content: center;
-          line-height: normal;
+          display: block;
+          margin-bottom: 5px;
+          color: $primary-color;
+          font-weight: 500;
+        }
+
+        input,
+        select,
+        textarea {
+          width: 100%;
+          padding: 8px;
+          border: 1px solid $secondary-color;
+          border-radius: 4px;
+          font-family: $font-primary;
+
+          &:focus {
+            outline: none;
+            border-color: $primary-color;
+          }
+        }
+
+        .input-with-button {
+          display: flex;
+          gap: 10px;
+
+          input {
+            flex: 1;
+          }
+
+          button {
+            padding: 8px 15px;
+            background-color: $secondary-color;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+
+            &:hover {
+              background-color: darken($secondary-color, 10%);
+            }
+          }
         }
 
         textarea {
-          height: 100px;
-          resize: none;
+          min-height: 100px;
+          resize: vertical;
         }
       }
     }
 
-    .request-client-detail-buttons {
-      grid-column: 1 / -1;
+    .button-container {
       display: flex;
       justify-content: center;
       gap: 10px;
       margin-top: 20px;
 
       button {
-        width: 100px;
-        height: 40px;
+        padding: 8px 24px;
         border: none;
         border-radius: 4px;
-        font-size: 14px;
-        font-weight: 500;
         cursor: pointer;
-      }
+        font-family: $font-primary;
 
-      .approve-button {
-        background-color: $primary-color;
-        color: white;
-      }
+        &.update-button {
+          background-color: #2196f3;
+          color: white;
 
-      .reject-button {
-        background-color: $error-color;
-        color: white;
+          &:hover {
+            background-color: darken(#2196f3, 10%);
+          }
+        }
+
+        &.delete-button {
+          background-color: $error-color;
+          color: white;
+
+          &:hover {
+            background-color: darken($error-color, 10%);
+          }
+        }
       }
     }
   }

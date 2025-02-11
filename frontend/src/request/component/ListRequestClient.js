@@ -41,8 +41,8 @@ const ListRequestClient = ({ clients, onClientSelect }) => {
   }, [clients]);
 
   return (
-    <div className="request-client-list-wrapper">
-      <div className="client-table-section">
+    <div className="client-list-container">
+      <div className="client-list">
         <table>
           <thead>
             <tr>
@@ -61,7 +61,7 @@ const ListRequestClient = ({ clients, onClientSelect }) => {
                   <td>{client.clientCode}</td>
                   <td>
                     <button
-                      className="client-table-name-btn"
+                      className="client-name-btn"
                       onClick={() => onClientSelect(client)}
                     >
                       {client.clientName}

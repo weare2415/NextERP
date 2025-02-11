@@ -1,25 +1,70 @@
 @import "../../App.scss";
 
-.request-order-page-container {
-  max-width: 90%;
-  margin: auto;
-  position: relative;
-
+.Request-page {
   .page-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-top: 20px;
     margin-bottom: 20px;
 
-    h1 {
+    h2 {
       color: $primary-color;
       font-family: $font-primary;
       margin: 0;
     }
+
+    .new-Request-btn {
+      padding: 8px 16px;
+      background-color: $primary-color;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-family: $font-primary;
+
+      &:hover {
+        background-color: darken($primary-color, 10%);
+      }
+    }
   }
 
-  .Request-order-list {
+  .search-section {
+    margin-bottom: 20px;
+
+    .search-form {
+      display: flex;
+      gap: 10px;
+
+      input {
+        flex: 1;
+        padding: 8px;
+        border: 1px solid $secondary-color;
+        border-radius: 4px;
+        font-family: $font-primary;
+
+        &:focus {
+          outline: none;
+          border-color: $primary-color;
+        }
+      }
+
+      button {
+        padding: 8px 16px;
+        background-color: $secondary-color;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-family: $font-primary;
+
+        &:hover {
+          background-color: darken($secondary-color, 10%);
+        }
+      }
+    }
+  }
+
+  .Request-list {
     background-color: white;
     border-radius: 4px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -43,14 +88,14 @@
         font-weight: 500;
       }
 
-      .request-product-name-btn {
+      .Request-name-btn {
         background: none;
         border: none;
         color: $primary-color;
         cursor: pointer;
         padding: 0;
         font-family: $font-primary;
-        text-decoration: none;
+        text-decoration: underline;
 
         &:hover {
           color: darken($primary-color, 10%);

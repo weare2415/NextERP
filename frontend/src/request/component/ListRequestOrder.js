@@ -4,25 +4,19 @@ import { getEmployeeById } from "../../member/api/memberApi";
 import { getProductById } from "../../product/api/productApi";
 import { getClientById } from "../../client/api/clientApi";
 import RequestOrder from "./RequestOrder";
-import { paginate } from "../../common/util/paginationUtils";
-import Pagination from "../../common/util/Pagination";
 
-const ListRequestOrder = ({ orders, onUpdateSuccess }) => {
+const ListRequestOrder = ({
+  orders,
+  onUpdateSuccess,
+  currentPage,
+  totalPages,
+  onPageChange,
+}) => {
   const [employeeNames, setEmployeeNames] = useState({});
   const [productNames, setProductNames] = useState({});
   const [clientNames, setClientNames] = useState({});
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [showModal, setShowModal] = useState(false);
-  const [orderList, setOrderList] = useState(orders);
-  const [currentPage, setCurrentPage] = useState(1); // ✅ 현재 페이지 상태
-  const pageSize = 5; // ✅ 한 페이지당 5개 표시
-
-  useEffect(() => {
-    setOrderList(orders); // ✅ 부모 컴포넌트에서 받은 orders 값이 변경될 때 리스트 갱신
-  }, [orders]);
-
-  // ✅ 현재 페이지에 맞는 데이터 가져오기
-  const paginatedData = paginate(orderList, currentPage, pageSize);
 
   useEffect(() => {
     const fetchEmployeeNames = async () => {
@@ -98,11 +92,6 @@ const ListRequestOrder = ({ orders, onUpdateSuccess }) => {
 
   // ✅ 주문 승인 또는 반려 후 리스트에서 제거
   const handleUpdateSuccess = (updatedTransactionId) => {
-    setOrderList((prevOrders) =>
-      prevOrders.filter((order) => order.transactionId !== updatedTransactionId)
-    );
-
-    // 부모 컴포넌트에서도 데이터 업데이트 (RequestOrderPage.js)
     if (onUpdateSuccess) {
       onUpdateSuccess(updatedTransactionId);
     }
@@ -122,8 +111,8 @@ const ListRequestOrder = ({ orders, onUpdateSuccess }) => {
 
   return (
     <>
-      <div className="request-product-list-wrapper">
-        <div className="product-table-section">
+      <div className="order-list-container">
+        <div className="order-list">
           <table>
             <thead>
               <tr>
@@ -136,13 +125,13 @@ const ListRequestOrder = ({ orders, onUpdateSuccess }) => {
               </tr>
             </thead>
             <tbody>
-              {paginatedData.length > 0 ? (
-                paginatedData.map((order) => (
+              {orders.length > 0 ? (
+                orders.map((order) => (
                   <tr key={order.id}>
                     <td>{order.productId}</td>
                     <td>
                       <button
-                        className="product-table-name-btn"
+                        className="order-name-btn"
                         onClick={() => handleOrderClick(order)}
                       >
                         {productNames[order.productId] || "Loading..."}
@@ -150,7 +139,7 @@ const ListRequestOrder = ({ orders, onUpdateSuccess }) => {
                     </td>
                     <td>
                       <button
-                        className="product-table-name-btn"
+                        className="order-name-btn"
                         onClick={() => handleOrderClick(order)}
                       >
                         {clientNames[order.clientCode] || "Loading..."}
@@ -172,13 +161,24 @@ const ListRequestOrder = ({ orders, onUpdateSuccess }) => {
           </table>
         </div>
 
-        {/* ✅ 페이지네이션 컴포넌트 추가 */}
-        <Pagination
-          currentPage={currentPage}
-          totalItems={orderList.length}
-          pageSize={pageSize}
-          onPageChange={setCurrentPage}
-        />
+        {/* ✅ 이전 및 다음 페이지 버튼 추가 */}
+        <div className="pagination-controls">
+          <button
+            disabled={currentPage <= 0}
+            onClick={() => onPageChange(currentPage - 1)}
+          >
+            이전
+          </button>
+          <span>
+            {currentPage + 1} / {totalPages}
+          </span>
+          <button
+            disabled={currentPage >= totalPages - 1}
+            onClick={() => onPageChange(currentPage + 1)}
+          >
+            다음
+          </button>
+        </div>
       </div>
 
       {/* ✅ 모달 적용 */}

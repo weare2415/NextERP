@@ -40,9 +40,9 @@ const RequestPage = () => {
 
   return (
     <BasicLayout>
-      <div className="request-client-page-container">
+      <div className="Request-page">
         <div className="page-header">
-          <h1>거래처 승인 요청 관리</h1>
+          <h2>거래처 승인 요청 관리</h2>
         </div>
 
         <ListRequestClient
