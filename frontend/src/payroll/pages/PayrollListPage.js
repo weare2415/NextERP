@@ -4,11 +4,14 @@ import PayrollTable from '../components/PayrollTable';
 import PayrollFilter from '../components/PayrollFilter';
 import PayrollDetailModal from '../components/PayrollDetailModal';
 import BasicLayout from '../../common/pages/BasicLayout';
+import {Link} from 'react-router-dom';
+import PayrollForm from '../components/PayrollForm';
 
 const PayrollListPage = () => {
 	const [payrolls, setPayrolls] = useState([]);
 	const [selectedPayroll, setSelectedPayroll] = useState(null);
 	const [isModalOpen, setIsModalOpen] = useState(false);
+	const [isFormModalOpen, setIsFormModalOpen] = useState(false)
 
 	// 급여 데이터 불러오기
 	useEffect(() => {
@@ -22,14 +25,18 @@ const PayrollListPage = () => {
 		setIsModalOpen(true);
 	};
 
+	const handleFormModal = () => {
+		setIsFormModalOpen(!isFormModalOpen);
+	}
+
+
 	return (
 			<BasicLayout>
 				<div className="payroll-page">
 				<div className="payroll-list">
 					<h2>급여 정보 관리</h2>
 					<PayrollFilter setPayrolls={setPayrolls}/>
-					<button className="new-payroll-btn" onClick={() => window.location.href = "/payroll/create"}>+ 급여
-						추가
+					<button className="new-payroll-btn" onClick={handleFormModal}>급여 정보 추가 / 생성
 					</button>
 					<div className="payroll-table-container">
 					<PayrollTable payrolls={payrolls}
@@ -40,6 +47,12 @@ const PayrollListPage = () => {
 					</div>
 				</div>
 				</div>
+				{isFormModalOpen && (
+						<div className="payroll-form">
+						<button onClick={handleFormModal}>x</button>
+							<PayrollForm/>
+						</div>
+				)}
 			</BasicLayout>
 	);
 };

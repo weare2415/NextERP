@@ -3,7 +3,7 @@ import "../../product/scss/ListProduct.scss";
 import SearchProduct from "../components/SearchProduct";
 import Sale from "../components/Sale";
 import Purchase from "../components/Purchase";
-import Pagination from "../../common/util/Pagination";
+import Pagination from "../../common/component/Pagination";
 import { getAllProducts } from "../api/productApi";
 import { getEmployeeById } from "../../employee/api/employeeApi";
 

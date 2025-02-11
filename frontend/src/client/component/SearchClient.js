@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { getClientById, getAllClients, getClientsByEmployeeId } from '../../client/api/clientApi';
+import { getClientById, getAllClients, getClientsByEmployeeId } from '../api/clientApi';
 import { getEmployeeByName } from '../../member/api/memberApi';
 import '../component/scss/SearchClient.scss';
 

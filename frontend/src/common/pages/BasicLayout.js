@@ -62,7 +62,7 @@ const BasicLayout = ({ children }) => {
     ],
     회계: [
       { name: "대쉬보드", path: "/accounting/dashboard" },
-      { name: "급여 정보 관리", path: "/accounting/salary" },
+      { name: "급여 정보 관리", path: "/payroll" },
       { name: "거래 명세서 조회", path: "/accounting/transaction" },
       { name: "재무 보고서 관리", path: "/accounting/financial" },
       { name: "분개장", path: "/accounting/price" },
