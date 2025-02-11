@@ -1,6 +1,11 @@
 import React, { useEffect, useState } from "react";
 import "../component/scss/RequestOrder.scss"; // 스타일링
-import { approveOrder, rejectOrder } from "../../order/api/orderApi";
+import {
+  approvePurchaseOrder,
+  approveSaleOrder,
+  rejectPurchaseOrder,
+  rejectSaleOrder,
+} from "../../order/api/orderApi";
 import { getProductById } from "../../product/api/productApi";
 
 const RequestOrder = ({ order, onClose, onUpdateSuccess }) => {
@@ -24,12 +29,16 @@ const RequestOrder = ({ order, onClose, onUpdateSuccess }) => {
     fetchProductData();
   }, [order.productId]);
 
-  // ✅ 구매/판매 승인 처리
+  // ✅ 승인 처리
   const handleApprove = async () => {
     try {
-      await approveOrder(order.transactionId);
+      if (order.orderType === "SALE") {
+        await approveSaleOrder(order.transactionId);
+      } else if (order.orderType === "PURCHASE") {
+        await approvePurchaseOrder(order.transactionId);
+      }
       alert("거래 요청이 승인되었습니다.");
-      onUpdateSuccess(order.transactionId); // 승인된 주문 반영
+      onUpdateSuccess(order.transactionId);
       onClose();
     } catch (error) {
       console.error("승인 요청 실패:", error);
@@ -37,12 +46,16 @@ const RequestOrder = ({ order, onClose, onUpdateSuccess }) => {
     }
   };
 
-  // ✅ 구매/판매 반려 처리
+  // ✅ 반려 처리
   const handleReject = async () => {
     try {
-      await rejectOrder(order.transactionId);
+      if (order.orderType === "SALE") {
+        await rejectSaleOrder(order.transactionId); // 판매 주문 반려
+      } else if (order.orderType === "PURCHASE") {
+        await rejectPurchaseOrder(order.transactionId); // 구매 주문 반려
+      }
       alert("거래 요청이 반려되었습니다.");
-      onUpdateSuccess(order.transactionId); // 반려된 주문 반영
+      onUpdateSuccess(order.transactionId); // 부모 컴포넌트에 변경 사항 전달
       onClose();
     } catch (error) {
       console.error("반려 요청 실패:", error);
@@ -83,7 +96,11 @@ const RequestOrder = ({ order, onClose, onUpdateSuccess }) => {
 
             <div className="form-group">
               <label>판매/구매</label>
-              <input type="text" value={order.orderType === "SALE" ? "판매" : "구매"} readOnly />
+              <input
+                type="text"
+                value={order.orderType === "SALE" ? "판매" : "구매"}
+                readOnly
+              />
             </div>
 
             <div className="form-group">
@@ -97,7 +114,7 @@ const RequestOrder = ({ order, onClose, onUpdateSuccess }) => {
             </div>
           </div>
 
-          {/* ✅ 버튼 컨테이너 위치 수정 */}
+          {/* ✅ 버튼 컨테이너 */}
           <div className="button-container">
             <button
               type="button"

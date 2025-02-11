@@ -1,20 +1,38 @@
 import axiosInstance from "../../common/api/mainApi";
 
 // Client Code로 주문 조회
-export const fetchOrdersByClientCode = async (clientCode) => {
+export const fetchOrdersByClientCode = async (
+  clientCode,
+  page = 0,
+  size = 10
+) => {
   try {
-    const response = await axiosInstance.get(`/api/order/client/${clientCode}`);
+    const response = await axiosInstance.get(
+      `/api/order/client/${clientCode}`,
+      {
+        params: { page, size },
+      }
+    );
     return response.data;
   } catch (error) {
-    console.error("Error fetching orders by client Code:", error);
+    console.error("Error fetching orders by client code:", error);
     throw error;
   }
 };
 
 // Employee ID로 주문 조회
-export const fetchOrdersByEmployeeId = async (employeeId) => {
+export const fetchOrdersByEmployeeId = async (
+  employeeId,
+  page = 0,
+  size = 10
+) => {
   try {
-    const response = await axiosInstance.get(`/api/order/employee/${employeeId}`);
+    const response = await axiosInstance.get(
+      `/api/order/employee/${employeeId}`,
+      {
+        params: { page, size },
+      }
+    );
     return response.data;
   } catch (error) {
     console.error("Error fetching orders by employee ID:", error);
@@ -23,9 +41,18 @@ export const fetchOrdersByEmployeeId = async (employeeId) => {
 };
 
 // Product ID로 주문 조회
-export const fetchOrdersByProductId = async (productId) => {
+export const fetchOrdersByProductId = async (
+  productId,
+  page = 0,
+  size = 10
+) => {
   try {
-    const response = await axiosInstance.get(`/api/order/product/${productId}`);
+    const response = await axiosInstance.get(
+      `/api/order/product/${productId}`,
+      {
+        params: { page, size },
+      }
+    );
     return response.data;
   } catch (error) {
     console.error("Error fetching orders by product ID:", error);
@@ -34,9 +61,11 @@ export const fetchOrdersByProductId = async (productId) => {
 };
 
 // ✅ 승인된(Approved) 주문 조회
-export const fetchApprovedOrders = async () => {
+export const fetchApprovedOrders = async (page = 0, size = 10) => {
   try {
-    const response = await axiosInstance.get(`/api/order/approved`);
+    const response = await axiosInstance.get(`/api/order/approved`, {
+      params: { page, size },
+    });
     return response.data;
   } catch (error) {
     console.error("Error fetching approved orders:", error);
@@ -44,10 +73,12 @@ export const fetchApprovedOrders = async () => {
   }
 };
 
-// ✅ 승인 요청 중(Pending) 주문 조회
-export const fetchPendingOrders = async () => {
+// ✅ 보류 중인(Pending) 주문 조회
+export const fetchPendingOrders = async (page = 0, size = 10) => {
   try {
-    const response = await axiosInstance.get(`/api/order/pending`);
+    const response = await axiosInstance.get(`/api/order/pending`, {
+      params: { page, size },
+    });
     return response.data;
   } catch (error) {
     console.error("Error fetching pending orders:", error);
@@ -55,39 +86,144 @@ export const fetchPendingOrders = async () => {
   }
 };
 
-// ✅ 거래처명(clientCode) + 주문 타입(orderType) 기반 검색
-export const fetchApprovedOrdersByClientAndType = async (clientCode, orderType) => {
+// 구매 주문 처리(초기 승인 요청)
+export const processPurchaseOrder = async ({
+  productId,
+  quantity,
+  price,
+  clientCode,
+  paymentAccountId,
+  employee,
+  memo, // optional
+}) => {
   try {
-    const response = await axiosInstance.get(`/api/order/search`, {
-      params: { clientCode, orderType }, // 요청 파라미터로 clientCode와 orderType 전달
-    });
+    const response = await axiosInstance.post(
+      `/api/order/purchase/pending`,
+      employee,
+      {
+        params: {
+          productId,
+          quantity,
+          price,
+          clientCode,
+          paymentAccountId,
+          memo,
+        },
+      }
+    );
     return response.data;
   } catch (error) {
-    console.error("Error fetching approved orders by client and type:", error);
+    console.error("Error processing purchase order:", error);
     throw error;
   }
 };
 
-// 거래or판매 요청 '승인'
-export const approveOrder = async (transactionId) => {
+// 판매 주문 처리(초기 승인 요청)
+export const processSaleOrder = async ({
+  productId,
+  quantity,
+  salePrice,
+  clientCode,
+  paymentAccountId,
+  employee,
+  memo, // optional
+}) => {
   try {
-    // PUT 요청: /api/purchase/approve/{id}
-    const response = await axiosInstance.put(`/api/order/approve/${transactionId}`);
-    return response.data; // 승인된 OrderDTO 객체 반환
+    const response = await axiosInstance.post(
+      `/api/order/sale/pending`,
+      employee,
+      {
+        params: {
+          productId,
+          quantity,
+          salePrice,
+          clientCode,
+          paymentAccountId,
+          memo,
+        },
+      }
+    );
+    return response.data;
   } catch (error) {
-    console.error("Error approving order:", error);
+    console.error("Error processing sale order:", error);
     throw error;
   }
 };
 
-// 거래or판매 요청 '반려'
-export const rejectOrder = async (transactionId) => {
+// 구매 주문 승인
+export const approvePurchaseOrder = async (transactionId) => {
   try {
-    // DELETE 요청: /api/purchase/reject/{id}
-    const response = await axiosInstance.delete(`/api/order/reject/${transactionId}`);
-    return response.data; // 성공 메시지 반환
+    const response = await axiosInstance.put(
+      `/api/order/purchase/approve/${transactionId}`
+    );
+    return response.data;
   } catch (error) {
-    console.error("Error rejecting order:", error);
+    console.error("Error approving purchase order:", error);
+    throw error;
+  }
+};
+
+// 판매 주문 승인
+export const approveSaleOrder = async (transactionId) => {
+  try {
+    const response = await axiosInstance.put(
+      `/api/order/sale/approve/${transactionId}`
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error approving sale order:", error);
+    throw error;
+  }
+};
+
+// 구매 주문 반려 (거래 삭제)
+export const rejectPurchaseOrder = async (transactionId) => {
+  try {
+    const response = await axiosInstance.delete(
+      `/api/order/purchase/reject/${transactionId}`
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error rejecting purchase order:", error);
+    throw error;
+  }
+};
+
+// 판매 주문 반려 (거래 삭제)
+export const rejectSaleOrder = async (transactionId) => {
+  try {
+    const response = await axiosInstance.delete(
+      `/api/order/sale/reject/${transactionId}`
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error rejecting sale order:", error);
+    throw error;
+  }
+};
+
+// 구매 주문 반품
+export const refundPurchaseOrder = async (transactionId) => {
+  try {
+    const response = await axiosInstance.delete(
+      `/api/order/purchase/refund/${transactionId}`
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error refunding purchase order:", error);
+    throw error;
+  }
+};
+
+// 판매 주문 반품
+export const refundSaleOrder = async (transactionId) => {
+  try {
+    const response = await axiosInstance.delete(
+      `/api/order/sale/refund/${transactionId}`
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error refunding sale order:", error);
     throw error;
   }
 };

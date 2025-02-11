@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
-import { getAllClients } from "../../client/api/clientApi"; // 🔥 거래처 조회 API
-import { processPurchase } from "../api/productApi"; // 🔥 구매 처리 API
+import { getAllClients } from "../../client/api/clientApi";
+import { processPurchaseOrder } from "../../order/api/orderApi";
+import "../../product/scss/Sale.scss";
 
 const Purchase = ({ isOpen, onClose, selectedProduct }) => {
   const name = useSelector((state) => state.loginSlice.name) || "";
@@ -10,7 +11,7 @@ const Purchase = ({ isOpen, onClose, selectedProduct }) => {
     productId: selectedProduct ? selectedProduct.id : "",
     quantity: "",
     price: selectedProduct ? selectedProduct.salePrice : "",
-    clientCode: "", // ✅ 거래처 Code 저장
+    clientCode: "",
     companyName: "",
     employeeName: name,
     employeeId: id,
@@ -24,21 +25,20 @@ const Purchase = ({ isOpen, onClose, selectedProduct }) => {
 
   useEffect(() => {
     if (selectedProduct) {
-      // 현재 날짜로 주문 날짜 설정 (YYYY-MM-DD 형식)
       const currentDate = new Date().toISOString().split("T")[0];
 
       setOrderData((prev) => ({
         ...prev,
         productId: selectedProduct.id,
         price: selectedProduct.salePrice,
-        orderDate: currentDate, // ✅ 주문 날짜 자동 설정
+        orderDate: currentDate,
       }));
     }
   }, [selectedProduct]);
 
   if (!isOpen) return null;
 
-  // 🔎 거래처 검색 함수
+  // 거래처 검색 함수
   const searchClientByName = async (term) => {
     if (!term.trim()) {
       setSearchResults([]);
@@ -64,14 +64,14 @@ const Purchase = ({ isOpen, onClose, selectedProduct }) => {
     }
   };
 
-  // 🔎 검색어 입력 시 호출
+  // 검색어 입력 시 호출
   const handleSearchChange = (e) => {
     const value = e.target.value;
     setSearchTerm(value);
     searchClientByName(value);
   };
 
-  // ✅ 거래처 선택 시 clientCode 저장
+  // 거래처 선택 시 clientCode 저장
   const handleSelectClient = (client) => {
     console.log("선택한 거래처:", client); // 🔥 디버깅용 로그 추가
     setSearchTerm(client.clientName);
@@ -88,7 +88,7 @@ const Purchase = ({ isOpen, onClose, selectedProduct }) => {
     setOrderData((prev) => ({ ...prev, [name]: value }));
   };
 
-  // ✅ 판매 요청 API 호출
+  // 구매 요청 API 호출
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -107,11 +107,12 @@ const Purchase = ({ isOpen, onClose, selectedProduct }) => {
         clientCode: orderData.clientCode,
         paymentAccountId: "201",
         employee: {
-          id: orderData.employeeId, // 🔥 로그인된 직원 ID 전송
+          id: orderData.employeeId,
         },
+        memo: orderData.memo,
       };
 
-      await processPurchase(purchaseData);
+      await processPurchaseOrder(purchaseData);
       alert("구매 요청이 완료되었습니다!");
       onClose();
     } catch (error) {
@@ -206,8 +207,8 @@ const Purchase = ({ isOpen, onClose, selectedProduct }) => {
                 <label>발주 담당자:</label>
                 <input
                   type="text"
-                  name="employeename"
-                  value={orderData.employeename}
+                  name="employeeName"
+                  value={orderData.employeeName}
                   readOnly
                   required
                 />

@@ -1,4 +1,4 @@
-@import '../../App.scss';
+@import "../../App.scss";
 
 .product-detail-form {
   background-color: white;
@@ -69,8 +69,8 @@
         margin: 0;
       }
 
-      input, 
-      select, 
+      input,
+      select,
       textarea {
         flex: 1;
         padding: 8px 10px;
@@ -112,7 +112,7 @@
       justify-content: center;
       gap: 10px;
       margin-top: 20px;
-    
+
       button {
         width: 100px;
         height: 40px;
