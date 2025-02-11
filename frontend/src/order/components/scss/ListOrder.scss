@@ -35,6 +35,13 @@
       position: relative;
       cursor: pointer;
       padding-right: 25px;
+      text-align: center;
+
+      &:first-child {
+        text-align: center !important;
+        padding: 15px; // 다른 셀들과 동일한 패딩 적용
+        padding-right: 15px; // 기존 padding-right 덮어쓰기
+      }
     }
 
     .order-name-btn {

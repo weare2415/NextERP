@@ -4,71 +4,73 @@ import "../component/scss/RequestClient.scss";
 import { getEmployeeById } from "../../member/api/memberApi";
 
 const RequestClient = ({ client, onClose, onUpdateSuccess }) => {
-    const [employeeName, setEmployeeName] = useState("Loading..."); // 영업 담당자 이름
-  
-    // ✅ 담당자 이름 조회 (employeeId를 기반으로)
-    useEffect(() => {
-      const fetchEmployeeName = async () => {
-        if (client.employeeId) {
-          try {
-            const employeeInfo = await getEmployeeById(client.employeeId); // API 호출
-            setEmployeeName(employeeInfo.name); // 담당자 이름 저장
-          } catch (error) {
-            console.error("Failed to fetch employee name:", error);
-            setEmployeeName("알 수 없음"); // 오류 발생 시 기본값
-          }
-        }
-      };
+  const [employeeName, setEmployeeName] = useState("Loading..."); // 영업 담당자 이름
 
-      fetchEmployeeName();
-    }, [client.employeeId]);
-
-    // ✅ 거래처 승인 처리
-    const handleApprove = async () => {
+  // ✅ 담당자 이름 조회 (employeeId를 기반으로)
+  useEffect(() => {
+    const fetchEmployeeName = async () => {
+      if (client.employeeId) {
         try {
-          await approveClient(client.clientCode, client.employeeId);
-          alert("거래처 수정이 승인되었습니다.");
-          onUpdateSuccess(client.clientCode); // 승인된 거래처 반영
-          onClose();
+          const employeeInfo = await getEmployeeById(client.employeeId); // API 호출
+          setEmployeeName(employeeInfo.name); // 담당자 이름 저장
         } catch (error) {
-          console.error("승인 요청 실패:", error);
-          alert("승인 요청이 실패되었습니다.");
+          console.error("Failed to fetch employee name:", error);
+          setEmployeeName("알 수 없음"); // 오류 발생 시 기본값
         }
-      };
-
-      // ✅ 거래처 반려 처리
-    const handleReject = async () => {
-        try {
-          await rejectClient(client.clientCode, client.employeeId);
-          alert("거래처 수정 요청이 반려되었습니다.");
-          onUpdateSuccess(client.clientCode); // 반려된 거래처 반영
-          onClose();
-        } catch (error) {
-          console.error("반려 요청 실패:", error);
-          alert("반려 요청이 실패되었습니다.");
-        }
+      }
     };
-  
-    return (
-      <div className="modal-container">
-        <div className="modal-header">
-          <h2>수정 승인 요청</h2>
-          <button className="close-button" onClick={onClose}>X</button>
-        </div>
-        <div className="modal-content">
-          <form>
-            <div className="form-grid">
-              <div className="form-group">
-                <label>기업명</label>
-                <input
-                  type="text"
-                  name="clientName"
-                  value={client.clientName}
-                  readOnly
-                />
-              </div>
 
-              <div className="form-group">
+    fetchEmployeeName();
+  }, [client.employeeId]);
+
+  // ✅ 거래처 승인 처리
+  const handleApprove = async () => {
+    try {
+      await approveClient(client.clientCode, client.employeeId);
+      alert("거래처 수정이 승인되었습니다.");
+      onUpdateSuccess(client.clientCode); // 승인된 거래처 반영
+      onClose();
+    } catch (error) {
+      console.error("승인 요청 실패:", error);
+      alert("승인 요청이 실패되었습니다.");
+    }
+  };
+
+  // ✅ 거래처 반려 처리
+  const handleReject = async () => {
+    try {
+      await rejectClient(client.clientCode, client.employeeId);
+      alert("거래처 수정 요청이 반려되었습니다.");
+      onUpdateSuccess(client.clientCode); // 반려된 거래처 반영
+      onClose();
+    } catch (error) {
+      console.error("반려 요청 실패:", error);
+      alert("반려 요청이 실패되었습니다.");
+    }
+  };
+
+  return (
+    <div className="modal-container">
+      <div className="modal-header">
+        <h2>수정 승인 요청</h2>
+        <button className="close-button" onClick={onClose}>
+          X
+        </button>
+      </div>
+      <div className="modal-content">
+        <form>
+          <div className="form-grid">
+            <div className="form-group">
+              <label>기업명</label>
+              <input
+                type="text"
+                name="clientName"
+                value={client.clientName}
+                readOnly
+              />
+            </div>
+
+            <div className="form-group">
               <label>회사 코드</label>
               <input
                 type="text"
@@ -173,35 +175,39 @@ const RequestClient = ({ client, onClose, onUpdateSuccess }) => {
 
             <div className="form-group">
               <label>메모</label>
-              <textarea
-                name="memo"
-                value={client.memo}
-                readOnly
-              />
+              <textarea name="memo" value={client.memo} readOnly />
             </div>
 
             <div className="form-group">
               <label>영업 담당자</label>
               <input
-                  type="text"
-                  value={employeeName} // employeeId가 아닌 담당자 이름 표시
-                  readOnly
-                />
+                type="text"
+                value={employeeName} // employeeId가 아닌 담당자 이름 표시
+                readOnly
+              />
             </div>
           </div>
-            
-            <div className="button-container">
-            <button type="button" onClick={handleApprove} className="approve-button">
+
+          <div className="button-container">
+            <button
+              type="button"
+              onClick={handleApprove}
+              className="approve-button"
+            >
               승인
             </button>
-            <button type="button" onClick={handleReject} className="reject-button">
+            <button
+              type="button"
+              onClick={handleReject}
+              className="reject-button"
+            >
               반려
             </button>
-            </div>
-          </form>
-        </div>
+          </div>
+        </form>
       </div>
-    );
-  };
+    </div>
+  );
+};
 
 export default RequestClient;

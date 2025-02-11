@@ -6,17 +6,17 @@ import { getProductById } from "../../product/api/productApi";
 import SearchOrder from "./SearchOrder";
 import {
   fetchOrdersByClientCode,
-  fetchOrdersByEmployeeId
-} from '../api/orderApi';
+  fetchOrdersByEmployeeId,
+} from "../../order/api/orderApi";
 
 const ListOrder = ({ orders, activeTab }) => {
   const [employeeNames, setEmployeeNames] = useState({});
   const [clientNames, setClientNames] = useState({});
   const [productNames, setProductNames] = useState({});
+  const [selectedOrders, setSelectedOrders] = useState([]);
+  const [searchResults, setSearchResults] = useState(null);
   const [selectedTab, setSelectedTab] = useState("ALL"); // 기본값 "ALL"로 설정
-  const [selectedOrders, setSelectedOrders] = useState([]); // 선택된 주문 ID 관리
   const [resetSearchTerm, setResetSearchTerm] = useState(false); // 탭 전환 시 검색어 초기화
-  const [searchResults, setSearchResults] = useState()
 
   useEffect(() => {
     const fetchNames = async () => {
@@ -72,6 +72,12 @@ const ListOrder = ({ orders, activeTab }) => {
     }
   }, [orders]);
 
+  const filteredOrders = orders.filter((order) => {
+    if (activeTab === "전체") return true;
+    if (activeTab === "판매") return order.orderType === "SALE";
+    if (activeTab === "구매") return order.orderType === "PURCHASE";
+    return true;
+  });
   const handleTabClick = (tab) => {
     setSelectedTab(tab);
     setSearchResults(null); // 탭을 변경할 때마다 검색 결과를 초기화
@@ -79,9 +85,9 @@ const ListOrder = ({ orders, activeTab }) => {
   };
 
   const handleCheckboxChange = (orderId) => {
-    setSelectedOrders(prevState => {
+    setSelectedOrders((prevState) => {
       if (prevState.includes(orderId)) {
-        return prevState.filter(id => id !== orderId); // 이미 선택된 주문이면 제외
+        return prevState.filter((id) => id !== orderId); // 이미 선택된 주문이면 제외
       } else {
         return [...prevState, orderId]; // 새로운 주문을 선택
       }
@@ -92,7 +98,9 @@ const ListOrder = ({ orders, activeTab }) => {
     if (results.length > 0) {
       if (results[0].clientCode) {
         try {
-          const ordersByClient = await fetchOrdersByClientCode(results[0].clientCode);
+          const ordersByClient = await fetchOrdersByClientCode(
+            results[0].clientCode
+          );
           setSearchResults(ordersByClient);
         } catch (error) {
           console.error("Error fetching orders by clientCode:", error);
@@ -117,46 +125,19 @@ const ListOrder = ({ orders, activeTab }) => {
   const getOrderTypeDescription = (orderType) => {
     const orderTypeMap = {
       SALE: "판매",
-      PURCHASE: "구매"
+      PURCHASE: "구매",
     };
     return orderTypeMap[orderType] || "알 수 없음";
   };
 
-    // 전체 주문을 필터링
-    const filteredOrders = (searchResults !== null ? searchResults : orders).filter((order) => {
-      if (selectedTab === "ALL") return true; // ALL 탭에서는 모든 주문을 보여줍니다
-      return order.orderType === selectedTab;
-    });
-
-    const handlePrintOrder = (orderId) => {
-      console.log(`주문 ID ${orderId} 출력`);
-      // 여기에 출력 로직 추가 (예: PDF 생성, 프린터로 출력 등)
-    };
+  const handlePrintOrder = (orderId) => {
+    console.log(`주문 ID ${orderId} 출력`);
+    // 여기에 출력 로직 추가 (예: PDF 생성, 프린터로 출력 등)
+  };
 
   return (
     <div className="order-list-container">
-      <div className="order-header">
-        <div className="order-tabs">
-          <button
-            className={`tab-button ${selectedTab === "SALE" ? "active" : ""}`}
-            onClick={() => handleTabClick("SALE")}
-          >
-            판매
-          </button>
-          <button
-            className={`tab-button ${selectedTab === "PURCHASE" ? "active" : ""}`}
-            onClick={() => handleTabClick("PURCHASE")}
-          >
-            구매
-          </button>
-        </div>
-        <SearchOrder
-          onSearchResults={handleSearchResults}
-          resetSearchTerm={resetSearchTerm} // 탭 전환 시 검색어 초기화
-          setResetSearchTerm={setResetSearchTerm}
-          selectedTab={selectedTab}
-        />
-      </div>
+      <div className="order-header"></div>
       <div className="order-list">
         <table>
           <thead>
@@ -166,7 +147,9 @@ const ListOrder = ({ orders, activeTab }) => {
                   type="checkbox"
                   onChange={(e) => {
                     if (e.target.checked) {
-                      setSelectedOrders(filteredOrders.map((order) => order.id)); // 모든 주문 선택
+                      setSelectedOrders(
+                        filteredOrders.map((order) => order.id)
+                      ); // 모든 주문 선택
                     } else {
                       setSelectedOrders([]); // 모든 선택 해제
                     }
@@ -229,7 +212,7 @@ const ListOrder = ({ orders, activeTab }) => {
         </table>
       </div>
     </div>
-  );  
+  );
 };
 
 export default ListOrder;
