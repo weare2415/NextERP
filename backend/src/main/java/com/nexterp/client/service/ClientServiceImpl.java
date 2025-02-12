@@ -70,22 +70,13 @@ public class ClientServiceImpl implements ClientService {
   }
 
   @Override
-  public ClientDTO getClientByClientCode(String clientCode) {
-    Client client = clientRepository.findByClientCode(clientCode)
-            .orElseThrow(() -> new RuntimeException("거래처를 찾을 수 없습니다. ID: " + clientCode));
-    return convertToDTO(client);
-  }
-
-  // 엔터티를 DTO로 변환
-
-  @Override
   // PENDING 상태가 아닌 거래처만 조회
   public Page<ClientDTO> getAllClients(Pageable pageable) {
     Page<Client> clients = clientRepository.findAllActiveClients(pageable);
     return clients.map(this::convertToDTO);}
 
   @Override
-  // ✅ PENDING 상태의 거래처만 조회
+  // PENDING 상태의 거래처만 조회
   public Page<ClientDTO> getPendingClients(Pageable pageable) {
     Page<Client> clients = clientRepository.findPendingClients(pageable);
     return clients.map(this::convertToDTO);}
@@ -100,6 +91,19 @@ public class ClientServiceImpl implements ClientService {
   public Page<ClientDTO> getClientsByStatus(RequestStatus status, Pageable pageable) {
     Page<Client> clients = clientRepository.findByStatus(status, pageable);
     return clients.map(this::convertToDTO);}
+
+  // clientCode로 조회
+  @Override
+  public Page<ClientDTO> getClientByClientCode(String clientCode, Pageable pageable) {
+    Page<Client> clients = clientRepository.findByClientCodeLike(clientCode, pageable);
+    return clients.map(this::convertToDTO);}
+
+  // clientName으로 조회
+  @Override
+  public Page<ClientDTO> getClientByClientName(String clientName, Pageable pageable) {
+    Page<Client> clients = clientRepository.findByClientName(clientName, pageable);
+    return clients.map(this::convertToDTO);
+  }
 
   @Override
   public ClientDTO requestUpdateClient(String clientCode, ClientDTO clientDTO) {

@@ -6,12 +6,6 @@ export const createClient = async (clientData) => {
   return response.data;
 };
 
-// clientCode로 거래처 조회
-export const getClientById = async (clientCode) => {
-  const response = await axiosInstance.get(`/api/clients/${clientCode}`);
-  return response.data;
-};
-
 // 전체 거래처 조회 (status가 PENDING 상태가 아닌 거래처만 조회)
 export const getAllClients = async (page,size) => {
   const response = await axiosInstance.get('/api/clients',{
@@ -19,6 +13,22 @@ export const getAllClients = async (page,size) => {
   });
   return response.data;
 };
+
+// clientCode로 거래처 조회
+export const getClientById = async (clientCode, page = 0, size = 10) => {
+  const response = await axiosInstance.get(`/api/clients/${clientCode}`, {
+    params: { page, size },
+  });
+  return response.data;
+};
+
+// clientName으로 거래처 조회
+export const getClientByName = async (clientName,page = 0,size = 10) => {
+  const response = await axiosInstance.get(`/api/clients/clientName/${clientName}`,{
+    params: {page,size},
+  });
+  return response.data;
+}
 
 // 수정 승인 요청 (PENDING 상태의 거래처만 조회)
 export const getPendingClients = async (page,size) => {

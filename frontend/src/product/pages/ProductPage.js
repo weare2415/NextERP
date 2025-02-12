@@ -1,30 +1,29 @@
 import React, { useState } from "react";
-import CreateProduct from "../components/CreateProduct"; // ✅ components로 수정
-import ProductDetail from "../components/ProductDetail"; // ✅ components로 수정
-import ListProduct from "../components/ListProduct"; // ✅ components로 수정
-import "../scss/ProductPage.scss"; // ✅ 올바른 경로로 수정
+import CreateProduct from "../components/CreateProduct";
+import ProductDetail from "../components/ProductDetail";
+import ListProduct from "../components/ListProduct";
+import "../scss/ProductPage.scss";
 import BasicLayout from "../../common/pages/BasicLayout";
 
 const ProductPage = () => {
-  const [products, setProducts] = useState([]); // ✅ 제품 목록 상태 추가
+  const [products, setProducts] = useState([]);
   const [showCreateForm, setShowCreateForm] = useState(false);
   const [showDetailForm, setShowDetailForm] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
-
   const handleProductClick = (product) => {
     setSelectedProduct(product);
     setShowDetailForm(true);
   };
 
   const handleCreateSuccess = (newProduct) => {
-    setProducts((prevProducts) => [...prevProducts, newProduct]); // ✅ 리스트에 추가
+    setProducts((prevProducts) => [...prevProducts, newProduct]);
     setShowCreateForm(false);
   };
 
   const handleDeleteSuccess = (productId) => {
     setProducts((prevProducts) =>
       prevProducts.filter((p) => p.id !== productId)
-    ); // ✅ 리스트에서 삭제
+    );
     setShowDetailForm(false);
     setSelectedProduct(null);
   };
@@ -32,7 +31,7 @@ const ProductPage = () => {
   const handleUpdateSuccess = (updatedProduct) => {
     setProducts((prevProducts) =>
       prevProducts.map((p) => (p.id === updatedProduct.id ? updatedProduct : p))
-    ); // ✅ 리스트 업데이트
+    );
     setShowDetailForm(false);
     setSelectedProduct(null);
   };
@@ -51,7 +50,7 @@ const ProductPage = () => {
         </div>
 
         <ListProduct
-          products={products} // ✅ props 추가
+          products={products}
           onProductSelect={handleProductClick}
         />
 

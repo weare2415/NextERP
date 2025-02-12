@@ -4,17 +4,22 @@ import "./RequestPage.scss";
 import BasicLayout from "../../common/pages/BasicLayout";
 import ListRequestClient from "../component/ListRequestClient";
 import { getPendingClients } from "../../client/api/clientApi";
+import Pagination from '../../common/component/Pagination';
 
 const RequestPage = () => {
   const [showDetailForm, setShowDetailForm] = useState(false);
   const [selectedClient, setSelectedClient] = useState(null);
   const [clients, setClients] = useState([]);
+  const [page, setPage] = useState(0);
+  const [size] = useState(10);
+  const [totalPages, setTotalPages] = useState(1);
 
   // 클라이언트 목록을 가져오는 함수
-  const fetchClients = async () => {
+  const fetchClients = async (page) => {
     try {
-      const data = await getPendingClients();
-      setClients([...data].reverse());
+      const data = await getPendingClients(page, size);
+      setClients([...data.content].reverse());
+      setTotalPages(data.totalPages);
     } catch (error) {
       console.error("거래처 목록을 불러오는 중 오류 발생:", error);
     }
@@ -49,6 +54,14 @@ const RequestPage = () => {
           clients={clients}
           onClientSelect={handleClientClick}
         />
+
+        {totalPages > 1 && (
+            <Pagination
+                currentPage={page}
+                totalPages={totalPages}
+                onPageChange={setPage}
+            />
+        )}
 
         {showDetailForm && selectedClient && (
           <div className="modal-overlay">

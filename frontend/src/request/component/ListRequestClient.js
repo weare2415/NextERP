@@ -1,16 +1,9 @@
-/*
 import React, { useEffect, useState } from "react";
 import "../../request/component/scss/ListRequestClient.scss";
 import { getEmployeeById } from "../../member/api/memberApi";
-import Pagination from "../../common/util/Pagination";
 
 const ListRequestClient = ({ clients, onClientSelect }) => {
   const [employeeNames, setEmployeeNames] = useState({}); // employeeId -> name 매핑
-  const [currentPage, setCurrentPage] = useState(1); // ✅ 현재 페이지 상태
-  const pageSize = 5; // ✅ 한 페이지당 5개 표시
-
-  // ✅ 현재 페이지에 맞는 데이터 가져오기
-  // const paginatedData = paginate(clients, currentPage, pageSize);
 
   // 직원 이름을 가져와서 매핑하는 함수 (useEffect 내부에서 API 호출)
   useEffect(() => {
@@ -83,16 +76,8 @@ const ListRequestClient = ({ clients, onClientSelect }) => {
           </tbody>
         </table>
       </div>
-      {/!* ✅ 페이지네이션 컴포넌트 추가 *!/}
-      <Pagination
-        currentPage={currentPage}
-        totalItems={clients.length}
-        pageSize={pageSize}
-        onPageChange={setCurrentPage}
-      />
     </div>
   );
 };
 
 export default ListRequestClient;
-*/

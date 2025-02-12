@@ -32,7 +32,7 @@ const BasicLayout = ({ children }) => {
     const fetchUserData = async () => {
       try {
         const employeeData = await getEmployeeById(id); // API 호출
-        console.log(employeeData);
+        // console.log(employeeData);
         setUser(employeeData); // 사용자 데이터 저장
       } catch (error) {
         console.error("Failed to fetch user data:", error);

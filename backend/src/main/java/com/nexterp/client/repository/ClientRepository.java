@@ -30,6 +30,8 @@ public interface ClientRepository extends JpaRepository<Client, Long> {
 
   boolean existsByClientCode(String clientCode);
 
+  Page<Client> findByClientCodeLike(String clientCode, Pageable pageable);
+
   Optional<Client> findByClientCode(String clientCode);
 
   // ✅ PENDING 상태가 아닌 거래처만 조회
@@ -43,4 +45,7 @@ public interface ClientRepository extends JpaRepository<Client, Long> {
   // ✅ 특정 employeeId를 가진 거래처 목록 조회
   @Query("SELECT c FROM Client c WHERE c.employee.id = :employeeId")
   Page<Client> findByEmployeeId(@Param("employeeId") Integer employeeId, Pageable pageable);
+
+  @Query("SELECT c FROM Client c WHERE c.clientName LIKE %:clientName%")
+  Page<Client> findByClientName(String clientName, Pageable pageable);
 }

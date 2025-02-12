@@ -41,13 +41,6 @@ public class ClientController {
     return ResponseEntity.status(HttpStatus.CREATED).body(createdClient);
   }
 
-  // clientCode로 거래처 조회
-  @GetMapping("/{clientCode}")
-  public ResponseEntity<ClientDTO> getClientByClientCode(@PathVariable String clientCode) {
-    ClientDTO clientDTO = clientService.getClientByClientCode(clientCode);
-    return ResponseEntity.ok(clientDTO);
-  }
-
   // PENDING 상태가 아닌 거래처만 조회
   @GetMapping
   public ResponseEntity<Page<ClientDTO>> getAllClients(@RequestParam(defaultValue = "0") int page,
@@ -56,6 +49,26 @@ public class ClientController {
     Pageable pageable = PageRequest.of(page, size);
     Page<ClientDTO> clients = clientService.getAllClients(pageable);
     return ResponseEntity.ok(clients);
+  }
+
+  // clientName으로 거래처 조회
+  @GetMapping("/clientName/{clientName}")
+  public ResponseEntity<Page<ClientDTO>> getClientByName(@PathVariable String clientName,
+                                                         @RequestParam(defaultValue = "0") int page,
+                                                         @RequestParam(defaultValue = "10") int size) {
+    Pageable pageable = PageRequest.of(page, size);
+    Page<ClientDTO> clients = clientService.getClientByClientName(clientName, pageable);
+    return ResponseEntity.ok(clients);
+  }
+
+  // clientCode로 거래처 조회
+  @GetMapping("/{clientCode}")
+  public ResponseEntity<Page<ClientDTO>> getClientByClientCode(@PathVariable String clientCode,
+                                                               @RequestParam(defaultValue = "0") int page,
+                                                               @RequestParam(defaultValue = "10") int size) {
+    Pageable pageable = PageRequest.of(page, size);
+    Page<ClientDTO> clientDTO = clientService.getClientByClientCode(clientCode, pageable);
+    return ResponseEntity.ok(clientDTO);
   }
 
   // 수정 요청 상태의 거래처만 조회(PENDING 상태의 거래처만 조회)
@@ -67,7 +80,7 @@ public class ClientController {
     return ResponseEntity.ok(pendingClients);
   }
 
-  // ✅ 특정 employeeId를 가진 거래처 목록 조회 (새로운 메서드 추가)
+  // employeeId로 거래처 목록 조회
   @GetMapping("/employee/{employeeId}")
   public ResponseEntity<Page<ClientDTO>> getClientsByEmployeeId(@PathVariable Integer employeeId,
                                                                 @RequestParam(defaultValue = "0") int page,

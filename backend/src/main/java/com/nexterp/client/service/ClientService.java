@@ -23,8 +23,9 @@ import java.util.List;
 
 public interface ClientService {
     ClientDTO createClient(ClientDTO clientDTO);
-    ClientDTO getClientByClientCode(String clientCode); // ID로 조회
-    Page<ClientDTO> getAllClients(Pageable pageable); // 전체 조회
+    Page<ClientDTO> getClientByClientCode(String clientCode, Pageable pageable);
+    Page<ClientDTO> getClientByClientName(String clientName, Pageable pageable);
+    Page<ClientDTO> getAllClients(Pageable pageable);
     Page<ClientDTO> getPendingClients(Pageable pageable);
     Page<ClientDTO> getClientsByEmployeeId(Integer employeeId, Pageable pageable);
     Page<ClientDTO> getClientsByStatus(RequestStatus status, Pageable pageable);
