@@ -1,8 +1,9 @@
 @import "../../App.scss";
 
 .product-page-container {
-  max-width: 90%; // 기존보다 너비를 줄임
-  margin: auto; // 중앙 정렬
+  max-width: 90%;
+  margin: auto;
+  position: relative;
 
   .page-header {
     display: flex;
@@ -17,6 +18,12 @@
       margin: 0;
     }
 
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
     .new-product-btn {
       padding: 8px 16px;
       background-color: $primary-color;
@@ -25,9 +32,73 @@
       border-radius: 4px;
       cursor: pointer;
       font-family: $font-primary;
+      height: 38px; // 검색 버튼과 동일한 높이로 설정
+      display: flex;
+      align-items: center;
 
       &:hover {
         background-color: darken($primary-color, 10%);
+      }
+    }
+
+    .filter-buttons {
+      position: relative;
+      display: flex;
+      justify-content: flex-end;
+
+      button {
+        padding: 8px 16px;
+        background-color: white;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 14px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        white-space: nowrap;
+
+        &:after {
+          content: "";
+          border-left: 5px solid transparent;
+          border-right: 5px solid transparent;
+          border-top: 5px solid #666;
+          margin-left: 8px;
+        }
+
+        &:hover {
+          background-color: #f8f9fa;
+        }
+      }
+
+      .dropdown-menu {
+        position: absolute;
+        top: 100%;
+        right: 0;
+        background-color: white;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        min-width: max-content;
+        z-index: 1000;
+
+        button {
+          width: 100%;
+          text-align: left;
+          padding: 8px 16px;
+          border: none;
+          background: none;
+          color: #333;
+          white-space: nowrap;
+
+          &:hover {
+            background-color: #f8f9fa;
+          }
+
+          &:after {
+            display: none;
+          }
+        }
       }
     }
   }
@@ -63,7 +134,7 @@
         cursor: pointer;
         padding: 0;
         font-family: $font-primary;
-        text-decoration: none; // ✅ 밑줄 제거
+        text-decoration: none;
 
         &:hover {
           color: darken($primary-color, 10%);

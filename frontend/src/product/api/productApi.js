@@ -63,8 +63,8 @@ export const deleteProduct = async (id) => {
 // 제품명으로 검색 (페이징 지원)
 export const searchProductsByName = async (name, page = 0, size = 10) => {
   try {
-    const response = await axiosInstance.get(`/product/search`, {
-      params: { name, page, size }, // name을 Query Parameter로 보냄
+    const response = await axiosInstance.get(`/product/search/${name}`, {
+      params: { page, size },
     });
     return response.data;
   } catch (error) {

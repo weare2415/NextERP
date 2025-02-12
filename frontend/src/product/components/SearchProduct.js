@@ -8,6 +8,7 @@ const SearchProduct = ({ onSearchResults }) => {
     searchTerm: "",
   });
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   // 입력값 변경 핸들러
   const handleInputChange = (e) => {
@@ -18,36 +19,32 @@ const SearchProduct = ({ onSearchResults }) => {
   const handleSearch = async (e) => {
     e.preventDefault();
     setLoading(true);
+    setError(null);
 
     try {
       let data = [];
 
       if (searchParams.searchType === "id") {
-        const product = await getProductById(searchParams.searchTerm);
-        if (product?.error) {
-          data = [];
-        } else {
-          data = [product];
-        }
+        // ✅ 제품 ID로 검색
+        const productById = await getProductById(searchParams.searchTerm);
+        data = productById ? [productById] : [];
       } else if (searchParams.searchType === "productName") {
-        const allProducts = await searchProductsByName(
-          searchParams.searchTerm,
-          0,
-          5
-        ); // 첫 페이지와 5개 표시
-        data = allProducts; // 페이징을 고려하여 데이터 설정
+        // ✅ 제품명으로 검색
+        const productByName = await searchProductsByName();
+        data = productByName ? productByName : [];
       }
 
       onSearchResults(data);
     } catch (err) {
-      console.error("검색 중 오류 발생:", err);
+      console.error("검색 오류:", err);
+      setError("검색 중 오류가 발생했습니다.");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="product-search-section">
+    <div className="product-search-container">
       <form onSubmit={handleSearch} className="product-search-form">
         <select
           name="searchType"
@@ -71,6 +68,7 @@ const SearchProduct = ({ onSearchResults }) => {
       </form>
 
       {loading && <p>검색 중...</p>}
+      {error && <p style={{ color: "red" }}></p>}
     </div>
   );
 };

@@ -1,8 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { updateProduct, deleteProduct } from "../api/productApi";
-import { getEmployeeById } from "../../employee/api/employeeApi"; // 직원 정보 조회 API
-import Decimal from "decimal.js"; // decimal.js 라이브러리 추가
-import "../scss/ProductDetail.scss"; // ✅ SCSS 적용
+import "../scss/ProductDetail.scss";
 
 const ProductDetail = ({
   product,
@@ -14,49 +12,19 @@ const ProductDetail = ({
     product || {
       id: "",
       productName: "",
-      purchasePrice: "", // String으로 설정
-      salePrice: "", // String으로 설정
+      purchasePrice: "",
+      salePrice: "",
       stock: "",
       specifications: "",
       createdDate: "",
-      employee: { name: "담당자 없음" },
+      employeeId: "",
+      employeeName: "",
       memo: "",
     }
   );
-  const [error, setError] = useState(null);
-
-  // 직원 정보를 불러오는 함수
-  const fetchEmployee = async (employeeId) => {
-    try {
-      const employee = await getEmployeeById(employeeId);
-      setEditedProduct((prevProduct) => ({
-        ...prevProduct,
-        employee: employee || { name: "담당자 없음" },
-      }));
-    } catch (error) {
-      console.error("직원 정보 불러오기 실패:", error);
-      setError("담당자 정보를 불러오는 중 오류가 발생했습니다.");
-    }
-  };
-
-  useEffect(() => {
-    if (product && product.employeeId) {
-      fetchEmployee(product.employeeId);
-    }
-  }, [product]);
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    let newValue = value;
-
-    if (name === "purchasePrice" || name === "salePrice") {
-      newValue = value ? value : ""; // 값을 공백이 아니라 ""으로 설정
-    }
-
-    setEditedProduct({
-      ...editedProduct,
-      [name]: newValue,
-    });
+    setEditedProduct({ ...editedProduct, [e.target.name]: e.target.value });
   };
 
   const handleUpdate = async () => {
@@ -111,9 +79,9 @@ const ProductDetail = ({
         <div className="form-group">
           <label>매입 가격</label>
           <input
-            type="text" // 숫자가 아니라 문자열로 입력받음
+            type="number"
             name="purchasePrice"
-            value={editedProduct.purchasePrice || ""}
+            value={editedProduct.purchaseprice}
             onChange={handleChange}
           />
         </div>
@@ -121,9 +89,9 @@ const ProductDetail = ({
         <div className="form-group">
           <label>판매 가격</label>
           <input
-            type="text" // 숫자가 아니라 문자열로 입력받음
+            type="number"
             name="salePrice"
-            value={editedProduct.salePrice || ""}
+            value={editedProduct.saleprice}
             onChange={handleChange}
           />
         </div>
@@ -188,8 +156,6 @@ const ProductDetail = ({
           </button>
         </div>
       </form>
-
-      {error && <div className="error-message">{error}</div>}
     </div>
   );
 };

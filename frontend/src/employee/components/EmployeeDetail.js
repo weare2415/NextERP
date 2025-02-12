@@ -1,8 +1,19 @@
 import React, { useState, useEffect } from "react";
-import { updateEmployee, deleteEmployee, getDepartments, getPositions, getEmployeeById } from "../api/employeeApi"; // ✅ API 추가
+import {
+  updateEmployee,
+  deleteEmployee,
+  getDepartments,
+  getPositions,
+  getEmployeeById,
+} from "../api/employeeApi"; // ✅ API 추가
 import "../scss/EmployeeDetail.scss";
 
-const EmployeeDetail = ({ employee, onClose, onDeleteSuccess, onUpdateSuccess }) => {
+const EmployeeDetail = ({
+  employee,
+  onClose,
+  onDeleteSuccess,
+  onUpdateSuccess,
+}) => {
   const [editedEmployee, setEditedEmployee] = useState({ ...employee });
   const [departments, setDepartments] = useState([]);
   const [positions, setPositions] = useState([]);
@@ -36,7 +47,7 @@ const EmployeeDetail = ({ employee, onClose, onDeleteSuccess, onUpdateSuccess })
     fetchData();
   }, []);
 
-   // ✅ 입력 값 변경 핸들러
+  // ✅ 입력 값 변경 핸들러
   const handleChange = (e) => {
     const { name, value } = e.target;
     let newValue = value;
@@ -88,12 +99,16 @@ const EmployeeDetail = ({ employee, onClose, onDeleteSuccess, onUpdateSuccess })
       <div className="modal-container" onClick={(e) => e.stopPropagation()}>
         <div className="modal-header">
           <h2>직원 상세 정보</h2>
-          <button className="close-button" onClick={onClose}>×</button>
+          <button className="close-button" onClick={onClose}>
+            ×
+          </button>
         </div>
 
         <div className="modal-content">
-          {isTerminated && <p className="terminated-message">🚨 퇴사한 직원입니다.</p>} {/* ✅ 퇴사 메시지 추가 */}
-
+          {isTerminated && (
+            <p className="terminated-message">🚨 퇴사한 직원입니다.</p>
+          )}{" "}
+          {/* ✅ 퇴사 메시지 추가 */}
           <div className="form-grid">
             <div className="form-group">
               <label>사원 번호</label>
@@ -102,32 +117,67 @@ const EmployeeDetail = ({ employee, onClose, onDeleteSuccess, onUpdateSuccess })
 
             <div className="form-group">
               <label>이름</label>
-              <input type="text" name="name" value={editedEmployee.name} onChange={handleChange} disabled={isTerminated} />
+              <input
+                type="text"
+                name="name"
+                value={editedEmployee.name}
+                onChange={handleChange}
+                disabled={isTerminated}
+              />
             </div>
 
             <div className="form-group">
               <label>생년월일</label>
-              <input type="date" name="birthDate" value={editedEmployee.birthDate} onChange={handleChange} disabled={isTerminated} />
+              <input
+                type="date"
+                name="birthDate"
+                value={editedEmployee.birthDate}
+                onChange={handleChange}
+                disabled={isTerminated}
+              />
             </div>
 
             <div className="form-group">
               <label>전화번호</label>
-              <input type="text" name="phone" value={editedEmployee.phone || ""} onChange={handleChange} disabled={isTerminated} />
+              <input
+                type="text"
+                name="phone"
+                value={editedEmployee.phone || ""}
+                onChange={handleChange}
+                disabled={isTerminated}
+              />
             </div>
 
             <div className="form-group">
               <label>이메일</label>
-              <input type="email" name="email" value={editedEmployee.email} onChange={handleChange} disabled={isTerminated} />
+              <input
+                type="email"
+                name="email"
+                value={editedEmployee.email}
+                onChange={handleChange}
+                disabled={isTerminated}
+              />
             </div>
 
             <div className="form-group">
               <label>주소</label>
-              <input type="text" name="address" value={editedEmployee.address || ""} onChange={handleChange} disabled={isTerminated} />
+              <input
+                type="text"
+                name="address"
+                value={editedEmployee.address || ""}
+                onChange={handleChange}
+                disabled={isTerminated}
+              />
             </div>
 
             <div className="form-group">
               <label>부서</label>
-              <select name="departmentId" value={editedEmployee.departmentId} onChange={handleChange} disabled={isTerminated}>
+              <select
+                name="departmentId"
+                value={editedEmployee.departmentId}
+                onChange={handleChange}
+                disabled={isTerminated}
+              >
                 {departments.map((dept) => (
                   <option key={dept.id} value={dept.id}>
                     {dept.name}
@@ -138,7 +188,12 @@ const EmployeeDetail = ({ employee, onClose, onDeleteSuccess, onUpdateSuccess })
 
             <div className="form-group">
               <label>직급</label>
-              <select name="positionId" value={editedEmployee.positionId || ""} onChange={handleChange} disabled={isTerminated}>
+              <select
+                name="positionId"
+                value={editedEmployee.positionId || ""}
+                onChange={handleChange}
+                disabled={isTerminated}
+              >
                 <option value="">직급 선택</option>
                 {positions.map((pos) => (
                   <option key={pos.positionId} value={pos.positionId}>
@@ -150,19 +205,34 @@ const EmployeeDetail = ({ employee, onClose, onDeleteSuccess, onUpdateSuccess })
 
             <div className="form-group">
               <label>입사일</label>
-              <input type="date" name="hireDate" value={editedEmployee.hireDate} onChange={handleChange} disabled={isTerminated} />
+              <input
+                type="date"
+                name="hireDate"
+                value={editedEmployee.hireDate}
+                onChange={handleChange}
+                disabled={isTerminated}
+              />
             </div>
 
             <div className="form-group">
               <label>퇴사일</label>
-              <input type="date" name="terminationDate" value={editedEmployee.terminationDate || ""} onChange={handleChange} disabled={isTerminated} />
+              <input
+                type="date"
+                name="terminationDate"
+                value={editedEmployee.terminationDate || ""}
+                onChange={handleChange}
+                disabled={isTerminated}
+              />
             </div>
           </div>
         </div>
 
         <div className="button-container">
-          {!isTerminated && <button className="update-button" onClick={handleUpdate}>수정</button>} {/* ✅ 퇴사한 직원은 수정 불가 */}
-          <button className="close-button" onClick={onClose}>닫기</button>
+          {!isTerminated && (
+            <button className="update-button" onClick={handleUpdate}>
+              수정
+            </button>
+          )}{" "}
         </div>
       </div>
     </div>

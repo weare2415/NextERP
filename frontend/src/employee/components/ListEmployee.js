@@ -1,5 +1,15 @@
-import React, { useEffect, useState, forwardRef, useImperativeHandle } from "react";
-import { getAllEmployees, getEmployeesByName, getDepartments, getPositions } from "../api/employeeApi";
+import React, {
+  useEffect,
+  useState,
+  forwardRef,
+  useImperativeHandle,
+} from "react";
+import {
+  getAllEmployees,
+  getEmployeesByName,
+  getDepartments,
+  getPositions,
+} from "../api/employeeApi";
 import EmployeeDetail from "./EmployeeDetail";
 import "../scss/ListEmployee.scss";
 
@@ -73,7 +83,6 @@ const ListEmployee = forwardRef(({ searchTerm }, ref) => {
 
   return (
     <div className="employee-list-container">
-      <h3>직원 목록</h3>
       {filteredEmployees.length === 0 ? (
         <p>직원이 없습니다.</p>
       ) : (
@@ -95,7 +104,10 @@ const ListEmployee = forwardRef(({ searchTerm }, ref) => {
           </thead>
           <tbody>
             {filteredEmployees.map((employee) => (
-              <tr key={employee.id} onClick={() => setSelectedEmployee(employee)}>
+              <tr
+                key={employee.id}
+                onClick={() => setSelectedEmployee(employee)}
+              >
                 <td>{employee.id}</td>
                 <td>{employee.name}</td>
                 <td>{employee.birthDate}</td>
@@ -106,7 +118,8 @@ const ListEmployee = forwardRef(({ searchTerm }, ref) => {
                 <td>{getDepartmentName(employee.departmentId)}</td>
                 <td>{getPositionTitle(employee.positionId)}</td>
                 <td>{employee.hireDate}</td>
-                <td>{employee.isTerminated ? "✅ 퇴사" : "🔵 재직 중"}</td> {/* ✅ 퇴사 여부 표시 */}
+                <td>{employee.isTerminated ? "✅ 퇴사" : "🔵 재직 중"}</td>{" "}
+                {/* ✅ 퇴사 여부 표시 */}
               </tr>
             ))}
           </tbody>

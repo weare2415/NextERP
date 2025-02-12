@@ -3,20 +3,19 @@ import "../../order/components/scss/ListOrder.scss";
 import { getEmployeeById } from "../../member/api/memberApi";
 import { getClientById } from "../../client/api/clientApi";
 import { getProductById } from "../../product/api/productApi";
-import SearchOrder from "./SearchOrder";
 import {
   fetchOrdersByClientCode,
   fetchOrdersByEmployeeId,
-} from "../../order/api/orderApi";
+} from "../api/orderApi";
 
 const ListOrder = ({ orders, activeTab }) => {
   const [employeeNames, setEmployeeNames] = useState({});
   const [clientNames, setClientNames] = useState({});
   const [productNames, setProductNames] = useState({});
+  const [selectedTab, setSelectedTab] = useState("ALL");
   const [selectedOrders, setSelectedOrders] = useState([]);
-  const [searchResults, setSearchResults] = useState(null);
-  const [selectedTab, setSelectedTab] = useState("ALL"); // 기본값 "ALL"로 설정
-  const [resetSearchTerm, setResetSearchTerm] = useState(false); // 탭 전환 시 검색어 초기화
+  const [resetSearchTerm, setResetSearchTerm] = useState(false);
+  const [searchResults, setSearchResults] = useState();
 
   useEffect(() => {
     const fetchNames = async () => {
@@ -72,12 +71,6 @@ const ListOrder = ({ orders, activeTab }) => {
     }
   }, [orders]);
 
-  const filteredOrders = orders.filter((order) => {
-    if (activeTab === "전체") return true;
-    if (activeTab === "판매") return order.orderType === "SALE";
-    if (activeTab === "구매") return order.orderType === "PURCHASE";
-    return true;
-  });
   const handleTabClick = (tab) => {
     setSelectedTab(tab);
     setSearchResults(null); // 탭을 변경할 때마다 검색 결과를 초기화
@@ -130,6 +123,15 @@ const ListOrder = ({ orders, activeTab }) => {
     return orderTypeMap[orderType] || "알 수 없음";
   };
 
+  // 전체 주문을 필터링
+  const filteredOrders = orders.filter((order) => {
+    if (selectedTab === "ALL") return true;
+    return order.orderType === selectedTab;
+  });
+
+  console.log("필터링된 주문:", filteredOrders);
+  console.log("검색 결과 상태:", searchResults);
+
   const handlePrintOrder = (orderId) => {
     console.log(`주문 ID ${orderId} 출력`);
     // 여기에 출력 로직 추가 (예: PDF 생성, 프린터로 출력 등)
@@ -149,9 +151,9 @@ const ListOrder = ({ orders, activeTab }) => {
                     if (e.target.checked) {
                       setSelectedOrders(
                         filteredOrders.map((order) => order.id)
-                      ); // 모든 주문 선택
+                      );
                     } else {
-                      setSelectedOrders([]); // 모든 선택 해제
+                      setSelectedOrders([]);
                     }
                   }}
                   checked={
@@ -192,7 +194,7 @@ const ListOrder = ({ orders, activeTab }) => {
                   <td>{order.orderCount}</td>
                   <td>
                     {selectedTab === "ALL" ? (
-                      getOrderTypeDescription(order.orderType) // 주문 타입("판매" 또는 "구매") 표시
+                      getOrderTypeDescription(order.orderType)
                     ) : (
                       <button onClick={() => handlePrintOrder(order.id)}>
                         {selectedTab === "SALE" ? "주문서 출력" : "발주서 출력"}

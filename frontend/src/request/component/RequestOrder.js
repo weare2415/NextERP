@@ -64,75 +64,70 @@ const RequestOrder = ({ order, onClose, onUpdateSuccess }) => {
   };
 
   return (
-    <div className="modal-container">
-      <div className="modal-header">
+    <div className="request-product-detail-form">
+      <div className="request-product-detail-header">
         <h2>거래 승인 요청</h2>
         <button className="close-button" onClick={onClose}>
           X
         </button>
       </div>
-      <div className="modal-content">
-        <form>
-          <div className="form-grid">
-            <div className="form-group">
-              <label>제품 번호</label>
-              <input type="text" value={order.productId} readOnly />
-            </div>
+      <form>
+        <div className="form-group">
+          <label>제품 번호</label>
+          <input type="text" value={order.productId} readOnly />
+        </div>
 
-            <div className="form-group">
-              <label>제품명</label>
-              <input type="text" value={order.productName} readOnly />
-            </div>
+        <div className="form-group">
+          <label>제품명</label>
+          <input type="text" value={order.productName} readOnly />
+        </div>
 
-            <div className="form-group">
-              <label>거래 기업명</label>
-              <input type="text" value={order.clientName} readOnly />
-            </div>
+        <div className="form-group">
+          <label>거래 기업명</label>
+          <input type="text" value={order.clientName} readOnly />
+        </div>
 
-            <div className="form-group">
-              <label>수량</label>
-              <input type="number" value={order.orderCount} readOnly />
-            </div>
+        <div className="form-group">
+          <label>수량</label>
+          <input type="number" value={order.orderCount} readOnly />
+        </div>
 
-            <div className="form-group">
-              <label>판매/구매</label>
-              <input
-                type="text"
-                value={order.orderType === "SALE" ? "판매" : "구매"}
-                readOnly
-              />
-            </div>
+        <div className="form-group">
+          <label>판매/구매</label>
+          <input
+            type="text"
+            value={order.orderType === "SALE" ? "판매" : "구매"}
+            readOnly
+          />
+        </div>
 
-            <div className="form-group">
-              <label>거래 승인 요청자</label>
-              <input type="text" value={order.employeeName} readOnly />
-            </div>
+        <div className="form-group">
+          <label>거래 승인 요청자</label>
+          <input type="text" value={order.employeeName} readOnly />
+        </div>
 
-            <div className="form-group">
-              <label>제품 재고</label>
-              <input type="text" value={productData.stock} readOnly />
-            </div>
-          </div>
+        <div className="form-group">
+          <label>제품 재고</label>
+          <input type="text" value={productData.stock} readOnly />
+        </div>
 
-          {/* ✅ 버튼 컨테이너 */}
-          <div className="button-container">
-            <button
-              type="button"
-              onClick={handleApprove}
-              className="approve-button"
-            >
-              승인
-            </button>
-            <button
-              type="button"
-              onClick={handleReject}
-              className="reject-button"
-            >
-              반려
-            </button>
-          </div>
-        </form>
-      </div>
+        <div className="request-product-detail-buttons">
+          <button
+            type="button"
+            onClick={handleApprove}
+            className="approve-button"
+          >
+            승인
+          </button>
+          <button
+            type="button"
+            onClick={handleReject}
+            className="reject-button"
+          >
+            반려
+          </button>
+        </div>
+      </form>
     </div>
   );
 };

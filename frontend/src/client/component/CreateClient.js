@@ -5,9 +5,8 @@ import { getEmployeeByName } from "../../member/api/memberApi";
 import { useSelector } from "react-redux";
 
 const CreateClient = ({ onClose, onSuccess }) => {
-
   const name = useSelector((state) => state.loginSlice.name);
-  
+
   const [clientData, setClientData] = useState({
     clientName: "",
     clientCode: "",
@@ -68,84 +67,159 @@ const CreateClient = ({ onClose, onSuccess }) => {
 
   return (
     <div className="client-create-form">
-  <div className="client-create-header">
-    <h2>거래처 신규등록</h2>
-    <button className="close-button" onClick={onClose}>X</button>
-  </div>
-  <form onSubmit={handleSubmit}>
-
-  <div className="form-group">
+      <div className="client-create-header">
+        <h2>거래처 신규등록</h2>
+        <button className="close-button" onClick={onClose}>
+          X
+        </button>
+      </div>
+      <form onSubmit={handleSubmit}>
+        <div className="form-group">
           <label>거래처 코드</label>
-          <input type="text" name="clientCode" value={clientData.clientCode} onChange={handleChange} required />
+          <input
+            type="text"
+            name="clientCode"
+            value={clientData.clientCode}
+            onChange={handleChange}
+            required
+          />
         </div>
 
         <div className="form-group">
           <label>기업명</label>
-          <input type="text" name="clientName" value={clientData.clientName} onChange={handleChange} required />
+          <input
+            type="text"
+            name="clientName"
+            value={clientData.clientName}
+            onChange={handleChange}
+            required
+          />
         </div>
 
         <div className="form-group">
           <label>영업 담당자</label>
-          <input type="text" name="employeeName" 
-          value={clientData.employeeName} required readOnly/>
+          <input
+            type="text"
+            name="employeeName"
+            value={clientData.employeeName}
+            required
+            readOnly
+          />
         </div>
 
         <div className="form-group">
           <label>거래처 전화</label>
-          <input type="text" name="clientPhone" value={clientData.clientPhone} onChange={handleChange} required />
+          <input
+            type="text"
+            name="clientPhone"
+            value={clientData.clientPhone}
+            onChange={handleChange}
+            required
+          />
         </div>
 
         <div className="form-group">
           <label>우편번호</label>
-          <input type="text" name="zipCode" value={clientData.zipCode} onChange={handleChange} required />
+          <input
+            type="text"
+            name="zipCode"
+            value={clientData.zipCode}
+            onChange={handleChange}
+            required
+          />
           <button type="button">우편번호 찾기</button>
         </div>
 
         <div className="form-group">
           <label>주소</label>
-          <input type="text" name="clientAddress" value={clientData.clientAddress} onChange={handleChange} required />
+          <input
+            type="text"
+            name="clientAddress"
+            value={clientData.clientAddress}
+            onChange={handleChange}
+            required
+          />
         </div>
 
         <div className="form-group">
           <label>상세 주소</label>
-          <input type="text" name="clientDetailedAddress" value={clientData.clientDetailedAddress} onChange={handleChange} />
+          <input
+            type="text"
+            name="clientDetailedAddress"
+            value={clientData.clientDetailedAddress}
+            onChange={handleChange}
+          />
         </div>
 
         <div className="form-group">
           <label>거래처 이메일</label>
-          <input type="email" name="clientEmail" value={clientData.clientEmail} onChange={handleChange} required />
+          <input
+            type="email"
+            name="clientEmail"
+            value={clientData.clientEmail}
+            onChange={handleChange}
+            required
+          />
         </div>
 
         <div className="form-group">
           <label>사업자등록번호</label>
-          <input type="text" name="registrationNumber" value={clientData.registrationNumber} onChange={handleChange} required />
+          <input
+            type="text"
+            name="registrationNumber"
+            value={clientData.registrationNumber}
+            onChange={handleChange}
+            required
+          />
         </div>
 
         <div className="form-group">
           <label>거래 은행</label>
-          <input type="text" name="clientBank" value={clientData.clientBank} onChange={handleChange} required />
+          <input
+            type="text"
+            name="clientBank"
+            value={clientData.clientBank}
+            onChange={handleChange}
+            required
+          />
         </div>
 
         <div className="form-group">
           <label>예금주</label>
-          <input type="text" name="clientAccountOwner" value={clientData.clientAccountOwner} onChange={handleChange} required />
+          <input
+            type="text"
+            name="clientAccountOwner"
+            value={clientData.clientAccountOwner}
+            onChange={handleChange}
+            required
+          />
         </div>
 
         <div className="form-group">
           <label>계좌번호</label>
-          <input type="text" name="clientAccountNumber" value={clientData.clientAccountNumber} onChange={handleChange} required />
+          <input
+            type="text"
+            name="clientAccountNumber"
+            value={clientData.clientAccountNumber}
+            onChange={handleChange}
+            required
+          />
         </div>
 
         <div className="form-group">
           <label>메모</label>
-          <textarea name="memo" value={clientData.memo} onChange={handleChange}></textarea>
+          <textarea
+            name="memo"
+            value={clientData.memo}
+            onChange={handleChange}
+          ></textarea>
         </div>
 
         <div className="client-create-buttons">
-      <button type="submit">저장</button>
+          <button type="submit">저장</button>
+        </div>
+      </form>
     </div>
-  </form>
-</div>
   );
 };
 

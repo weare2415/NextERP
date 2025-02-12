@@ -29,18 +29,11 @@ const RequestOrderPage = () => {
     loadPendingOrders(newPage); // 새로운 페이지 데이터 로드
   };
 
-  // ✅ 승인 또는 반려 후 목록에서 제거
-  const handleUpdateSuccess = (updatedTransactionId) => {
-    setOrders((prevOrders) =>
-      prevOrders.filter((order) => order.transactionId !== updatedTransactionId)
-    );
-  };
-
   return (
     <BasicLayout>
-      <div className="Request-page">
+      <div className="request-order-page-container">
         <div className="page-header">
-          <h2>주문 승인 요청 관리</h2>
+          <h1>주문 승인 요청 관리</h1>
         </div>
 
         <ListRequestOrder

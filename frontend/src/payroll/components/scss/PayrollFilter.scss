@@ -1,23 +1,22 @@
-@import '../../../App.scss';
+@import "../../../App.scss";
 
 .payroll-filter {
-  align-items: center;
-  width: 40%;
-  margin: 0 auto;
-  background-color: white;
-  border-radius: 4px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  padding: 16px;
   display: flex;
+  align-items: center;
+  width: 100%;
+  max-width: 400px; // 🔹 검색창 크기 제한
+  border-radius: 4px;
   gap: 10px;
+  margin-left: 48%;
 
   input {
     flex: 1;
     padding: 10px;
-    border: 1px solid black;
+    border: 1px solid #ddd;
     border-radius: 4px;
     font-family: $font-primary;
     font-size: 14px;
+    width: 200px;
 
     &:focus {
       outline: none;
@@ -46,6 +45,7 @@
   @media (max-width: 768px) {
     flex-direction: column;
     align-items: stretch;
+    width: 100%;
 
     input {
       width: 100%;

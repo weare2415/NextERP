@@ -1,15 +1,27 @@
 import React, { useState } from "react";
-import CreateProduct from "../components/CreateProduct"; // ✅ components로 수정
-import ProductDetail from "../components/ProductDetail"; // ✅ components로 수정
-import ListProduct from "../components/ListProduct"; // ✅ components로 수정
-import "../scss/ProductPage.scss"; // ✅ 올바른 경로로 수정
+import CreateProduct from "../components/CreateProduct";
+import ProductDetail from "../components/ProductDetail";
+import ListProduct from "../components/ListProduct";
+import "../scss/ProductPage.scss";
 import BasicLayout from "../../common/pages/BasicLayout";
+import SearchProduct from "../components/SearchProduct";
+import Sale from "../components/Sale";
+import Purchase from "../components/Purchase";
 
 const ProductPage = () => {
-  const [products, setProducts] = useState([]); // ✅ 제품 목록 상태 추가
+  const [products, setProducts] = useState([]);
   const [showCreateForm, setShowCreateForm] = useState(false);
   const [showDetailForm, setShowDetailForm] = useState(false);
+  const [showSaleModal, setShowSaleModal] = useState(false);
+  const [showPurchaseModal, setShowPurchaseModal] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
+  const [searchResults, setSearchResults] = useState(null);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [currentView, setCurrentView] = useState("상태");
+
+  const toggleDropdown = () => {
+    setDropdownOpen(!dropdownOpen);
+  };
 
   const handleProductClick = (product) => {
     setSelectedProduct(product);
@@ -17,14 +29,31 @@ const ProductPage = () => {
   };
 
   const handleCreateSuccess = (newProduct) => {
-    setProducts((prevProducts) => [...prevProducts, newProduct]); // ✅ 리스트에 추가
+    setProducts((prevProducts) => [...prevProducts, newProduct]);
     setShowCreateForm(false);
+  };
+
+  const handleOpenSaleModal = (product) => {
+    setSelectedProduct(product);
+    setShowSaleModal(true);
+  };
+
+  const handleOpenPurchaseModal = (product) => {
+    setSelectedProduct(product);
+    setShowPurchaseModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setShowDetailForm(false);
+    setShowSaleModal(false);
+    setShowPurchaseModal(false);
+    setSelectedProduct(null);
   };
 
   const handleDeleteSuccess = (productId) => {
     setProducts((prevProducts) =>
       prevProducts.filter((p) => p.id !== productId)
-    ); // ✅ 리스트에서 삭제
+    );
     setShowDetailForm(false);
     setSelectedProduct(null);
   };
@@ -32,9 +61,14 @@ const ProductPage = () => {
   const handleUpdateSuccess = (updatedProduct) => {
     setProducts((prevProducts) =>
       prevProducts.map((p) => (p.id === updatedProduct.id ? updatedProduct : p))
-    ); // ✅ 리스트 업데이트
+    );
     setShowDetailForm(false);
     setSelectedProduct(null);
+  };
+
+  const handleSearchResults = (results) => {
+    console.log("SearchProdcut에서 전달된 검색 결과:", results);
+    setSearchResults(results);
   };
 
   return (
@@ -42,38 +76,67 @@ const ProductPage = () => {
       <div className="product-page-container">
         <div className="page-header">
           <h1>제품 관리</h1>
-          <button
-            className="new-product-btn"
-            onClick={() => setShowCreateForm(true)}
-          >
-            신규등록
-          </button>
+          <div className="header-right">
+            <SearchProduct onSearchResults={handleSearchResults} />
+            <button
+              className="new-product-btn"
+              onClick={() => setShowCreateForm(true)}
+            >
+              신규등록
+            </button>
+            <div className="filter-buttons">
+              <button onClick={toggleDropdown}>{currentView}</button>
+              {dropdownOpen && (
+                <div className="dropdown-menu">
+                  <button>전체 제품 보기</button>
+                  <button>삭제된 제품 보기</button>
+                </div>
+              )}
+            </div>
+          </div>
         </div>
 
         <ListProduct
-          products={products} // ✅ props 추가
+          products={searchResults || products}
           onProductSelect={handleProductClick}
+          onSaleRequest={handleOpenSaleModal}
+          onPurchaseRequest={handleOpenPurchaseModal}
         />
 
-        {(showCreateForm || showDetailForm) && (
+        {showCreateForm && (
           <div className="modal-overlay">
-            {showCreateForm && (
-              <CreateProduct
-                onClose={() => setShowCreateForm(false)}
-                onSuccess={handleCreateSuccess}
-              />
-            )}
-            {showDetailForm && selectedProduct && (
-              <ProductDetail
-                product={selectedProduct}
-                onClose={() => {
-                  setShowDetailForm(false);
-                  setSelectedProduct(null);
-                }}
-                onDeleteSuccess={() => handleDeleteSuccess(selectedProduct.id)}
-                onUpdateSuccess={handleUpdateSuccess}
-              />
-            )}
+            <CreateProduct
+              onClose={() => setShowCreateForm(false)}
+              onSuccess={handleCreateSuccess}
+            />
+          </div>
+        )}
+        {showDetailForm && selectedProduct && (
+          <div className="modal-overlay">
+            <ProductDetail
+              product={selectedProduct}
+              onClose={handleCloseModal}
+              onDeleteSuccess={() => handleDeleteSuccess(selectedProduct.id)}
+              onUpdateSuccess={handleUpdateSuccess}
+            />
+          </div>
+        )}
+        {showSaleModal && selectedProduct && (
+          <div className="modal-overlay">
+            <Sale
+              isOpen={showSaleModal}
+              onClose={handleCloseModal}
+              selectedProduct={selectedProduct}
+            />
+          </div>
+        )}
+        {showPurchaseModal && selectedProduct && (
+          <div className="modal-overlay">
+            <Purchase
+              isOpen={showPurchaseModal}
+              onClose={handleCloseModal}
+              selectedProduct={selectedProduct}
+            />
           </div>
         )}
       </div>

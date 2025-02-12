@@ -4,13 +4,13 @@ import BasicLayout from "../../common/pages/BasicLayout";
 import "./OrderPage.scss";
 import ListOrder from "../components/ListOrder";
 import SearchOrder from "../components/SearchOrder";
+import OrderFilter from "../components/OrderFilter"; // OrderFilter 추가
 
 const OrderPage = () => {
   const [orders, setOrders] = useState([]);
   const [searchResults, setSearchResults] = useState(null);
   const [activeTab, setActiveTab] = useState("전체");
   const [resetSearchTerm, setResetSearchTerm] = useState(false);
-  const [dropdownOpen, setDropdownOpen] = useState(false);
 
   useEffect(() => {
     const loadOrders = async () => {
@@ -34,11 +34,10 @@ const OrderPage = () => {
     setSearchResults(results);
   };
 
-  const handleTabClick = (tab) => {
+  const handleTabChange = (tab) => {
     setActiveTab(tab);
     setResetSearchTerm(true);
     setSearchResults(null);
-    setDropdownOpen(false);
   };
 
   return (
@@ -46,7 +45,7 @@ const OrderPage = () => {
       <div className="order-page-container">
         <div className="page-header">
           <h1>주문 내역 조회</h1>
-          <div className="header-controls">
+          <div className="header-right">
             <SearchOrder
               onSearchResults={handleSearchResults}
               resetSearchTerm={resetSearchTerm}
@@ -54,21 +53,10 @@ const OrderPage = () => {
               selectedTab={activeTab}
               className="order-search"
             />
-            <div className="dropdown">
-              <button
-                className="dropdown-button"
-                onClick={() => setDropdownOpen(!dropdownOpen)}
-              >
-                {activeTab}
-              </button>
-              {dropdownOpen && (
-                <ul className="dropdown-menu">
-                  <li onClick={() => handleTabClick("전체")}>전체</li>
-                  <li onClick={() => handleTabClick("판매")}>판매</li>
-                  <li onClick={() => handleTabClick("구매")}>구매</li>
-                </ul>
-              )}
-            </div>
+            <OrderFilter // OrderFilter 추가
+              activeTab={activeTab}
+              onTabChange={handleTabChange}
+            />
           </div>
         </div>
         <ListOrder

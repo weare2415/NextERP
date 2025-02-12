@@ -4,68 +4,6 @@
   width: 100%;
 }
 
-.filter-buttons {
-  position: relative;
-  display: flex;
-  justify-content: flex-end; // 오른쪽 정렬을 위해 추가
-  margin: 20px 0;
-
-  button {
-    padding: 8px 16px;
-    background-color: white;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 14px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    white-space: nowrap; // 텍스트 줄바꿈 방지
-
-    &:after {
-      content: "";
-      border-left: 5px solid transparent;
-      border-right: 5px solid transparent;
-      border-top: 5px solid #666;
-      margin-left: 8px;
-    }
-
-    &:hover {
-      background-color: #f8f9fa;
-    }
-  }
-
-  .dropdown-menu {
-    position: absolute;
-    top: 100%;
-    right: 0; // 오른쪽 정렬을 위해 left를 right로 변경
-    background-color: white;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    min-width: max-content; // 내용물의 너비에 맞춤
-    z-index: 1000;
-
-    button {
-      width: 100%;
-      text-align: left;
-      padding: 8px 16px;
-      border: none;
-      background: none;
-      color: #333;
-      white-space: nowrap; // 텍스트 줄바꿈 방지
-
-      &:hover {
-        background-color: #f8f9fa;
-      }
-
-      &:after {
-        display: none;
-      }
-    }
-  }
-}
-
 .product-table-section {
   background-color: white;
   width: 100%;
@@ -106,31 +44,31 @@
     th:nth-child(1),
     td:nth-child(1) {
       width: 10%;
-    } // 제품ID
+    }
     th:nth-child(2),
     td:nth-child(2) {
       width: 20%;
-    } // 제품명
+    }
     th:nth-child(3),
     td:nth-child(3) {
       width: 15%;
-    } // 판매 가격
+    }
     th:nth-child(4),
     td:nth-child(4) {
       width: 15%;
-    } // 재고 수량
+    }
     th:nth-child(5),
     td:nth-child(5) {
       width: 10%;
-    } // 담당자
+    }
     th:nth-child(6),
     td:nth-child(6) {
       width: 10%;
-    } // 작업
+    }
     th:nth-child(7),
     td:nth-child(7) {
       width: 20%;
-    } // 판매/구매
+    }
 
     .product-table-detail-btn {
       appearance: none;
@@ -140,9 +78,9 @@
       cursor: pointer;
       padding: 0;
       font-family: inherit;
-      font-weight: bolder; // ✅ 글씨 두께 강조
-      font-size: 16px; // ✅ 글씨 크기 다른 데이터와 동일하게 조정
-      text-decoration: none; // ✅ 밑줄 강제 제거
+      font-weight: bolder;
+      font-size: 16px;
+      text-decoration: none;
 
       &:hover {
         text-decoration: underline;
@@ -177,5 +115,36 @@
     &:hover {
       background-color: #38a169;
     }
+  }
+}
+
+.pagination-controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+  gap: 10px;
+
+  button {
+    padding: 8px 16px;
+    background-color: $primary-color;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+
+    &:disabled {
+      background-color: #cbd5e0;
+      cursor: not-allowed;
+    }
+
+    &:hover:not(:disabled) {
+      background-color: darken($primary-color, 10%);
+    }
+  }
+
+  span {
+    font-size: 1rem;
+    color: $primary-color;
   }
 }

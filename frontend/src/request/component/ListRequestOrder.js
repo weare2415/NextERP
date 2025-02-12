@@ -111,8 +111,8 @@ const ListRequestOrder = ({
 
   return (
     <>
-      <div className="order-list-container">
-        <div className="order-list">
+      <div className="request-product-list-wrapper">
+        <div className="product-table-section">
           <table>
             <thead>
               <tr>
@@ -131,20 +131,13 @@ const ListRequestOrder = ({
                     <td>{order.productId}</td>
                     <td>
                       <button
-                        className="order-name-btn"
+                        className="product-table-name-btn"
                         onClick={() => handleOrderClick(order)}
                       >
                         {productNames[order.productId] || "Loading..."}
                       </button>
                     </td>
-                    <td>
-                      <button
-                        className="order-name-btn"
-                        onClick={() => handleOrderClick(order)}
-                      >
-                        {clientNames[order.clientCode] || "Loading..."}
-                      </button>
-                    </td>
+                    <td>{clientNames[order.clientCode] || "Loading..."}</td>
                     <td>{order.orderCount} 개</td>
                     <td>{order.orderType === "SALE" ? "판매" : "구매"}</td>
                     <td>{employeeNames[order.employeeId] || "Loading..."}</td>

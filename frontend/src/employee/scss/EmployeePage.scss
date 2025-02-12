@@ -1,72 +1,92 @@
-@import "../../App.scss"; // ⚡ 공통 스타일 불러오기
+@import "../../App.scss";
 
-.employee-page {
-  background-color: $background-color;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+.employee-page-container {
+  max-width: 90%;
+  margin: auto;
+  position: relative;
 
   .page-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin-top: 20px;
     margin-bottom: 20px;
 
     h2 {
-      font-size: 22px;
+      font-size: 33px;
       font-weight: bold;
       color: $primary-color;
     }
 
-    .search-input {
+    .search-container {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-left: auto;
+    }
+
+    .search-category-select {
       padding: 8px;
-      font-size: 14px;
-      border: 1px solid black;
+      border: 1px solid $secondary-color;
       border-radius: 4px;
-      width: 200px;
-      margin-right: 10px;
+      font-family: $font-primary;
+      background-color: white;
+      cursor: pointer;
+      width: 100px;
 
       &:focus {
         outline: none;
-        border-color: darken($primary-color, 10%);
+        border-color: $primary-color;
       }
     }
 
-    .new-employee-btn {
-      padding: 8px 12px;
+    .search-input {
+      flex: 1;
+      width: 250px;
+      padding: 8px;
+      border: 1px solid $secondary-color;
+      border-radius: 4px;
+      font-family: $font-primary;
+
+      &:focus {
+        outline: none;
+        border-color: $primary-color;
+      }
+    }
+
+    .search-btn {
+      padding: 8px 16px;
       background-color: $primary-color;
       color: white;
       border: none;
       border-radius: 4px;
       cursor: pointer;
-      font-size: 14px;
       font-family: $font-primary;
-      transition: background-color 0.2s;
+      height: 36px;
+      display: flex;
+      align-items: center;
 
       &:hover {
         background-color: darken($primary-color, 10%);
       }
     }
-  }
 
-  .modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 1000;
+    .new-employee-btn {
+      padding: 8px 16px;
+      background-color: $primary-color;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-family: $font-primary;
+      height: 38px;
+      display: flex;
+      align-items: center;
+      margin-left: 20px;
 
-    .modal {
-      background: white;
-      padding: 20px;
-      border-radius: 8px;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-      width: 400px;
+      &:hover {
+        background-color: darken($primary-color, 10%);
+      }
     }
   }
 }

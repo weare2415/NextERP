@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import '../component/scss/ListClient.scss';
+import "../component/scss/ListClient.scss";
 import SearchClient from "./SearchClient";
 import { getEmployeeById } from "../../member/api/memberApi";
 import Pagination from "../../common/util/Pagination";
@@ -7,7 +7,7 @@ import { paginate } from "../../common/util/paginationUtils";
 
 const ListClient = ({ clients, onClientSelect }) => {
   const [employeeNames, setEmployeeNames] = useState({});
-  const [currentPage, setCurrentPage] = useState(1); 
+  const [currentPage, setCurrentPage] = useState(1);
   const pageSize = 7;
 
   useEffect(() => {
@@ -17,18 +17,22 @@ const ListClient = ({ clients, onClientSelect }) => {
   // ✅ 직원 이름 가져오기
   useEffect(() => {
     const fetchEmployeeNames = async () => {
-      const employeeIds = [...new Set(clients.map(client => client.employeeId))];
+      const employeeIds = [
+        ...new Set(clients.map((client) => client.employeeId)),
+      ];
       const employeeData = {};
 
-      await Promise.all(employeeIds.map(async (id) => {
-        try {
-          const employeeInfo = await getEmployeeById(id);
-          employeeData[id] = employeeInfo.name;
-        } catch (error) {
-          console.error(`Error fetching employee with ID ${id}:`, error);
-          employeeData[id] = "알 수 없음";
-        }
-      }));
+      await Promise.all(
+        employeeIds.map(async (id) => {
+          try {
+            const employeeInfo = await getEmployeeById(id);
+            employeeData[id] = employeeInfo.name;
+          } catch (error) {
+            console.error(`Error fetching employee with ID ${id}:`, error);
+            employeeData[id] = "알 수 없음";
+          }
+        })
+      );
 
       setEmployeeNames(employeeData);
     };
@@ -59,8 +63,8 @@ const ListClient = ({ clients, onClientSelect }) => {
               <tr key={client.clientCode}>
                 <td>{client.clientCode}</td>
                 <td>
-                  <button 
-                    className="client-table-name-btn" 
+                  <button
+                    className="client-table-name-btn"
                     onClick={() => onClientSelect(client)}
                   >
                     {client.clientName}
@@ -76,11 +80,11 @@ const ListClient = ({ clients, onClientSelect }) => {
         </table>
       </div>
 
-      <Pagination 
-        currentPage={currentPage} 
-        totalItems={clients.length} 
-        pageSize={pageSize} 
-        onPageChange={setCurrentPage} 
+      <Pagination
+        currentPage={currentPage}
+        totalItems={clients.length}
+        pageSize={pageSize}
+        onPageChange={setCurrentPage}
       />
     </div>
   );

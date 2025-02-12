@@ -1,9 +1,7 @@
 @import "../../../App";
 
 .payroll-table-container {
-  background-color: white;
   border-radius: 4px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   overflow-x: auto;
   padding: 16px;
   margin-top: 20px; // ✅ 테이블 위쪽 간격 추가
@@ -12,10 +10,11 @@
     width: 100%;
     border-collapse: collapse;
 
-    th, td {
+    th,
+    td {
       padding: 12px 15px;
-      text-align: center !important;  // ✅ 중앙 정렬 강제 적용
-      display: table-cell;  // ✅ 테이블 셀 속성 유지
+      text-align: center !important; // ✅ 중앙 정렬 강제 적용
+      display: table-cell; // ✅ 테이블 셀 속성 유지
       border-bottom: 1px solid black;
       font-family: $font-primary;
     }

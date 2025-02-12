@@ -1,47 +1,69 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { createProduct } from "../api/productApi";
 import { useSelector } from "react-redux";
-import "../scss/CreateProduct.scss"; // ✅ SCSS 파일 import
+import "../scss/CreateProduct.scss";
+import { getEmployeeByName } from "../../member/api/memberApi";
 
 const CreateProduct = ({ onClose, onSuccess }) => {
+  const name = useSelector((state) => state.loginSlice.name);
+
   const [productData, setProductData] = useState({
     productName: "",
-    purchasePrice: "", // 수정된 필드 이름
-    salePrice: "", // 수정된 필드 이름
-    stock: "",
+    purchasePrice: 0,
+    salePrice: 0,
+    stock: 0,
     specifications: "",
     memo: "",
+    employeeName: name,
+    employeeId: "",
   });
 
-  const employeeId = useSelector((state) => state.loginSlice.id); // 로그인한 사용자의 ID 가져오기
+  useEffect(() => {
+    const fetchEmployeeId = async () => {
+      if (name) {
+        try {
+          const employees = await getEmployeeByName(name);
+          if (employees.length > 0) {
+            setProductData((prev) => ({
+              ...prev,
+              employeeId: employees[0].id, // 첫 번째 검색 결과의 ID 저장
+            }));
+          }
+        } catch (error) {
+          console.error("사원 ID 조회 실패:", error);
+        }
+      }
+    };
+
+    fetchEmployeeId();
+  }, [name]);
 
   const handleChange = (e) => {
-    setProductData({ ...productData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setProductData({
+      ...productData,
+      [name]:
+        name === "purchasePrice" || name === "salePrice" || name === "stock"
+          ? parseFloat(value) || 0 // 숫자 필드 변환
+          : value,
+    });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    // employeeId가 이미 productData에 포함되어 있는지 확인하고, 없으면 추가
-    const productDataToSend = { ...productData, employeeId };
-
-    // 데이터 전송
     try {
-      const newProduct = await createProduct(productDataToSend);
+      const newProduct = await createProduct(productData);
       alert("✅ 등록이 완료되었습니다.");
       onSuccess(newProduct);
       onClose();
     } catch (error) {
       alert("❌ 제품 등록에 실패했습니다.");
       console.error("❌ 제품 등록 실패:", error);
-      onClose();
     }
   };
 
   return (
-    <div className="product-create-form " onClick={onClose}>
-      {" "}
-      {/* ✅ 바깥 클릭 시 닫힘 */}
+    <div className="product-create-form" onClick={onClose}>
       <div
         className="product-create-header"
         onClick={(e) => e.stopPropagation()}
@@ -53,6 +75,7 @@ const CreateProduct = ({ onClose, onSuccess }) => {
           X
         </button>
       </div>
+
       <form onSubmit={handleSubmit} onClick={(e) => e.stopPropagation()}>
         <div className="form-group">
           <label>제품명</label>
@@ -83,7 +106,7 @@ const CreateProduct = ({ onClose, onSuccess }) => {
             type="number"
             name="purchasePrice"
             placeholder="매입 가격을 입력하세요"
-            value={productData.purchaseprice}
+            value={productData.purchasePrice}
             onChange={handleChange}
             required
           />
@@ -95,7 +118,7 @@ const CreateProduct = ({ onClose, onSuccess }) => {
             type="number"
             name="salePrice"
             placeholder="판매 가격을 입력하세요"
-            value={productData.saleprice}
+            value={productData.salePrice}
             onChange={handleChange}
             required
           />
@@ -115,7 +138,12 @@ const CreateProduct = ({ onClose, onSuccess }) => {
 
         <div className="form-group">
           <label>담당자 ID</label>
-          <input type="text" name="employeeId" value={employeeId} readOnly />
+          <input
+            type="text"
+            name="employeeName"
+            value={productData.employeeName}
+            readOnly
+          />
         </div>
 
         <div className="form-group">

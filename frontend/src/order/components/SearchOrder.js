@@ -26,66 +26,80 @@ const SearchOrder = ({
 
   // 거래처명으로 주문 검색
   const searchByClientName = async () => {
-    const allClients = await getAllClients();
-    const matchingClients = allClients.filter((client) =>
-      client.clientName.includes(searchParams.searchTerm)
-    );
+    try {
+      const allClients = await getAllClients();
+      const matchingClients = allClients.filter((client) =>
+        client.clientName.includes(searchParams.searchTerm)
+      );
 
-    if (matchingClients.length === 0) {
-      return [];
+      if (matchingClients.length === 0) {
+        return [];
+      }
+
+      const clientOrders = await Promise.all(
+        matchingClients.map((client) =>
+          fetchOrdersByClientCode(client.clientCode)
+        )
+      );
+
+      // 모든 주문을 하나의 배열로 합침
+      let allOrders = clientOrders.flat();
+
+      // 선택된 탭에 따라 필터링
+      if (selectedTab !== "ALL") {
+        allOrders = allOrders.filter(
+          (order) => order.orderType === selectedTab
+        );
+      }
+
+      return allOrders;
+    } catch (error) {
+      console.error("Error in searchByClientName:", error);
+      throw error;
     }
-
-    // ALL 탭일 경우 모든 주문 조회
-    if (selectedTab === "ALL") {
-      return await fetchOrdersByClientCode(matchingClients[0].clientCode);
-    }
-
-    // SALE/PURCHASE 탭일 경우 해당 타입의 주문만 조회
-    return await fetchOrdersByClientCode(matchingClients[0].clientCode);
   };
 
   // 직원 이름으로 주문 검색
   const searchByEmployeeName = async () => {
-    const employees = await getEmployeeByName(searchParams.searchTerm);
+    try {
+      const employees = await getEmployeeByName(searchParams.searchTerm);
 
-    if (employees.length === 0) {
-      return [];
-    }
-
-    const employeeIds = employees.map((emp) => emp.id);
-
-    // ALL 탭일 경우 모든 주문 조회
-    if (selectedTab === "ALL") {
-      let allOrders = [];
-      for (const empId of employeeIds) {
-        const orders = await fetchOrdersByEmployeeId(empId);
-        allOrders = [...allOrders, ...orders];
+      if (employees.length === 0) {
+        return [];
       }
-      return allOrders;
-    }
 
-    // SALE/PURCHASE 탭일 경우 해당 타입의 주문만 조회
-    let filteredOrders = [];
-    for (const empId of employeeIds) {
-      const orders = await fetchOrdersByEmployeeId(empId);
-      filteredOrders = [
-        ...filteredOrders,
-        ...orders.filter((order) => order.orderType === selectedTab),
-      ];
+      const employeeOrders = await Promise.all(
+        employees.map((emp) => fetchOrdersByEmployeeId(emp.id))
+      );
+
+      // 모든 주문을 하나의 배열로 합침
+      let allOrders = employeeOrders.flat();
+
+      // 선택된 탭에 따라 필터링
+      if (selectedTab !== "ALL") {
+        allOrders = allOrders.filter(
+          (order) => order.orderType === selectedTab
+        );
+      }
+
+      return allOrders;
+    } catch (error) {
+      console.error("Error in searchByEmployeeName:", error);
+      throw error;
     }
-    return filteredOrders;
   };
 
   const handleSearch = async (e) => {
     e.preventDefault();
+    console.log("검색어:", searchParams.searchTerm);
     setLoading(true);
     setError(null);
 
     try {
-      const searchResults =
-        searchParams.searchType === "clientName"
-          ? await searchByClientName()
-          : await searchByEmployeeName();
+      const searchResults = await (searchParams.searchType === "clientName"
+        ? searchByClientName()
+        : searchByEmployeeName());
+      console.log("검색 결과:", searchResults);
       onSearchResults(searchResults);
     } catch (err) {
       console.error("검색 오류:", err);
@@ -95,17 +109,16 @@ const SearchOrder = ({
     }
   };
 
-  // 판매/구매 탭 클릭 시 searchTerm 초기화
   useEffect(() => {
     if (resetSearchTerm) {
       setSearchParams((prevParams) => ({ ...prevParams, searchTerm: "" }));
       setResetSearchTerm(false);
     }
-  }, [resetSearchTerm, setResetSearchTerm]); // resetSearchTerm 값이 변경되면 실행됨
+  }, [resetSearchTerm, setResetSearchTerm]);
 
   return (
-    <div className="search-section">
-      <form className="search-form" onSubmit={handleSearch}>
+    <div className="search-order-container">
+      <form className="search-order-form" onSubmit={handleSearch}>
         <select
           name="searchType"
           value={searchParams.searchType}
