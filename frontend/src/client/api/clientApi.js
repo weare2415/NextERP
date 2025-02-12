@@ -6,33 +6,51 @@ export const createClient = async (clientData) => {
   return response.data;
 };
 
-// clientCode로 거래처 조회
-export const getClientById = async (clientCode) => {
-  const response = await axiosInstance.get(`/api/clients/${clientCode}`);
+// 전체 거래처 조회 (status가 PENDING 상태가 아닌 거래처만 조회)
+export const getAllClients = async (page,size) => {
+  const response = await axiosInstance.get('/api/clients',{
+    params: { page, size },
+  });
   return response.data;
 };
 
-// 전체 거래처 조회 (status가 PENDING 상태가 아닌 거래처만 조회)
-export const getAllClients = async () => {
-  const response = await axiosInstance.get('/api/clients');
+// clientCode로 거래처 조회
+export const getClientById = async (clientCode, page = 0, size = 10) => {
+  const response = await axiosInstance.get(`/api/clients/${clientCode}`, {
+    params: { page, size },
+  });
   return response.data;
 };
+
+// clientName으로 거래처 조회
+export const getClientByName = async (clientName,page = 0,size = 10) => {
+  const response = await axiosInstance.get(`/api/clients/clientName/${clientName}`,{
+    params: {page,size},
+  });
+  return response.data;
+}
 
 // 수정 승인 요청 (PENDING 상태의 거래처만 조회)
-export const getPendingClients = async () => {
-  const response = await axiosInstance.get('/api/clients/pending');
+export const getPendingClients = async (page,size) => {
+  const response = await axiosInstance.get('/api/clients/pending',{
+    params: { page, size },
+  });
   return response.data;
 };
 
 // ✅ 특정 employeeId를 가진 거래처 조회 (추가된 코드)
-export const getClientsByEmployeeId = async (employeeId) => {
-  const response = await axiosInstance.get(`/api/clients/employee/${employeeId}`);
+export const getClientsByEmployeeId = async (employeeId, page, size) => {
+  const response = await axiosInstance.get(`/api/clients/employee/${employeeId}`,{
+    params: { page, size },
+  });
   return response.data;
 };
 
 // 상태별 거래처 조회
-export const getClientsByStatus = async (status) => {
-  const response = await axiosInstance.get(`/api/clients/status/${status}`);
+export const getClientsByStatus = async (status, page, size) => {
+  const response = await axiosInstance.get(`/api/clients/status/${status}`,{
+    params: { page, size },
+  });
   return response.data;
 };
 

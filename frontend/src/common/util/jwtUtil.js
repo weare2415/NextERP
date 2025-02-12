@@ -80,7 +80,7 @@ export const addAuthHeader = (config) => {
 			}
 
 			// 헤더 확인 로그
-			console.log("Headers added:", config.headers);
+			// console.log("Headers added:", config.headers);
 		} catch (error) {
 			console.error("Failed to parse member cookie:", error);
 		}

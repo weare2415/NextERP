@@ -31,7 +31,7 @@ import java.util.List;
 
 @Configuration
 public class EmployeeDataInitializer {
-  @Bean
+  /*@Bean
   public ApplicationRunner initializeDepartments(DepartmentRepository departmentRepository) {
     return args -> {
       createDepartmentIfNotExists(departmentRepository, "영업팀", "sales@company.com");
@@ -140,5 +140,5 @@ public class EmployeeDataInitializer {
         }
       });
     };
-  }
+  }*/
 }

@@ -18,6 +18,9 @@ import com.nexterp.client.dto.ClientDTO;
 import com.nexterp.client.entity.RequestStatus;
 import com.nexterp.client.service.ClientService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -38,38 +41,62 @@ public class ClientController {
     return ResponseEntity.status(HttpStatus.CREATED).body(createdClient);
   }
 
-  // clientCode로 거래처 조회
-  @GetMapping("/{clientCode}")
-  public ResponseEntity<ClientDTO> getClientByClientCode(@PathVariable String clientCode) {
-    ClientDTO clientDTO = clientService.getClientByClientCode(clientCode);
-    return ResponseEntity.ok(clientDTO);
-  }
-
   // PENDING 상태가 아닌 거래처만 조회
   @GetMapping
-  public ResponseEntity<List<ClientDTO>> getAllClients() {
-    List<ClientDTO> clients = clientService.getAllClients();
+  public ResponseEntity<Page<ClientDTO>> getAllClients(@RequestParam(defaultValue = "0") int page,
+                                                       @RequestParam(defaultValue = "10") int size
+  ) {
+    Pageable pageable = PageRequest.of(page, size);
+    Page<ClientDTO> clients = clientService.getAllClients(pageable);
     return ResponseEntity.ok(clients);
+  }
+
+  // clientName으로 거래처 조회
+  @GetMapping("/clientName/{clientName}")
+  public ResponseEntity<Page<ClientDTO>> getClientByName(@PathVariable String clientName,
+                                                         @RequestParam(defaultValue = "0") int page,
+                                                         @RequestParam(defaultValue = "10") int size) {
+    Pageable pageable = PageRequest.of(page, size);
+    Page<ClientDTO> clients = clientService.getClientByClientName(clientName, pageable);
+    return ResponseEntity.ok(clients);
+  }
+
+  // clientCode로 거래처 조회
+  @GetMapping("/{clientCode}")
+  public ResponseEntity<Page<ClientDTO>> getClientByClientCode(@PathVariable String clientCode,
+                                                               @RequestParam(defaultValue = "0") int page,
+                                                               @RequestParam(defaultValue = "10") int size) {
+    Pageable pageable = PageRequest.of(page, size);
+    Page<ClientDTO> clientDTO = clientService.getClientByClientCode(clientCode, pageable);
+    return ResponseEntity.ok(clientDTO);
   }
 
   // 수정 요청 상태의 거래처만 조회(PENDING 상태의 거래처만 조회)
   @GetMapping("/pending")
-  public ResponseEntity<List<ClientDTO>> getPendingClients() {
-    List<ClientDTO> pendingClients = clientService.getPendingClients();
+  public ResponseEntity<Page<ClientDTO>> getPendingClients(@RequestParam(defaultValue = "0") int page,
+                                                           @RequestParam(defaultValue = "10") int size) {
+    Pageable pageable = PageRequest.of(page, size);
+    Page<ClientDTO> pendingClients = clientService.getPendingClients(pageable);
     return ResponseEntity.ok(pendingClients);
   }
 
-  // ✅ 특정 employeeId를 가진 거래처 목록 조회 (새로운 메서드 추가)
+  // employeeId로 거래처 목록 조회
   @GetMapping("/employee/{employeeId}")
-  public ResponseEntity<List<ClientDTO>> getClientsByEmployeeId(@PathVariable Integer employeeId) {
-    List<ClientDTO> clients = clientService.getClientsByEmployeeId(employeeId);
+  public ResponseEntity<Page<ClientDTO>> getClientsByEmployeeId(@PathVariable Integer employeeId,
+                                                                @RequestParam(defaultValue = "0") int page,
+                                                                @RequestParam(defaultValue = "10") int size) {
+    Pageable pageable = PageRequest.of(page, size);
+    Page<ClientDTO> clients = clientService.getClientsByEmployeeId(employeeId, pageable);
     return ResponseEntity.ok(clients);
   }
 
   // 상태별 거래처 조회
   @GetMapping("/status/{status}")
-  public ResponseEntity<List<ClientDTO>> getClientsByStatus(@PathVariable RequestStatus status) {
-    List<ClientDTO> clients = clientService.getClientsByStatus(status);
+  public ResponseEntity<Page<ClientDTO>> getClientsByStatus(@PathVariable RequestStatus status,
+                                                            @RequestParam(defaultValue = "0") int page,
+                                                            @RequestParam(defaultValue = "10") int size) {
+    Pageable pageable = PageRequest.of(page, size);
+    Page<ClientDTO> clients = clientService.getClientsByStatus(status, pageable);
     return ResponseEntity.ok(clients);
   }
 
@@ -94,8 +121,8 @@ public class ClientController {
   // 거래처 반려
   @PutMapping("/{clientCode}/reject")
   public ResponseEntity<Void> rejectClient(
-          @PathVariable String clientCode,
-          @RequestParam Integer approvedEmployeeId) {
+      @PathVariable String clientCode,
+      @RequestParam Integer approvedEmployeeId) {
     clientService.rejectClient(clientCode, approvedEmployeeId);
     return ResponseEntity.noContent().build();
   }

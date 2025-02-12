@@ -105,7 +105,7 @@ const DetailClient = ({ client, onClose, onUpdateSuccess, onDeleteSuccess }) => 
         <form>
           <div className="form-group">
             <label>거래처 코드</label>
-            <input type="text" name="clientCode" value={clientData.clientCode} onChange={handleChange} />
+            <input type="text" name="clientCode" value={clientData.clientCode} onChange={handleChange} readOnly/>
           </div>
     
           <div className="form-group">

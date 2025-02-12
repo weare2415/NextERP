@@ -66,7 +66,6 @@ public class PurchaseTest {
   private static final String PAYMENT_ACCOUNT_ID = "201"; // 매입채무 계정
   private static final int QUANTITY = 2; // 구매 수량
   private static final String MEMO = "테스트 구매";
-  private static final BigDecimal PURCHASE_PRICE = BigDecimal.valueOf(50000); // 상품 단가
 
   private Employee employee;
   private Client client;

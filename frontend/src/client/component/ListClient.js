@@ -1,18 +1,9 @@
 import React, { useEffect, useState } from "react";
 import '../component/scss/ListClient.scss';
-import SearchClient from "./SearchClient";
 import { getEmployeeById } from "../../member/api/memberApi";
-import Pagination from "../../common/util/Pagination";
-import { paginate } from "../../common/util/paginationUtils";
 
 const ListClient = ({ clients, onClientSelect }) => {
   const [employeeNames, setEmployeeNames] = useState({});
-  const [currentPage, setCurrentPage] = useState(1); 
-  const pageSize = 7;
-
-  useEffect(() => {
-    setCurrentPage(1); // 검색 결과가 변경되면 첫 페이지로 초기화
-  }, [clients]);
 
   // ✅ 직원 이름 가져오기
   useEffect(() => {
@@ -38,8 +29,6 @@ const ListClient = ({ clients, onClientSelect }) => {
     }
   }, [clients]);
 
-  const paginatedData = paginate(clients, currentPage, pageSize);
-
   return (
     <div className="client-list-wrapper">
       <div className="client-table-section">
@@ -55,7 +44,7 @@ const ListClient = ({ clients, onClientSelect }) => {
             </tr>
           </thead>
           <tbody>
-            {paginatedData.map((client) => (
+            {clients.map((client) => (
               <tr key={client.clientCode}>
                 <td>{client.clientCode}</td>
                 <td>
@@ -75,13 +64,6 @@ const ListClient = ({ clients, onClientSelect }) => {
           </tbody>
         </table>
       </div>
-
-      <Pagination 
-        currentPage={currentPage} 
-        totalItems={clients.length} 
-        pageSize={pageSize} 
-        onPageChange={setCurrentPage} 
-      />
     </div>
   );
 };

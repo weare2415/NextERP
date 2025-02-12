@@ -25,7 +25,7 @@ const PayrollForm = () => {
 	return (
 			<form onSubmit={handleSubmit}>
 				<h3>급여 정보 입력</h3>
-				<input type="text" placeholder="직원 이름" value={employeeName} onChange={(e) => setEmployeeName(e.target.value)} required />
+				<input type="text" placeholder="직원 이름" value={employeeName} required readOnly />
 				<input type="number" placeholder="기본급" value={baseSalary} onChange={(e) => setBaseSalary(e.target.value)} required />
 				<input type="number" placeholder="공제" value={deductions} onChange={(e) => setDeductions(e.target.value)} />
 				<input type="date" placeholder="적용 시작일" value={effectiveDate} onChange={(e) => setEffectiveDate(e.target.value)} required />

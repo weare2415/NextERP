@@ -27,7 +27,7 @@ export const loginPost = async (loginParam) => {
 export const getEmployeeById = async (id) => {
 	try {
 		const res = await axiosInstance.get(`${API_SERVER_HOST}/api/employees/${id}`);
-		console.log(res.data);
+		// console.log(res.data);
 		return res.data;
 	} catch (error) {
 		console.error("Error fetching employee data:", error);
