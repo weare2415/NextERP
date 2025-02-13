@@ -31,6 +31,7 @@ const CreateProduct = ({ onClose, onSuccess }) => {
       alert("✅ 등록이 완료되었습니다.");
       onSuccess(newProduct);
       onClose();
+      window.location.reload();
     } catch (error) {
       alert("❌ 제품 등록에 실패했습니다.");
       console.error("❌ 제품 등록 실패:", error);
@@ -83,7 +84,7 @@ const CreateProduct = ({ onClose, onSuccess }) => {
             type="number"
             name="purchasePrice"
             placeholder="매입 가격을 입력하세요"
-            value={productData.purchaseprice}
+            value={productData.purchasePrice}
             onChange={handleChange}
             required
           />
@@ -95,7 +96,7 @@ const CreateProduct = ({ onClose, onSuccess }) => {
             type="number"
             name="salePrice"
             placeholder="판매 가격을 입력하세요"
-            value={productData.saleprice}
+            value={productData.salePrice}
             onChange={handleChange}
             required
           />

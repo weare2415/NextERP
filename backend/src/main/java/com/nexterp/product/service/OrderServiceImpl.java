@@ -1,12 +1,8 @@
 package com.nexterp.product.service;
 
-import com.nexterp.accounting.entity.Invoice;
 import com.nexterp.accounting.entity.Transaction;
-import com.nexterp.accounting.entity.TransactionType;
-import com.nexterp.accounting.entity.VAT;
 import com.nexterp.accounting.repository.*;
 import com.nexterp.accounting.service.AccountService;
-import com.nexterp.accounting.service.InvoiceItemService;
 import com.nexterp.client.entity.Client;
 import com.nexterp.client.entity.RequestStatus;
 import com.nexterp.client.repository.ClientRepository;
@@ -24,8 +20,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.math.BigDecimal;
-import java.util.Optional;
 
 @Log4j2
 @Service

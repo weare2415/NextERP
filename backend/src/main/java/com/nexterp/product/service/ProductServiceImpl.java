@@ -12,8 +12,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -76,8 +74,7 @@ public class ProductServiceImpl implements ProductService {
     // 제품 상세 조회
     @Override
     public ProductDTO getProductById(Long id) {
-        Product product = productRepository.findById(id)
-            .orElseThrow(() -> new IllegalArgumentException("Product with ID " + id + " not found"));
+        Product product = productRepository.findByIdAndIsDeletedFalse(id);
         return convertToDTO(product);
     }
 

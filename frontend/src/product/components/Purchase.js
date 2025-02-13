@@ -1,86 +1,111 @@
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
-import { getAllClients } from "../../client/api/clientApi";
+import {getClientByName} from "../../client/api/clientApi";
 import { processPurchaseOrder } from "../../order/api/orderApi";
-import "../../product/scss/Sale.scss";
+import "../scss/Sale.scss";
+
 
 const Purchase = ({ isOpen, onClose, selectedProduct }) => {
   const name = useSelector((state) => state.loginSlice.name) || "";
   const id = useSelector((state) => state.loginSlice.id) || "";
-  const [orderData, setOrderData] = useState({
+  const [searchTerm, setSearchTerm] = useState("");
+  const [suggestions, setSuggestions] = useState([]);
+  const [selectedIndex, setSelectedIndex] = useState(0);
+  const [isSelecting, setIsSelecting] = useState(false);
+  const todayDate = new Date().toISOString().split("T")[0];
+
+  // 초기 주문 데이터
+  const initialOrderData = {
     productId: selectedProduct ? selectedProduct.id : "",
     quantity: "",
-    price: selectedProduct ? selectedProduct.salePrice : "",
+    price: selectedProduct ? selectedProduct.purchasePrice : "",
     clientCode: "",
-    companyName: "",
+    clientName: "",
     employeeName: name,
     employeeId: id,
-    orderDate: "",
+    orderDate: todayDate,
     memo: "",
-  });
+    paymentAccountId: "101",
+  };
+  const [orderData, setOrderData] = useState(initialOrderData);
 
-  const [searchTerm, setSearchTerm] = useState("");
-  const [searchResults, setSearchResults] = useState([]);
-  const [showDropdown, setShowDropdown] = useState(false);
+  // 주문 데이터 초기화
+  const resetOrderData = () => {
+    setSearchTerm("");
+    setSuggestions([]);
+    setOrderData(initialOrderData);
+  };
+
+  const handleClose = () => {
+    resetOrderData();
+    onClose();
+  };
 
   useEffect(() => {
     if (selectedProduct) {
-      const currentDate = new Date().toISOString().split("T")[0];
-
       setOrderData((prev) => ({
         ...prev,
         productId: selectedProduct.id,
-        price: selectedProduct.salePrice,
-        orderDate: currentDate,
+        price: selectedProduct.purchasePrice,
+        orderDate: new Date().toISOString().split("T")[0],
       }));
     }
   }, [selectedProduct]);
 
-  if (!isOpen) return null;
-
   // 거래처 검색 함수
-  const searchClientByName = async (term) => {
-    if (!term.trim()) {
-      setSearchResults([]);
-      setShowDropdown(false);
-      return;
-    }
-
+  const searchClientByName = async (query) => {
     try {
-      const allClients = await getAllClients();
-      const results = allClients
-        .filter((client) => client.clientName.includes(term))
-        .map((client) => ({
-          clientCode: client.clientCode,
-          clientName: client.clientName,
-        }));
+      let result = [];
 
-      setSearchResults(results);
-      setShowDropdown(results.length > 0);
+      const response = await getClientByName(query);
+      result = response.content.map((client => ({clientName: client.clientName, clientCode: client.clientCode })))
+      setSuggestions(result);
     } catch (err) {
       console.error("거래처 검색 오류:", err);
-      setSearchResults([]);
-      setShowDropdown(false);
+      setSuggestions([])
     }
   };
 
-  // 검색어 입력 시 호출
-  const handleSearchChange = (e) => {
-    const value = e.target.value;
-    setSearchTerm(value);
-    searchClientByName(value);
+  // 입력값 변경 핸들러
+  const handleInputChange = (e) => {
+    setSearchTerm(e.target.value);
   };
 
-  // 거래처 선택 시 clientCode 저장
-  const handleSelectClient = (client) => {
-    console.log("선택한 거래처:", client); // 🔥 디버깅용 로그 추가
-    setSearchTerm(client.clientName);
-    setShowDropdown(false);
-    setOrderData((prev) => ({
-      ...prev,
-      clientCode: client.clientCode, // ✅ clientCode 저장
-      companyName: client.clientName, // 선택한 거래처명 반영
-    }));
+  // 검색어 변경 시 자동완성 실행
+  useEffect(() => {
+    if (searchTerm.length > 1 && !isSelecting) {
+      searchClientByName(searchTerm);
+    } else {
+      setSuggestions([]);
+    }
+    setIsSelecting(false);
+  }, [searchTerm]);
+
+  // 키보드 이벤트 핸들러
+  const handleKeyDown = (e) => {
+    if (suggestions.length === 0) return;
+
+    if (e.key === 'ArrowDown') {
+      setSelectedIndex(prev => (prev < suggestions.length - 1 ? prev + 1 : prev));
+    } else if (e.key === 'ArrowUp') {
+      setSelectedIndex(prev => (prev > 0 ? prev - 1 : prev));
+    } else if (e.key === 'Enter') {
+      if (selectedIndex < 0 || selectedIndex >= suggestions.length) return; // 인덱스 범위 체크
+
+      const selectedItem = suggestions[selectedIndex];
+      if (!selectedItem) return;
+
+      setIsSelecting(true);
+      setSearchTerm("")
+      setSuggestions([]);
+      setOrderData(prev => ({
+        ...prev,
+        clientName: selectedItem.clientName,
+        clientCode: selectedItem.clientCode,
+      }))
+      e.preventDefault();
+      setSearchTerm(selectedItem.clientName);
+    }
   };
 
   const handleChange = (e) => {
@@ -88,12 +113,10 @@ const Purchase = ({ isOpen, onClose, selectedProduct }) => {
     setOrderData((prev) => ({ ...prev, [name]: value }));
   };
 
-  // 구매 요청 API 호출
+  // ✅ 구매매 요청 API 호출
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    console.log("최종 전송 데이터:", orderData); // 🔥 디버깅용 로그 추가
-
+    console.log("최종 전송 데이터:", orderData);
     if (!orderData.clientCode) {
       alert("거래처를 선택하세요.");
       return;
@@ -101,15 +124,15 @@ const Purchase = ({ isOpen, onClose, selectedProduct }) => {
 
     try {
       const purchaseData = {
-        productId: orderData.productId,
-        quantity: orderData.quantity,
-        price: orderData.price,
+        productId: parseInt(orderData.productId, 10),
+        quantity: parseInt(orderData.quantity, 10),
+        purchasePrice: parseFloat(orderData.price),
         clientCode: orderData.clientCode,
-        paymentAccountId: "201",
+        paymentAccountId: orderData.paymentAccountId,
         employee: {
           id: orderData.employeeId,
         },
-        memo: orderData.memo,
+        memo: orderData.memo || "",
       };
 
       await processPurchaseOrder(purchaseData);
@@ -122,120 +145,114 @@ const Purchase = ({ isOpen, onClose, selectedProduct }) => {
   };
 
   return (
-    <div className="modal-overlay">
-      <div className="modal-container">
-        <div className="modal-header">
+      isOpen && (
+      <div className="product-order-detail-form" onClick={onClose}>
+        <div className="product-order-detail-header">
           <h2>구매 요청</h2>
-          <button className="close-button" onClick={onClose}>
-            ×
-          </button>
+          <button className="close-button" onClick={handleClose}>×</button>
         </div>
-        <div className="modal-content">
-          <form onSubmit={handleSubmit}>
-            <div className="form-grid">
-              <div className="form-group">
-                <label>제품 번호:</label>
-                <input
-                  type="text"
-                  name="productId"
-                  value={orderData.productId}
-                  readOnly
-                  required
-                />
-              </div>
+        <form onClick={(e) => e.stopPropagation()} onSubmit={handleSubmit}>
+          <div className="form-group">
+            <label>제품 번호:</label>
+            <input
+                type="text"
+                name="productId"
+                value={orderData.productId}
+                readOnly
+                required
+            />
+          </div>
 
-              {/* 🔥 거래처 검색 input */}
-              <div className="form-group">
-                <label>발주 기업명:</label>
-                <input
-                  type="text"
-                  placeholder="거래처명을 입력하세요"
-                  value={searchTerm}
-                  onChange={handleSearchChange}
-                  onFocus={() => setShowDropdown(searchResults.length > 0)}
-                />
-                {/* 🔥 검색 결과 드롭다운 */}
-                {showDropdown && (
-                  <ul className="dropdown">
-                    {searchResults.map((client, index) => (
+          <div className="form-group">
+            <label>발주 기업명:</label>
+            <input
+                type="text"
+                placeholder="거래처명을 입력하세요"
+                value={searchTerm}
+                onChange={handleInputChange}
+                onKeyDown={handleKeyDown}
+                autoComplete="off"
+            />
+            {/*자동완성 드롭다운 */}
+            {suggestions.length > 0 && (
+                <ul className="suggestions-list">
+                  {suggestions.map((item, index) => (
                       <li
-                        key={index}
-                        onClick={() => handleSelectClient(client)}
+                          key={item.clientCode || item.clientName || index}
+                          className={selectedIndex === index ? "selected" : ""}
+                          onMouseDown={() => {
+                            setIsSelecting(true);
+                            setSearchTerm(item.clientName);
+                            setSuggestions([]);
+                          }}
                       >
-                        {client.clientName}
+                        {item.clientName}
                       </li>
-                    ))}
-                  </ul>
-                )}
-              </div>
+                  ))}
+                </ul>
+            )}
+          </div>
 
-              <div className="form-group">
-                <label>발주 가격:</label>
-                <input
-                  type="number"
-                  name="price"
-                  value={orderData.price}
-                  readOnly
-                  required
-                />
-              </div>
+          <div className="form-group">
+            <label>발주 가격:</label>
+            <input
+                type="number"
+                name="price"
+                value={orderData.price}
+                readOnly
+                required
+            />
+          </div>
 
-              <div className="form-group">
-                <label>발주 수량:</label>
-                <input
-                  type="number"
-                  name="quantity"
-                  value={orderData.quantity}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
+          <div className="form-group">
+            <label>발주 수량:</label>
+            <input
+                type="number"
+                name="quantity"
+                value={orderData.quantity}
+                onChange={handleChange}
+                required
+            />
+          </div>
 
-              <div className="form-group">
-                <label>발주 날짜:</label>
-                <input
-                  type="date"
-                  name="orderDate"
-                  value={orderData.orderDate}
-                  onChange={handleChange}
-                  readOnly
-                  required
-                />
-              </div>
+          <div className="form-group">
+            <label>결제 방식</label>
+            <select name="paymentAccountId" value={orderData.paymentAccountId} onChange={handleChange}>
+              <option value="101">현금</option>
+              <option value="110">외상</option>
+            </select>
+          </div>
 
-              <div className="form-group">
-                <label>발주 담당자:</label>
-                <input
-                  type="text"
-                  name="employeeName"
-                  value={orderData.employeeName}
-                  readOnly
-                  required
-                />
-              </div>
+          <div className="form-group">
+            <label>발주 담당자:</label>
+            <input
+                type="text"
+                name="employeeName"
+                value={name}
+                readOnly
+                required
+            />
+          </div>
 
-              <div className="form-group full-width">
-                <label>메모:</label>
-                <textarea
-                  name="memo"
-                  value={orderData.memo}
-                  onChange={handleChange}
-                />
-              </div>
-            </div>
-
-            <div className="button-container">
-              <button type="submit" className="update-button">
-                구매 요청
-              </button>
-              <button type="button" className="close-button" onClick={onClose}>
-                취소
-              </button>
-            </div>
-          </form>
-        </div>
+          <div className="form-group">
+            <label>메모</label>
+            <textarea
+                name="memo"
+                value={orderData.memo}
+                onChange={handleChange}
+            />
+          </div>
+          <div className="product-order-detail-buttons">
+            <button type="submit" className="update-button">
+              구매 요청
+            </button>
+            <button type="button" className="close-button" onClick={handleClose}>
+              취소
+            </button>
+          </div>
+        </form>
       </div>
-    </div>
+  )
   );
 };
 

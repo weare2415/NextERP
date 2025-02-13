@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { updateProduct, deleteProduct } from "../api/productApi";
-import { getEmployeeById } from "../../employee/api/employeeApi"; // 직원 정보 조회 API
-import Decimal from "decimal.js"; // decimal.js 라이브러리 추가
-import "../scss/ProductDetail.scss"; // ✅ SCSS 적용
+import { getEmployeeById } from "../../employee/api/employeeApi";
+import "../scss/ProductDetail.scss";
 
 const ProductDetail = ({
   product,
@@ -14,8 +13,8 @@ const ProductDetail = ({
     product || {
       id: "",
       productName: "",
-      purchasePrice: "", // String으로 설정
-      salePrice: "", // String으로 설정
+      purchasePrice: "",
+      salePrice: "",
       stock: "",
       specifications: "",
       createdDate: "",
@@ -50,7 +49,7 @@ const ProductDetail = ({
     let newValue = value;
 
     if (name === "purchasePrice" || name === "salePrice") {
-      newValue = value ? value : ""; // 값을 공백이 아니라 ""으로 설정
+      newValue = value ? value : "";
     }
 
     setEditedProduct({
@@ -63,22 +62,24 @@ const ProductDetail = ({
     try {
       const updated = await updateProduct(product.id, editedProduct);
       onUpdateSuccess(updated);
-      alert("✅ 제품 정보가 수정되었습니다.");
+      alert("제품 정보가 수정되었습니다.");
       onClose();
+      window.location.reload();
     } catch (error) {
-      console.error("❌ 제품 수정 실패:", error);
+      console.error("제품 수정 실패:", error);
     }
   };
 
   const handleDelete = async () => {
-    if (window.confirm("❌ 해당 제품을 삭제하시겠습니까?")) {
+    if (window.confirm("해당 제품을 삭제하시겠습니까?")) {
       try {
         await deleteProduct(product.id);
         onDeleteSuccess(product.id);
-        alert("✅ 제품이 삭제되었습니다.");
+        alert("제품이 삭제되었습니다.");
         onClose();
+        window.location.reload();
       } catch (error) {
-        console.error("❌ 제품 삭제 실패:", error);
+        console.error("제품 삭제 실패:", error);
       }
     }
   };
@@ -111,9 +112,11 @@ const ProductDetail = ({
         <div className="form-group">
           <label>매입 가격</label>
           <input
-            type="text" // 숫자가 아니라 문자열로 입력받음
+            type="text"
             name="purchasePrice"
-            value={editedProduct.purchasePrice || ""}
+            value={editedProduct?.purchasePrice
+                ? parseFloat(editedProduct.purchasePrice).toLocaleString() + " 원"
+                : "가격 없음"}
             onChange={handleChange}
           />
         </div>
@@ -121,9 +124,11 @@ const ProductDetail = ({
         <div className="form-group">
           <label>판매 가격</label>
           <input
-            type="text" // 숫자가 아니라 문자열로 입력받음
+            type="text"
             name="salePrice"
-            value={editedProduct.salePrice || ""}
+            value={editedProduct?.salePrice
+                ? parseFloat(editedProduct.salePrice).toLocaleString() + " 원"
+                : "가격 없음"}
             onChange={handleChange}
           />
         </div>
