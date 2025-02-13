@@ -1,8 +1,8 @@
 import { Suspense, lazy } from "react";
 
 const Loading = <div>Loading...</div>;
-const ClientPage = lazy(() => import("../../client/pages/ClientPage"));
-const RequestPage = lazy(() => import("../../request/pages/RequestPage"));
+const ClientPage = lazy(() => import("../../sales/client/pages/ClientPage"));
+const RequestPage = lazy(() => import("../../sales/client/pages/RequestPage"));
 
 const clientRouter = () => {
   return [

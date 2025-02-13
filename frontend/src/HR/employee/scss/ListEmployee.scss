@@ -1,0 +1,100 @@
+@import "../../../App"; // ⚡ 공통 스타일 불러오기
+
+.employee-list-container {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  margin-top: 20px;
+
+  h3 {
+    font-size: 20px;
+    color: $primary-color;
+    margin-bottom: 15px;
+    font-weight: bold;
+  }
+
+  .employee-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+
+    thead {
+      background-color: $primary-color;
+      color: white;
+
+      th {
+        padding: 12px 15px;
+        text-align: left;
+        font-weight: 600;
+        cursor: pointer;
+        border-bottom: 2px solid black;
+
+        &:hover {
+          background-color: darken($primary-color, 10%);
+        }
+      }
+    }
+
+    tbody {
+      tr {
+        transition: background-color 0.2s;
+
+        &:hover {
+          background-color: rgba(0, 0, 0, 0.05);
+        }
+
+        td {
+          padding: 12px 15px;
+          border-bottom: 1px solid black;
+          color: #333;
+        }
+
+        // 직원 이름 클릭 가능하도록 설정
+        .employee-name-btn {
+          background: none;
+          border: none;
+          color: $primary-color;
+          cursor: pointer;
+          font-family: $font-primary;
+          text-decoration: underline;
+          font-size: 14px;
+
+          &:hover {
+            color: darken($primary-color, 10%);
+          }
+        }
+
+        // 액션 버튼 스타일 (추후 필요할 경우)
+        .actions {
+          display: flex;
+          gap: 10px;
+
+          button {
+            padding: 6px 12px;
+            background-color: $primary-color;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            font-family: $font-primary;
+            transition: background-color 0.2s;
+
+            &:hover {
+              background-color: darken($primary-color, 10%);
+            }
+
+            &.delete {
+              background-color: #d9534f;
+
+              &:hover {
+                background-color: darken(#d9534f, 10%);
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

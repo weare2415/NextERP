@@ -7,7 +7,6 @@ import productRouter from './productRouter';
 import clientRouter from './clientRouter';
 import employeeRouter from "./employeeRouter";
 import payrollRouter from './payrollRouter';
-import orderRouter from './orderRouter';
 
 
 const Loading = () => <div>Loading...</div>
@@ -32,10 +31,6 @@ const root = createBrowserRouter([
 	{
 		path: "clients",
 		children: clientRouter(),
-	},
-	{
-		path: "order",
-		children: orderRouter(),
 	},
 	{
 		path: "employee",  // ✅ employee 관련 경로 추가

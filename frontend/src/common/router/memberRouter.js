@@ -1,9 +1,9 @@
 import {lazy, Suspense} from 'react';
 const Loading = <div>Loading...</div>
-const Login = lazy(() => import("../../member/pages/LoginPage"));
-const Logout = lazy(() => import("../../member/pages/LogoutPage"));
-const ChangePassword = lazy(() => import("../../member/pages/ChangePassword")); // ✅ 추가됨
-const ForgotPassword = lazy(() => import("../../member/pages/ForgotPassword"));
+const Login = lazy(() => import("../member/pages/LoginPage"));
+const Logout = lazy(() => import("../member/pages/LogoutPage"));
+const ChangePassword = lazy(() => import("../member/pages/ChangePassword"));
+const ForgotPassword = lazy(() => import("../member/pages/ForgotPassword"));
 
 
 const memberRouter = () => {
@@ -24,7 +24,7 @@ const memberRouter = () => {
 					</Suspense>
 			)
 		}, {
-			path: "change-password", // ✅ 추가된 경로
+			path: "change-password",
 			element: (
 			  <Suspense fallback={Loading}>
 				<ChangePassword />
@@ -32,7 +32,7 @@ const memberRouter = () => {
 			),
 		},
 		{
-			path: "forgot-password", // ✅ 비밀번호 찾기 페이지 추가
+			path: "forgot-password",
 			element: (
 			  <Suspense fallback={Loading}>
 				<ForgotPassword />

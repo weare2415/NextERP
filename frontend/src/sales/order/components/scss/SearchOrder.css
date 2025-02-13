@@ -1,0 +1,84 @@
+@import url("https://cdn.jsdelivr.net/gh/fonts-archive/AppleSDGothicNeo/AppleSDGothicNeo.css");
+@import url(//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSansNeo.css);
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Apple SD Gothic Neo", sans-serif;
+}
+
+body {
+  width: 100%;
+  height: 100%;
+  background-color: #f5f7fa;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Apple SD Gothic Neo", sans-serif;
+  line-height: 1.6;
+  display: block;
+}
+
+.order-search-section {
+  display: flex;
+  justify-content: center;
+  height: 38px;
+  margin: 0;
+}
+.order-search-section .order-search-form {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 100%;
+}
+.order-search-section .order-search-form select {
+  height: 100%;
+  padding: 0 8px;
+  border: 1px solid #929fb4;
+  border-radius: 4px;
+  font-family: "Apple SD Gothic Neo", sans-serif;
+  background-color: white;
+  cursor: pointer;
+  min-width: 100px;
+}
+.order-search-section .order-search-form select:focus {
+  outline: none;
+  border-color: #3c485a;
+}
+.order-search-section .order-search-form input {
+  height: 100%;
+  padding: 0 8px;
+  width: 200px;
+  border: 1px solid #929fb4;
+  border-radius: 4px;
+  font-family: "Apple SD Gothic Neo", sans-serif;
+}
+.order-search-section .order-search-form input:focus {
+  outline: none;
+  border-color: #3c485a;
+}
+.order-search-section .order-search-form button {
+  height: 100%;
+  padding: 0 16px;
+  background-color: #3c485a;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-family: "Apple SD Gothic Neo", sans-serif;
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+}
+.order-search-section .order-search-form button:hover {
+  background-color: rgb(39.6, 47.52, 59.4);
+}
+.order-search-section p {
+  margin: 0 0 0 10px;
+  font-size: 14px;
+}
+.order-search-section p[style*="color: red"] {
+  color: #e53e3e !important;
+}
+
+/*# sourceMappingURL=SearchApprovedOrder.css.map */

@@ -1,8 +1,8 @@
 import { lazy, Suspense } from "react";
 
-const EmployeePage = lazy(() => import("../../employee/pages/EmployeePage"));
-const CreateEmployee = lazy(() => import("../../employee/components/CreateEmployee"));
-const EmployeeDetail = lazy(() => import("../../employee/components/EmployeeDetail"));
+const EmployeePage = lazy(() => import("../../HR/employee/pages/EmployeePage"));
+const CreateEmployee = lazy(() => import("../../HR/employee/components/CreateEmployee"));
+const EmployeeDetail = lazy(() => import("../../HR/employee/components/EmployeeDetail"));
 
 const EmployeeRouter = () => {
   return [
