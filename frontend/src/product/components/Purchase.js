@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { getAllClients } from "../../client/api/clientApi";
-import { processPurchaseOrder } from "../../order/api/orderApi";
-import "../scss/Sale.scss";
+import { processPurchase } from "../../order/api/orderApi";
+import "../../product/scss/Sale.scss";
 
 const Purchase = ({ isOpen, onClose, selectedProduct }) => {
   const name = useSelector((state) => state.loginSlice.name) || "";
@@ -17,7 +17,6 @@ const Purchase = ({ isOpen, onClose, selectedProduct }) => {
     employeeId: id,
     orderDate: "",
     memo: "",
-    paymentAccountId: "101",
   });
 
   const [searchTerm, setSearchTerm] = useState("");
@@ -48,7 +47,7 @@ const Purchase = ({ isOpen, onClose, selectedProduct }) => {
     }
 
     try {
-      const allClients = await getAllClients();
+      const { content: allClients } = await getAllClients(); // 여기서 content를 추출
       const results = allClients
         .filter((client) => client.clientName.includes(term))
         .map((client) => ({
@@ -113,7 +112,7 @@ const Purchase = ({ isOpen, onClose, selectedProduct }) => {
         memo: orderData.memo || "",
       };
 
-      await processPurchaseOrder(purchaseData);
+      await processPurchase(purchaseData);
       alert("구매 요청이 완료되었습니다!");
       onClose();
     } catch (error) {
@@ -123,107 +122,117 @@ const Purchase = ({ isOpen, onClose, selectedProduct }) => {
   };
 
   return (
-    <div className="product-order-detail-form" onClick={onClose}>
-      <div className="product-order-detail-header">
-        <h2>구매 요청</h2>
-        <button className="close-button" onClick={onClose}>
-          ×
-        </button>
+    <div className="modal-overlay">
+      <div className="modal-container">
+        <div className="modal-header">
+          <h2>구매 요청</h2>
+          <button className="close-button" onClick={onClose}>
+            ×
+          </button>
+        </div>
+        <div className="modal-content">
+          <form onClick={(e) => e.stopPropagation()} onSubmit={handleSubmit}>
+            <div className="form-grid">
+              <div className="form-group">
+                <label>제품 번호:</label>
+                <input
+                  type="text"
+                  name="productId"
+                  value={orderData.productId}
+                  readOnly
+                  required
+                />
+              </div>
+
+              <div className="form-group">
+                <label>발주 기업명:</label>
+                <input
+                  type="text"
+                  placeholder="거래처명을 입력하세요"
+                  value={searchTerm}
+                  onChange={handleSearchChange}
+                  onFocus={() => setShowDropdown(searchResults.length > 0)}
+                />
+                {showDropdown && (
+                  <ul className="dropdown">
+                    {searchResults.map((client, index) => (
+                      <li
+                        key={index}
+                        onClick={() => handleSelectClient(client)}
+                      >
+                        {client.clientName}
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+
+              <div className="form-group">
+                <label>발주 가격:</label>
+                <input
+                  type="number"
+                  name="price"
+                  value={orderData.price}
+                  readOnly
+                  required
+                />
+              </div>
+
+              <div className="form-group">
+                <label>발주 수량:</label>
+                <input
+                  type="number"
+                  name="quantity"
+                  value={orderData.quantity}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+
+              <div className="form-group">
+                <label>발주 날짜:</label>
+                <input
+                  type="date"
+                  name="orderDate"
+                  value={orderData.orderDate}
+                  onChange={handleChange}
+                  readOnly
+                  required
+                />
+              </div>
+
+              <div className="form-group">
+                <label>발주 담당자:</label>
+                <input
+                  type="text"
+                  name="employeename"
+                  value={orderData.employeename}
+                  readOnly
+                  required
+                />
+              </div>
+
+              <div className="form-group full-width">
+                <label>메모:</label>
+                <textarea
+                  name="memo"
+                  value={orderData.memo}
+                  onChange={handleChange}
+                />
+              </div>
+            </div>
+
+            <div className="button-container">
+              <button type="submit" className="update-button">
+                구매 요청
+              </button>
+              <button type="button" className="close-button" onClick={onClose}>
+                취소
+              </button>
+            </div>
+          </form>
+        </div>
       </div>
-      <form onClick={(e) => e.stopPropagation()} onSubmit={handleSubmit}>
-        <div className="form-group">
-          <label>제품 번호:</label>
-          <input
-            type="text"
-            name="productId"
-            value={orderData.productId}
-            readOnly
-            required
-          />
-        </div>
-
-        <div className="form-group">
-          <label>발주 기업명:</label>
-          <input
-            type="text"
-            placeholder="거래처명을 입력하세요"
-            value={searchTerm}
-            onChange={handleSearchChange}
-            onFocus={() => setShowDropdown(searchResults.length > 0)}
-          />
-          {showDropdown && (
-            <ul className="dropdown">
-              {searchResults.map((client, index) => (
-                <li key={index} onClick={() => handleSelectClient(client)}>
-                  {client.clientName}
-                </li>
-              ))}
-            </ul>
-          )}
-        </div>
-
-        <div className="form-group">
-          <label>발주 가격:</label>
-          <input
-            type="number"
-            name="price"
-            value={orderData.price}
-            readOnly
-            required
-          />
-        </div>
-
-        <div className="form-group">
-          <label>발주 수량:</label>
-          <input
-            type="number"
-            name="quantity"
-            value={orderData.quantity}
-            onChange={handleChange}
-            required
-          />
-        </div>
-
-        <div className="form-group">
-          <label>발주 날짜:</label>
-          <input
-            type="date"
-            name="orderDate"
-            value={orderData.orderDate}
-            onChange={handleChange}
-            readOnly
-            required
-          />
-        </div>
-
-        <div className="form-group">
-          <label>발주 담당자:</label>
-          <input
-            type="text"
-            name="employeename"
-            value={orderData.employeename}
-            readOnly
-            required
-          />
-        </div>
-
-        <div className="form-group">
-          <label>메모:</label>
-          <textarea
-            name="memo"
-            value={orderData.memo}
-            onChange={handleChange}
-          />
-        </div>
-        <div className="product-order-detail-buttons">
-          <button type="submit" className="update-button">
-            구매 요청
-          </button>
-          <button type="button" className="close-button" onClick={onClose}>
-            취소
-          </button>
-        </div>
-      </form>
     </div>
   );
 };

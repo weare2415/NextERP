@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { updateProduct, deleteProduct } from "../api/productApi";
-import "../scss/ProductDetail.scss";
+import { getEmployeeById } from "../../employee/api/employeeApi"; // 직원 정보 조회 API
+import "../scss/ProductDetail.scss"; // ✅ SCSS 적용
 
 const ProductDetail = ({
   product,
@@ -17,14 +18,44 @@ const ProductDetail = ({
       stock: "",
       specifications: "",
       createdDate: "",
-      employeeId: "",
-      employeeName: "",
+      employee: { name: "담당자 없음" },
       memo: "",
     }
   );
+  const [error, setError] = useState(null);
+
+  // 직원 정보를 불러오는 함수
+  const fetchEmployee = async (employeeId) => {
+    try {
+      const employee = await getEmployeeById(employeeId);
+      setEditedProduct((prevProduct) => ({
+        ...prevProduct,
+        employee: employee || { name: "담당자 없음" },
+      }));
+    } catch (error) {
+      console.error("직원 정보 불러오기 실패:", error);
+      setError("담당자 정보를 불러오는 중 오류가 발생했습니다.");
+    }
+  };
+
+  useEffect(() => {
+    if (product && product.employeeId) {
+      fetchEmployee(product.employeeId);
+    }
+  }, [product]);
 
   const handleChange = (e) => {
-    setEditedProduct({ ...editedProduct, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    let newValue = value;
+
+    if (name === "purchasePrice" || name === "salePrice") {
+      newValue = value ? value : "";
+    }
+
+    setEditedProduct({
+      ...editedProduct,
+      [name]: newValue,
+    });
   };
 
   const handleUpdate = async () => {
@@ -79,9 +110,9 @@ const ProductDetail = ({
         <div className="form-group">
           <label>매입 가격</label>
           <input
-            type="number"
+            type="text"
             name="purchasePrice"
-            value={editedProduct.purchaseprice}
+            value={editedProduct.purchasePrice || ""}
             onChange={handleChange}
           />
         </div>
@@ -89,9 +120,9 @@ const ProductDetail = ({
         <div className="form-group">
           <label>판매 가격</label>
           <input
-            type="number"
+            type="text"
             name="salePrice"
-            value={editedProduct.saleprice}
+            value={editedProduct.salePrice || ""}
             onChange={handleChange}
           />
         </div>
@@ -156,6 +187,8 @@ const ProductDetail = ({
           </button>
         </div>
       </form>
+
+      {error && <div className="error-message">{error}</div>}
     </div>
   );
 };

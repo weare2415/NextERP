@@ -1,0 +1,149 @@
+@import "../../App.scss";
+
+.mypage {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 2rem;
+  font-family: $font-primary;
+
+  h2 {
+    color: $primary-color;
+    font-size: 2rem;
+    margin-bottom: 2rem;
+    font-weight: 700;
+    text-align: center;
+    font-family: $font-primary;
+
+    @include respond-to("mobile") {
+      font-size: 1.5rem;
+    }
+  }
+
+  // 좌우 2열 레이아웃: 왼쪽은 출퇴근 등록, 오른쪽은 출퇴근 내역
+  .attendance-container {
+    display: flex;
+    gap: 2rem;
+
+    @include respond-to("mobile") {
+      flex-direction: column;
+    }
+  }
+
+  // 왼쪽 영역: 출퇴근 등록 (출근/퇴근 버튼)
+  .attendance-registration {
+    flex: 1;
+    background: white;
+    border-radius: 8px;
+    padding: 2rem;
+    box-shadow: 0 2px 8px rgba(60, 72, 90, 0.1);
+    text-align: center;
+
+    .buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      margin-bottom: 2rem;
+      align-items: center;
+
+      button {
+        padding: 1rem 2rem;
+        border: none;
+        border-radius: 8px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        min-width: 150px;
+        font-family: $font-primary;
+
+        &:hover:not(:disabled) {
+          opacity: 0.9;
+        }
+
+        &:disabled {
+          background-color: $secondary-color;
+          cursor: not-allowed;
+          opacity: 0.7;
+        }
+
+        &:first-child {
+          background-color: #34c759;
+          color: white;
+        }
+
+        &:last-child {
+          background-color: $primary-color;
+          color: white;
+        }
+      }
+    }
+  }
+
+  // 오른쪽 영역: 출퇴근 내역 테이블
+  .attendance-log {
+    flex: 1;
+    background: white;
+    border-radius: 8px;
+    padding: 2rem;
+    box-shadow: 0 2px 8px rgba(60, 72, 90, 0.1);
+    font-family: $font-secondary;
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+
+      th,
+      td {
+        padding: 0.75rem 1rem;
+        text-align: left;
+        border-bottom: 1px solid rgba($secondary-color, 0.2);
+      }
+
+      th {
+        background-color: #f8f8f8;
+        font-weight: 600;
+      }
+
+      tr:last-child td {
+        border-bottom: none;
+      }
+    }
+  }
+
+  // 기존 프로필, 로딩, 에러 스타일 (필요시 사용)
+  .profile-section {
+    background: white;
+    border-radius: 8px;
+    padding: 2rem;
+    box-shadow: 0 2px 8px rgba(60, 72, 90, 0.1);
+    margin-bottom: 2rem;
+
+    p {
+      color: $primary-color;
+      font-size: 1.1rem;
+      margin-bottom: 1rem;
+      font-family: $font-secondary;
+
+      strong {
+        color: darken($primary-color, 10%);
+        margin-right: 1rem;
+        font-family: $font-primary;
+      }
+    }
+  }
+
+  .loading {
+    text-align: center;
+    color: $secondary-color;
+    font-size: 1.1rem;
+    margin: 2rem 0;
+    font-family: $font-primary;
+  }
+
+  .error-message {
+    color: $error-color;
+    text-align: center;
+    margin: 1rem 0;
+    font-family: $font-primary;
+  }
+}

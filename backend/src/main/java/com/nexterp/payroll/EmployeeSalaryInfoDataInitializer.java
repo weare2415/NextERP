@@ -33,7 +33,7 @@ import java.util.List;
 
 @Configuration
 public class EmployeeSalaryInfoDataInitializer {
-  @Bean
+ /* @Bean
   public ApplicationRunner initializeEmployeeSalaryInfo(EmployeeService employeeService,
                                                         EmployeeSalaryInfoService salaryInfoService) {
     return args -> {
@@ -65,5 +65,5 @@ public class EmployeeSalaryInfoDataInitializer {
         }
       });
     };
-  }
+  }*/
 }

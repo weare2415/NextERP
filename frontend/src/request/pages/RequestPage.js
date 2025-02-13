@@ -14,7 +14,14 @@ const RequestPage = () => {
   const fetchClients = async () => {
     try {
       const data = await getPendingClients();
-      setClients([...data].reverse());
+      if (data && Array.isArray(data.content)) {
+        setClients([...data.content].reverse());
+      } else if (Array.isArray(data)) {
+        setClients([...data].reverse());
+      } else {
+        console.error("데이터 형식이 올바르지 않습니다:", data);
+        setClients([]);
+      }
     } catch (error) {
       console.error("거래처 목록을 불러오는 중 오류 발생:", error);
     }

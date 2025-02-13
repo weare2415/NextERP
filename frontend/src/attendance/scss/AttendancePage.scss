@@ -1,0 +1,66 @@
+@import "../../App.scss";
+
+.attendance-page {
+  background-color: white;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 16px;
+  overflow-x: auto;
+
+  h2 {
+    font-family: $font-primary;
+    text-align: center;
+    margin-bottom: 20px;
+    color: $primary-color;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: $font-primary;
+
+    th,
+    td {
+      padding: 12px 15px;
+      text-align: center; // ✅ 중앙 정렬
+      border-bottom: 1px solid $background-color;
+      display: table-cell; // ✅ 테이블 셀 속성 유지
+    }
+
+    th {
+      background-color: $primary-color;
+      color: white;
+      font-weight: 500;
+
+      &:hover {
+        background-color: darken($primary-color, 10%);
+      }
+    }
+
+    td {
+      vertical-align: middle;
+    }
+
+    select {
+      padding: 5px;
+      border: 1px solid $primary-color;
+      border-radius: 4px;
+      background-color: white;
+      cursor: pointer;
+      font-family: $font-primary;
+
+      &:hover {
+        background-color: lighten($primary-color, 40%);
+      }
+    }
+
+    .overtime {
+      font-weight: bold;
+      color: $secondary-color; // ✅ 초과 근무 시간 강조
+    }
+
+    .status-select {
+      font-weight: bold;
+    }
+  }
+}

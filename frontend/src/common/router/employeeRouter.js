@@ -1,36 +1,105 @@
 import { lazy, Suspense } from "react";
 
 const EmployeePage = lazy(() => import("../../employee/pages/EmployeePage"));
-const CreateEmployee = lazy(() => import("../../employee/components/CreateEmployee"));
-const EmployeeDetail = lazy(() => import("../../employee/components/EmployeeDetail"));
+const CreateEmployee = lazy(() =>
+  import("../../employee/components/CreateEmployee")
+);
+const EmployeeDetail = lazy(() =>
+  import("../../employee/components/EmployeeDetail")
+);
+const ApprovalStatus = lazy(() =>
+  import("../../employee/components/ApprovalStatus")
+); // ✅ 승인 여부 페이지 추가
+const AttendancePage = lazy(() =>
+  import("../../attendance/pages/AttendancePage")
+);
+const RequestAttendance = lazy(() =>
+  import("../../attendance/components/RequestAttendance")
+);
+
+const RequestHistory = lazy(() =>
+  import("../../attendance/components/RequestHistory")
+); // ✅ 신청 내역 페이지 추가
+const ApprovalPage = lazy(() => import("../../attendance/pages/ApprovalPage")); // ✅ 관리자 승인 페이지 추가
+const MyPage = lazy(() => import("../../employee/pages/MyPage")); // ✅ 마이페이지 추가
+
+const Loading = () => <div>Loading...</div>;
 
 const EmployeeRouter = () => {
   return [
     {
-      path: "", // `/employee` 경로에서 EmployeePage 렌더링
+      path: "",
       element: (
-          <Suspense fallback={<div>Loading...</div>}>
-            <EmployeePage />
-          </Suspense>
+        <Suspense fallback={<Loading />}>
+          <EmployeePage />
+        </Suspense>
       ),
     },
     {
-      path: "create", // `/employee/create` 경로에서 CreateEmployee 렌더링
+      path: "create",
       element: (
-          <Suspense fallback={<div>Loading...</div>}>
-            <CreateEmployee />
-          </Suspense>
+        <Suspense fallback={<Loading />}>
+          <CreateEmployee />
+        </Suspense>
       ),
     },
     {
-      path: ":id", // `/employee/:id` 경로에서 EmployeeDetail 렌더링
+      path: ":id",
       element: (
-          <Suspense fallback={<div>Loading...</div>}>
-            <EmployeeDetail />
-          </Suspense>
+        <Suspense fallback={<Loading />}>
+          <EmployeeDetail />
+        </Suspense>
       ),
     },
-  ]
+    {
+      path: "approval-status",
+      element: (
+        <Suspense fallback={<Loading />}>
+          <ApprovalStatus />
+        </Suspense>
+      ),
+    },
+    {
+      path: "attendance",
+      element: (
+        <Suspense fallback={<Loading />}>
+          <AttendancePage />
+        </Suspense>
+      ),
+    },
+    {
+      path: "attendance/request", // ✅ 근태 신청 페이지 추가
+      element: (
+        <Suspense fallback={<Loading />}>
+          <RequestAttendance />
+        </Suspense>
+      ),
+    },
+    {
+      path: "attendance/history", // ✅ 신청 내역 페이지 추가
+      element: (
+        <Suspense fallback={<Loading />}>
+          <RequestHistory />
+        </Suspense>
+      ),
+    },
+    {
+      path: "attendance/approval", // ✅ 관리자 승인 페이지 추가
+      element: (
+        <Suspense fallback={<Loading />}>
+          <ApprovalPage />
+        </Suspense>
+      ),
+    },
+    {
+      path: "mypage",
+      element: (
+        <Suspense fallback={<Loading />}>
+          <MyPage />
+        </Suspense>
+      ),
+    },
+  ];
 };
 
 export default EmployeeRouter;

@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   getClientById,
-  getAllClients,
   getClientsByEmployeeId,
-} from "../../client/api/clientApi";
+  getClientByName,
+} from "../api/clientApi";
 import { getEmployeeByName } from "../../member/api/memberApi";
 import "../component/scss/SearchClient.scss";
 
@@ -14,10 +14,46 @@ const SearchClient = ({ onSearchResults }) => {
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [suggestions, setSuggestions] = useState([]);
+  const [selectedIndex, setSelectedIndex] = useState(0);
+  const [isSelecting, setIsSelecting] = useState(false);
+
+  // 자동완성 API 요청
+  const fetchSuggestions = async (query, searchType) => {
+    try {
+      let data = [];
+
+      if (searchType === "clientCode") {
+        const response = await getClientById(query);
+        data = response.content.map((client) => ({
+          clientCode: client.clientCode,
+        }));
+      } else if (searchType === "clientName") {
+        const response = await getClientByName(query);
+        data = response.content.map((client) => ({
+          clientName: client.clientName,
+        }));
+      }
+      setSuggestions(data);
+    } catch (error) {
+      console.error("자동완성 검색 오류:", error);
+      setSuggestions([]);
+    }
+  };
+
+  // 검색어 변경 시 자동완성 실행
+  useEffect(() => {
+    if (searchParams.searchTerm.length > 1 && !isSelecting) {
+      fetchSuggestions(searchParams.searchTerm, searchParams.searchType);
+    } else {
+      setSuggestions([]);
+    }
+    setIsSelecting(false);
+  }, [searchParams.searchTerm, searchParams.searchType]);
 
   // 입력값 변경 핸들러
   const handleInputChange = (e) => {
-    setSearchParams({ ...searchParams, [e.target.name]: e.target.value });
+    setSearchParams((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
   // 검색 핸들러
@@ -30,29 +66,21 @@ const SearchClient = ({ onSearchResults }) => {
       let data = [];
 
       if (searchParams.searchType === "clientCode") {
-        // ✅ 거래처 코드로 검색
-        const client = await getClientById(searchParams.searchTerm);
-        data = client ? [client] : [];
+        const response = await getClientById(searchParams.searchTerm);
+        data = response.content ? response.content : [];
       } else if (searchParams.searchType === "clientName") {
-        // ✅ 거래처 명으로 검색
-        const allClients = await getAllClients();
-        data = allClients.filter((client) =>
-          client.clientName.includes(searchParams.searchTerm)
-        );
+        const response = await getClientByName(searchParams.searchTerm);
+        data = response.content ? response.content : [];
       } else if (searchParams.searchType === "employeeName") {
-        // ✅ 영업 담당자 이름으로 검색 -> 먼저 employeeId를 가져온 후 client 목록 조회
         const employee = await getEmployeeByName(searchParams.searchTerm);
-        console.log("검색된 직원 정보:", employee); // 직원 정보 확인
-        if (employee && employee.id) {
-          data = await getClientsByEmployeeId(employee.id);
-          console.log("해당 직원의 거래처 목록:", data); // 거래처 목록 확인
+        if (employee.length > 0 && employee[0].id) {
+          const response = await getClientsByEmployeeId(employee[0].id);
+          data = response.content ? response.content : [];
         } else {
           console.log("유효한 직원 정보가 없습니다.");
           data = [];
         }
       }
-
-      // 검색 결과를 부모(ListClient)로 전달
       onSearchResults(data);
     } catch (err) {
       console.error("검색 오류:", err);
@@ -62,9 +90,36 @@ const SearchClient = ({ onSearchResults }) => {
     }
   };
 
+  // 키보드 이벤트 핸들러
+  const handleKeyDown = (e) => {
+    if (suggestions.length === 0) return;
+
+    if (e.key === "ArrowDown") {
+      setSelectedIndex((prev) =>
+        prev < suggestions.length - 1 ? prev + 1 : prev
+      );
+    } else if (e.key === "ArrowUp") {
+      setSelectedIndex((prev) => (prev > 0 ? prev - 1 : prev));
+    } else if (e.key === "Enter") {
+      if (selectedIndex < 0 || selectedIndex >= suggestions.length) return; // 인덱스 범위 체크
+
+      const selectedItem = suggestions[selectedIndex];
+      if (!selectedItem) return; // 선택된 항목이 존재하는지 확인
+
+      const selectedValue =
+        selectedItem?.clientCode || selectedItem?.clientName; // 안전한 접근
+      if (!selectedValue) return; // 값이 없는 경우 리턴
+
+      setIsSelecting(true);
+      setSearchParams((prev) => ({ ...prev, searchTerm: selectedValue }));
+      setSuggestions([]); // 자동완성 닫기
+      e.preventDefault();
+    }
+  };
+
   return (
     <div className="search-client-container">
-      <form onSubmit={handleSearch} className="search-client-form">
+      <form onSubmit={handleSearch} className="client-search-form">
         <select
           name="searchType"
           value={searchParams.searchType}
@@ -74,16 +129,39 @@ const SearchClient = ({ onSearchResults }) => {
           <option value="clientCode">거래처 코드</option>
           <option value="employeeName">영업 담당자</option>
         </select>
+        <div className="search-input-wrapper">
+          <input
+            type="text"
+            name="searchTerm"
+            placeholder="검색어를 입력하세요"
+            value={searchParams.searchTerm}
+            onChange={handleInputChange}
+            onKeyDown={handleKeyDown}
+            autoComplete="off"
+          />
 
-        <input
-          type="text"
-          name="searchTerm"
-          placeholder="검색어를 입력하세요"
-          value={searchParams.searchTerm}
-          onChange={handleInputChange}
-          onKeyDown={(e) => e.key === "Enter" && handleSearch(e)}
-        />
-
+          {/*자동완성 목록 */}
+          {suggestions.length > 0 && (
+            <ul className="suggestions-list">
+              {suggestions.map((item, index) => (
+                <li
+                  key={item.clientCode || item.clientName || index}
+                  className={selectedIndex === index ? "selected" : ""}
+                  onMouseDown={() => {
+                    setIsSelecting(true);
+                    setSearchParams((prev) => ({
+                      ...prev,
+                      searchTerm: item.clientCode || item.clientName,
+                    }));
+                    setSuggestions([]);
+                  }}
+                >
+                  {item.clientCode || item.clientName}
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
         <button type="submit">검색</button>
       </form>
 

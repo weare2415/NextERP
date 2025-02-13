@@ -83,21 +83,14 @@ const CreateEmployee = ({ onClose, onSuccess }) => {
 
   return (
     <div className="modal-overlay" onClick={onClose}>
-      {" "}
       <div
         className="create-employee-form"
         onClick={(e) => e.stopPropagation()}
       >
-        {" "}
-        <div className="form-header">
-          <h2>신규 직원 등록</h2>
-          <button className="close-button" onClick={onClose}>
-            ×
-          </button>
-        </div>
+        <h2>신규 직원 등록</h2>
         <form onSubmit={handleSubmit}>
           <div className="form-group">
-            <label>사원 번호</label>
+            <label>사원 번호 (8자리 숫자)</label>
             <input
               type="text"
               name="id"
@@ -214,6 +207,9 @@ const CreateEmployee = ({ onClose, onSuccess }) => {
           <div className="button-group">
             <button type="submit" disabled={!isIdAvailable}>
               등록
+            </button>
+            <button type="button" className="cancel-btn" onClick={onClose}>
+              취소
             </button>
           </div>
         </form>

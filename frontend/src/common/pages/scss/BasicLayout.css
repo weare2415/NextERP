@@ -22,27 +22,116 @@ body {
 .basic-layout {
   display: flex;
   width: 100%;
+  min-height: 100vh;
+}
+.basic-layout .main-layout {
+  display: flex;
+  flex: 1;
+  height: 100%;
+}
+.basic-layout .main-layout .sidebar {
+  width: 270px;
+  background-color: #3c485a;
+  color: #fff;
+  padding: 0.4rem;
+  display: flex;
   flex-direction: column;
   min-height: 100vh;
 }
-.basic-layout .header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  height: 80px;
-  padding: 1rem 2rem;
-  background-color: #3c485a;
-  color: #fff;
+.basic-layout .main-layout .sidebar .logo {
+  padding: 1rem;
+  margin-bottom: 1rem;
 }
-.basic-layout .header .logo > img {
+.basic-layout .main-layout .sidebar .logo > img {
   width: 200px;
   height: auto;
 }
-.basic-layout .header .header-buttons {
+.basic-layout .main-layout .sidebar .user-info {
+  padding: 1rem;
+  margin-bottom: 2rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+.basic-layout .main-layout .sidebar .user-info .user-name-position {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.basic-layout .main-layout .sidebar .user-info .user-name-position span {
+  font-size: 1.2rem;
+}
+.basic-layout .main-layout .sidebar .user-info .user-name-position span.user-name {
+  font-weight: bold;
+}
+.basic-layout .main-layout .sidebar .user-info .user-name-position span.user-position {
+  opacity: 0.8;
+}
+.basic-layout .main-layout .sidebar .user-info .user-department {
+  font-size: 1rem;
+  opacity: 0.8;
+}
+.basic-layout .main-layout .sidebar ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.basic-layout .main-layout .sidebar ul li {
+  margin-bottom: 0.5rem;
+}
+.basic-layout .main-layout .sidebar ul li .menu-item {
+  padding: 0.7rem 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  border-radius: 4px;
+}
+.basic-layout .main-layout .sidebar ul li .menu-item:hover {
+  background-color: rgb(70.2, 84.24, 105.3);
+}
+.basic-layout .main-layout .sidebar ul li .menu-item.active {
+  background-color: rgb(70.2, 84.24, 105.3);
+}
+.basic-layout .main-layout .sidebar ul li .submenu {
+  margin-left: 1rem;
+  margin-top: 0.5rem;
+}
+.basic-layout .main-layout .sidebar ul li .submenu li {
+  margin-bottom: 0.3rem;
+}
+.basic-layout .main-layout .sidebar ul li .submenu li a {
+  display: block;
+  padding: 0.5rem 1rem;
+  color: #fff;
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+  border-radius: 4px;
+}
+.basic-layout .main-layout .sidebar ul li .submenu li a:hover {
+  background-color: rgb(76.32, 91.584, 114.48);
+  padding-left: 1.5rem;
+}
+.basic-layout .right-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+.basic-layout .right-container .header {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  height: 85px;
+  padding: 0.5rem 2rem;
+  background-color: #3c485a;
+  color: #fff;
+}
+.basic-layout .right-container .header .header-buttons {
   display: flex;
   gap: 1rem;
 }
-.basic-layout .header .header-buttons button {
+.basic-layout .right-container .header .header-buttons button {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -53,38 +142,10 @@ body {
   cursor: pointer;
   transition: transform 0.2s;
 }
-.basic-layout .header .header-buttons button:hover {
+.basic-layout .right-container .header .header-buttons button:hover {
   transform: scale(1.1);
 }
-.basic-layout .main-layout {
-  display: flex;
-  flex: 1;
-  height: 100%;
-}
-.basic-layout .main-layout .sidebar {
-  width: 180px;
-  background-color: #3c485a;
-  color: #fff;
-  padding: 0.4rem;
-  display: flex;
-  flex-direction: column;
-}
-.basic-layout .main-layout .sidebar ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-.basic-layout .main-layout .sidebar ul li {
-  margin-bottom: 1rem;
-  padding: 0.5rem;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-.basic-layout .main-layout .sidebar ul li:hover {
-  background-color: rgb(70.2, 84.24, 105.3);
-  color: #fff;
-}
-.basic-layout .main-layout .content {
+.basic-layout .right-container .content {
   flex: 1;
   padding: 2rem;
   background-color: #f5f7fa;

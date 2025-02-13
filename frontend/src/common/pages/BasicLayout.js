@@ -55,10 +55,10 @@ const BasicLayout = ({ children }) => {
 
   const menuItems = {
     마이페이지: [
-      { name: "출/퇴근 조회", path: "/mypage/platform" },
-      { name: "근태 신청", path: "/mypage/group" },
+      { name: "출/퇴근 관리", path: "/employee/mypage" },
+      { name: "근태 신청", path: "/employee/attendance/request" },
       { name: "급여 조회", path: "/mypage/salary" },
-      { name: "공지 사항", path: "/hr/notices" },
+      { name: "공지 사항", path: "/announcement" },
     ],
     회계: [
       { name: "대쉬보드", path: "/accounting/dashboard" },
@@ -79,11 +79,14 @@ const BasicLayout = ({ children }) => {
       { name: "대쉬보드", path: "/hr/dashboard" },
       { name: "출/퇴근 관리", path: "/hr/platform" },
       { name: "직원 관리", path: "/employee" },
-      { name: "근태 관리", path: "/hr/salary" },
+      { name: "근태 관리", path: "/employee/attendance" },
+      { name: "근태 신청 내역", path: "/employee/attendance/history" },
     ],
     운영관리: [
       { name: "거래처 수정 승인", path: "/clients/request" },
-      { name: "주문 승인 요청", path: "/product/request" },
+      { name: "주문 승인", path: "/product/request" },
+      { name: "근태 승인", path: "/employee/attendance/approval" },
+      { name: "사원 수정 승인", path: "/employee/approval-status" },
     ],
   };
 
@@ -145,7 +148,12 @@ const BasicLayout = ({ children }) => {
           <header className="header">
             <div className="header-buttons">
               <div>메신저</div>
-              <div>비밀번호 변경</div>
+              <div
+                onClick={() => navigate("/member/change-password")}
+                style={{ cursor: "pointer" }}
+              >
+                비밀번호 변경
+              </div>
               <button className="logout-btn">
                 <FiLogOut onClick={handleClickLogout} />
               </button>

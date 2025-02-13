@@ -20,6 +20,8 @@ import com.nexterp.client.entity.Client;
 import com.nexterp.client.entity.RequestStatus;
 import com.nexterp.client.repository.ClientRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -68,43 +70,39 @@ public class ClientServiceImpl implements ClientService {
   }
 
   @Override
-  public ClientDTO getClientByClientCode(String clientCode) {
-    Client client = clientRepository.findByClientCode(clientCode)
-            .orElseThrow(() -> new RuntimeException("거래처를 찾을 수 없습니다. ID: " + clientCode));
-    return convertToDTO(client);
-  }
-
-  // 엔터티를 DTO로 변환
-
-  @Override
   // PENDING 상태가 아닌 거래처만 조회
-  public List<ClientDTO> getAllClients() {
-    return clientRepository.findAllActiveClients().stream()
-            .map(this::convertToDTO) // 각 엔터티를 DTO로 변환
-            .toList();
-  }
+  public Page<ClientDTO> getAllClients(Pageable pageable) {
+    Page<Client> clients = clientRepository.findAllActiveClients(pageable);
+    return clients.map(this::convertToDTO);}
 
   @Override
-  // ✅ PENDING 상태의 거래처만 조회
-  public List<ClientDTO> getPendingClients() {
-    return clientRepository.findPendingClients().stream()
-            .map(this::convertToDTO)
-            .toList();
-  }
+  // PENDING 상태의 거래처만 조회
+  public Page<ClientDTO> getPendingClients(Pageable pageable) {
+    Page<Client> clients = clientRepository.findPendingClients(pageable);
+    return clients.map(this::convertToDTO);}
 
   // employeeId값으로 거래처 조회
   @Override
-  public List<ClientDTO> getClientsByEmployeeId(Integer employeeId) {
-    return clientRepository.findByEmployeeId(employeeId).stream()
-            .map(this::convertToDTO) // 각 엔터티를 DTO로 변환
-            .toList();
-  }
+  public Page<ClientDTO> getClientsByEmployeeId(Integer employeeId, Pageable pageable) {
+    Page<Client> clients = clientRepository.findByEmployeeId(employeeId, pageable);
+    return clients.map(this::convertToDTO);}
 
   @Override
-  public List<ClientDTO> getClientsByStatus(RequestStatus status) {
-    return clientRepository.findByStatus(status).stream()
-            .map(this::convertToDTO) // 각 엔터티를 DTO로 변환
-            .toList();
+  public Page<ClientDTO> getClientsByStatus(RequestStatus status, Pageable pageable) {
+    Page<Client> clients = clientRepository.findByStatus(status, pageable);
+    return clients.map(this::convertToDTO);}
+
+  // clientCode로 조회
+  @Override
+  public Page<ClientDTO> getClientByClientCode(String clientCode, Pageable pageable) {
+    Page<Client> clients = clientRepository.findByClientCodeLike(clientCode, pageable);
+    return clients.map(this::convertToDTO);}
+
+  // clientName으로 조회
+  @Override
+  public Page<ClientDTO> getClientByClientName(String clientName, Pageable pageable) {
+    Page<Client> clients = clientRepository.findByClientName(clientName, pageable);
+    return clients.map(this::convertToDTO);
   }
 
   @Override

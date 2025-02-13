@@ -28,7 +28,7 @@ import java.util.List;
 @Configuration
 public class AccountDataInitializer {
 
-  @Bean
+/*  @Bean
   CommandLineRunner initializeAccounts(AccountRepository accountRepository) {
     return args -> {
       // 데이터 초기화 확인: 첫 페이지를 조회해 데이터가 있는지 확인
@@ -95,5 +95,5 @@ public class AccountDataInitializer {
         ));
       }
     };
-  }
+  }*/
 }

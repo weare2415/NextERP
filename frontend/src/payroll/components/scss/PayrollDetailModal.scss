@@ -1,6 +1,7 @@
-@import '../../../App.scss';
+@import "../../../App.scss";
+
 .modal-overlay {
-  position: fixed !important;
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
@@ -10,129 +11,151 @@
   justify-content: center;
   align-items: center;
   z-index: 1000;
+}
 
-  .payroll-modal {
-    background-color: white;
-    border-radius: 4px;
-    width: 90%;
-    max-width: 800px;
-    max-height: 90vh;
+.payroll-modal {
+  background-color: white;
+  border-radius: 4px;
+  width: 90%;
+  max-width: 800px;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  font-family: $font-primary;
+
+  .modal-header {
     display: flex;
-    flex-direction: column;
-    font-family: $font-primary;
-    overflow: hidden;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    background-color: $primary-color;
+    color: white;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    width: 100%;
 
-    .modal-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 15px 20px;
-      background-color: $primary-color;
-      color: white;
-      border-top-left-radius: 4px;
-      border-top-right-radius: 4px;
-
-      h2 {
-        margin: 0;
-        font-size: 18px;
-        font-weight: 500;
-      }
-
-      .close-button {
-        background: none;
-        border: none;
-        color: white;
-        font-size: 20px;
-        cursor: pointer;
-        padding: 0 5px;
-
-        &:hover {
-          opacity: 0.8;
-        }
-      }
+    h2 {
+      margin: 0;
+      font-size: 18px;
+      font-weight: 500;
     }
 
-    .modal-content {
-      padding: 20px;
-      overflow-y: auto;
+    .close-button {
+      background: none;
+      border: none;
+      color: white;
+      font-size: 20px;
+      cursor: pointer;
+      padding: 0 5px;
 
-      .form-grid {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 15px;
+      &:hover {
+        opacity: 0.8;
+      }
+    }
+  }
 
-        .form-group {
-          &.full-width {
-            grid-column: 1 / -1;
+  .modal-content {
+    padding: 20px;
+    overflow-y: auto;
+    flex: 1;
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+      align-items: center;
+
+      .form-group {
+        display: flex;
+        align-items: center;
+        margin-bottom: 1px;
+
+        &.full-width {
+          grid-column: 1 / -1;
+        }
+
+        label {
+          width: 140px;
+          background-color: #e9edf4;
+          padding: 8px 15px;
+          font-size: 14px;
+          color: $primary-color;
+          text-align: center;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          margin: 0;
+        }
+
+        input,
+        select,
+        textarea {
+          flex: 1;
+          padding: 8px 10px;
+          border: 1px solid #e9edf4;
+          font-family: $font-primary;
+          font-size: 14px;
+          height: 35px;
+          width: 100%;
+          border-radius: 0;
+          margin: 0;
+
+          &:focus {
+            outline: none;
+            border-color: $secondary-color;
           }
+        }
+
+        &.full-width {
+          grid-column: 1 / -1;
+          display: flex;
+          align-items: flex-start;
 
           label {
-            display: block;
-            margin-bottom: 5px;
-            color: $primary-color;
-            font-weight: 500;
-          }
-
-          input, select, textarea {
-            width: 100%;
-            padding: 8px;
-            border: 1px solid $secondary-color;
-            border-radius: 4px;
-            font-family: $font-primary;
-
-            &:focus {
-              outline: none;
-              border-color: $primary-color;
-            }
+            height: 100px;
+            justify-content: center;
+            line-height: normal;
           }
 
           textarea {
-            min-height: 80px;
-            resize: vertical;
+            height: 100px;
+            resize: none;
           }
         }
       }
+    }
+  }
 
-      .button-container {
-        display: flex;
-        justify-content: center;
-        gap: 10px;
-        margin-top: 20px;
+  .button-container {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 20px;
+    padding: 15px;
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px;
 
-        button {
-          padding: 8px 24px;
-          border: none;
-          border-radius: 4px;
-          cursor: pointer;
-          font-family: $font-primary;
+    button {
+      width: 100px;
+      height: 40px;
+      border: none;
+      border-radius: 4px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
 
-          &.close-button {
-            background-color: $secondary-color;
-            color: white;
+      &.update-button {
+        background-color: $primary-color;
+        color: white;
 
-            &:hover {
-              background-color: darken($secondary-color, 10%);
-            }
-          }
-
-          &.update-button {
-            background-color: #2196F3;
-            color: white;
-
-            &:hover {
-              background-color: darken(#2196F3, 10%);
-            }
-          }
-
-          &.delete-button {
-            background-color: $error-color;
-            color: white;
-
-            &:hover {
-              background-color: darken($error-color, 10%);
-            }
-          }
+        &:hover {
+          background-color: darken($primary-color, 10%);
         }
+      }
+
+      &.delete-button {
+        background-color: $error-color;
+        color: white;
       }
     }
   }

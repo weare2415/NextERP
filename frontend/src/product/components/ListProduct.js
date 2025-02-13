@@ -1,96 +1,63 @@
 import React, { useEffect, useState } from "react";
-import "../scss/ListProduct.scss";
+import "../../product/scss/ListProduct.scss";
+import SearchProduct from "../components/SearchProduct";
+import Sale from "../components/Sale";
+import Purchase from "../components/Purchase";
+import Pagination from "../../common/component/Pagination";
 import { getAllProducts } from "../api/productApi";
-import { getEmployeeById } from "../../member/api/memberApi";
+import { getEmployeeById } from "../../employee/api/employeeApi";
 
-const ListProduct = ({
-  onProductSelect,
-  products,
-  onSaleRequest,
-  onPurchaseRequest,
-}) => {
-  const [filteredProducts, setFilteredProducts] = useState([]);
-  const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [employeeNames, setEmployeeNames] = useState({});
+const ListProduct = ({ onProductSelect }) => {
+  const [products, setProducts] = useState([]);
+  const [selectedProduct, setSelectedProduct] = useState(null);
   const [error, setError] = useState(null);
-  const [currentView, setCurrentView] = useState("상태");
-  const [paginationData, setPaginationData] = useState({
-    currentPage: 0,
-    totalPages: 0,
-    totalElements: 0,
-  });
-
-  const dataToShow = filteredProducts.length > 0 ? filteredProducts : products;
-
-  const fetchAllProducts = async (page = 0) => {
-    setDropdownOpen(false);
-    try {
-      const response = await getAllProducts(page);
-      setFilteredProducts(response.content);
-      setPaginationData({
-        currentPage: response.number,
-        totalPages: response.totalPages,
-        totalElements: response.totalElements,
-      });
-      await fetchEmployeeNames(response.content);
-
-      setCurrentView("전체 상품 보기");
-    } catch (error) {
-      console.error("Error fetching all products:", error);
-      setError("제품 목록을 불러오는데 실패했습니다.");
-    }
-  };
-
-  // ✅ 직원 이름 가져오기
-  const fetchEmployeeNames = async (productList) => {
-    const uniqueEmployeeIds = [
-      ...new Set(productList.map((product) => product.employeeId)),
-    ].filter(Boolean);
-    const employeeData = {};
-
-    try {
-      const employeePromises = uniqueEmployeeIds.map(async (id) => {
-        try {
-          const employeeInfo = await getEmployeeById(id);
-          return { id, name: employeeInfo.name };
-        } catch (error) {
-          console.error(`Error fetching employee with ID ${id}:`, error);
-          return { id, name: "알 수 없음" };
-        }
-      });
-
-      // 모든 직원 데이터를 기다린 후 상태 업데이트
-      const resolvedEmployees = await Promise.all(employeePromises);
-      resolvedEmployees.forEach(({ id, name }) => {
-        employeeData[id] = name;
-      });
-
-      setEmployeeNames(employeeData);
-    } catch (error) {
-      console.error("Error fetching employee names:", error);
-      setEmployeeNames({});
-    }
-  };
+  const [isSaleModalOpen, setIsSaleModalOpen] = useState(false);
+  const [isPurchaseModalOpen, setIsPurchaseModalOpen] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const pageSize = 10;
 
   useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (!event.target.closest(".filter-buttons")) {
-        setDropdownOpen(false);
+    fetchAllProducts();
+  }, [currentPage]);
+
+  const fetchAllProducts = async () => {
+    try {
+      const response = await getAllProducts(currentPage - 1, pageSize);
+
+      console.log(response.content);
+
+      if (response.content.length === 0 && currentPage > 1) {
+        setCurrentPage(currentPage - 1);
+      } else {
+        // 제품 데이터를 가져온 후 직원 이름을 API로 조회
+        const productsWithEmployeeNames = await Promise.all(
+          response.content.map(async (product) => {
+            let employeeName = "담당자 없음";
+            if (product.employeeId) {
+              try {
+                const employee = await getEmployeeById(product.employeeId);
+                employeeName = employee.name || "담당자 없음";
+              } catch (error) {
+                console.error("직원 정보를 불러오는 중 오류가 발생했습니다.");
+              }
+            }
+            return { ...product, employeeName };
+          })
+        );
+        setProducts(productsWithEmployeeNames);
       }
-    };
 
-    document.addEventListener("click", handleClickOutside);
-    return () => {
-      document.removeEventListener("click", handleClickOutside);
-    };
-  }, []);
-
-  // 페이지 변경 시 호출
-  const handlePageChange = (newPage) => {
-    if (newPage < 0 || newPage >= paginationData.totalPages) {
-      return;
+      setError(null);
+    } catch (error) {
+      setError("제품 목록을 불러오는 중 오류가 발생했습니다.");
+      console.error("Error fetching all products:", error);
     }
-    fetchAllProducts(newPage);
+  };
+
+  const handleSearchResults = (results) => {
+    setProducts(results.length > 0 ? results : []);
+    setError(results.length === 0 ? "검색한 제품이 존재하지 않습니다." : null);
+    setCurrentPage(1);
   };
 
   return (
@@ -104,21 +71,29 @@ const ListProduct = ({
               <th>판매 가격</th>
               <th>재고 수량</th>
               <th>담당자</th>
-              <th>작업</th>
+              <th>상세정보</th>
               <th>판매/구매</th>
             </tr>
           </thead>
           <tbody>
-            {dataToShow.length > 0 ? (
-              dataToShow.map((product) => (
+            {error ? (
+              <tr>
+                <td colSpan="7" style={{ textAlign: "center", color: "red" }}>
+                  {error}
+                </td>
+              </tr>
+            ) : products.length > 0 ? (
+              products.map((product) => (
                 <tr key={product.id}>
                   <td>{product.id}</td>
                   <td>{product.productName}</td>
                   <td>
-                    {product?.salePrice?.toLocaleString() || "가격 없음"} 원
+                    {product?.salePrice
+                      ? parseFloat(product.salePrice).toLocaleString() + " 원"
+                      : "가격 없음"}
                   </td>
                   <td>{product.stock}</td>
-                  <td>{employeeNames[product.employeeId] || "Loading..."}</td>
+                  <td>{product.employeeName || "담당자 없음"}</td>
                   <td>
                     <button
                       className="product-table-detail-btn"
@@ -133,13 +108,21 @@ const ListProduct = ({
                   <td>
                     <button
                       className="sale-btn"
-                      onClick={() => onSaleRequest(product)}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setIsSaleModalOpen(true);
+                        setSelectedProduct(product);
+                      }}
                     >
                       판매 요청
                     </button>
                     <button
                       className="purchase-btn"
-                      onClick={() => onPurchaseRequest(product)}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setIsPurchaseModalOpen(true);
+                        setSelectedProduct(product);
+                      }}
                     >
                       구매 요청
                     </button>
@@ -157,26 +140,23 @@ const ListProduct = ({
         </table>
       </div>
 
-      {/* 페이징 부분 항상 렌더링 */}
-      <div className="pagination-controls">
-        <button
-          disabled={paginationData.currentPage === 0}
-          onClick={() => handlePageChange(paginationData.currentPage - 1)}
-        >
-          이전
-        </button>
-        <span>
-          {paginationData.currentPage + 1} / {paginationData.totalPages}
-        </span>
-        <button
-          disabled={
-            paginationData.currentPage === paginationData.totalPages - 1
-          }
-          onClick={() => handlePageChange(paginationData.currentPage + 1)}
-        >
-          다음
-        </button>
-      </div>
+      <Pagination
+        currentPage={currentPage}
+        totalItems={products.length}
+        pageSize={pageSize}
+        onPageChange={setCurrentPage}
+      />
+
+      <Sale
+        isOpen={isSaleModalOpen}
+        onClose={() => setIsSaleModalOpen(false)}
+        selectedProduct={selectedProduct}
+      />
+      <Purchase
+        isOpen={isPurchaseModalOpen}
+        onClose={() => setIsPurchaseModalOpen(false)}
+        selectedProduct={selectedProduct}
+      />
     </div>
   );
 };

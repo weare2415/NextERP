@@ -1,17 +1,28 @@
 @import "../../App.scss";
 
-.product-order-detail-form {
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-container {
   background-color: white;
   border-radius: 4px;
   width: 90%;
-  max-width: 700px;
+  max-width: 800px;
   max-height: 90vh;
-  padding: 0;
-  font-family: $font-primary;
   display: flex;
   flex-direction: column;
+  font-family: $font-primary;
 
-  .product-order-detail-header {
+  .modal-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -26,7 +37,6 @@
       margin: 0;
       font-size: 18px;
       font-weight: 500;
-      color: white;
     }
 
     .close-button {
@@ -43,127 +53,99 @@
     }
   }
 
-  form {
+  .modal-content {
     padding: 20px;
     overflow-y: auto;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 0;
-    align-items: center;
 
-    .form-group {
-      display: flex;
-      align-items: center;
-      margin-bottom: 1px;
-      position: relative;
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
 
-      label {
-        width: 140px;
-        background-color: #e9edf4;
-        padding: 8px 15px;
-        font-size: 14px;
-        color: $primary-color;
-        text-align: center;
+      .form-group {
         display: flex;
-        align-items: center;
-        justify-content: center;
-        margin: 0;
-      }
-
-      input,
-      select,
-      textarea {
-        flex: 1;
-        padding: 8px 10px;
-        border: 1px solid #e9edf4;
-        font-family: $font-primary;
-        font-size: 14px;
-        height: 35px;
-        width: 100%;
-        border-radius: 0;
-        margin: 0;
-
-        &:focus {
-          outline: none;
-          border-color: $secondary-color;
-        }
-      }
-
-      .dropdown {
-        position: absolute;
-        top: 100%;
-        left: 140px;
-        width: calc(100% - 140px);
-        background-color: white;
-        border: 1px solid #e9edf4;
-        border-top: none;
-        max-height: 200px;
-        overflow-y: auto;
-        z-index: 1000;
-        margin: 0;
-        padding: 0;
-        list-style: none;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-
-        li {
-          padding: 8px 10px;
-          cursor: pointer;
-          font-size: 14px;
-
-          &:hover {
-            background-color: #f5f7fa;
-          }
-
-          &:not(:last-child) {
-            border-bottom: 1px solid #e9edf4;
-          }
-        }
-      }
-
-      &:has(textarea[name="memo"]) {
-        grid-column: 1 / -1;
-        display: flex;
-        align-items: flex-start;
+        margin-bottom: 1px;
 
         label {
-          height: 100px;
-          justify-content: center;
-          line-height: normal;
+          width: 140px;
+          background-color: #e9edf4;
+          padding: 8px 15px;
+          font-size: 14px;
+          color: $primary-color;
+          display: flex;
+          align-items: center;
+          margin: 0;
         }
 
+        input,
+        select,
         textarea {
-          height: 100px;
-          resize: none;
+          flex: 1;
+          padding: 8px 10px;
+          border: 1px solid #e9edf4;
+          font-family: $font-primary;
+          font-size: 14px;
+          height: 35px;
+          width: 100%;
+          border-radius: 0;
+          margin: 0;
+
+          &:focus {
+            outline: none;
+            border-color: $secondary-color;
+          }
+        }
+
+        &.full-width {
+          grid-column: 1 / -1;
+          display: flex;
+          align-items: flex-start;
+
+          label {
+            height: 100px;
+            justify-content: center;
+            line-height: normal;
+          }
+
+          textarea {
+            height: 100px;
+            resize: none;
+          }
         }
       }
     }
+  }
 
-    .product-order-detail-buttons {
-      grid-column: 1 / -1;
-      display: flex;
-      justify-content: center;
-      gap: 10px;
-      margin-top: 20px;
+  .button-container {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    padding: 15px;
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px;
 
-      button {
-        width: 100px;
-        height: 40px;
-        border: none;
-        border-radius: 4px;
-        font-size: 14px;
-        font-weight: 500;
-        cursor: pointer;
+    button {
+      width: 100px;
+      height: 40px;
+      border: none;
+      border-radius: 4px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+
+      &:hover {
+        opacity: 0.9;
       }
+    }
 
-      .update-button {
-        background-color: $primary-color;
-        color: white;
-      }
+    .update-button {
+      background-color: $primary-color;
+      color: white;
+    }
 
-      .close-button {
-        background-color: $error-color;
-        color: white;
-      }
+    .close-button {
+      background-color: $error-color;
+      color: white;
     }
   }
 }

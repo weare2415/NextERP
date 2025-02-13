@@ -1,37 +1,38 @@
 import React, { useState, useEffect } from "react";
 import {
   updateEmployee,
-  deleteEmployee,
+  requestUpdateEmployee,
   getDepartments,
   getPositions,
   getEmployeeById,
-} from "../api/employeeApi"; // ✅ API 추가
+} from "../api/employeeApi";
 import "../scss/EmployeeDetail.scss";
 
-const EmployeeDetail = ({
-  employee,
-  onClose,
-  onDeleteSuccess,
-  onUpdateSuccess,
-}) => {
+const EmployeeDetail = ({ employee, onClose, onUpdateSuccess }) => {
   const [editedEmployee, setEditedEmployee] = useState({ ...employee });
   const [departments, setDepartments] = useState([]);
   const [positions, setPositions] = useState([]);
-  const [isTerminated, setIsTerminated] = useState(employee.isTerminated); // ✅ 퇴사 여부 상태 추가
+  const [isTerminated, setIsTerminated] = useState(
+    employee?.isTerminated || false
+  );
+  const [status, setStatus] = useState(employee?.status || "PREPARED");
 
-  // ✅ 직원 데이터 다시 불러오기 (퇴사 여부 포함)
+  // 직원 데이터 다시 불러오기 (퇴사 여부, 승인 상태 포함)
   useEffect(() => {
     const fetchEmployeeData = async () => {
       try {
+        if (!employee?.id) return; // employee가 없으면 데이터 요청을 하지 않음
         const updatedEmployee = await getEmployeeById(employee.id);
         setEditedEmployee(updatedEmployee);
+        setStatus(updatedEmployee.status || "PREPARED");
+        setIsTerminated(updatedEmployee.isTerminated || false);
       } catch (error) {
         console.error("❌ 직원 정보 조회 실패:", error);
       }
     };
 
     fetchEmployeeData();
-  }, [employee.id]);
+  }, [employee?.id]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -47,7 +48,6 @@ const EmployeeDetail = ({
     fetchData();
   }, []);
 
-  // ✅ 입력 값 변경 핸들러
   const handleChange = (e) => {
     const { name, value } = e.target;
     let newValue = value;
@@ -62,31 +62,48 @@ const EmployeeDetail = ({
     }));
   };
 
-  // ✅ 직원 정보 업데이트 (수정 버튼 클릭 시 실행)
-  const handleUpdate = async () => {
+  const handleUpdateRequest = async () => {
     if (isTerminated) {
       alert("❌ 퇴사한 직원은 수정할 수 없습니다.");
       return;
     }
 
-    // ✅ 퇴사일이 설정된 경우 확인 메시지 표시
-    if (editedEmployee.terminationDate) {
-      const confirmTerminate = window.confirm("퇴사 처리하시겠습니까?");
-      if (!confirmTerminate) {
-        return; // 사용자가 취소하면 업데이트 중단
-      }
-    }
-
     try {
-      const updated = await updateEmployee(employee.id, editedEmployee);
+      const updated = await requestUpdateEmployee(employee.id, editedEmployee);
 
       if (updated) {
-        alert("✅ 직원 정보가 수정되었습니다.");
-        setEditedEmployee(updated);
+        alert("✅ 수정 요청이 완료되었습니다. 관리자 승인을 기다려주세요.");
+        setStatus("PENDING");
         onUpdateSuccess();
         setTimeout(() => onClose(), 200);
       } else {
-        alert("❌ 직원 정보 수정이 실패했습니다.");
+        alert("❌ 수정 요청이 실패했습니다.");
+      }
+    } catch (error) {
+      console.error("❌ 수정 요청 실패:", error);
+      alert("❌ 수정 요청에 실패했습니다.");
+    }
+  };
+
+  const handleUpdate = async () => {
+    if (status !== "APPROVED") {
+      alert("❌ 수정은 승인 후에만 가능합니다.");
+      return;
+    }
+
+    try {
+      const updatedEmployee = await requestUpdateEmployee(
+        employee.id,
+        editedEmployee
+      );
+
+      if (updatedEmployee) {
+        alert("✅ 직원 정보 수정 요청이 완료되었습니다.");
+        setEditedEmployee(updatedEmployee);
+        onUpdateSuccess();
+        setTimeout(() => onClose(), 200);
+      } else {
+        alert("❌ 직원 정보 수정 요청에 실패했습니다.");
       }
     } catch (error) {
       console.error("❌ 직원 수정 실패:", error);
@@ -107,8 +124,8 @@ const EmployeeDetail = ({
         <div className="modal-content">
           {isTerminated && (
             <p className="terminated-message">🚨 퇴사한 직원입니다.</p>
-          )}{" "}
-          {/* ✅ 퇴사 메시지 추가 */}
+          )}
+
           <div className="form-grid">
             <div className="form-group">
               <label>사원 번호</label>
@@ -221,18 +238,26 @@ const EmployeeDetail = ({
                 name="terminationDate"
                 value={editedEmployee.terminationDate || ""}
                 onChange={handleChange}
-                disabled={isTerminated}
+                disabled={!isTerminated}
               />
             </div>
           </div>
         </div>
 
         <div className="button-container">
-          {!isTerminated && (
-            <button className="update-button" onClick={handleUpdate}>
-              수정
+          {!isTerminated && status !== "PENDING" && (
+            <button className="update-button" onClick={handleUpdateRequest}>
+              수정 요청
             </button>
-          )}{" "}
+          )}
+          {!isTerminated && status === "APPROVED" && (
+            <button className="update-button" onClick={handleUpdate}>
+              최종 수정
+            </button>
+          )}
+          <button className="close-button" onClick={onClose}>
+            닫기
+          </button>
         </div>
       </div>
     </div>
