@@ -21,6 +21,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 @Transactional
 public class TransactionServiceImpl implements TransactionService {
@@ -37,10 +42,23 @@ public TransactionServiceImpl(TransactionRepository transactionRepository) {
   }
 
   @Override
+  public List<TransactionDTO> getAllTransactionsList() {
+    return transactionRepository.findAll().stream()
+        .map(this::entityToDTO)
+        .collect(Collectors.toList());
+  }
+
+  @Override
   public TransactionDTO getTransactionById(Long id) {
     return transactionRepository.findById(id)
         .map(this::entityToDTO)
         .orElseThrow(() -> new IllegalArgumentException("Transaction not found: " + id));
+  }
+
+  @Override
+  public Page<TransactionDTO> getTransactionsByDateBetween(LocalDateTime startDate, LocalDateTime endDate, Pageable pageable) {
+    return transactionRepository.findByDateBetweenOrderByDate(startDate, endDate, pageable)
+        .map(this::entityToDTO);
   }
 
   @Override

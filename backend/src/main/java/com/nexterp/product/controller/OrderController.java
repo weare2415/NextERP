@@ -16,6 +16,7 @@ package com.nexterp.product.controller;
 import com.nexterp.client.entity.RequestStatus;
 import com.nexterp.employee.entity.Employee;
 import com.nexterp.product.dto.OrderDTO;
+import com.nexterp.product.entity.Order;
 import com.nexterp.product.service.OrderService;
 import com.nexterp.product.service.PurchaseService;
 import com.nexterp.product.service.SaleService;
@@ -36,6 +37,67 @@ public class OrderController {
   private final OrderService orderService;
   private final PurchaseService purchaseService;
   private final SaleService saleService;
+
+  // 구매 처리 (초기 승인 요청)
+  @PostMapping("/purchase/pending")
+  public ResponseEntity<String> processPurchase(@RequestParam Long productId,
+                                                @RequestParam int quantity,
+                                                @RequestParam BigDecimal purchasePrice,
+                                                @RequestParam String clientCode,
+                                                @RequestParam String paymentAccountId,
+                                                @RequestBody Employee employee,
+                                                @RequestParam(required = false) String memo) {
+    purchaseService.processPurchase(productId, quantity, purchasePrice, clientCode, paymentAccountId, employee, RequestStatus.PENDING, memo);
+    return ResponseEntity.ok("Purchase processed successfully.");
+  }
+
+  // 판매 처리 (초기 승인 요청)
+  @PostMapping("/sale/pending")
+  public ResponseEntity<String> processSale(@RequestParam Long productId,
+                                            @RequestParam int quantity,
+                                            @RequestParam BigDecimal salePrice,
+                                            @RequestParam String clientCode,
+                                            @RequestParam String paymentAccountId,
+                                            @RequestBody Employee employee,
+                                            @RequestParam(required = false) String memo) {
+    saleService.processSale(productId, quantity, salePrice, clientCode, paymentAccountId, employee, RequestStatus.PENDING, memo);
+    return ResponseEntity.ok("Sale processed successfully.");
+  }
+
+  // 판매 주문 승인 (승인된 주문 반환)
+  @PutMapping("/sale/approve/{transactionId}")
+  public ResponseEntity<String> approveSaleOrder(@PathVariable Long transactionId) {
+    saleService.approveSale(transactionId);
+    return ResponseEntity.ok("Sale approved successfully.");
+  }
+
+  // 구매 주문 승인 (승인된 주문 반환)
+  @PutMapping("/purchase/approve/{transactionId}")
+  public ResponseEntity<String> approvePurchaseOrder(@PathVariable Long transactionId) {
+    purchaseService.approvePurchase(transactionId);
+    return ResponseEntity.ok("Purchase approved successfully.");
+  }
+
+  // 판매 주문 반려 (거래 삭제)
+  @DeleteMapping("/sale/reject/{transactionId}")
+  public ResponseEntity<String> rejectSaleOrder(@PathVariable Long transactionId) {
+    saleService.rejectSale(transactionId);
+    return ResponseEntity.ok("Order rejected and deleted successfully.");
+  }
+
+  // 구매 주문 반려 (거래 삭제)
+  @DeleteMapping("/purchase/reject/{transactionId}")
+  public ResponseEntity<String> rejectPurchaseOrder(@PathVariable Long transactionId) {
+    purchaseService.rejectPurchase(transactionId);
+    return ResponseEntity.ok("Order rejected and deleted successfully.");
+  }
+
+  // Id로 조회
+  @GetMapping("/{id}")
+  public ResponseEntity<OrderDTO> getOrderById(@PathVariable Long id) {
+    OrderDTO order = orderService.getOrderById(id);
+    return ResponseEntity.ok(order);
+  }
 
   // Client ID로 주문 조회
   @GetMapping("/client/{clientCode}")
@@ -81,60 +143,6 @@ public class OrderController {
                                                          @RequestParam(defaultValue = "10") int size) {
     Pageable pageable = PageRequest.of(page, size);
     return ResponseEntity.ok(orderService.getPendingOrders(pageable));
-  }
-
-  // 구매 처리 (초기 승인 요청)
-  @PostMapping("/purchase/pending")
-  public ResponseEntity<String> processPurchase(@RequestParam Long productId,
-                                                @RequestParam int quantity,
-                                                @RequestParam BigDecimal price,
-                                                @RequestParam String clientCode,
-                                                @RequestParam String paymentAccountId,
-                                                @RequestBody Employee employee,
-                                                @RequestParam(required = false) String memo) {
-    purchaseService.processPurchase(productId, quantity, price, clientCode, paymentAccountId, employee, RequestStatus.PENDING, memo);
-    return ResponseEntity.ok("Purchase processed successfully.");
-  }
-
-  // 판매 처리 (초기 승인 요청)
-  @PostMapping("/sale/pending")
-  public ResponseEntity<String> processSale(@RequestParam Long productId,
-                                            @RequestParam int quantity,
-                                            @RequestParam BigDecimal salePrice,
-                                            @RequestParam String clientCode,
-                                            @RequestParam String paymentAccountId,
-                                            @RequestBody Employee employee,
-                                            @RequestParam(required = false) String memo) {
-    saleService.processSale(productId, quantity, salePrice, clientCode, paymentAccountId, employee, RequestStatus.PENDING, memo);
-    return ResponseEntity.ok("Sale processed successfully.");
-  }
-
-  // 판매 주문 승인 (승인된 주문 반환)
-  @PutMapping("/sale/approve/{transactionId}")
-  public ResponseEntity<String> approveSaleOrder(@PathVariable Long transactionId) {
-    saleService.approveSale(transactionId);
-    return ResponseEntity.ok("Sale approved successfully.");
-  }
-
-  // 구매 주문 승인 (승인된 주문 반환)
-  @PutMapping("/purchase/approve/{transactionId}")
-  public ResponseEntity<String> approvePurchaseOrder(@PathVariable Long transactionId) {
-    purchaseService.approvePurchase(transactionId);
-    return ResponseEntity.ok("Purchase approved successfully.");
-  }
-
-  // 판매 주문 반려 (거래 삭제)
-  @DeleteMapping("/sale/reject/{transactionId}")
-  public ResponseEntity<String> rejectSaleOrder(@PathVariable Long transactionId) {
-    saleService.rejectSale(transactionId);
-    return ResponseEntity.ok("Order rejected and deleted successfully.");
-  }
-
-  // 구매 주문 반려 (거래 삭제)
-  @DeleteMapping("/purchase/reject/{transactionId}")
-  public ResponseEntity<String> rejectPurchaseOrder(@PathVariable Long transactionId) {
-    purchaseService.rejectPurchase(transactionId);
-    return ResponseEntity.ok("Order rejected and deleted successfully.");
   }
 
   // 판매 제품 반품

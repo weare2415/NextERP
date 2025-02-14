@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { FiLogOut } from "react-icons/fi";
 import "../pages/scss/BasicLayout.scss";
-import { getEmployeeById } from "../../member/api/memberApi";
+import { getEmployeeById } from "../member/api/memberApi";
 import { useSelector } from "react-redux";
-import { useCustomLogin } from "../../member/hook/useCustomLogin";
-import { Link, useLocation, useNavigate } from "react-router-dom"; // Import 추가
+import { useCustomLogin } from "../member/hook/useCustomLogin";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 const BasicLayout = ({ children }) => {
   const [user, setUser] = useState({
@@ -73,7 +73,7 @@ const BasicLayout = ({ children }) => {
       { name: "대쉬보드", path: "/sales/dashboard" },
       { name: "거래처 관리", path: "/clients" },
       { name: "제품 관리", path: "/product" },
-      { name: "주문 내역 조회", path: "/order" },
+      { name: "주문 내역 조회", path: "/product/order" },
     ],
     인사: [
       { name: "대쉬보드", path: "/hr/dashboard" },

@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import {useCustomLogin} from '../../member/hook/useCustomLogin';
+import {useCustomLogin} from '../member/hook/useCustomLogin';
 import BasicLayout from './BasicLayout';
 
 const MainPage = () => {

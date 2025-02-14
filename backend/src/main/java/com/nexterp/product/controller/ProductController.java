@@ -8,6 +8,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 
 @RestController
 @RequestMapping("/product")
@@ -65,4 +67,5 @@ public class ProductController {
         Page<ProductDTO> products = productService.getProductsByName(name,pageable);
         return ResponseEntity.ok(products);
     }
+
 }

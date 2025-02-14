@@ -69,14 +69,14 @@ public class ClientServiceImpl implements ClientService {
     return convertToDTO(clientRepository.save(client));
   }
 
-  @Override
   // PENDING 상태가 아닌 거래처만 조회
+  @Override
   public Page<ClientDTO> getAllClients(Pageable pageable) {
     Page<Client> clients = clientRepository.findAllActiveClients(pageable);
     return clients.map(this::convertToDTO);}
 
-  @Override
   // PENDING 상태의 거래처만 조회
+  @Override
   public Page<ClientDTO> getPendingClients(Pageable pageable) {
     Page<Client> clients = clientRepository.findPendingClients(pageable);
     return clients.map(this::convertToDTO);}
