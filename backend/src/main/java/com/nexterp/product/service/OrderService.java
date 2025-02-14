@@ -28,6 +28,8 @@ import org.springframework.data.domain.Pageable;
 public interface OrderService {
   OrderDTO createOrder(OrderDTO orderDTO);
 
+  OrderDTO getOrderById(Long orderId);
+
   Page<OrderDTO> getOrdersByClientCode(String clientCode, Pageable pageable);
 
   Page<OrderDTO> getOrdersByEmployeeId(Integer employeeId, Pageable pageable);

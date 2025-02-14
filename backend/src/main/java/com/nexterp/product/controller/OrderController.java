@@ -16,6 +16,7 @@ package com.nexterp.product.controller;
 import com.nexterp.client.entity.RequestStatus;
 import com.nexterp.employee.entity.Employee;
 import com.nexterp.product.dto.OrderDTO;
+import com.nexterp.product.entity.Order;
 import com.nexterp.product.service.OrderService;
 import com.nexterp.product.service.PurchaseService;
 import com.nexterp.product.service.SaleService;
@@ -89,6 +90,13 @@ public class OrderController {
   public ResponseEntity<String> rejectPurchaseOrder(@PathVariable Long transactionId) {
     purchaseService.rejectPurchase(transactionId);
     return ResponseEntity.ok("Order rejected and deleted successfully.");
+  }
+
+  // Id로 조회
+  @GetMapping("/{id}")
+  public ResponseEntity<OrderDTO> getOrderById(@PathVariable Long id) {
+    OrderDTO order = orderService.getOrderById(id);
+    return ResponseEntity.ok(order);
   }
 
   // Client ID로 주문 조회

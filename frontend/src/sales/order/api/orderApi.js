@@ -63,6 +63,17 @@ export const processPurchaseOrder = async ({
 	}
 }
 
+// id로 조회
+export const fetchOrderById = async (id) => {
+	try {
+		const response = await axiosInstance.get(`/api/order/${id}`);
+		return response.data;
+	}catch(error){
+		console.error("Error fetching order by id:", error);
+		throw error;
+	}
+}
+
 // Client Code로 주문 조회
 export const fetchOrdersByClientCode = async (clientCode,	page, size) => {
 	try {

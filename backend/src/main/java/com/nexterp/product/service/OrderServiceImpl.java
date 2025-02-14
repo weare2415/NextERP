@@ -53,6 +53,12 @@ public class OrderServiceImpl implements OrderService {
         return convertToDTO(orderRepository.save(order));
     }
 
+    @Override
+    public OrderDTO getOrderById(Long orderId) {
+        Order order = orderRepository.findById(orderId).orElseThrow(() -> new RuntimeException("Order not found"));
+        return convertToDTO(order);
+    }
+
     // Client Code 기준 주문 목록 조회
     @Override
     public Page<OrderDTO> getOrdersByClientCode(String clientCode, Pageable pageable) {
