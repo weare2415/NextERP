@@ -1,6 +1,6 @@
 @import "../../../App";
 
-.employee-page {
+.announcement-page {
   background-color: $background-color;
   padding: 20px;
   border-radius: 8px;
@@ -18,34 +18,45 @@
       color: $primary-color;
     }
 
-    .search-input {
-      padding: 8px;
-      font-size: 14px;
-      border: 1px solid black;
-      border-radius: 4px;
-      width: 200px;
-      margin-right: 10px;
-
-      &:focus {
-        outline: none;
-        border-color: darken($primary-color, 10%);
-      }
-    }
-
-    .new-employee-btn {
+    .new-announcement-btn {
       padding: 8px 12px;
-      background-color: $primary-color;
+      background-color: $secondary-color;
       color: white;
       border: none;
       border-radius: 4px;
       cursor: pointer;
       font-size: 14px;
-      font-family: $font-primary;
       transition: background-color 0.2s;
+
+      &:hover {
+        background-color: darken($secondary-color, 10%);
+      }
+    }
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: $font-primary;
+
+    th, td {
+      padding: 12px 15px;
+      text-align: center;
+      border-bottom: 1px solid $background-color;
+    }
+
+    th {
+      background-color: $primary-color;
+      color: white;
+      font-weight: 500;
 
       &:hover {
         background-color: darken($primary-color, 10%);
       }
+    }
+
+    td {
+      vertical-align: middle;
     }
   }
 

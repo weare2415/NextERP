@@ -1,4 +1,4 @@
-@import "../../../App.scss";
+@import "../../../App";
 
 .modal-overlay {
   position: fixed;
@@ -15,180 +15,144 @@
 
 .modal-container {
   background-color: white;
-  border-radius: 4px;
+  border-radius: 8px;
   width: 90%;
   max-width: 800px;
   max-height: 90vh;
   display: flex;
   flex-direction: column;
   font-family: $font-primary;
+  overflow: hidden; // ✅ 스크롤 이슈 방지
+}
 
-  .modal-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 15px 20px;
-    background-color: $primary-color;
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 20px;
+  background-color: $primary-color;
+  color: white;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+
+  h2 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 600;
+  }
+
+  .close-button {
+    background: none;
+    border: none;
     color: white;
-    border-top-left-radius: 4px;
-    border-top-right-radius: 4px;
-    width: 100%;
+    font-size: 22px;
+    cursor: pointer;
+    padding: 0 10px;
 
-    h2 {
-      margin: 0;
-      font-size: 18px;
-      font-weight: 500;
+    &:hover {
+      opacity: 0.8;
+    }
+  }
+}
+
+.modal-content {
+  padding: 20px;
+  overflow-y: auto;
+  flex-grow: 1; // ✅ 내용이 많으면 자동 스크롤
+
+  .form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+
+    @media (max-width: 768px) {
+      grid-template-columns: 1fr; // ✅ 모바일에서 1열 정렬
     }
 
-    .close-button {
-      background: none;
-      border: none;
-      color: white;
-      font-size: 20px;
-      cursor: pointer;
-      padding: 0 5px;
+    .form-group {
+      &.full-width {
+        grid-column: 1 / -1;
+      }
 
-      &:hover {
-        opacity: 0.8;
+      label {
+        display: block;
+        margin-bottom: 5px;
+        color: $primary-color;
+        font-weight: 600;
+      }
+
+      input, select, textarea {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid $secondary-color;
+        border-radius: 6px;
+        font-family: $font-primary;
+
+        &:focus {
+          outline: none;
+          border-color: $primary-color;
+          box-shadow: 0 0 4px rgba($primary-color, 0.4);
+        }
+      }
+
+      input[readonly] {
+        background-color: #f5f5f5;
+        color: #666;
+        cursor: not-allowed;
+      }
+
+      textarea {
+        min-height: 100px;
+        resize: vertical;
       }
     }
   }
+}
 
-  .modal-content {
-    padding: 20px;
-    overflow-y: auto;
-    flex: 1;
+.button-container {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 15px;
+  background-color: #f8f8f8;
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
 
-    .form-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 0;
-      align-items: center;
+  button {
+    padding: 10px 20px; // ✅ 클릭 영역 확장
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-family: $font-primary;
+    font-size: 14px;
+    font-weight: 600;
+    transition: 0.2s ease-in-out;
 
-      .form-group {
-        display: flex;
-        align-items: center;
-        margin-bottom: 1px;
-
-        label {
-          width: 140px;
-          background-color: #e9edf4;
-          padding: 8px 15px;
-          font-size: 14px;
-          color: $primary-color;
-          text-align: center;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          margin: 0;
-        }
-
-        input,
-        select,
-        textarea {
-          flex: 1;
-          padding: 8px 10px;
-          border: 1px solid #e9edf4;
-          font-family: $font-primary;
-          font-size: 14px;
-          height: 35px;
-          width: 100%;
-          border-radius: 0;
-          margin: 0;
-
-          &:focus {
-            outline: none;
-            border-color: $secondary-color;
-          }
-        }
-
-        &:has(input[name="zipCode"]) {
-          grid-column: 1 / -1;
-          display: flex;
-          align-items: center;
-
-          input {
-            flex: 1;
-          }
-
-          button {
-            margin-left: 5px;
-            width: 100px;
-            height: 35px;
-            background-color: $secondary-color;
-            color: white;
-            border: none;
-            font-size: 13px;
-            cursor: pointer;
-
-            &:hover {
-              background-color: darken($secondary-color, 10%);
-            }
-          }
-        }
-
-        &:has(input[name="clientAddress"]),
-        &:has(input[name="clientDetailedAddress"]),
-        &:has(input[name="clientAccountNumber"]) {
-          grid-column: 1 / -1;
-        }
-
-        &:has(textarea[name="memo"]) {
-          grid-column: 1 / -1;
-          display: flex;
-          align-items: flex-start;
-
-          label {
-            height: 100px;
-            justify-content: center;
-            line-height: normal;
-          }
-
-          textarea {
-            height: 100px;
-            resize: none;
-          }
-        }
-      }
-    }
-  }
-
-  .button-container {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    margin-top: 20px;
-    padding: 15px;
-    border-bottom-left-radius: 4px;
-    border-bottom-right-radius: 4px;
-
-    button {
-      width: 100px;
-      height: 40px;
-      border: none;
-      border-radius: 4px;
-      font-size: 14px;
-      font-weight: 500;
-      cursor: pointer;
-    }
-
-    .update-button {
-      background-color: $primary-color;
+    &.update-button {
+      background-color: #2196F3;
       color: white;
 
       &:hover {
-        background-color: darken($primary-color, 10%);
+        background-color: darken(#2196F3, 10%);
       }
     }
 
-    .delete-button {
-      background-color: $error-color;
+    &.delete-button {
+      background-color: red;
       color: white;
+
+      &:hover {
+        background-color: darken(red, 10%);
+      }
     }
 
-    .close-button {
+    &.close-button {
       background-color: gray;
       color: white;
+
+      &:hover {
+        background-color: darken(gray, 10%);
+      }
     }
   }
 }

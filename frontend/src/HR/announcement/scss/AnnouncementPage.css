@@ -19,50 +19,58 @@ body {
   display: block;
 }
 
-.employee-page {
+.announcement-page {
   background-color: #f5f7fa;
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
-.employee-page .page-header {
+.announcement-page .page-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 20px;
 }
-.employee-page .page-header h2 {
+.announcement-page .page-header h2 {
   font-size: 22px;
   font-weight: bold;
   color: #3c485a;
 }
-.employee-page .page-header .search-input {
-  padding: 8px;
-  font-size: 14px;
-  border: 1px solid black;
-  border-radius: 4px;
-  width: 200px;
-  margin-right: 10px;
-}
-.employee-page .page-header .search-input:focus {
-  outline: none;
-  border-color: rgb(39.6, 47.52, 59.4);
-}
-.employee-page .page-header .new-employee-btn {
+.announcement-page .page-header .new-announcement-btn {
   padding: 8px 12px;
-  background-color: #3c485a;
+  background-color: #929fb4;
   color: white;
   border: none;
   border-radius: 4px;
   cursor: pointer;
   font-size: 14px;
-  font-family: "Apple SD Gothic Neo", sans-serif;
   transition: background-color 0.2s;
 }
-.employee-page .page-header .new-employee-btn:hover {
+.announcement-page .page-header .new-announcement-btn:hover {
+  background-color: rgb(115.7880434783, 132.3913043478, 159.2119565217);
+}
+.announcement-page table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: "Apple SD Gothic Neo", sans-serif;
+}
+.announcement-page table th, .announcement-page table td {
+  padding: 12px 15px;
+  text-align: center;
+  border-bottom: 1px solid #f5f7fa;
+}
+.announcement-page table th {
+  background-color: #3c485a;
+  color: white;
+  font-weight: 500;
+}
+.announcement-page table th:hover {
   background-color: rgb(39.6, 47.52, 59.4);
 }
-.employee-page .modal-overlay {
+.announcement-page table td {
+  vertical-align: middle;
+}
+.announcement-page .modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
@@ -74,7 +82,7 @@ body {
   justify-content: center;
   z-index: 1000;
 }
-.employee-page .modal-overlay .modal {
+.announcement-page .modal-overlay .modal {
   background: white;
   padding: 20px;
   border-radius: 8px;
@@ -82,4 +90,4 @@ body {
   width: 400px;
 }
 
-/*# sourceMappingURL=EmployeePage.css.map */
+/*# sourceMappingURL=AnnouncementPage.css.map */

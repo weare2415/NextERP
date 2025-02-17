@@ -1,0 +1,51 @@
+@import "../../../App";
+
+
+.announcement-search {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+
+  .search-input {
+    padding: 8px;
+    font-size: 14px;
+    border: 1px solid black;
+    border-radius: 4px;
+    width: 200px;
+
+    &:focus {
+      outline: none;
+      border-color: darken($primary-color, 10%);
+    }
+  }
+
+  .search-btn {
+    background-color: $primary-color;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.2s;
+
+    &:hover {
+      background-color: darken($primary-color, 10%);
+    }
+  }
+
+  .filter-select {
+    padding: 8px;
+    font-size: 14px;
+    border: 1px solid $primary-color;
+    border-radius: 4px;
+    background: white;
+    cursor: pointer;
+
+    &:focus {
+      outline: none;
+      border-color: darken($primary-color, 10%);
+    }
+  }
+}

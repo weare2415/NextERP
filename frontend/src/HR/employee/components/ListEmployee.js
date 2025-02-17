@@ -1,5 +1,5 @@
 import React, { useEffect, useState, forwardRef, useImperativeHandle } from "react";
-import { getAllEmployees, getEmployeesByName, getDepartments, getPositions } from "../api/employeeApi";
+import { getAllActiveEmployees, getEmployeesByName, getDepartments, getPositions ,getEmployeesByDepartment,  getEmployeesByPosition,  getEmployeesByDepartmentAndPosition } from "../api/employeeApi";
 import EmployeeDetail from "./EmployeeDetail";
 import "../scss/ListEmployee.scss";
 
@@ -11,23 +11,41 @@ const ListEmployee = forwardRef(({ searchTerm }, ref) => {
   const [filteredEmployees, setFilteredEmployees] = useState([]);
 
   // ✅ 직원, 부서, 직급 데이터를 가져오는 함수
+  // const fetchAllData = async () => {
+  //   try {
+  //     const deptResponse = await getDepartments();
+  //     setDepartments(deptResponse || []); // ✅ 부서 데이터 저장
+
+  //     const posResponse = await getPositions();
+  //     setPositions(posResponse || []); // ✅ 직급 데이터 저장
+
+  //     const empResponse = await getAllEmployees(); // 기본적으로 퇴사하지 않은 직원만 가져옴
+  //     setEmployees(empResponse || []);
+  //     setFilteredEmployees(empResponse || []); // ✅ 초기 필터링된 직원 목록 설정
+  //   } catch (error) {
+  //     console.error("❌ 데이터 가져오기 실패:", error);
+  //     setEmployees([]);
+  //     setFilteredEmployees([]);
+  //   }
+  // };
   const fetchAllData = async () => {
     try {
       const deptResponse = await getDepartments();
       setDepartments(deptResponse || []); // ✅ 부서 데이터 저장
-
+  
       const posResponse = await getPositions();
       setPositions(posResponse || []); // ✅ 직급 데이터 저장
-
-      const empResponse = await getAllEmployees(); // 기본적으로 퇴사하지 않은 직원만 가져옴
+  
+      const empResponse = await getAllActiveEmployees(); // ✅ PENDING 제외한 직원만 조회
       setEmployees(empResponse || []);
-      setFilteredEmployees(empResponse || []); // ✅ 초기 필터링된 직원 목록 설정
+      setFilteredEmployees(empResponse || []);
     } catch (error) {
-      console.error("❌ 데이터 가져오기 실패:", error);
+      console.error("❌ 직원 데이터 가져오기 실패:", error);
       setEmployees([]);
       setFilteredEmployees([]);
     }
   };
+  
 
   // ✅ 최초 로딩 시 실행
   useEffect(() => {
@@ -40,16 +58,44 @@ const ListEmployee = forwardRef(({ searchTerm }, ref) => {
       setFilteredEmployees(employees);
       return;
     }
-
+  
     try {
-      // ✅ 검색 시 퇴사 여부 관계없이 모든 직원 검색
-      const searchResults = await getEmployeesByName(searchTerm);
-      setFilteredEmployees(searchResults);
+      let searchResults = [];
+  
+      // 🔹 이름 검색
+      const nameResults = await getEmployeesByName(searchTerm);
+      searchResults = [...nameResults];
+  
+      // 🔹 부서 검색 (부서 목록에서 검색어와 일치하는 부서 찾기)
+      const departmentMatch = departments.find(dept => dept.name.includes(searchTerm));
+      if (departmentMatch) {
+        const deptResults = await getEmployeesByDepartment(departmentMatch.id);
+        searchResults = [...searchResults, ...deptResults];
+      }
+  
+      // 🔹 직급 검색 (직급 목록에서 검색어와 일치하는 직급 찾기)
+      const positionMatch = positions.find(pos => pos.title.includes(searchTerm));
+      if (positionMatch) {
+        const posResults = await getEmployeesByPosition(positionMatch.positionId);
+        searchResults = [...searchResults, ...posResults];
+      }
+  
+      // 🔹 부서 + 직급 검색 (부서와 직급이 모두 검색어에 포함된 경우)
+      if (departmentMatch && positionMatch) {
+        const combinedResults = await getEmployeesByDepartmentAndPosition(departmentMatch.id, positionMatch.positionId);
+        searchResults = [...searchResults, ...combinedResults];
+      }
+  
+      // 🔹 중복 제거
+      const uniqueResults = Array.from(new Map(searchResults.map(emp => [emp.id, emp])).values());
+  
+      setFilteredEmployees(uniqueResults);
     } catch (error) {
       console.error("❌ 검색 실패:", error);
       setFilteredEmployees([]);
     }
   };
+  
 
   // ✅ `EmployeePage`에서 검색 실행 시 이 함수 호출 가능하도록 설정
   useImperativeHandle(ref, () => ({

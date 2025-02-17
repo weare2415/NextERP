@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux"; // ✅ Redux에서 로그인 정보 가져오기
-import { checkIn, checkOut, getAttendanceByEmployee } from "../../attendance/api/attendanceApi"; // ✅ 경로 수정
-import BasicLayout from "../../../common/pages/BasicLayout";
+import { checkIn, checkOut, getAttendanceByEmployee } from "../../attendance/api/attendanceApi";
+import BasicLayout from '../../../common/pages/BasicLayout'; // ✅ 경로 수정
 
 const MyPage = () => {
   const employeeId = useSelector((state) => state.loginSlice.id); // ✅ 로그인한 사용자의 ID 가져오기

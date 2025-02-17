@@ -1,6 +1,7 @@
-import axiosInstance from "../../../common/api/mainApi";
 
 // ✅ 특정 직원 정보 조회 API 추가
+import axiosInstance from '../../../common/api/mainApi';
+
 export const getEmployeeById = async (id) => {
   try {
     const response = await axiosInstance.get(`/api/employees/${id}`);
@@ -15,13 +16,13 @@ export const getEmployeeById = async (id) => {
 export const getEmployeesByDepartment = async (departmentId) => {
   try {
     const response = await axiosInstance.get(
-        `/api/employees/department/${departmentId}`
+      `/api/employees/department/${departmentId}`
     );
     return response.data;
   } catch (error) {
     console.error(
-        `❌ 부서별 직원 조회 실패 (Department ID: ${departmentId}):`,
-        error
+      `❌ 부서별 직원 조회 실패 (Department ID: ${departmentId}):`,
+      error
     );
     return [];
   }
@@ -31,13 +32,13 @@ export const getEmployeesByDepartment = async (departmentId) => {
 export const getEmployeesByPosition = async (positionId) => {
   try {
     const response = await axiosInstance.get(
-        `/api/employees/position/${positionId}`
+      `/api/employees/position/${positionId}`
     );
     return response.data;
   } catch (error) {
     console.error(
-        `❌ 직급별 직원 조회 실패 (Position ID: ${positionId}):`,
-        error
+      `❌ 직급별 직원 조회 실패 (Position ID: ${positionId}):`,
+      error
     );
     return [];
   }
@@ -45,18 +46,18 @@ export const getEmployeesByPosition = async (positionId) => {
 
 // ✅ 특정 부서 + 특정 직급에 속한 직원 목록 조회 (백엔드 `/api/employees/department/{departmentId}/position/{positionId}`와 매핑)
 export const getEmployeesByDepartmentAndPosition = async (
-    departmentId,
-    positionId
+  departmentId,
+  positionId
 ) => {
   try {
     const response = await axiosInstance.get(
-        `/api/employees/department/${departmentId}/position/${positionId}`
+      `/api/employees/department/${departmentId}/position/${positionId}`
     );
     return response.data;
   } catch (error) {
     console.error(
-        `❌ 부서 및 직급별 직원 조회 실패 (Department ID: ${departmentId}, Position ID: ${positionId}):`,
-        error
+      `❌ 부서 및 직급별 직원 조회 실패 (Department ID: ${departmentId}, Position ID: ${positionId}):`,
+      error
     );
     return [];
   }
@@ -117,8 +118,8 @@ export const getPositions = async () => {
 export const requestUpdateEmployee = async (id, employeeData) => {
   try {
     const response = await axiosInstance.post(
-        `/api/employees/${id}/request-update`,
-        employeeData
+      `/api/employees/${id}/request-update`,
+      employeeData
     );
     return response.data;
   } catch (error) {
@@ -139,8 +140,8 @@ export const updateEmployee = async (id, employeeData) => {
 
     // 승인된 경우 업데이트 진행
     const response = await axiosInstance.put(
-        `/api/employees/${id}`,
-        employeeData
+      `/api/employees/${id}`,
+      employeeData
     );
     return response.data;
   } catch (error) {
@@ -153,7 +154,7 @@ export const updateEmployee = async (id, employeeData) => {
 export const approveEmployee = async (id, approvedByEmployeeId) => {
   try {
     const response = await axiosInstance.put(
-        `/api/employees/${id}/approve?approvedByEmployeeId=${approvedByEmployeeId}`
+      `/api/employees/${id}/approve?approvedByEmployeeId=${approvedByEmployeeId}`
     );
     return response.data;
   } catch (error) {
@@ -166,7 +167,7 @@ export const approveEmployee = async (id, approvedByEmployeeId) => {
 export const rejectEmployee = async (id, approvedByEmployeeId) => {
   try {
     await axiosInstance.put(
-        `/api/employees/${id}/reject?approvedByEmployeeId=${approvedByEmployeeId}`
+      `/api/employees/${id}/reject?approvedByEmployeeId=${approvedByEmployeeId}`
     );
   } catch (error) {
     console.error(`❌ 직원 반려 실패 (ID: ${id}):`, error);
@@ -221,7 +222,7 @@ export const getPendingEmployees = async () => {
 export const getEmployeesByEmployeeId = async (employeeId) => {
   try {
     const response = await axiosInstance.get(
-        `/api/employees/${employeeId}/requests`
+      `/api/employees/${employeeId}/requests`
     );
     return response.data;
   } catch (error) {
