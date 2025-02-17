@@ -28,6 +28,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @RestController
 @RequestMapping("/api/order")
@@ -46,8 +48,9 @@ public class OrderController {
                                                 @RequestParam String clientCode,
                                                 @RequestParam String paymentAccountId,
                                                 @RequestBody Employee employee,
+                                                @RequestParam LocalDate purchaseDate,
                                                 @RequestParam(required = false) String memo) {
-    purchaseService.processPurchase(productId, quantity, purchasePrice, clientCode, paymentAccountId, employee, RequestStatus.PENDING, memo);
+    purchaseService.processPurchase(productId, quantity, purchasePrice, clientCode, paymentAccountId, employee, RequestStatus.PENDING, purchaseDate, memo);
     return ResponseEntity.ok("Purchase processed successfully.");
   }
 
@@ -59,8 +62,9 @@ public class OrderController {
                                             @RequestParam String clientCode,
                                             @RequestParam String paymentAccountId,
                                             @RequestBody Employee employee,
+                                            @RequestParam LocalDate saleDate,
                                             @RequestParam(required = false) String memo) {
-    saleService.processSale(productId, quantity, salePrice, clientCode, paymentAccountId, employee, RequestStatus.PENDING, memo);
+    saleService.processSale(productId, quantity, salePrice, clientCode, paymentAccountId, employee, RequestStatus.PENDING,saleDate, memo);
     return ResponseEntity.ok("Sale processed successfully.");
   }
 

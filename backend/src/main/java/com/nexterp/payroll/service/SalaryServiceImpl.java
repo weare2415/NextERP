@@ -116,7 +116,7 @@ public class SalaryServiceImpl implements SalaryService {
   // Transaction 저장
   private Transaction saveTransaction(Salary salary) {
     Transaction transaction = new Transaction();
-    transaction.setDate(LocalDateTime.now());
+    transaction.setDate(LocalDate.now());
     transaction.setAmount(salary.getTotalSalary());
     transaction.setType(TransactionType.SALARY);
     transaction.setDescription("급여 지급");
@@ -128,7 +128,7 @@ public class SalaryServiceImpl implements SalaryService {
     Invoice invoice = new Invoice();
     invoice.setTransaction(transaction);
     invoice.setInvoiceNumber(generateInvoiceNumber());
-    invoice.setDate(LocalDateTime.now());
+    invoice.setDate(LocalDate.now());
     invoice.setBuyer("Company");
     invoice.setSeller(employee.getName());
     invoice.setTotalAmount(salary.getTotalSalary());

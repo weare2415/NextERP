@@ -56,7 +56,7 @@ public TransactionServiceImpl(TransactionRepository transactionRepository) {
   }
 
   @Override
-  public Page<TransactionDTO> getTransactionsByDateBetween(LocalDateTime startDate, LocalDateTime endDate, Pageable pageable) {
+  public Page<TransactionDTO> getTransactionsByDateBetween(LocalDate startDate, LocalDate endDate, Pageable pageable) {
     return transactionRepository.findByDateBetweenOrderByDate(startDate, endDate, pageable)
         .map(this::entityToDTO);
   }

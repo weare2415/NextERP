@@ -18,9 +18,11 @@ import com.nexterp.client.entity.RequestStatus;
 import com.nexterp.employee.entity.Employee;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public interface PurchaseService {
-  void processPurchase(Long productId, int quantity, BigDecimal purchasePrice, String clientCode, String paymentAccountId, Employee employee, RequestStatus requestStatus, String memo);
+  void processPurchase(Long productId, int quantity, BigDecimal purchasePrice, String clientCode, String paymentAccountId, Employee employee, RequestStatus requestStatus, LocalDate purchaseDate, String memo);
   void approvePurchase(Long transactionId);
   void rejectPurchase(Long transactionId);
   void refundPurchase(Long transactionId);

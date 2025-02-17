@@ -20,6 +20,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -30,7 +31,7 @@ import java.util.List;
 public class InvoiceDTO {
   private Long id;
   private String invoiceNumber;
-  private LocalDateTime date;
+  private LocalDate date;
   private String buyer;
   private String seller;
   private BigDecimal totalAmount;

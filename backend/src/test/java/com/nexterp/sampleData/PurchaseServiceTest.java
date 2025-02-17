@@ -10,10 +10,7 @@ import com.nexterp.product.entity.Product;
 import com.nexterp.product.repository.OrderRepository;
 import com.nexterp.product.repository.ProductRepository;
 import com.nexterp.product.service.PurchaseService;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +21,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -77,10 +75,25 @@ class PurchaseServiceTest {
         int quantity = (int) row.getCell(1).getNumericCellValue();
         BigDecimal purchasePrice = new BigDecimal(row.getCell(2).getNumericCellValue());
         Long clientId = (long) row.getCell(3).getNumericCellValue();
-        String paymentAccountId = getStringCellValue(row.getCell(4)); // 수정된 부분
+        String paymentAccountId = getStringCellValue(row.getCell(4));
         Integer employeeId = (int) row.getCell(5).getNumericCellValue();
+//        LocalDate purchaseDate = LocalDate.parse(row.getCell(6).getStringCellValue());
 
-        purchaseDataList.add(new PurchaseData(productId, quantity, purchasePrice, clientId, paymentAccountId, employeeId));
+        Cell dateCell = row.getCell(6);
+        LocalDate purchaseDate;
+
+        if (dateCell.getCellType() == CellType.NUMERIC) {
+          // 엑셀 날짜는 1900-01-01을 기준으로 한 숫자로 저장됨 -> LocalDate 변환 필요
+          purchaseDate = dateCell.getLocalDateTimeCellValue().toLocalDate();
+        } else if (dateCell.getCellType() == CellType.STRING) {
+          // 문자열 형식의 날짜 처리
+          purchaseDate = LocalDate.parse(dateCell.getStringCellValue().trim());
+        } else {
+          throw new IllegalArgumentException("Invalid date format in row: " + row.getRowNum());
+        }
+
+
+        purchaseDataList.add(new PurchaseData(productId, quantity, purchasePrice, clientId, paymentAccountId, employeeId, purchaseDate));
       }
       workbook.close();
     } catch (Exception e) {
@@ -110,6 +123,7 @@ class PurchaseServiceTest {
           data.getPaymentAccountId(),
           employee,
           RequestStatus.PENDING,
+          data.getPurchaseDate(),
           "엑셀 테스트 구매"
       );
     }
@@ -123,14 +137,16 @@ class PurchaseServiceTest {
     private Long clientId;
     private String paymentAccountId;
     private Integer employeeId;
+    private LocalDate purchaseDate;
 
-    public PurchaseData(Long productId, int quantity, BigDecimal purchasePrice, Long clientId, String paymentAccountId, Integer employeeId) {
+    public PurchaseData(Long productId, int quantity, BigDecimal purchasePrice, Long clientId, String paymentAccountId, Integer employeeId, LocalDate purchaseDate) {
       this.productId = productId;
       this.quantity = quantity;
       this.purchasePrice = purchasePrice;
       this.clientId = clientId;
       this.paymentAccountId = paymentAccountId;
       this.employeeId = employeeId;
+      this.purchaseDate = purchaseDate;
     }
 
     public Long getProductId() { return productId; }
@@ -139,6 +155,7 @@ class PurchaseServiceTest {
     public Long getClientId() { return clientId; }
     public String getPaymentAccountId() { return paymentAccountId; }
     public Integer getEmployeeId() { return employeeId; }
+    public LocalDate getPurchaseDate() { return purchaseDate; }
   }
 
   private static final Long TRANSACTION_START_ID = 1L;

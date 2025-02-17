@@ -54,22 +54,30 @@ public class JournalEntryServiceImpl implements JournalEntryService {
   public JournalEntryDTO createJournalEntry(JournalEntryDTO journalEntryDTO) {
     JournalEntry journalEntry = dtoToEntity(journalEntryDTO);
 
-    // amount 설정
-    if (journalEntry.getDebit().compareTo(BigDecimal.ZERO) > 0) {
-      journalEntry.setAmount(journalEntry.getDebit());
-    } else if (journalEntry.getCredit().compareTo(BigDecimal.ZERO) > 0) {
-      journalEntry.setAmount(journalEntry.getCredit().negate());
-    } else {
-      throw new IllegalArgumentException("Both debit and credit cannot be zero.");
-    }
+    String accountCode = journalEntry.getAccount().getCode(); 
+    int accountType = Integer.parseInt(accountCode.substring(0, 1)) * 100; // 100단위로 변환
 
+    BigDecimal debitAmount = journalEntry.getDebit();
+    BigDecimal creditAmount = journalEntry.getCredit();
+
+    // 계정 유형별로 amount 계산
+    BigDecimal amountToUpdate = switch (accountType) {
+      case 100 -> debitAmount.subtract(creditAmount);  // 자산 (Asset) 100번대
+      case 200, 300, 400 -> creditAmount.subtract(debitAmount); // 부채, 자본, 수익 200~400번대
+      case 500 -> debitAmount.add(creditAmount);  // 비용 (Expense) 500번대
+      default -> throw new IllegalArgumentException("지원되지 않는 계정 코드: " + accountCode);
+    };
+
+    journalEntry.setAmount(amountToUpdate);
+
+    // 저장
     JournalEntry savedJournalEntry = journalEntryRepository.save(journalEntry);
 
-    // DTO로 변환하며 amount 설정
+    // DTO 변환 및 반환
     JournalEntryDTO resultDto = entityToDto(savedJournalEntry);
     resultDto.setAmount(savedJournalEntry.getAmount());
 
-    return entityToDto(savedJournalEntry);
+    return resultDto;
   }
 
   @Override

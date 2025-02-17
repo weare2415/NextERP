@@ -63,11 +63,9 @@ public class TransactionController {
       @RequestParam(defaultValue = "0") int page,
       @RequestParam(defaultValue = "10") int size) {
     LocalDate startDate = LocalDate.parse(startDateStr);
-    LocalDateTime startDateTime = startDate.atStartOfDay();
     LocalDate endDate = LocalDate.parse(endDateStr);
-    LocalDateTime endDateTime = endDate.atStartOfDay();
     Pageable pageable = PageRequest.of(page, size);
-    return transactionService.getTransactionsByDateBetween(startDateTime, endDateTime, pageable);
+    return transactionService.getTransactionsByDateBetween(startDate, endDate, pageable);
   }
 
   // 거래 생성
