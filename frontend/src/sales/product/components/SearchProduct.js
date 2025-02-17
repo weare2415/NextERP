@@ -1,8 +1,5 @@
-import React, {useEffect, useState} from "react";
-import {
-  getProductById,
-  searchProductsByName,
-} from "../api/productApi";
+import React, { useEffect, useState } from "react";
+import { getProductById, searchProductsByName } from "../api/productApi";
 import "../scss/SearchProduct.scss";
 
 const SearchProduct = ({ onSearchResults }) => {
@@ -22,13 +19,15 @@ const SearchProduct = ({ onSearchResults }) => {
       let data = [];
       console.log(query);
 
-      if (searchType === 'id') {
+      if (searchType === "id") {
         const response = await getProductById(query);
         data = response.id;
         console.log(data);
-      } else if (searchType === 'productName') {
+      } else if (searchType === "productName") {
         const response = await searchProductsByName(query);
-        data = response.content.map(product => ({productName : product.productName}));
+        data = response.content.map((product) => ({
+          productName: product.productName,
+        }));
         console.log(data);
       }
       setSuggestions(data);
@@ -75,7 +74,7 @@ const SearchProduct = ({ onSearchResults }) => {
       onSearchResults(data);
     } catch (err) {
       console.error("검색 중 오류 발생:", err);
-      setError('검색 중 오류가 발생하였습니다.');
+      setError("검색 중 오류가 발생하였습니다.");
     } finally {
       setLoading(false);
     }
@@ -85,11 +84,13 @@ const SearchProduct = ({ onSearchResults }) => {
   const handleKeyDown = (e) => {
     if (suggestions.length === 0) return;
 
-    if (e.key === 'ArrowDown') {
-      setSelectedIndex(prev => (prev < suggestions.length - 1 ? prev + 1 : prev));
-    } else if (e.key === 'ArrowUp') {
-      setSelectedIndex(prev => (prev > 0 ? prev - 1 : prev));
-    } else if (e.key === 'Enter') {
+    if (e.key === "ArrowDown") {
+      setSelectedIndex((prev) =>
+        prev < suggestions.length - 1 ? prev + 1 : prev
+      );
+    } else if (e.key === "ArrowUp") {
+      setSelectedIndex((prev) => (prev > 0 ? prev - 1 : prev));
+    } else if (e.key === "Enter") {
       if (selectedIndex < 0 || selectedIndex >= suggestions.length) return; // 인덱스 범위 체크
 
       const selectedItem = suggestions[selectedIndex];
@@ -99,7 +100,7 @@ const SearchProduct = ({ onSearchResults }) => {
       if (!selectedValue) return; // 값이 없는 경우 리턴
 
       setIsSelecting(true);
-      setSearchParams(prev => ({ ...prev, searchTerm: selectedValue }));
+      setSearchParams((prev) => ({ ...prev, searchTerm: selectedValue }));
       setSuggestions([]); // 자동완성 닫기
       e.preventDefault();
     }
@@ -128,30 +129,30 @@ const SearchProduct = ({ onSearchResults }) => {
         />
         {/*자동완성 목록 */}
         {suggestions.length > 0 && (
-            <ul className="suggestions-list">
-              {suggestions.map((item, index) => (
-                  <li
-                      key={item.id || item.productName || index}
-                      className={selectedIndex === index ? "selected" : ""}
-                      onMouseDown={() => {
-                        setIsSelecting(true);
-                        setSearchParams(prev => ({
-                          ...prev,
-                          searchTerm: item.id || item.productName,
-                        }));
-                        setSuggestions([]);
-                      }}
-                  >
-                    {item.id || item.productName}
-                  </li>
-              ))}
-            </ul>
+          <ul className="suggestions-list">
+            {suggestions.map((item, index) => (
+              <li
+                key={item.id || item.productName || index}
+                className={selectedIndex === index ? "selected" : ""}
+                onMouseDown={() => {
+                  setIsSelecting(true);
+                  setSearchParams((prev) => ({
+                    ...prev,
+                    searchTerm: item.id || item.productName,
+                  }));
+                  setSuggestions([]);
+                }}
+              >
+                {item.id || item.productName}
+              </li>
+            ))}
+          </ul>
         )}
         <button type="submit">검색</button>
       </form>
 
       {loading && <p>검색 중...</p>}
-      {error && <p style={{color: 'red'}}>{error}</p> }
+      {error && <p style={{ color: "red" }}>{error}</p>}
     </div>
   );
 };

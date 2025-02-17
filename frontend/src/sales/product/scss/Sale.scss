@@ -1,4 +1,4 @@
-@import '../../../App';
+@import "../../../App.scss";
 
 .product-order-detail-form {
   background-color: white;
@@ -89,30 +89,37 @@
         }
       }
 
-      // ✅ 자동완성 목록 스타일
       .suggestions-list {
         position: absolute;
-        top: 100%;
-        left: 0;
-        width: 100%;
-        background: white;
-        border: 1px solid gray;
-        border-radius: 4px;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        top: 35px; // input 높이에 맞춰 조정
+        left: 140px; // label 너비에 맞춰 조정
+        width: calc(100% - 140px);
+        background-color: white;
+        border: 1px solid #e9edf4;
+        border-top: none;
         max-height: 200px;
         overflow-y: auto;
-        z-index: 100;
+        z-index: 1000;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 
         li {
-          padding: 8px 12px;
+          padding: 8px 10px;
           cursor: pointer;
-          font-family: $font-primary;
-          transition: background 0.2s;
+          font-size: 14px;
 
-          &:hover,
-          &.selected { // 키보드로 선택된 항목 스타일
-            background-color: $primary-color;
-            color: white;
+          &:hover {
+            background-color: #f5f7fa;
+          }
+
+          &.selected {
+            background-color: #f5f7fa;
+          }
+
+          &:not(:last-child) {
+            border-bottom: 1px solid #e9edf4;
           }
         }
       }

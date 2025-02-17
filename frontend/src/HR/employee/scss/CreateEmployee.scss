@@ -1,4 +1,4 @@
-@import "../../../App";
+@import "../../../App.scss";
 
 .modal-overlay {
   position: fixed;
@@ -15,88 +15,113 @@
 
 .create-employee-form {
   background-color: white;
-  border-radius: 8px;
-  width: 100%;
-  max-width: 70vw; // ✅ 기존 50vw → 70vw 확장
-  padding: 20px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+  width: 90%;
+  max-width: 700px;
+  max-height: 90vh;
+  padding: 0;
   font-family: $font-primary;
+  display: flex;
+  flex-direction: column;
 
-  h2 {
-    color: $primary-color;
-    font-size: 22px;
-    font-weight: 600;
-    text-align: center;
-    margin-bottom: 20px;
+  .form-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    background-color: $primary-color;
+    color: white;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    width: 100%;
+
+    h2 {
+      margin: 0;
+      font-size: 18px;
+      font-weight: 500;
+      color: white;
+    }
+
+    .close-button {
+      background: none;
+      border: none;
+      color: white;
+      font-size: 20px;
+      cursor: pointer;
+      padding: 0 5px;
+
+      &:hover {
+        opacity: 0.8;
+      }
+    }
   }
 
   form {
+    padding: 20px;
+    overflow-y: auto;
     display: grid;
-    grid-template-columns: repeat(3, 1fr); // ✅ 기존 2개 → 3개로 조정
-    gap: 16px;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    align-items: center;
 
     .form-group {
       display: flex;
-      flex-direction: column;
+      align-items: center;
+      margin-bottom: 1px;
 
       label {
-        margin-bottom: 6px;
-        font-weight: 500;
+        width: 160px;
+        background-color: #e9edf4;
+        padding: 8px 15px;
+        font-size: 14px;
         color: $primary-color;
+        text-align: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0;
       }
 
-      input, select {
-        width: 100%;
-        padding: 8px;
-        border: 1px solid $secondary-color;
-        border-radius: 4px;
+      input,
+      select,
+      textarea {
+        flex: 1;
+        padding: 8px 10px;
+        border: 1px solid #e9edf4;
+        font-family: $font-primary;
         font-size: 14px;
+        height: 35px;
+        width: 100%;
+        border-radius: 0;
+        margin: 0;
 
         &:focus {
           outline: none;
-          border-color: $primary-color;
-          box-shadow: 0 0 0 2px rgba($primary-color, 0.1);
+          border-color: $secondary-color;
         }
       }
     }
 
-    .full-width {
-      grid-column: span 3;
-    }
-
     .button-group {
-      grid-column: span 3;
+      grid-column: 1 / -1;
       display: flex;
-      justify-content: flex-end;
+      justify-content: center;
       gap: 10px;
       margin-top: 20px;
 
       button {
-        width: 120px;
-        padding: 10px;
+        width: 100px;
+        height: 40px;
+        background-color: $primary-color;
+        color: white;
         border: none;
         border-radius: 4px;
         font-size: 14px;
         font-weight: 500;
         cursor: pointer;
-        transition: background-color 0.2s;
 
-        &.cancel-btn {
-          background-color: #d9534f;
-          color: white;
-
-          &:hover {
-            background-color: darken(#d9534f, 10%);
-          }
-        }
-
-        &:first-child {
-          background-color: $primary-color;
-          color: white;
-
-          &:hover {
-            background-color: darken($primary-color, 10%);
-          }
+        &:hover {
+          background-color: darken($primary-color, 10%);
         }
       }
     }

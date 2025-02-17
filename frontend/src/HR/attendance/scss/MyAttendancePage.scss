@@ -1,0 +1,117 @@
+@import "../../../App.scss";
+
+.mypage {
+  position: relative; // 상대 위치 설정
+  width: 90%;
+  margin: 50px auto 0;
+
+  h1 {
+    color: $primary-color;
+    font-family: $font-primary;
+    margin: 0;
+  }
+
+  // 사원 ID와 버튼을 포함하는 컨테이너
+  .user-controls {
+    position: absolute;
+    right: 0;
+    top: 0;
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+
+    p {
+      margin: 0; // 기본 마진 제거
+      margin-top: 10px;
+    }
+  }
+}
+
+.page-container {
+  display: flex;
+  flex-direction: column; /* 세로 방향으로 정렬 */
+  gap: 2rem;
+  margin-top: 1rem;
+}
+
+.left-section,
+.right-section {
+  flex: 1;
+  background: white;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(60, 72, 90, 0.1);
+
+  h3 {
+    color: $primary-color;
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+  }
+}
+
+.attendance-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+
+  th,
+  td {
+    padding: 1rem;
+    text-align: center;
+    border: 1px solid #ddd;
+  }
+
+  th {
+    color: white;
+    background-color: #4a5568;
+    font-weight: bold;
+  }
+
+  td {
+    font-size: 1rem;
+    color: #333;
+  }
+
+  tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+
+  tr:hover {
+    background-color: #f1f1f1;
+  }
+}
+
+.loading {
+  text-align: center;
+  color: $secondary-color;
+  font-size: 1.1rem;
+  margin: 2rem 0;
+}
+
+.buttons {
+  display: flex;
+}
+
+button {
+  padding: 0.5rem 1rem;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+
+  &:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+  }
+}
+
+.attendance-info {
+  margin-top: 2rem;
+}
+
+.attendance-info p {
+  margin-bottom: 1rem;
+}

@@ -17,6 +17,9 @@ package com.nexterp.payroll.controller;
 import com.nexterp.payroll.dto.EmployeeSalaryInfoDTO;
 import com.nexterp.payroll.service.EmployeeSalaryInfoService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,8 +36,10 @@ public class EmployeeSalaryInfoController {
    * 모든 직원 급여 정보 조회
    */
   @GetMapping
-  public ResponseEntity<List<EmployeeSalaryInfoDTO>> getAllEmployeeSalaries() {
-    List<EmployeeSalaryInfoDTO> salaryInfos = employeeSalaryInfoService.findAllSalaryInfo();
+  public ResponseEntity<Page<EmployeeSalaryInfoDTO>> getAllEmployeeSalaries(@RequestParam(defaultValue = "0") int page,
+                                                                            @RequestParam(defaultValue = "10") int size) {
+    Pageable pageable = PageRequest.of(page, size);
+    Page<EmployeeSalaryInfoDTO> salaryInfos = employeeSalaryInfoService.findAllSalaryInfo(pageable);
     return ResponseEntity.ok(salaryInfos);
   }
 
@@ -61,8 +66,11 @@ public class EmployeeSalaryInfoController {
 
   // 과거 급여 이력 조회 API
   @GetMapping("/history/{employeeId}")
-  public ResponseEntity<List<EmployeeSalaryInfoDTO>> getSalaryHistoryByEmployeeId(@PathVariable Integer employeeId) {
-    List<EmployeeSalaryInfoDTO> historyRecords = employeeSalaryInfoService.findSalaryInfoHistoryByEmployeeId(employeeId);
+  public ResponseEntity<Page<EmployeeSalaryInfoDTO>> getSalaryHistoryByEmployeeId(@PathVariable Integer employeeId,
+                                                                                  @RequestParam(defaultValue = "0") int page,
+                                                                                  @RequestParam(defaultValue = "10") int size) {
+    Pageable pageable = PageRequest.of(page, size);
+    Page<EmployeeSalaryInfoDTO> historyRecords = employeeSalaryInfoService.findSalaryInfoHistoryByEmployeeId(employeeId, pageable);
     return ResponseEntity.ok(historyRecords);
   }
 

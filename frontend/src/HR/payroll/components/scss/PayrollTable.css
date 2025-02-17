@@ -19,48 +19,76 @@ body {
   display: block;
 }
 
-.payroll-table-container {
-  background-color: white;
-  border-radius: 4px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  overflow-x: auto;
-  padding: 16px;
-  margin-top: 20px;
+.payroll-table-wrapper {
+  width: 100%;
 }
-.payroll-table-container table {
+.payroll-table-wrapper .payroll-table-section {
+  background-color: white;
+  width: 100%;
+  margin-top: 20px;
+  border-left: 1px solid #ddd;
+}
+.payroll-table-wrapper .payroll-table-section table {
   width: 100%;
   border-collapse: collapse;
+  table-layout: fixed;
 }
-.payroll-table-container table th, .payroll-table-container table td {
-  padding: 12px 15px;
-  text-align: center !important;
-  display: table-cell;
-  border-bottom: 1px solid black;
-  font-family: "Apple SD Gothic Neo", sans-serif;
+.payroll-table-wrapper .payroll-table-section table th, .payroll-table-wrapper .payroll-table-section table td {
+  padding: 15px;
+  text-align: center;
+  border: 1px solid #ddd;
+  word-wrap: break-word;
 }
-.payroll-table-container table th {
-  background-color: #3c485a;
+.payroll-table-wrapper .payroll-table-section table th:first-child, .payroll-table-wrapper .payroll-table-section table td:first-child {
+  border-left: none;
+}
+.payroll-table-wrapper .payroll-table-section table th {
+  background-color: #4a5568;
   color: white;
   font-weight: 500;
+  border-bottom: 1px solid #2d3748;
+  position: relative;
 }
-.payroll-table-container table th:hover {
-  background-color: rgb(39.6, 47.52, 59.4);
+.payroll-table-wrapper .payroll-table-section table tr:hover {
+  background-color: #f8f9fa;
 }
-.payroll-table-container table td {
-  vertical-align: middle;
+.payroll-table-wrapper .payroll-table-section table th:nth-child(1), .payroll-table-wrapper .payroll-table-section table td:nth-child(1) {
+  width: 15%;
 }
-.payroll-table-container table .detail-btn {
+.payroll-table-wrapper .payroll-table-section table th:nth-child(2), .payroll-table-wrapper .payroll-table-section table td:nth-child(2) {
+  width: 20%;
+}
+.payroll-table-wrapper .payroll-table-section table th:nth-child(3), .payroll-table-wrapper .payroll-table-section table td:nth-child(3) {
+  width: 15%;
+}
+.payroll-table-wrapper .payroll-table-section table th:nth-child(4), .payroll-table-wrapper .payroll-table-section table td:nth-child(4) {
+  width: 15%;
+}
+.payroll-table-wrapper .payroll-table-section table th:nth-child(5), .payroll-table-wrapper .payroll-table-section table td:nth-child(5) {
+  width: 15%;
+}
+.payroll-table-wrapper .payroll-table-section table th:nth-child(6), .payroll-table-wrapper .payroll-table-section table td:nth-child(6) {
+  width: 10%;
+}
+.payroll-table-wrapper .payroll-table-section table th:nth-child(7), .payroll-table-wrapper .payroll-table-section table td:nth-child(7) {
+  width: 10%;
+}
+.payroll-table-wrapper .payroll-table-section table .payroll-detail-btn {
+  appearance: none;
   background: none;
   border: none;
-  color: #3c485a;
+  color: #4a5568;
   cursor: pointer;
   padding: 0;
-  font-family: "Apple SD Gothic Neo", sans-serif;
-  text-decoration: underline;
-  font-size: 14px;
+  font-family: inherit;
+  font-weight: bolder;
+  font-size: 16px;
+  text-decoration: none;
+  text-align: left;
 }
-.payroll-table-container table .detail-btn:hover {
-  color: rgb(39.6, 47.52, 59.4);
+.payroll-table-wrapper .payroll-table-section table .payroll-detail-btn:hover {
+  text-decoration: underline;
+  color: #2d3748;
 }
 
 /*# sourceMappingURL=PayrollTable.css.map */

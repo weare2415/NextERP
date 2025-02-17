@@ -20,10 +20,8 @@ body {
 }
 
 .employee-list-container {
-  background-color: white;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  padding: 20px;
   margin-top: 20px;
 }
 .employee-list-container h3 {
@@ -33,33 +31,34 @@ body {
   font-weight: bold;
 }
 .employee-list-container .employee-table {
+  background-color: white;
   width: 100%;
   border-collapse: collapse;
   font-size: 14px;
+  table-layout: fixed;
+  border: 1px solid #ddd;
+  table-layout: auto;
 }
 .employee-list-container .employee-table thead {
-  background-color: #3c485a;
+  background-color: #4a5568;
   color: white;
 }
 .employee-list-container .employee-table thead th {
-  padding: 12px 15px;
-  text-align: left;
-  font-weight: 600;
-  cursor: pointer;
-  border-bottom: 2px solid black;
-}
-.employee-list-container .employee-table thead th:hover {
-  background-color: rgb(39.6, 47.52, 59.4);
+  padding: 15px;
+  text-align: center;
+  font-weight: 500;
+  border: 1px solid #ddd;
 }
 .employee-list-container .employee-table tbody tr {
   transition: background-color 0.2s;
 }
 .employee-list-container .employee-table tbody tr:hover {
-  background-color: rgba(0, 0, 0, 0.05);
+  background-color: #f8f9fa;
 }
 .employee-list-container .employee-table tbody tr td {
-  padding: 12px 15px;
-  border-bottom: 1px solid black;
+  padding: 15px;
+  text-align: center;
+  border: 1px solid #ddd;
   color: #333;
 }
 .employee-list-container .employee-table tbody tr .employee-name-btn {
@@ -74,11 +73,11 @@ body {
 .employee-list-container .employee-table tbody tr .employee-name-btn:hover {
   color: rgb(39.6, 47.52, 59.4);
 }
-.employee-list-container .employee-table tbody tr .actions {
+.employee-list-container .employee-table .actions {
   display: flex;
   gap: 10px;
 }
-.employee-list-container .employee-table tbody tr .actions button {
+.employee-list-container .employee-table .actions button {
   padding: 6px 12px;
   background-color: #3c485a;
   color: white;
@@ -89,13 +88,13 @@ body {
   font-family: "Apple SD Gothic Neo", sans-serif;
   transition: background-color 0.2s;
 }
-.employee-list-container .employee-table tbody tr .actions button:hover {
+.employee-list-container .employee-table .actions button:hover {
   background-color: rgb(39.6, 47.52, 59.4);
 }
-.employee-list-container .employee-table tbody tr .actions button.delete {
+.employee-list-container .employee-table .actions button.delete {
   background-color: #d9534f;
 }
-.employee-list-container .employee-table tbody tr .actions button.delete:hover {
+.employee-list-container .employee-table .actions button.delete:hover {
   background-color: rgb(201.4953271028, 48.0841121495, 43.5046728972);
 }
 

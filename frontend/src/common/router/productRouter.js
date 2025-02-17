@@ -1,9 +1,15 @@
 import { lazy, Suspense } from "react";
 
 const ProductPage = lazy(() => import("../../sales/product/pages/ProductPage"));
-const CreateProduct = lazy(() => import("../../sales/product/components/CreateProduct"));
-const RequestOrderPage = lazy(() => import("../../sales/order/pages/RequestOrderPage"));
-const ApprovedOrderPage = lazy(() => import("../../sales/order/pages/ApprovedOrderPage"))
+const CreateProduct = lazy(() =>
+  import("../../sales/product/components/CreateProduct")
+);
+const RequestOrderPage = lazy(() =>
+  import("../../sales/order/pages/RequestOrderPage")
+);
+const ApprovedOrderPage = lazy(() =>
+  import("../../sales/order/pages/ApprovedOrderPage")
+);
 
 const productRouter = () => {
   return [
@@ -34,11 +40,11 @@ const productRouter = () => {
     {
       path: "order",
       element: (
-          <Suspense fallback={<div>Loading...</div>}>
-            <ApprovedOrderPage />
-            </Suspense>
-      )
-    }
+        <Suspense fallback={<div>Loading...</div>}>
+          <ApprovedOrderPage />
+        </Suspense>
+      ),
+    },
   ];
 };
 

@@ -1,0 +1,107 @@
+@import "../../App.scss";
+
+.announcement-create-form {
+    background: white;
+    border-radius: 8px;
+    padding-bottom: 15px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    width: 400px;
+    display: flex;
+    flex-direction: column;
+    max-height: 80vh; 
+    overflow-y: auto;
+  }
+  
+  .announcement-create-header {
+    position: sticky;
+    top: 0;
+    background-color: $primary-color;
+    color: white;
+    padding: 10px 10px;
+    z-index: 1; 
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  
+    h2 {
+      margin: 0;
+      font-size: 18px;
+      font-weight: 500;
+      color: white;
+    }
+  }
+  
+  .close-button {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+    font-weight: bold;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .modal-error-message {
+    color: #e74c3c;
+    font-size: 14px;
+    margin-bottom: 10px;
+    text-align: center;
+  }
+  
+  form {
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+  
+    input[type="text"],
+    textarea {
+      margin-bottom: 10px;
+      padding: 10px;
+      font-size: 14px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      resize: vertical;
+      width: 100%;
+    }
+  
+    textarea {
+      height: 150px;
+    }
+  
+    label {
+      font-size: 14px;
+      margin-bottom: 5px;
+    }
+  }
+  
+  .modal-button-group {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+    gap: 10px;
+  
+    button {
+      padding: 8px 12px;
+      background-color: $primary-color;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: background-color 0.2s;
+  
+      &:hover {
+        background-color: darken($primary-color, 10%);
+      }
+    }
+  
+    .modal-cancel-btn {
+      background-color: $secondary-color;
+  
+      &:hover {
+        background-color: darken($secondary-color, 10%);
+      }
+    }
+  }
+  

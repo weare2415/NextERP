@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import "../../client/component/scss/ListRequestOrder.scss";
+import "./scss/ListRequestOrder.css";
 import { getProductById } from "../../product/api/productApi";
 import { getClientById } from "../../client/api/clientApi";
 import RequestOrder from "./RequestOrder";

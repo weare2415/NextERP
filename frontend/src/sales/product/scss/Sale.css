@@ -105,26 +105,33 @@ body {
 }
 .product-order-detail-form form .form-group .suggestions-list {
   position: absolute;
-  top: 100%;
-  left: 0;
-  width: 100%;
-  background: white;
-  border: 1px solid gray;
-  border-radius: 4px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  top: 35px;
+  left: 140px;
+  width: calc(100% - 140px);
+  background-color: white;
+  border: 1px solid #e9edf4;
+  border-top: none;
   max-height: 200px;
   overflow-y: auto;
-  z-index: 100;
+  z-index: 1000;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 .product-order-detail-form form .form-group .suggestions-list li {
-  padding: 8px 12px;
+  padding: 8px 10px;
   cursor: pointer;
-  font-family: "Apple SD Gothic Neo", sans-serif;
-  transition: background 0.2s;
+  font-size: 14px;
 }
-.product-order-detail-form form .form-group .suggestions-list li:hover, .product-order-detail-form form .form-group .suggestions-list li.selected {
-  background-color: #3c485a;
-  color: white;
+.product-order-detail-form form .form-group .suggestions-list li:hover {
+  background-color: #f5f7fa;
+}
+.product-order-detail-form form .form-group .suggestions-list li.selected {
+  background-color: #f5f7fa;
+}
+.product-order-detail-form form .form-group .suggestions-list li:not(:last-child) {
+  border-bottom: 1px solid #e9edf4;
 }
 .product-order-detail-form form .form-group:has(textarea[name=memo]) {
   grid-column: 1/-1;
