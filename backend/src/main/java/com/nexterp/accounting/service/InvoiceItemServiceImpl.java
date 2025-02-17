@@ -42,8 +42,8 @@ public class InvoiceItemServiceImpl implements InvoiceItemService {
     @Override
     public InvoiceItemDTO getInvoiceItemById(Long id) {
         return invoiceItemRepository.findById(id)
-            .map(this::entityToDTO)
-            .orElseThrow(() -> new IllegalArgumentException("Invoice item not found: " + id));
+                .map(this::entityToDTO)
+                .orElseThrow(() -> new IllegalArgumentException("Invoice item not found: " + id));
     }
 
     @Override
@@ -60,7 +60,7 @@ public class InvoiceItemServiceImpl implements InvoiceItemService {
     @Override
     public InvoiceItemDTO updateInvoiceItem(Long id, InvoiceItemDTO invoiceItemDTO) {
         InvoiceItem existingItem = invoiceItemRepository.findById(id)
-            .orElseThrow(() -> new IllegalArgumentException("Invoice item not found: " + id));
+                .orElseThrow(() -> new IllegalArgumentException("Invoice item not found: " + id));
 
         existingItem.setItemName(invoiceItemDTO.getItemName());
         existingItem.setQuantity(invoiceItemDTO.getQuantity());
@@ -88,7 +88,7 @@ public class InvoiceItemServiceImpl implements InvoiceItemService {
 
         if (dto.getInvoiceId() != null) {
             Invoice invoice = invoiceRepository.findById(dto.getInvoiceId())
-                .orElseThrow(() -> new IllegalArgumentException("Invoice not found: " + dto.getId()));
+                    .orElseThrow(() -> new IllegalArgumentException("Invoice not found: " + dto.getId()));
             entity.setInvoice(invoice);
         }
 
@@ -97,12 +97,12 @@ public class InvoiceItemServiceImpl implements InvoiceItemService {
 
     private InvoiceItemDTO entityToDTO(InvoiceItem entity) {
         return InvoiceItemDTO.builder()
-            .id(entity.getId())
-            .invoiceId(entity.getInvoice().getId())
-            .itemName(entity.getItemName())
-            .quantity(entity.getQuantity())
-            .unitPrice(entity.getUnitPrice())
-            .totalPrice(entity.getTotalPrice())
-            .build();
+                .id(entity.getId())
+                .invoiceId(entity.getInvoice().getId())
+                .itemName(entity.getItemName())
+                .quantity(entity.getQuantity())
+                .unitPrice(entity.getUnitPrice())
+                .totalPrice(entity.getTotalPrice())
+                .build();
     }
 }

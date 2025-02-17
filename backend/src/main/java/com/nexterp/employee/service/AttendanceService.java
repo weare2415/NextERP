@@ -52,25 +52,25 @@ public class AttendanceService {
     // 전체 근태 기록 조회 (DTO 변환)
     public List<AttendanceDTO> getAllAttendances() {
         return attendanceRepository.findAll()
-            .stream()
-            .map(this::convertToDTO)
-            .collect(Collectors.toList());
+                .stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
     }
 
     // 특정 직원의 근태 기록 조회 (DTO 변환)
     public List<AttendanceDTO> getAttendanceByEmployee(Employee employee) {
         return attendanceRepository.findByEmployee(employee)
-            .stream()
-            .map(this::convertToDTO)
-            .collect(Collectors.toList());
+                .stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
     }
 
     // 특정 날짜의 근태 기록 조회 (DTO 변환)
     public List<AttendanceDTO> getAttendanceByDate(LocalDate date) {
         return attendanceRepository.findByDate(date)
-            .stream()
-            .map(this::convertToDTO)
-            .collect(Collectors.toList());
+                .stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
     }
 
     // ✅ 승인 대기 중인 근태 기록 조회 (PENDING 상태)

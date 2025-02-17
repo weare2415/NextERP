@@ -17,13 +17,18 @@ package com.nexterp.accounting.repository;
 import com.nexterp.accounting.dto.TransactionDTO;
 import com.nexterp.accounting.entity.Transaction;
 import com.nexterp.accounting.entity.TransactionType;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Repository
 public interface TransactionRepository extends JpaRepository<Transaction, Long> {
   List<Transaction> findByType(TransactionType type);
   TransactionDTO findTransactionById(long id);
+
+  Page<Transaction> findByDateBetweenOrderByDate(LocalDate dateAfter, LocalDate dateBefore, Pageable pageable);
 }

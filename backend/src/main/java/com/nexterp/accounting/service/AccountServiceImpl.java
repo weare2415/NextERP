@@ -33,7 +33,7 @@ public class AccountServiceImpl implements AccountService {
   @Override
   public void updateBalance(String accountCode, BigDecimal amount) {
     Account account = accountRepository.findById(accountCode)
-        .orElseThrow(() -> new IllegalArgumentException("Account not found"));
+            .orElseThrow(() -> new IllegalArgumentException("Account not found"));
 
     account.setBalance(account.getBalance().add(amount));
     accountRepository.save(account);

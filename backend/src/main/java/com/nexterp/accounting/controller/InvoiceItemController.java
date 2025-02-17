@@ -31,8 +31,8 @@ public class InvoiceItemController {
 
   @GetMapping
   public Page<InvoiceItemDTO> getInvoiceItems(
-      @RequestParam(defaultValue = "0") int page,
-      @RequestParam(defaultValue = "10") int size
+          @RequestParam(defaultValue = "0") int page,
+          @RequestParam(defaultValue = "10") int size
   ) {
     Pageable pageable = PageRequest.of(page, size);
     return invoiceItemService.getInvoiceItems(pageable);
@@ -50,8 +50,8 @@ public class InvoiceItemController {
 
   @PutMapping("/{id}")
   public InvoiceItemDTO updateInvoiceItem(
-      @PathVariable Long id,
-      @RequestBody InvoiceItemDTO invoiceItemDTO
+          @PathVariable Long id,
+          @RequestBody InvoiceItemDTO invoiceItemDTO
   ) {
     return invoiceItemService.updateInvoiceItem(id, invoiceItemDTO);
   }

@@ -83,22 +83,22 @@ public class SalaryServiceImpl implements SalaryService {
   // 직원 확인
   private Employee getEmployeeById(Integer employeeId) {
     return employeeRepository.findById(employeeId)
-        .orElseThrow(() -> new IllegalArgumentException("Invalid employee ID: " + employeeId));
+            .orElseThrow(() -> new IllegalArgumentException("Invalid employee ID: " + employeeId));
   }
 
   // 직원의 급여 정보 확인
   private EmployeeSalaryInfoDTO getEmployeeSalaryInfoByEmployee(Employee employee) {
     return employeeSalaryInfoService.findByEmployeeId(employee.getId())
-        .orElseThrow(() -> new IllegalArgumentException("Salary info not found for employee ID: " + employee.getId()));
+            .orElseThrow(() -> new IllegalArgumentException("Salary info not found for employee ID: " + employee.getId()));
   }
 
   // Salary 저장
   private Salary saveSalary(SalaryDTO salaryDTO, EmployeeSalaryInfoDTO salaryInfoDTO, Employee employee) {
     // 월급으로 변환
     BigDecimal monthlyBaseSalary = salaryInfoDTO.getBaseSalary()
-        .divide(BigDecimal.valueOf(12), RoundingMode.HALF_UP);
+            .divide(BigDecimal.valueOf(12), RoundingMode.HALF_UP);
     BigDecimal monthlyDeduction = salaryInfoDTO.getDeductions()
-        .divide(BigDecimal.valueOf(12), RoundingMode.HALF_UP);
+            .divide(BigDecimal.valueOf(12), RoundingMode.HALF_UP);
 
 
     Salary salary = new Salary();
@@ -107,8 +107,8 @@ public class SalaryServiceImpl implements SalaryService {
     salary.setDeductions(monthlyDeduction);
     salary.setBonus(salaryDTO.getBonus());
     salary.setTotalSalary(monthlyBaseSalary
-        .add(salaryDTO.getBonus())
-        .subtract(monthlyDeduction));
+            .add(salaryDTO.getBonus())
+            .subtract(monthlyDeduction));
     salary.setStatus(PaymentStatus.PENDING);
     return salaryRepository.save(salary);
   }
@@ -116,7 +116,7 @@ public class SalaryServiceImpl implements SalaryService {
   // Transaction 저장
   private Transaction saveTransaction(Salary salary) {
     Transaction transaction = new Transaction();
-    transaction.setDate(LocalDateTime.now());
+    transaction.setDate(LocalDate.now());
     transaction.setAmount(salary.getTotalSalary());
     transaction.setType(TransactionType.SALARY);
     transaction.setDescription("급여 지급");
@@ -128,7 +128,7 @@ public class SalaryServiceImpl implements SalaryService {
     Invoice invoice = new Invoice();
     invoice.setTransaction(transaction);
     invoice.setInvoiceNumber(generateInvoiceNumber());
-    invoice.setDate(LocalDateTime.now());
+    invoice.setDate(LocalDate.now());
     invoice.setBuyer("Company");
     invoice.setSeller(employee.getName());
     invoice.setTotalAmount(salary.getTotalSalary());
@@ -139,9 +139,9 @@ public class SalaryServiceImpl implements SalaryService {
   // InvoiceItem 저장
   private void saveInvoiceItems(Invoice invoice, Salary salary) {
     List<InvoiceItem> items = List.of(
-        createInvoiceItem(invoice, "기본급", salary.getBaseSalary(), 1),
-        createInvoiceItem(invoice, "보너스", salary.getBonus(), 1),
-        createInvoiceItem(invoice, "공제", salary.getDeductions().negate(), 1)
+            createInvoiceItem(invoice, "기본급", salary.getBaseSalary(), 1),
+            createInvoiceItem(invoice, "보너스", salary.getBonus(), 1),
+            createInvoiceItem(invoice, "공제", salary.getDeductions().negate(), 1)
     );
     invoiceItemRepository.saveAll(items);
   }
@@ -176,12 +176,12 @@ public class SalaryServiceImpl implements SalaryService {
 
     // 차변 JournalEntry 생성
     JournalEntry debitEntry = createJournalEntry(
-        debitAccount,
-        salary.getTotalSalary(),  // Debit 값
-        BigDecimal.ZERO,         // Credit 값
-        salary.getTotalSalary(), // Amount 값
-        "급여 지급 - 차변",
-        transaction
+            debitAccount,
+            salary.getTotalSalary(),  // Debit 값
+            BigDecimal.ZERO,         // Credit 값
+            salary.getTotalSalary(), // Amount 값
+            "급여 지급 - 차변",
+            transaction
     );
     journalEntryRepository.save(debitEntry);
 
@@ -191,12 +191,12 @@ public class SalaryServiceImpl implements SalaryService {
 
     // 대변 JournalEntry 생성
     JournalEntry creditEntry = createJournalEntry(
-        creditAccount,
-        BigDecimal.ZERO,             // Debit 값
-        salary.getTotalSalary(),     // Credit 값
-        salary.getTotalSalary().negate(), // Amount 값
-        "급여 지급 - 대변",
-        transaction
+            creditAccount,
+            BigDecimal.ZERO,             // Debit 값
+            salary.getTotalSalary(),     // Credit 값
+            salary.getTotalSalary().negate(), // Amount 값
+            "급여 지급 - 대변",
+            transaction
     );
     journalEntryRepository.save(creditEntry);
 
@@ -233,7 +233,7 @@ public class SalaryServiceImpl implements SalaryService {
   // Account 조회
   private Account getAccountByCode(String accountCode) {
     return accountRepository.findByCode(accountCode)
-        .orElseThrow(() -> new IllegalArgumentException("Invalid account code: " + accountCode));
+            .orElseThrow(() -> new IllegalArgumentException("Invalid account code: " + accountCode));
   }
 
   // 특정 직원의 지급 급여 내역 조회
@@ -242,13 +242,13 @@ public class SalaryServiceImpl implements SalaryService {
   public List<SalaryDTO> getSalariesByEmployeeId(Integer employeeId) {
     // 직원 확인
     Employee employee = employeeRepository.findById(employeeId)
-        .orElseThrow(() -> new IllegalArgumentException("Invalid employee ID: " + employeeId));
+            .orElseThrow(() -> new IllegalArgumentException("Invalid employee ID: " + employeeId));
 
     // 직원의 급여 내역 조회
     return salaryRepository.findByEmployeeId(employee.getId())
-        .stream()
-        .map(this::entityToDTO)
-        .toList();
+            .stream()
+            .map(this::entityToDTO)
+            .toList();
   }
 
   // 모든 지급 급여 내역 조회
@@ -256,15 +256,15 @@ public class SalaryServiceImpl implements SalaryService {
   @Transactional(readOnly = true)
   public List<SalaryDTO> getAllSalaries() {
     return salaryRepository.findAll()
-        .stream()
-        .map(this::entityToDTO)
-        .toList();
+            .stream()
+            .map(this::entityToDTO)
+            .toList();
   }
   // 특정 지급 급여 삭제
   @Override
   public void deleteSalaryById(Long salaryId) {
     Salary salary = salaryRepository.findById(salaryId)
-        .orElseThrow(() -> new IllegalArgumentException("Invalid salary ID: " + salaryId));
+            .orElseThrow(() -> new IllegalArgumentException("Invalid salary ID: " + salaryId));
 
     // 급여 삭제
     salaryRepository.delete(salary);
@@ -291,8 +291,8 @@ public class SalaryServiceImpl implements SalaryService {
     salary.setBonus(dto.getBonus());
     salary.setDeductions(dto.getDeductions());
     salary.setTotalSalary(dto.getBaseSalary()
-        .add(dto.getBonus())
-        .subtract(dto.getDeductions()));
+            .add(dto.getBonus())
+            .subtract(dto.getDeductions()));
     salary.setStatus(PaymentStatus.valueOf(dto.getStatus()));
     return salary;
   }

@@ -49,12 +49,12 @@ public class JWTUtil {
   public static String generateToken(Map<String, Object> valueMap, int min) {
     try {
       return Jwts.builder()
-          .setHeader(Map.of("typ", "JWT"))
-          .setClaims(valueMap)
-          .setIssuedAt(Date.from(ZonedDateTime.now().toInstant()))
-          .setExpiration(Date.from(ZonedDateTime.now().plusMinutes(min).toInstant()))
-          .signWith(secretKey)
-          .compact();
+              .setHeader(Map.of("typ", "JWT"))
+              .setClaims(valueMap)
+              .setIssuedAt(Date.from(ZonedDateTime.now().toInstant()))
+              .setExpiration(Date.from(ZonedDateTime.now().plusMinutes(min).toInstant()))
+              .signWith(secretKey)
+              .compact();
     } catch (Exception e) {
       log.error("Error generating JWT token: {}", e.getMessage());
       throw new RuntimeException("Error generating token", e);
@@ -69,10 +69,10 @@ public class JWTUtil {
   public static Map<String, Object> validateToken(String token) {
     try {
       return Jwts.parserBuilder()
-          .setSigningKey(secretKey)
-          .build()
-          .parseClaimsJws(token) // 파싱 및 검증
-          .getBody();
+              .setSigningKey(secretKey)
+              .build()
+              .parseClaimsJws(token) // 파싱 및 검증
+              .getBody();
     } catch (MalformedJwtException malformedJwtException) {
       throw new CustomJWTException("MalFormed", malformedJwtException);
     } catch (ExpiredJwtException expiredJwtException) {

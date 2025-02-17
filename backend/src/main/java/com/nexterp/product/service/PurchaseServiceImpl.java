@@ -64,10 +64,10 @@ public class PurchaseServiceImpl implements PurchaseService {
   private final InvoiceItemRepository invoiceItemRepository;
 
   @Override
-  public void processPurchase(Long productId, int quantity, BigDecimal purchasePrice, String supplierCode, String paymentAccountId, Employee employee, RequestStatus requestStatus, String memo) {
+  public void processPurchase(Long productId, int quantity, BigDecimal purchasePrice, String supplierCode, String paymentAccountId, Employee employee, RequestStatus requestStatus, LocalDate purchaseDate, String memo) {
     // 1. 제품 재고 증가
     Product product = productRepository.findById(productId)
-        .orElseThrow(() -> new IllegalArgumentException("Product not found"));
+            .orElseThrow(() -> new IllegalArgumentException("Product not found"));
 
     product.setStock(product.getStock() + quantity);
     productRepository.save(product);
@@ -81,30 +81,30 @@ public class PurchaseServiceImpl implements PurchaseService {
 
     // 3. Transaction 생성
     TransactionDTO transactionDTO = TransactionDTO.builder()
-        .amount(totalAmount)
-        .type(TransactionType.PURCHASE)
-        .description("공급업체로부터 구매: " + supplierCode)
-        .date(LocalDateTime.now())
-        .build();
+            .amount(totalAmount)
+            .type(TransactionType.PURCHASE)
+            .description("공급업체로부터 구매: " + supplierCode)
+            .date(purchaseDate)
+            .build();
 
     TransactionDTO savedTransactionDTO = transactionService.createTransaction(transactionDTO);
 
     // 4. Journal Entry 생성
-    createJournalEntries(savedTransactionDTO, purchaseAmount, vatAmount, paymentAccountId);
+    createJournalEntries(savedTransactionDTO, purchaseAmount, vatAmount, paymentAccountId, purchaseDate);
 
     // 5. VAT 처리
     vatService.createVAT(savedTransactionDTO.getId(), BigDecimal.valueOf(0.10), purchaseAmount);
 
     // 6. Invoice 생성
     InvoiceDTO invoiceDTO = InvoiceDTO.builder()
-        .invoiceNumber("PUR" + savedTransactionDTO.getId())
-        .date(LocalDateTime.now())
-        .buyer("My Company")
-        .seller("Supplier " + supplierCode)
-        .totalAmount(totalAmount)
-        .vatAmount(vatAmount)
-        .description("구매 명세서, 거래 ID: " + savedTransactionDTO.getId())
-        .build();
+            .invoiceNumber("PUR" + savedTransactionDTO.getId())
+            .date(purchaseDate)
+            .buyer("My Company")
+            .seller("Supplier " + supplierCode)
+            .totalAmount(totalAmount)
+            .vatAmount(vatAmount)
+            .description("구매 명세서, 거래 ID: " + savedTransactionDTO.getId())
+            .build();
 
     InvoiceDTO savedInvoiceDTO = invoiceService.createInvoice(invoiceDTO, savedTransactionDTO.getId());
 
@@ -113,19 +113,19 @@ public class PurchaseServiceImpl implements PurchaseService {
 
     // 8. 공급업체 정보 설정
     Client supplier = clientRepository.findByClientCode(supplierCode)
-        .orElseThrow(() -> new IllegalArgumentException("Supplier not found"));
+            .orElseThrow(() -> new IllegalArgumentException("Supplier not found"));
     log.info("공급업체 - ID: {}", supplier.getId());
 
     // 9. 주문 생성
     OrderDTO orderDTO = OrderDTO.builder()
-        .transactionId(savedTransactionDTO.getId())
-        .productId(productId)
-        .clientCode(supplierCode)
-        .employeeId(employee.getId())
-        .orderCount(quantity)
-        .orderType(OrderType.PURCHASE)
-        .memo(memo)
-        .build();
+            .transactionId(savedTransactionDTO.getId())
+            .productId(productId)
+            .clientCode(supplierCode)
+            .employeeId(employee.getId())
+            .orderCount(quantity)
+            .orderType(OrderType.PURCHASE)
+            .memo(memo)
+            .build();
 
     orderService.createOrder(orderDTO);
   }
@@ -135,7 +135,7 @@ public class PurchaseServiceImpl implements PurchaseService {
   public void approvePurchase(Long transactionId) {
     // 1. 주문 조회 및 승인 가능 상태 확인
     Order order = orderRepository.findById(transactionId)
-        .orElseThrow(() -> new IllegalArgumentException("Order not found"));
+            .orElseThrow(() -> new IllegalArgumentException("Order not found"));
 
     if (order.getRequestStatus() != RequestStatus.PENDING) {
       throw new IllegalStateException("Only pending orders can be approved");
@@ -179,7 +179,7 @@ public class PurchaseServiceImpl implements PurchaseService {
   public void rejectPurchase(Long transactionId) {
     // 1. 주문 조회 및 반려 가능 상태 확인
     Order order = orderRepository.findById(transactionId)
-        .orElseThrow(() -> new IllegalArgumentException("Order not found"));
+            .orElseThrow(() -> new IllegalArgumentException("Order not found"));
 
     if (order.getRequestStatus() != RequestStatus.PENDING) {
       throw new IllegalStateException("Only pending orders can be rejected");
@@ -187,7 +187,7 @@ public class PurchaseServiceImpl implements PurchaseService {
 
     // 2. 제품 재고 복구
     Product product = productRepository.findById(order.getProduct().getId())
-        .orElseThrow(() -> new IllegalArgumentException("Product not found"));
+            .orElseThrow(() -> new IllegalArgumentException("Product not found"));
 
     product.setStock(product.getStock() - order.getOrderCount());
     productRepository.save(product);
@@ -200,7 +200,7 @@ public class PurchaseServiceImpl implements PurchaseService {
 
     // 4. 기존 트랜잭션을 REFUND 타입으로 변경
     Transaction transaction = transactionRepository.findById(transactionId)
-        .orElseThrow(() -> new IllegalArgumentException("Transaction not found"));
+            .orElseThrow(() -> new IllegalArgumentException("Transaction not found"));
 
     transaction.setType(TransactionType.REFUND);
     transaction.setDescription(transaction.getDescription() + " (승인 거절됨)");
@@ -219,7 +219,7 @@ public class PurchaseServiceImpl implements PurchaseService {
   public void refundPurchase(Long transactionId) {
     // 1. 주문 조회 및 환불 가능 상태 확인
     Order order = orderRepository.findById(transactionId)
-        .orElseThrow(() -> new IllegalArgumentException("Order not found"));
+            .orElseThrow(() -> new IllegalArgumentException("Order not found"));
 
     if (order.getRequestStatus() != RequestStatus.APPROVED) {
       throw new IllegalStateException("Only approved orders can be refunded");
@@ -227,7 +227,7 @@ public class PurchaseServiceImpl implements PurchaseService {
 
     // 2. 제품 재고 차감 (구매 환불이므로 차감)
     Product product = productRepository.findById(order.getProduct().getId())
-        .orElseThrow(() -> new IllegalArgumentException("Product not found"));
+            .orElseThrow(() -> new IllegalArgumentException("Product not found"));
 
     product.setStock(product.getStock() - order.getOrderCount());
     productRepository.save(product);
@@ -240,7 +240,7 @@ public class PurchaseServiceImpl implements PurchaseService {
 
     // 4. 기존 트랜잭션을 REFUND 타입으로 변경
     Transaction transaction = transactionRepository.findById(transactionId)
-        .orElseThrow(() -> new IllegalArgumentException("Transaction not found"));
+            .orElseThrow(() -> new IllegalArgumentException("Transaction not found"));
 
     transaction.setType(TransactionType.REFUND);
     transaction.setDescription(transaction.getDescription() + " (반품 처리됨)");
@@ -281,44 +281,44 @@ public class PurchaseServiceImpl implements PurchaseService {
   }
 
   // Journal Entry 생성 메서드
-  private void createJournalEntries(TransactionDTO transaction, BigDecimal purchaseAmount, BigDecimal vatAmount, String paymentAccountId) {
+  private void createJournalEntries(TransactionDTO transaction, BigDecimal purchaseAmount, BigDecimal vatAmount, String paymentAccountId, LocalDate purchaseDate) {
     // 1. 재고 자산 증가 (차변)
     journalEntryService.createJournalEntry(
-        JournalEntryDTO.builder()
-            .date(LocalDate.now())
-            .accountCode("120")
-            .debit(purchaseAmount)
-            .credit(BigDecimal.ZERO)
-            .amount(purchaseAmount)
-            .transactionId(transaction.getId())
-            .description("구매로 인한 재고 자산 증가")
-            .build()
+            JournalEntryDTO.builder()
+                    .date(purchaseDate)
+                    .accountCode("120")
+                    .debit(purchaseAmount)
+                    .credit(BigDecimal.ZERO)
+                    .amount(purchaseAmount)
+                    .transactionId(transaction.getId())
+                    .description("구매로 인한 재고 자산 증가")
+                    .build()
     );
 
     // 2. 지급 계정 대변 (지출)
     journalEntryService.createJournalEntry(
-        JournalEntryDTO.builder()
-            .date(LocalDate.now())
-            .accountCode(paymentAccountId)
-            .debit(BigDecimal.ZERO)
-            .credit(purchaseAmount.add(vatAmount))
-            .amount(purchaseAmount.add(vatAmount))
-            .transactionId(transaction.getId())
-            .description(getPaymentDescription(paymentAccountId))
-            .build()
+            JournalEntryDTO.builder()
+                    .date(purchaseDate)
+                    .accountCode(paymentAccountId)
+                    .debit(BigDecimal.ZERO)
+                    .credit(purchaseAmount.add(vatAmount))
+                    .amount(purchaseAmount.add(vatAmount))
+                    .transactionId(transaction.getId())
+                    .description(getPaymentDescription(paymentAccountId))
+                    .build()
     );
 
     // 3. VAT 대급금(prepaid) (150) 증가 (차변)
     journalEntryService.createJournalEntry(
-        JournalEntryDTO.builder()
-            .date(LocalDate.now())
-            .accountCode("150")
-            .debit(vatAmount)
-            .credit(BigDecimal.ZERO)
-            .amount(vatAmount)
-            .transactionId(transaction.getId())
-            .description("구매로 인한 VAT 대급금 증가")
-            .build()
+            JournalEntryDTO.builder()
+                    .date(purchaseDate)
+                    .accountCode("150")
+                    .debit(vatAmount)
+                    .credit(BigDecimal.ZERO)
+                    .amount(vatAmount)
+                    .transactionId(transaction.getId())
+                    .description("구매로 인한 VAT 대급금 증가")
+                    .build()
     );
   }
 
@@ -333,23 +333,23 @@ public class PurchaseServiceImpl implements PurchaseService {
   // InvoiceItem 생성 메서드
   private void createInvoiceItems(InvoiceDTO invoice, Product product, BigDecimal unitPrice, int quantity, BigDecimal vatAmount) {
     invoiceItemService.createInvoiceItem(
-        InvoiceItemDTO.builder()
-            .invoiceId(invoice.getId())
-            .itemName(product.getProductName())
-            .quantity(quantity)
-            .unitPrice(unitPrice)
-            .totalPrice(unitPrice.multiply(BigDecimal.valueOf(quantity)))
-            .build()
+            InvoiceItemDTO.builder()
+                    .invoiceId(invoice.getId())
+                    .itemName(product.getProductName())
+                    .quantity(quantity)
+                    .unitPrice(unitPrice)
+                    .totalPrice(unitPrice.multiply(BigDecimal.valueOf(quantity)))
+                    .build()
     );
 
     invoiceItemService.createInvoiceItem(
-        InvoiceItemDTO.builder()
-            .invoiceId(invoice.getId())
-            .itemName(product.getProductName() + " 부가세 (VAT)")
-            .quantity(1)
-            .unitPrice(vatAmount)
-            .totalPrice(vatAmount)
-            .build()
+            InvoiceItemDTO.builder()
+                    .invoiceId(invoice.getId())
+                    .itemName(product.getProductName() + " 부가세 (VAT)")
+                    .quantity(1)
+                    .unitPrice(vatAmount)
+                    .totalPrice(vatAmount)
+                    .build()
     );
   }
 }

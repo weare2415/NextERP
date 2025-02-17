@@ -103,8 +103,8 @@ public class ClientController {
   // 거래처 수정 요청
   @PutMapping("/{clientCode}/request-update")
   public ResponseEntity<ClientDTO> requestUpdateClient(
-      @PathVariable String clientCode,
-      @RequestBody ClientDTO clientDTO) {
+          @PathVariable String clientCode,
+          @RequestBody ClientDTO clientDTO) {
     ClientDTO updatedClient = clientService.requestUpdateClient(clientCode, clientDTO);
     return ResponseEntity.ok(updatedClient);
   }
@@ -112,8 +112,8 @@ public class ClientController {
   // 거래처 승인
   @PutMapping("/{clientCode}/approve")
   public ResponseEntity<ClientDTO> approveClient(
-      @PathVariable String clientCode,
-      @RequestParam Integer approvedEmployeeId) {
+          @PathVariable String clientCode,
+          @RequestParam Integer approvedEmployeeId) {
     ClientDTO approvedClient = clientService.approveClient(clientCode, approvedEmployeeId);
     return ResponseEntity.ok(approvedClient);
   }
@@ -121,8 +121,8 @@ public class ClientController {
   // 거래처 반려
   @PutMapping("/{clientCode}/reject")
   public ResponseEntity<Void> rejectClient(
-      @PathVariable String clientCode,
-      @RequestParam Integer approvedEmployeeId) {
+          @PathVariable String clientCode,
+          @RequestParam Integer approvedEmployeeId) {
     clientService.rejectClient(clientCode, approvedEmployeeId);
     return ResponseEntity.noContent().build();
   }

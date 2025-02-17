@@ -67,10 +67,10 @@ public class SaleServiceImpl implements SaleService {
   private final TransactionRepository transactionRepository;
 
   @Override
-  public void processSale(Long productId, int quantity, BigDecimal salePrice, String clientCode, String paymentAccountId, Employee employee, RequestStatus requestStatus, String memo) {
+  public void processSale(Long productId, int quantity, BigDecimal salePrice, String clientCode, String paymentAccountId, Employee employee, RequestStatus requestStatus, LocalDate saleDate, String memo) {
     // 1. 제품 재고 차감
     Product product = productRepository.findById(productId)
-        .orElseThrow(() -> new IllegalArgumentException("Product not found"));
+            .orElseThrow(() -> new IllegalArgumentException("Product not found"));
 
     if (product.getStock() < quantity) {
       log.error("재고 부족 - 요청 수량: {}, 현재 재고: {}", quantity, product.getStock());
@@ -93,39 +93,39 @@ public class SaleServiceImpl implements SaleService {
 
     // 3. TransactionDTO 생성 후 createTransaction 호출
     TransactionDTO transactionDTO = TransactionDTO.builder()
-        .amount(totalAmount)
-        .type(TransactionType.SALE)
-        .description("구매한 고객: " + clientCode)
-        .date(LocalDateTime.now())
-        .build();
+            .amount(totalAmount)
+            .type(TransactionType.SALE)
+            .description("구매한 고객: " + clientCode)
+            .date(saleDate)
+            .build();
 
     TransactionDTO savedTransactionDTO = transactionService.createTransaction(transactionDTO);
 
     // 4. 매출 계정 증가에 따른 Journal Entry (대변) 생성
     journalEntryService.createJournalEntry(
-        JournalEntryDTO.builder()
-            .date(LocalDate.now())
-            .accountCode("401")
-            .debit(BigDecimal.ZERO)
-            .credit(saleAmount)
-            .amount(saleAmount)
-            .transactionId(savedTransactionDTO.getId())
-            .description("매출 계정 반영, 거래 ID: " + savedTransactionDTO.getId())
-            .build()
+            JournalEntryDTO.builder()
+                    .date(saleDate)
+                    .accountCode("401")
+                    .debit(BigDecimal.ZERO)
+                    .credit(saleAmount)
+                    .amount(saleAmount)
+                    .transactionId(savedTransactionDTO.getId())
+                    .description("매출 계정 반영, 거래 ID: " + savedTransactionDTO.getId())
+                    .build()
     );
 
     // 5. 지급 계정 증가에 대한 Journal Entry(차변) 생성
     String paymentDescription = getPaymentDescription(paymentAccountId) + ", 거래 ID: " + savedTransactionDTO.getId();
 
     JournalEntryDTO paymentDebitEntryDTO = JournalEntryDTO.builder()
-        .date(LocalDate.now())
-        .accountCode(paymentAccountId)
-        .debit(saleAmount)
-        .credit(BigDecimal.ZERO)
-        .amount(saleAmount)
-        .transactionId(savedTransactionDTO.getId())
-        .description(paymentDescription)
-        .build();
+            .date(saleDate)
+            .accountCode(paymentAccountId)
+            .debit(saleAmount)
+            .credit(BigDecimal.ZERO)
+            .amount(saleAmount)
+            .transactionId(savedTransactionDTO.getId())
+            .description(paymentDescription)
+            .build();
 
     journalEntryService.createJournalEntry(paymentDebitEntryDTO);
 
@@ -133,41 +133,41 @@ public class SaleServiceImpl implements SaleService {
     String inventoryDescription = "재고 감소 반영 (COGS), 거래 ID:: " + savedTransactionDTO.getId();
 
     JournalEntryDTO inventoryCreditEntryDTO = JournalEntryDTO.builder()
-        .date(LocalDate.now())
-        .accountCode("120")
-        .debit(BigDecimal.ZERO)
-        .credit(purchaseAmount)
-        .amount(purchaseAmount)
-        .transactionId(savedTransactionDTO.getId())
-        .description(inventoryDescription)
-        .build();
+            .date(saleDate)
+            .accountCode("120")
+            .debit(BigDecimal.ZERO)
+            .credit(purchaseAmount)
+            .amount(purchaseAmount)
+            .transactionId(savedTransactionDTO.getId())
+            .description(inventoryDescription)
+            .build();
     journalEntryService.createJournalEntry(inventoryCreditEntryDTO);
 
     // 7. 매출원가 계정 Journal Entry(차변) 생성
     String cogsDescription = "매출원가 반영, 거래 ID: " + savedTransactionDTO.getId();
 
     JournalEntryDTO cogsDebitEntryDTO = JournalEntryDTO.builder()
-        .date(LocalDate.now())
-        .accountCode("520")
-        .debit(purchaseAmount)
-        .credit(BigDecimal.ZERO)
-        .amount(purchaseAmount)
-        .transactionId(savedTransactionDTO.getId())
-        .description(cogsDescription)
-        .build();
+            .date(saleDate)
+            .accountCode("520")
+            .debit(purchaseAmount)
+            .credit(BigDecimal.ZERO)
+            .amount(purchaseAmount)
+            .transactionId(savedTransactionDTO.getId())
+            .description(cogsDescription)
+            .build();
     journalEntryService.createJournalEntry(cogsDebitEntryDTO);
 
     // 8. 영업이익 차변 처리
     journalEntryService.createJournalEntry(
-        JournalEntryDTO.builder()
-            .date(LocalDate.now())
-            .accountCode("320")
-            .debit(BigDecimal.ZERO)
-            .credit(operatingProfit)
-            .amount(operatingProfit)
-            .transactionId(savedTransactionDTO.getId())
-            .description("영업이익 반영, 거래 ID: " + savedTransactionDTO.getId())
-            .build()
+            JournalEntryDTO.builder()
+                    .date(saleDate)
+                    .accountCode("320")
+                    .debit(BigDecimal.ZERO)
+                    .credit(operatingProfit)
+                    .amount(operatingProfit)
+                    .transactionId(savedTransactionDTO.getId())
+                    .description("영업이익 반영, 거래 ID: " + savedTransactionDTO.getId())
+                    .build()
     );
 
     // 9. 부가세 관련 처리 (VAT) - VAT 생성
@@ -175,38 +175,38 @@ public class SaleServiceImpl implements SaleService {
 
     // 10. 부가세 Journal Entry 생성 (대변)
     JournalEntryDTO vatCreditEntryDTO = JournalEntryDTO.builder()
-        .date(LocalDate.now())
-        .accountCode("210")
-        .debit(BigDecimal.ZERO)
-        .credit(vatAmount)
-        .amount(vatAmount)
-        .transactionId(savedTransactionDTO.getId())
-        .description("판매 부가세, 거래 ID: " + savedTransactionDTO.getId())
-        .build();
+            .date(saleDate)
+            .accountCode("210")
+            .debit(BigDecimal.ZERO)
+            .credit(vatAmount)
+            .amount(vatAmount)
+            .transactionId(savedTransactionDTO.getId())
+            .description("판매 부가세, 거래 ID: " + savedTransactionDTO.getId())
+            .build();
     journalEntryService.createJournalEntry(vatCreditEntryDTO);
 
     // 11. 부가세 지급 계좌 차변 처리 (부가세 입금)
     JournalEntryDTO vatDebitEntryDTO = JournalEntryDTO.builder()
-        .date(LocalDate.now())
-        .accountCode(paymentAccountId)
-        .debit(vatAmount)
-        .credit(BigDecimal.ZERO)
-        .amount(vatAmount)
-        .transactionId(savedTransactionDTO.getId())
-        .description("판매 부가세 입금, 거래 ID: " + savedTransactionDTO.getId())
-        .build();
+            .date(saleDate)
+            .accountCode(paymentAccountId)
+            .debit(vatAmount)
+            .credit(BigDecimal.ZERO)
+            .amount(vatAmount)
+            .transactionId(savedTransactionDTO.getId())
+            .description("판매 부가세 입금, 거래 ID: " + savedTransactionDTO.getId())
+            .build();
     journalEntryService.createJournalEntry(vatDebitEntryDTO);
 
     // 12. Invoice 생성
     InvoiceDTO invoiceDTO = InvoiceDTO.builder()
-        .invoiceNumber("PRO" + savedTransactionDTO.getId())
-        .date(LocalDateTime.now())
-        .buyer("Client " + clientCode)
-        .seller("My Company")
-        .totalAmount(totalAmount)
-        .vatAmount(vatAmount)
-        .description("판매 명세서, 거래 ID: " + savedTransactionDTO.getId())
-        .build();
+            .invoiceNumber("PRO" + savedTransactionDTO.getId())
+            .date(saleDate)
+            .buyer("Client " + clientCode)
+            .seller("My Company")
+            .totalAmount(totalAmount)
+            .vatAmount(vatAmount)
+            .description("판매 명세서, 거래 ID: " + savedTransactionDTO.getId())
+            .build();
 
     InvoiceDTO savedInvoiceDTO = invoiceService.createInvoice(invoiceDTO, savedTransactionDTO.getId());
     log.info("✅ Invoice 생성 요청 완료 - 응답 ID: {}", savedInvoiceDTO != null ? savedInvoiceDTO.getId() : "null");
@@ -217,43 +217,43 @@ public class SaleServiceImpl implements SaleService {
 
     // 13. InvoiceItem 생성
     InvoiceItemDTO invoiceItemDTO = InvoiceItemDTO.builder()
-        .invoiceId(savedInvoiceDTO.getId())
-        .itemName(product.getProductName())
-        .quantity(quantity)
-        .unitPrice(salePrice)
-        .totalPrice(salePrice.multiply(BigDecimal.valueOf(quantity)))
-        .build();
+            .invoiceId(savedInvoiceDTO.getId())
+            .itemName(product.getProductName())
+            .quantity(quantity)
+            .unitPrice(salePrice)
+            .totalPrice(salePrice.multiply(BigDecimal.valueOf(quantity)))
+            .build();
 
     InvoiceItemDTO savedInvoiceItemDTO = invoiceItemService.createInvoiceItem(invoiceItemDTO);
     log.info("InvoiceItem 생성 완료 - ID: {}", savedInvoiceItemDTO != null ? savedInvoiceItemDTO.getId() : "null");
 
     // 13-1. VAT에 대한 InvoiceItem 추가
     InvoiceItemDTO vatInvoiceItemDTO = InvoiceItemDTO.builder()
-        .invoiceId(savedInvoiceDTO.getId())
-        .itemName(product.getProductName() + "부가세 (VAT)")
-        .quantity(1)
-        .unitPrice(vatAmount)
-        .totalPrice(vatAmount)
-        .build();
+            .invoiceId(savedInvoiceDTO.getId())
+            .itemName(product.getProductName() + "부가세 (VAT)")
+            .quantity(1)
+            .unitPrice(vatAmount)
+            .totalPrice(vatAmount)
+            .build();
 
     InvoiceItemDTO savedVatInvoiceItemDTO = invoiceItemService.createInvoiceItem(vatInvoiceItemDTO);
     log.info("VAT InvoiceItem 생성 완료 - ID: {}", savedVatInvoiceItemDTO != null ? savedVatInvoiceItemDTO.getId() : "null");
 
     // 14. 거래처 설정
     Client client = clientRepository.findByClientCode(clientCode)
-        .orElseThrow(() -> new IllegalArgumentException("Client not found"));
+            .orElseThrow(() -> new IllegalArgumentException("Client not found"));
     log.info("client - ID: {}", client != null ? client.getId() : "null");
 
     // 15. Order 설정
     OrderDTO orderDTO = OrderDTO.builder()
-        .transactionId(savedTransactionDTO.getId())
-        .productId(productId)
-        .clientCode(clientCode)
-        .employeeId(employee.getId())
-        .orderCount(quantity)
-        .orderType(OrderType.SALE)
-        .memo(memo)
-        .build();
+            .transactionId(savedTransactionDTO.getId())
+            .productId(productId)
+            .clientCode(clientCode)
+            .employeeId(employee.getId())
+            .orderCount(quantity)
+            .orderType(OrderType.SALE)
+            .memo(memo)
+            .build();
 
     OrderDTO savedOrderDTO = orderService.createOrder(orderDTO);
     log.info("order - ID: {}", savedOrderDTO != null ? savedOrderDTO.getId() : "null");
@@ -263,7 +263,7 @@ public class SaleServiceImpl implements SaleService {
   public void approveSale(Long transactionId) {
     // 1. 주문 조회 및 승인 가능 상태 확인
     Order order = orderRepository.findById(transactionId)
-        .orElseThrow(() -> new IllegalArgumentException("Order not found"));
+            .orElseThrow(() -> new IllegalArgumentException("Order not found"));
 
     if (order.getRequestStatus() != RequestStatus.PENDING) {
       throw new IllegalStateException("Only pending orders can be approved");
@@ -298,9 +298,9 @@ public class SaleServiceImpl implements SaleService {
         // 수익 (Revenue) 400번대
         case 200, 300, 400 -> creditAmount.subtract(debitAmount); // 대변 +, 차변 -
         case 500 -> // 비용 (Expense) 500번대
-            debitAmount.add(creditAmount);  // 대변 +, 차변 -
+                debitAmount.add(creditAmount);  // 대변 +, 차변 -
         default ->
-            throw new IllegalArgumentException("지원되지 않는 계정 코드: " + accountCode);
+                throw new IllegalArgumentException("지원되지 않는 계정 코드: " + accountCode);
       };
 
       accountService.updateBalance(accountCode, amountToUpdate);
@@ -313,7 +313,7 @@ public class SaleServiceImpl implements SaleService {
   public void rejectSale(Long transactionId) {
     // 1. 주문 조회 및 반려 가능 상태 확인
     Order order = orderRepository.findById(transactionId)
-        .orElseThrow(() -> new IllegalArgumentException("Order not found"));
+            .orElseThrow(() -> new IllegalArgumentException("Order not found"));
 
     if (order.getRequestStatus() != RequestStatus.PENDING) {
       throw new IllegalStateException("Only pending orders can be rejected");
@@ -321,7 +321,7 @@ public class SaleServiceImpl implements SaleService {
 
     // 2. 제품 재고 복구
     Product product = productRepository.findById(order.getProduct().getId())
-        .orElseThrow(() -> new IllegalArgumentException("Product not found"));
+            .orElseThrow(() -> new IllegalArgumentException("Product not found"));
 
     product.setStock(product.getStock() + order.getOrderCount());
     productRepository.save(product);
@@ -334,14 +334,14 @@ public class SaleServiceImpl implements SaleService {
 
     // 4. 기존 트랜잭션을 REFUND 타입으로 변경
     Transaction transaction = transactionRepository.findById(transactionId)
-        .orElseThrow(() -> new IllegalArgumentException("Transaction not found"));
+            .orElseThrow(() -> new IllegalArgumentException("Transaction not found"));
 
     transaction.setType(TransactionType.REFUND);
     transaction.setDescription(transaction.getDescription() + " (환불 처리됨)");
     transactionRepository.save(transaction);
     log.info("트랜잭션 상태 변경 완료 - ID: {}", transaction.getId());
 
-        // 5. 관련된 데이터 삭제 처리
+    // 5. 관련된 데이터 삭제 처리
     invoiceRepository.deleteByTransactionId(transactionId);
     log.info("Invoice 삭제 완료");
     invoiceItemRepository.deleteByInvoiceId(transactionId);
@@ -355,7 +355,7 @@ public class SaleServiceImpl implements SaleService {
   public void refundSale(Long transactionId) {
     // 1. 주문 조회 및 환불 가능 상태 확인
     Order order = orderRepository.findById(transactionId)
-        .orElseThrow(() -> new IllegalArgumentException("Order not found"));
+            .orElseThrow(() -> new IllegalArgumentException("Order not found"));
 
     if (order.getRequestStatus() != RequestStatus.APPROVED) {
       throw new IllegalStateException("Only approved orders can be refunded");
@@ -363,7 +363,7 @@ public class SaleServiceImpl implements SaleService {
 
     // 2. 제품 재고 복구
     Product product = productRepository.findById(order.getProduct().getId())
-        .orElseThrow(() -> new IllegalArgumentException("Product not found"));
+            .orElseThrow(() -> new IllegalArgumentException("Product not found"));
 
     product.setStock(product.getStock() + order.getOrderCount());
     productRepository.save(product);
@@ -376,7 +376,7 @@ public class SaleServiceImpl implements SaleService {
 
     // 4. 기존 트랜잭션을 REFUND 타입으로 변경
     Transaction transaction = transactionRepository.findById(transactionId)
-        .orElseThrow(() -> new IllegalArgumentException("Transaction not found"));
+            .orElseThrow(() -> new IllegalArgumentException("Transaction not found"));
 
     transaction.setType(TransactionType.REFUND);
     transaction.setDescription(transaction.getDescription() + " (환불 처리됨)");

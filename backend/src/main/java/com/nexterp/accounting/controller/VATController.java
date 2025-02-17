@@ -31,9 +31,9 @@ public class VATController {
 
   @PostMapping("/create")
   public ResponseEntity<VAT> createVAT(
-      @RequestParam Long transactionId,
-      @RequestParam BigDecimal vatRate,
-      @RequestParam BigDecimal baseAmount
+          @RequestParam Long transactionId,
+          @RequestParam BigDecimal vatRate,
+          @RequestParam BigDecimal baseAmount
   ) {
     VAT vat = vatService.createVAT(transactionId, vatRate, baseAmount);
     return ResponseEntity.ok(vat);

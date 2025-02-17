@@ -23,10 +23,7 @@ import com.nexterp.product.entity.Product;
 import com.nexterp.product.repository.OrderRepository;
 import com.nexterp.product.repository.ProductRepository;
 import com.nexterp.product.service.SaleService;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -36,6 +33,7 @@ import org.springframework.core.io.ClassPathResource;
 
 import java.io.InputStream;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -91,8 +89,22 @@ public class SaleServiceTest {
         String paymentAccountId = getStringCellValue(row.getCell(4)); // PAYMENT_ACCOUNT_ID
         Integer employeeId = (int) row.getCell(5).getNumericCellValue(); // EMPLOYEE_ID
         String memo = getStringCellValue(row.getCell(6)); // MEMO
+//        LocalDate saleDate = LocalDate.parse(getStringCellValue(row.getCell(7)));
+        Cell dateCell = row.getCell(7);
+        LocalDate saleDate;
 
-        saleDataList.add(new SaleData(productId, quantity, salePrice, clientId, paymentAccountId, employeeId, memo));
+        if (dateCell.getCellType() == CellType.NUMERIC) {
+          // 엑셀 날짜는 1900-01-01을 기준으로 한 숫자로 저장됨 -> LocalDate 변환 필요
+          saleDate = dateCell.getLocalDateTimeCellValue().toLocalDate();
+        } else if (dateCell.getCellType() == CellType.STRING) {
+          // 문자열 형식의 날짜 처리
+          saleDate = LocalDate.parse(dateCell.getStringCellValue().trim());
+        } else {
+          throw new IllegalArgumentException("Invalid date format in row: " + row.getRowNum());
+        }
+
+
+        saleDataList.add(new SaleData(productId, quantity, salePrice, clientId, paymentAccountId, employeeId, saleDate, memo));
       }
       workbook.close();
     } catch (Exception e) {
@@ -109,21 +121,22 @@ public class SaleServiceTest {
 
     for (SaleData data : saleDataList) {
       Product product = productRepository.findById(data.getProductId())
-          .orElseThrow(() -> new IllegalArgumentException("Product not found"));
+              .orElseThrow(() -> new IllegalArgumentException("Product not found"));
       Client client = clientRepository.findById(data.getClientId())
-          .orElseThrow(() -> new IllegalArgumentException("Client not found"));
+              .orElseThrow(() -> new IllegalArgumentException("Client not found"));
       Employee employee = employeeRepository.findById(data.getEmployeeId())
-          .orElseThrow(() -> new IllegalArgumentException("Employee not found"));
+              .orElseThrow(() -> new IllegalArgumentException("Employee not found"));
 
       saleService.processSale(
-          data.getProductId(),
-          data.getQuantity(),
-          data.getSalePrice(),
-          client.getClientCode(),
-          data.getPaymentAccountId(),
-          employee,
-          RequestStatus.PENDING,
-          data.getMemo()
+              data.getProductId(),
+              data.getQuantity(),
+              data.getSalePrice(),
+              client.getClientCode(),
+              data.getPaymentAccountId(),
+              employee,
+              RequestStatus.PENDING,
+              data.saleDate,
+              data.getMemo()
       );
     }
   }
@@ -137,14 +150,16 @@ public class SaleServiceTest {
     private String paymentAccountId;
     private Integer employeeId;
     private String memo;
+    private LocalDate saleDate;
 
-    public SaleData(Long productId, int quantity, BigDecimal salePrice, Long clientId, String paymentAccountId, Integer employeeId, String memo) {
+    public SaleData(Long productId, int quantity, BigDecimal salePrice, Long clientId, String paymentAccountId, Integer employeeId, LocalDate saleDate, String memo) {
       this.productId = productId;
       this.quantity = quantity;
       this.salePrice = salePrice;
       this.clientId = clientId;
       this.paymentAccountId = paymentAccountId;
       this.employeeId = employeeId;
+      this.saleDate = saleDate;
       this.memo = memo;
     }
 
@@ -155,32 +170,33 @@ public class SaleServiceTest {
     public String getPaymentAccountId() { return paymentAccountId; }
     public Integer getEmployeeId() { return employeeId; }
     public String getMemo() { return memo; }
+    public LocalDate getSaleDate() { return saleDate; }
   }
 
   private static final Long TRANSACTION_START_ID = 31L;
   private static final Long TRANSACTION_END_ID = 60L;
 
   @Test
-  void testApproveMultiplePurchases() {
+  void testApproveMultipleSale() {
     for (long transactionId = TRANSACTION_START_ID; transactionId <= TRANSACTION_END_ID; transactionId++) {
       Long currentTransactionId = transactionId;
 
       // 1. PENDING 상태의 주문이 존재하는지 확인
       Order order = orderRepository.findById(currentTransactionId)
-          .orElseThrow(() -> new IllegalArgumentException("Order not found: " + currentTransactionId));
+              .orElseThrow(() -> new IllegalArgumentException("Order not found: " + currentTransactionId));
 
       assertEquals(RequestStatus.PENDING, order.getRequestStatus(),
-          "🚨 주문 상태가 PENDING이어야 합니다. (Transaction ID: " + currentTransactionId + ")");
+              "🚨 주문 상태가 PENDING이어야 합니다. (Transaction ID: " + currentTransactionId + ")");
 
       // 2. 승인 실행
       saleService.approveSale(currentTransactionId);
 
       // 3. 변경된 상태 확인
       Order approvedOrder = orderRepository.findById(currentTransactionId)
-          .orElseThrow(() -> new IllegalArgumentException("Order not found after approval: " + currentTransactionId));
+              .orElseThrow(() -> new IllegalArgumentException("Order not found after approval: " + currentTransactionId));
 
       assertEquals(RequestStatus.APPROVED, approvedOrder.getRequestStatus(),
-          "🚨 주문 상태가 APPROVED로 변경되어야 합니다. (Transaction ID: " + currentTransactionId + ")");
+              "🚨 주문 상태가 APPROVED로 변경되어야 합니다. (Transaction ID: " + currentTransactionId + ")");
     }
   }
 }

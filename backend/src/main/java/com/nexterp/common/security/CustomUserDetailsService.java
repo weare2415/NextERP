@@ -42,16 +42,16 @@ public class CustomUserDetailsService implements UserDetailsService {
     log.info("Authenticating employeeId: {}", employeeId);
 
     Member member = memberRepository.findById(employeeId)
-        .orElseThrow(() -> new UsernameNotFoundException("Member not found with employeeId: " + employeeId));
+            .orElseThrow(() -> new UsernameNotFoundException("Member not found with employeeId: " + employeeId));
 
     log.info("Found member: {}", member);
 
     return new MemberDTO(
-        member.getId(),
-        member.getPassword(),
-        Collections.singletonList(new SimpleGrantedAuthority(member.getRole())),
-        member.getName(),
-        member.getRole(),
+            member.getId(),
+            member.getPassword(),
+            Collections.singletonList(new SimpleGrantedAuthority(member.getRole())),
+            member.getName(),
+            member.getRole(),
             member.isInitialPassword()
 
 

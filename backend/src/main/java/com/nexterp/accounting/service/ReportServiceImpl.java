@@ -59,8 +59,8 @@ public class ReportServiceImpl implements ReportService {
   @Override
   public ReportDTO getReportById(Long id) {
     return reportRepository.findById(id)
-        .map(this::entityToDTO)
-        .orElseThrow(() -> new IllegalArgumentException("Report not found: " + id));
+            .map(this::entityToDTO)
+            .orElseThrow(() -> new IllegalArgumentException("Report not found: " + id));
   }
 
   @Override
@@ -90,7 +90,7 @@ public class ReportServiceImpl implements ReportService {
   @Override
   public ReportDTO updateReport(Long id, ReportDTO reportDTO) {
     Report existingReport = reportRepository.findById(id)
-        .orElseThrow(() -> new IllegalArgumentException("Report not found: " + id));
+            .orElseThrow(() -> new IllegalArgumentException("Report not found: " + id));
 
     existingReport.setType(reportDTO.getType());
     existingReport.setPeriodStart(reportDTO.getPeriodStart());
@@ -161,15 +161,15 @@ public class ReportServiceImpl implements ReportService {
     // 데이터 추가
     accountsPage.forEach(account -> {
       BigDecimal totalDebit = journalEntryRepository.getTotalAmountByAccountCode(account.getCode())
-          .max(BigDecimal.ZERO);
+              .max(BigDecimal.ZERO);
 
       BigDecimal totalCredit = journalEntryRepository.getTotalAmountByAccountCode(account.getCode())
-          .min(BigDecimal.ZERO).abs();
+              .min(BigDecimal.ZERO).abs();
 
       csvData.add(new String[]{
-          account.getName(),
-          totalDebit.toString(),
-          totalCredit.toString()
+              account.getName(),
+              totalDebit.toString(),
+              totalCredit.toString()
       });
     });
 
@@ -181,9 +181,9 @@ public class ReportServiceImpl implements ReportService {
     LocalDate endDate = report.getPeriodEnd().toLocalDate();
 
     Page<JournalEntry> entriesPage = journalEntryRepository.findByDateBetween(
-        startDate,
-        endDate,
-        pageable
+            startDate,
+            endDate,
+            pageable
     );
 
     List<String[]> csvData = new ArrayList<>();
@@ -204,9 +204,9 @@ public class ReportServiceImpl implements ReportService {
     LocalDate endDate = report.getPeriodEnd().toLocalDate();
 
     Page<JournalEntry> entriesPage = journalEntryRepository.findByDateBetween(
-        startDate,
-        endDate,
-        pageable
+            startDate,
+            endDate,
+            pageable
     );
 
     List<String[]> csvData = new ArrayList<>();
@@ -217,18 +217,18 @@ public class ReportServiceImpl implements ReportService {
     // 데이터 추가
     entriesPage.forEach(entry -> {
       String cashInflow = entry.getAmount().compareTo(BigDecimal.ZERO) > 0
-          ? entry.getAmount().toString()
-          : "0";
+              ? entry.getAmount().toString()
+              : "0";
 
       String cashOutflow = entry.getAmount().compareTo(BigDecimal.ZERO) < 0
-          ? entry.getAmount().abs().toString()
-          : "0";
+              ? entry.getAmount().abs().toString()
+              : "0";
 
       csvData.add(new String[]{
-          entry.getDate().toString(),
-          entry.getDescription(),
-          cashInflow,
-          cashOutflow
+              entry.getDate().toString(),
+              entry.getDescription(),
+              cashInflow,
+              cashOutflow
       });
     });
 

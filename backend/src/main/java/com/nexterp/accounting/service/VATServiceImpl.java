@@ -36,7 +36,7 @@ public class VATServiceImpl implements VATService {
     @Override
     public VAT createVAT(Long transactionId, BigDecimal vatRate, BigDecimal baseAmount) {
         Transaction transaction = transactionRepository.findById(transactionId)
-            .orElseThrow(() -> new IllegalArgumentException("Transaction not found: " + transactionId));
+                .orElseThrow(() -> new IllegalArgumentException("Transaction not found: " + transactionId));
 
         BigDecimal vatAmount = baseAmount.multiply(vatRate).setScale(2, BigDecimal.ROUND_HALF_UP);
 
