@@ -22,122 +22,66 @@ body {
 .product-list-wrapper {
   width: 100%;
 }
-
-.filter-buttons {
-  position: relative;
-  display: flex;
-  justify-content: flex-end;
-  margin: 20px 0;
-}
-.filter-buttons button {
-  padding: 8px 16px;
-  background-color: white;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 14px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  white-space: nowrap;
-}
-.filter-buttons button:after {
-  content: "";
-  border-left: 5px solid transparent;
-  border-right: 5px solid transparent;
-  border-top: 5px solid #666;
-  margin-left: 8px;
-}
-.filter-buttons button:hover {
-  background-color: #f8f9fa;
-}
-.filter-buttons .dropdown-menu {
-  position: absolute;
-  top: 100%;
-  right: 0;
-  background-color: white;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  min-width: max-content;
-  z-index: 1000;
-}
-.filter-buttons .dropdown-menu button {
-  width: 100%;
-  text-align: left;
-  padding: 8px 16px;
-  border: none;
-  background: none;
-  color: #333;
-  white-space: nowrap;
-}
-.filter-buttons .dropdown-menu button:hover {
-  background-color: #f8f9fa;
-}
-.filter-buttons .dropdown-menu button:after {
-  display: none;
-}
-
-.product-table-section {
+.product-list-wrapper .product-table-section {
   background-color: white;
   width: 100%;
-  margin-top: 20px;
   border-left: 1px solid #ddd;
+  margin-top: 20px;
 }
-.product-table-section table {
+.product-list-wrapper .product-table-section table {
   width: 100%;
   border-collapse: collapse;
   table-layout: fixed;
 }
-.product-table-section table th,
-.product-table-section table td {
+.product-list-wrapper .product-table-section table th,
+.product-list-wrapper .product-table-section table td {
   padding: 15px;
-  text-align: center !important;
+  text-align: center;
   border: 1px solid #ddd;
   word-wrap: break-word;
 }
-.product-table-section table th:first-child,
-.product-table-section table td:first-child {
+.product-list-wrapper .product-table-section table th:first-child,
+.product-list-wrapper .product-table-section table td:first-child {
   border-left: none;
 }
-.product-table-section table th {
+.product-list-wrapper .product-table-section table th {
   background-color: #4a5568;
   color: white;
   font-weight: 500;
   border-bottom: 1px solid #2d3748;
 }
-.product-table-section table tr:hover {
+.product-list-wrapper .product-table-section table tr:hover {
   background-color: #f8f9fa;
 }
-.product-table-section table th:nth-child(1),
-.product-table-section table td:nth-child(1) {
+.product-list-wrapper .product-table-section table th:nth-child(1),
+.product-list-wrapper .product-table-section table td:nth-child(1) {
   width: 10%;
 }
-.product-table-section table th:nth-child(2),
-.product-table-section table td:nth-child(2) {
+.product-list-wrapper .product-table-section table th:nth-child(2),
+.product-list-wrapper .product-table-section table td:nth-child(2) {
   width: 20%;
 }
-.product-table-section table th:nth-child(3),
-.product-table-section table td:nth-child(3) {
+.product-list-wrapper .product-table-section table th:nth-child(3),
+.product-list-wrapper .product-table-section table td:nth-child(3) {
   width: 15%;
 }
-.product-table-section table th:nth-child(4),
-.product-table-section table td:nth-child(4) {
+.product-list-wrapper .product-table-section table th:nth-child(4),
+.product-list-wrapper .product-table-section table td:nth-child(4) {
   width: 15%;
 }
-.product-table-section table th:nth-child(5),
-.product-table-section table td:nth-child(5) {
+.product-list-wrapper .product-table-section table th:nth-child(5),
+.product-list-wrapper .product-table-section table td:nth-child(5) {
   width: 10%;
 }
-.product-table-section table th:nth-child(6),
-.product-table-section table td:nth-child(6) {
+.product-list-wrapper .product-table-section table th:nth-child(6),
+.product-list-wrapper .product-table-section table td:nth-child(6) {
   width: 10%;
 }
-.product-table-section table th:nth-child(7),
-.product-table-section table td:nth-child(7) {
+.product-list-wrapper .product-table-section table th:nth-child(7),
+.product-list-wrapper .product-table-section table td:nth-child(7) {
   width: 20%;
 }
-.product-table-section table .product-table-detail-btn {
+.product-list-wrapper .product-table-section .product-table-detail-btn {
   appearance: none;
   background: none;
   border: none;
@@ -149,12 +93,12 @@ body {
   font-size: 16px;
   text-decoration: none;
 }
-.product-table-section table .product-table-detail-btn:hover {
+.product-list-wrapper .product-table-section .product-table-detail-btn:hover {
   text-decoration: underline;
   color: #2d3748;
 }
-.product-table-section .sale-btn,
-.product-table-section .purchase-btn {
+.product-list-wrapper .product-table-section .sale-btn,
+.product-list-wrapper .product-table-section .purchase-btn {
   padding: 5px 10px;
   margin: 0 5px;
   border: none;
@@ -162,18 +106,18 @@ body {
   cursor: pointer;
   font-weight: 500;
 }
-.product-table-section .sale-btn {
+.product-list-wrapper .product-table-section .sale-btn {
   background-color: #4299e1;
   color: white;
 }
-.product-table-section .sale-btn:hover {
+.product-list-wrapper .product-table-section .sale-btn:hover {
   background-color: #3182ce;
 }
-.product-table-section .purchase-btn {
+.product-list-wrapper .product-table-section .purchase-btn {
   background-color: #48bb78;
   color: white;
 }
-.product-table-section .purchase-btn:hover {
+.product-list-wrapper .product-table-section .purchase-btn:hover {
   background-color: #38a169;
 }
 

@@ -7,7 +7,7 @@ const RequestPage = lazy(() => import("../../sales/client/pages/RequestPage"));
 const clientRouter = () => {
   return [
     {
-      path: "", // 거래처 기본본 페이지
+      path: "",
       element: (
         <Suspense fallback={Loading}>
           <ClientPage />
@@ -15,7 +15,7 @@ const clientRouter = () => {
       ),
     },
     {
-      path: "request", // 🔹 /client/request → 수정 승인 요청 페이지
+      path: "request",
       element: (
         <Suspense fallback={Loading}>
           <RequestPage />

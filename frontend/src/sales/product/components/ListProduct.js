@@ -4,9 +4,9 @@ import SearchProduct from "./SearchProduct";
 import Sale from "./Sale";
 import Purchase from "./Purchase";
 import { getAllProducts } from "../api/productApi";
-import Pagination from '../../../common/component/Pagination';
-import {getEmployeeById} from '../../../common/member/api/memberApi';
-import useEmployeeNames from '../../../common/hooks/useEmployeeNames';
+import Pagination from "../../../common/component/Pagination";
+import { getEmployeeById } from "../../../common/member/api/memberApi";
+import useEmployeeNames from "../../../common/hooks/useEmployeeNames";
 
 const ListProduct = ({ onProductSelect }) => {
   const [products, setProducts] = useState([]);
@@ -18,7 +18,6 @@ const ListProduct = ({ onProductSelect }) => {
   const [size] = useState(10);
   const [totalPages, setTotalPages] = useState(1);
   const employeeNames = useEmployeeNames(products, "employeeId");
-
 
   useEffect(() => {
     fetchAllProducts(page);
@@ -35,7 +34,6 @@ const ListProduct = ({ onProductSelect }) => {
       console.error("Error fetching all products:", error);
     }
   };
-
 
   const handleSearchResults = (results) => {
     setProducts(results.length > 0 ? results : []);
@@ -85,7 +83,7 @@ const ListProduct = ({ onProductSelect }) => {
                         e.stopPropagation();
                         onProductSelect(product);
                       }}
-                      onClose={()=> fetchAllProducts}
+                      onClose={() => fetchAllProducts}
                     >
                       보기
                     </button>
@@ -124,24 +122,29 @@ const ListProduct = ({ onProductSelect }) => {
           </tbody>
         </table>
       </div>
-      {totalPages > 1 && (
-          <Pagination
-              currentPage={page}
-              totalPages={totalPages}
-              onPageChange={setPage}
-          />
+      <Pagination
+        currentPage={page}
+        totalPages={totalPages}
+        onPageChange={setPage}
+      />
+      {(isSaleModalOpen || isPurchaseModalOpen) && (
+        <div className="modal-overlay">
+          {isSaleModalOpen && (
+            <Sale
+              isOpen={isSaleModalOpen}
+              onClose={() => setIsSaleModalOpen(false)}
+              selectedProduct={selectedProduct}
+            />
+          )}
+          {isPurchaseModalOpen && (
+            <Purchase
+              isOpen={isPurchaseModalOpen}
+              onClose={() => setIsPurchaseModalOpen(false)}
+              selectedProduct={selectedProduct}
+            />
+          )}
+        </div>
       )}
-
-      <Sale
-        isOpen={isSaleModalOpen}
-        onClose={() => setIsSaleModalOpen(false) && {fetchAllProducts}}
-        selectedProduct={selectedProduct}
-      />
-      <Purchase
-        isOpen={isPurchaseModalOpen}
-        onClose={() => setIsPurchaseModalOpen(false) && {fetchAllProducts}}
-        selectedProduct={selectedProduct}
-      />
     </div>
   );
 };

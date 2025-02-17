@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import React, {useState} from "react";
 import {getEmployeeByName} from '../../../common/member/api/memberApi';
 import {fetchEmployeeSalaryById} from '../api/payrollApi';
 import './scss/PayrollFilter.css'
 
-const PayrollFilter = ({ setPayrolls }) => {
+const PayrollFilter = ({setPayrolls}) => {
 	const [searchTerm, setSearchTerm] = useState("");
 
 	const handleSearch = async () => {
@@ -19,7 +19,7 @@ const PayrollFilter = ({ setPayrolls }) => {
 						employees.map(async (employee) => {
 							try {
 								const salaryInfo = await fetchEmployeeSalaryById(employee.id);
-								return { ...salaryInfo, employeeName: employee.name };
+								return {...salaryInfo, employeeName: employee.name};
 							} catch (error) {
 								console.error(`급여 정보 불러오기 실패 (ID: ${employee.id}):`, error);
 								return null;
@@ -38,13 +38,15 @@ const PayrollFilter = ({ setPayrolls }) => {
 	};
 
 	return (
-			<div className="payroll-filter">
-				<input
-						type="text"
-						placeholder="직원 이름 검색"
-						value={searchTerm}
-						onChange={(e) => setSearchTerm(e.target.value)}
-				/>
+			<div className="search-payroll-container">
+				<div className="search-input-wrapper">
+					<input
+							type="text"
+							placeholder="직원 이름 검색"
+							value={searchTerm}
+							onChange={(e) => setSearchTerm(e.target.value)}
+					/>
+				</div>
 				<button onClick={handleSearch}>검색</button>
 			</div>
 	);

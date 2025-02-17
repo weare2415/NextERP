@@ -19,6 +19,8 @@ import com.nexterp.payroll.dto.EmployeeSalaryInfoDTO;
 import com.nexterp.payroll.entity.EmployeeSalaryInfo;
 import com.nexterp.payroll.repository.EmployeeSalaryInfoRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -74,16 +76,13 @@ public class EmployeeSalaryInfoServiceImpl implements EmployeeSalaryInfoService 
 
     @Override
     @Transactional(readOnly = true)
-    public List<EmployeeSalaryInfoDTO> findAllSalaryInfo() {
-        return salaryInfoRepository.findActiveSalaryInfos().stream().map(this::entityToDTO).toList();
+    public Page<EmployeeSalaryInfoDTO> findAllSalaryInfo(Pageable pageable) {
+        return salaryInfoRepository.findActiveSalaryInfos(pageable).map(this::entityToDTO);
     }
 
     @Override
-    public List<EmployeeSalaryInfoDTO> findSalaryInfoHistoryByEmployeeId(Integer employeeId) {
-        List<EmployeeSalaryInfo> historyRecords = salaryInfoRepository.findByEmployee_IdAndEndDateIsNotNull(employeeId);
-        return historyRecords.stream()
-            .map(this::entityToDTO)
-            .collect(Collectors.toList());
+    public Page<EmployeeSalaryInfoDTO> findSalaryInfoHistoryByEmployeeId(Integer employeeId, Pageable pageable) {
+        return salaryInfoRepository.findByEmployee_IdAndEndDateIsNotNull(employeeId,pageable).map(this::entityToDTO);
     }
 
     @Override

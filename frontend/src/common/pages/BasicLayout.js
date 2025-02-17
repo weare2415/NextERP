@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { FiLogOut } from "react-icons/fi";
 import "../pages/scss/BasicLayout.scss";
-import { getEmployeeById } from "../member/api/memberApi";
+import { getEmployeeById } from "../../common/member/api/memberApi";
 import { useSelector } from "react-redux";
-import { useCustomLogin } from "../member/hook/useCustomLogin";
+import { useCustomLogin } from "../../common/member/hook/useCustomLogin";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 
 const BasicLayout = ({ children }) => {
@@ -32,7 +32,7 @@ const BasicLayout = ({ children }) => {
     const fetchUserData = async () => {
       try {
         const employeeData = await getEmployeeById(id); // API 호출
-        // console.log(employeeData);
+        console.log(employeeData);
         setUser(employeeData); // 사용자 데이터 저장
       } catch (error) {
         console.error("Failed to fetch user data:", error);
@@ -53,16 +53,25 @@ const BasicLayout = ({ children }) => {
     }
   }, [location.pathname]);
 
+  // ✅ 메신저 버튼 클릭 시 ChatList를 새 창에서 열기
+  const handleOpenChatList = () => {
+    window.open(
+      "/message/list",
+      "ChatList",
+      "width=380,height=600,resizable=no,scrollbars=no"
+    );
+  };
+
   const menuItems = {
     마이페이지: [
-      { name: "출/퇴근 조회", path: "/mypage/platform" },
-      { name: "근태 신청", path: "/mypage/group" },
+      { name: "My 출/퇴근 조회", path: "/employee/myattendance" },
+      { name: "My 근태 신청", path: "/employee/attendance/request" },
       { name: "급여 조회", path: "/mypage/salary" },
-      { name: "공지 사항", path: "/hr/notices" },
+      { name: "공지 사항", path: "/announcement" },
     ],
     회계: [
       { name: "대쉬보드", path: "/accounting/dashboard" },
-      { name: "급여 정보 관리", path: "/payroll" },
+      { name: "급여 관리", path: "/payroll" },
       { name: "거래 명세서 조회", path: "/accounting/transaction" },
       { name: "재무 보고서 관리", path: "/accounting/financial" },
       { name: "분개장", path: "/accounting/price" },
@@ -79,11 +88,14 @@ const BasicLayout = ({ children }) => {
       { name: "대쉬보드", path: "/hr/dashboard" },
       { name: "출/퇴근 관리", path: "/hr/platform" },
       { name: "직원 관리", path: "/employee" },
-      { name: "근태 관리", path: "/hr/salary" },
+      { name: "근태 관리", path: "/employee/attendance" },
+      { name: "근태 신청 내역", path: "/employee/attendance/history" },
     ],
     운영관리: [
       { name: "거래처 수정 승인", path: "/clients/request" },
-      { name: "주문 승인 요청", path: "/product/request" },
+      { name: "주문 승인", path: "/product/request" },
+      { name: "근태 승인", path: "/employee/attendance/approval" },
+      { name: "사원 수정 승인", path: "/employee/approval-status" },
     ],
   };
 
@@ -144,8 +156,15 @@ const BasicLayout = ({ children }) => {
           {/* Header */}
           <header className="header">
             <div className="header-buttons">
-              <div>메신저</div>
-              <div>비밀번호 변경</div>
+            <button className="messenger-btn" onClick={handleOpenChatList}>
+                메신저
+              </button>
+              <button
+                onClick={() => navigate("/member/change-password")}
+                style={{ cursor: "pointer" }}
+              >
+                비밀번호 변경
+              </button>
               <button className="logout-btn">
                 <FiLogOut onClick={handleClickLogout} />
               </button>

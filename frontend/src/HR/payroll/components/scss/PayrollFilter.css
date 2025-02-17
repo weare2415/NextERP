@@ -19,55 +19,83 @@ body {
   display: block;
 }
 
-.payroll-filter {
-  align-items: center;
-  width: 40%;
-  margin: 0 auto;
-  background-color: white;
-  border-radius: 4px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  padding: 16px;
+.search-payroll-container {
   display: flex;
-  gap: 10px;
+  align-items: center;
 }
-.payroll-filter input {
-  flex: 1;
-  padding: 10px;
-  border: 1px solid black;
+.search-payroll-container .search-payroll-form {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  position: relative;
+}
+.search-payroll-container .search-payroll-form select {
+  padding: 8px;
+  border: 1px solid #929fb4;
   border-radius: 4px;
   font-family: "Apple SD Gothic Neo", sans-serif;
-  font-size: 14px;
+  background-color: white;
+  cursor: pointer;
 }
-.payroll-filter input:focus {
+.search-payroll-container .search-payroll-form select:focus {
   outline: none;
   border-color: #3c485a;
-  box-shadow: 0 0 4px rgba(34, 139, 34, 0.3);
 }
-.payroll-filter button {
-  padding: 10px 16px;
+.search-payroll-container .search-payroll-form input {
+  flex: 1;
+  width: 250px;
+  padding: 8px;
+  border: 1px solid #929fb4;
+  border-radius: 4px;
+  font-family: "Apple SD Gothic Neo", sans-serif;
+  position: relative;
+}
+.search-payroll-container .search-payroll-form input:focus {
+  outline: none;
+  border-color: #3c485a;
+}
+.search-payroll-container .search-payroll-form button {
+  padding: 8px 16px;
   background-color: #3c485a;
   color: white;
   border: none;
   border-radius: 4px;
   cursor: pointer;
   font-family: "Apple SD Gothic Neo", sans-serif;
-  font-weight: 500;
-  transition: background-color 0.2s;
+  margin: 0;
+  height: 38px;
 }
-.payroll-filter button:hover {
+.search-payroll-container .search-payroll-form button:hover {
   background-color: rgb(39.6, 47.52, 59.4);
 }
-@media (max-width: 768px) {
-  .payroll-filter {
-    flex-direction: column;
-    align-items: stretch;
-  }
-  .payroll-filter input {
-    width: 100%;
-  }
-  .payroll-filter button {
-    width: 100%;
-  }
+.search-payroll-container .search-payroll-form .suggestions-list {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  width: 250px;
+  transform: translateX(-50%);
+  background-color: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  margin-top: 4px;
+  padding: 0;
+  list-style: none;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  max-height: 300px;
+  overflow-y: auto;
+}
+.search-payroll-container .search-payroll-form .suggestions-list li {
+  padding: 8px 16px;
+  cursor: pointer;
+  font-family: "Apple SD Gothic Neo", sans-serif;
+  border-bottom: 1px solid #f0f0f0;
+}
+.search-payroll-container .search-payroll-form .suggestions-list li:last-child {
+  border-bottom: none;
+}
+.search-payroll-container .search-payroll-form .suggestions-list li:hover, .search-payroll-container .search-payroll-form .suggestions-list li.selected {
+  background-color: #f5f5f5;
 }
 
 /*# sourceMappingURL=PayrollFilter.css.map */

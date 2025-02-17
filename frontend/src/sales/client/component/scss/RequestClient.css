@@ -19,17 +19,18 @@ body {
   display: block;
 }
 
-.modal-container {
+.request-client-detail-form {
   background-color: white;
   border-radius: 4px;
   width: 90%;
-  max-width: 800px;
+  max-width: 700px;
   max-height: 90vh;
+  padding: 0;
+  font-family: "Apple SD Gothic Neo", sans-serif;
   display: flex;
   flex-direction: column;
-  font-family: "Apple SD Gothic Neo", sans-serif;
 }
-.modal-container .modal-header {
+.request-client-detail-form .request-client-detail-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -38,13 +39,15 @@ body {
   color: white;
   border-top-left-radius: 4px;
   border-top-right-radius: 4px;
+  width: 100%;
 }
-.modal-container .modal-header h2 {
+.request-client-detail-form .request-client-detail-header h2 {
   margin: 0;
   font-size: 18px;
   font-weight: 500;
+  color: white;
 }
-.modal-container .modal-header .close-button {
+.request-client-detail-form .request-client-detail-header .close-button {
   background: none;
   border: none;
   color: white;
@@ -52,90 +55,114 @@ body {
   cursor: pointer;
   padding: 0 5px;
 }
-.modal-container .modal-header .close-button:hover {
+.request-client-detail-form .request-client-detail-header .close-button:hover {
   opacity: 0.8;
 }
-.modal-container .modal-content {
+.request-client-detail-form form {
   padding: 20px;
   overflow-y: auto;
-}
-.modal-container .modal-content .form-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 15px;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  align-items: center;
 }
-.modal-container .modal-content .form-grid .form-group.full-width {
-  grid-column: 1/-1;
-}
-.modal-container .modal-content .form-grid .form-group label {
-  display: block;
-  margin-bottom: 5px;
-  color: #3c485a;
-  font-weight: 500;
-}
-.modal-container .modal-content .form-grid .form-group input,
-.modal-container .modal-content .form-grid .form-group select,
-.modal-container .modal-content .form-grid .form-group textarea {
-  width: 100%;
-  padding: 8px;
-  border: 1px solid #929fb4;
-  border-radius: 4px;
-  font-family: "Apple SD Gothic Neo", sans-serif;
-}
-.modal-container .modal-content .form-grid .form-group input:focus,
-.modal-container .modal-content .form-grid .form-group select:focus,
-.modal-container .modal-content .form-grid .form-group textarea:focus {
-  outline: none;
-  border-color: #3c485a;
-}
-.modal-container .modal-content .form-grid .form-group .input-with-button {
+.request-client-detail-form form .form-group {
   display: flex;
-  gap: 10px;
+  align-items: center;
+  margin-bottom: 1px;
 }
-.modal-container .modal-content .form-grid .form-group .input-with-button input {
+.request-client-detail-form form .form-group label {
+  width: 140px;
+  background-color: #e9edf4;
+  padding: 8px 15px;
+  font-size: 14px;
+  color: #3c485a;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+}
+.request-client-detail-form form .form-group input,
+.request-client-detail-form form .form-group select,
+.request-client-detail-form form .form-group textarea {
+  flex: 1;
+  padding: 8px 10px;
+  border: 1px solid #e9edf4;
+  font-family: "Apple SD Gothic Neo", sans-serif;
+  font-size: 14px;
+  height: 35px;
+  width: 100%;
+  border-radius: 0;
+  margin: 0;
+}
+.request-client-detail-form form .form-group input:focus,
+.request-client-detail-form form .form-group select:focus,
+.request-client-detail-form form .form-group textarea:focus {
+  outline: none;
+  border-color: #929fb4;
+}
+.request-client-detail-form form .form-group:has(input[name=zipCode]) {
+  grid-column: 1/-1;
+  display: flex;
+  align-items: center;
+}
+.request-client-detail-form form .form-group:has(input[name=zipCode]) input {
   flex: 1;
 }
-.modal-container .modal-content .form-grid .form-group .input-with-button button {
-  padding: 8px 15px;
+.request-client-detail-form form .form-group:has(input[name=zipCode]) button {
+  margin-left: 5px;
+  width: 100px;
+  height: 35px;
   background-color: #929fb4;
   color: white;
   border: none;
-  border-radius: 4px;
+  font-size: 13px;
   cursor: pointer;
 }
-.modal-container .modal-content .form-grid .form-group .input-with-button button:hover {
+.request-client-detail-form form .form-group:has(input[name=zipCode]) button:hover {
   background-color: rgb(115.7880434783, 132.3913043478, 159.2119565217);
 }
-.modal-container .modal-content .form-grid .form-group textarea {
-  min-height: 100px;
-  resize: vertical;
+.request-client-detail-form form .form-group:has(input[name=clientAddress]), .request-client-detail-form form .form-group:has(input[name=clientDetailedAddress]), .request-client-detail-form form .form-group:has(input[name=clientAccountNumber]) {
+  grid-column: 1/-1;
 }
-.modal-container .modal-content .button-container {
+.request-client-detail-form form .form-group:has(textarea[name=memo]) {
+  grid-column: 1/-1;
+  display: flex;
+  align-items: flex-start;
+}
+.request-client-detail-form form .form-group:has(textarea[name=memo]) label {
+  height: 100px;
+  justify-content: center;
+  line-height: normal;
+}
+.request-client-detail-form form .form-group:has(textarea[name=memo]) textarea {
+  height: 100px;
+  resize: none;
+}
+.request-client-detail-form form .request-client-detail-buttons {
+  grid-column: 1/-1;
   display: flex;
   justify-content: center;
   gap: 10px;
   margin-top: 20px;
 }
-.modal-container .modal-content .button-container button {
-  padding: 8px 24px;
+.request-client-detail-form form .request-client-detail-buttons button {
+  width: 100px;
+  height: 40px;
   border: none;
   border-radius: 4px;
+  font-size: 14px;
+  font-weight: 500;
   cursor: pointer;
-  font-family: "Apple SD Gothic Neo", sans-serif;
 }
-.modal-container .modal-content .button-container button.update-button {
-  background-color: #2196f3;
+.request-client-detail-form form .request-client-detail-buttons .approve-button {
+  background-color: #3c485a;
   color: white;
 }
-.modal-container .modal-content .button-container button.update-button:hover {
-  background-color: rgb(11.5384615385, 124.0384615385, 213.4615384615);
-}
-.modal-container .modal-content .button-container button.delete-button {
+.request-client-detail-form form .request-client-detail-buttons .reject-button {
   background-color: red;
   color: white;
-}
-.modal-container .modal-content .button-container button.delete-button:hover {
-  background-color: #cc0000;
 }
 
 /*# sourceMappingURL=RequestClient.css.map */

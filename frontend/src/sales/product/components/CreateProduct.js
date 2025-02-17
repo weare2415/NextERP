@@ -4,16 +4,18 @@ import { useSelector } from "react-redux";
 import "../scss/CreateProduct.scss"; // ✅ SCSS 파일 import
 
 const CreateProduct = ({ onClose, onSuccess }) => {
+  const employeeId = useSelector((state) => state.loginSlice.id);
+  const name = useSelector((state) => state.loginSlice.name);
+
   const [productData, setProductData] = useState({
     productName: "",
-    purchasePrice: "", // 수정된 필드 이름
-    salePrice: "", // 수정된 필드 이름
+    purchasePrice: "",
+    salePrice: "",
     stock: "",
     specifications: "",
+    employeeName: name,
     memo: "",
   });
-
-  const employeeId = useSelector((state) => state.loginSlice.id); // 로그인한 사용자의 ID 가져오기
 
   const handleChange = (e) => {
     setProductData({ ...productData, [e.target.name]: e.target.value });
@@ -31,7 +33,6 @@ const CreateProduct = ({ onClose, onSuccess }) => {
       alert("✅ 등록이 완료되었습니다.");
       onSuccess(newProduct);
       onClose();
-      window.location.reload();
     } catch (error) {
       alert("❌ 제품 등록에 실패했습니다.");
       console.error("❌ 제품 등록 실패:", error);
@@ -40,9 +41,7 @@ const CreateProduct = ({ onClose, onSuccess }) => {
   };
 
   return (
-    <div className="product-create-form " onClick={onClose}>
-      {" "}
-      {/* ✅ 바깥 클릭 시 닫힘 */}
+    <div className="product-create-form" onClick={onClose}>
       <div
         className="product-create-header"
         onClick={(e) => e.stopPropagation()}
@@ -54,6 +53,7 @@ const CreateProduct = ({ onClose, onSuccess }) => {
           X
         </button>
       </div>
+
       <form onSubmit={handleSubmit} onClick={(e) => e.stopPropagation()}>
         <div className="form-group">
           <label>제품명</label>
@@ -115,8 +115,13 @@ const CreateProduct = ({ onClose, onSuccess }) => {
         </div>
 
         <div className="form-group">
-          <label>담당자 ID</label>
-          <input type="text" name="employeeId" value={employeeId} readOnly />
+          <label>제품 담당자</label>
+          <input
+            type="text"
+            name="employeeName"
+            value={productData.employeeName}
+            readOnly
+          />
         </div>
 
         <div className="form-group">

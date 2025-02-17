@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from "react";
-import {getEmployeeById} from '../../employee/api/employeeApi';
+import React from "react";
 import "./scss/PayrollTable.css"
 import useEmployeeNames from '../../../common/hooks/useEmployeeNames';
 
@@ -7,8 +6,8 @@ const PayrollTable = ({ payrolls, onSelectPayroll }) => {
 	const employeeNames = useEmployeeNames(payrolls, "employeeId")
 
 	return (
-			<div className="payroll-table-container">
-			<table className="payroll-table">
+			<div className="payroll-table-wrapper">
+			<table className="payroll-table-section">
 				<thead>
 				<tr>
 					<th>직원명</th>
@@ -30,7 +29,7 @@ const PayrollTable = ({ payrolls, onSelectPayroll }) => {
 							<td>{payroll.effectiveDate}</td>
 							<td>{payroll.endDate || "미정"}</td>
 							<td>
-								<button className="detail-btn" onClick={() => onSelectPayroll(payroll)}>🔍</button>
+								<button className="payroll-detail-btn" onClick={() => onSelectPayroll(payroll)}>🔍</button>
 							</td>
 						</tr>
 				))}

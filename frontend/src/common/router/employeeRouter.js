@@ -1,36 +1,110 @@
 import { lazy, Suspense } from "react";
 
 const EmployeePage = lazy(() => import("../../HR/employee/pages/EmployeePage"));
-const CreateEmployee = lazy(() => import("../../HR/employee/components/CreateEmployee"));
-const EmployeeDetail = lazy(() => import("../../HR/employee/components/EmployeeDetail"));
+const CreateEmployee = lazy(() =>
+  import("../../HR/employee/components/CreateEmployee")
+);
+const EmployeeDetail = lazy(() =>
+  import("../../HR/employee/components/EmployeeDetail")
+);
+const ApprovalStatusPage = lazy(() =>
+  import("../../HR/employee/pages/ApprovalStatusPage")
+);
+const AttendancePage = lazy(() =>
+  import("../../HR/attendance/pages/AttendancePage")
+);
+const MyAttendanceRequestPage = lazy(() =>
+  import("../../HR/attendance/pages/MyAttendanceRequestPage")
+);
+const AttendanceHistoryPage = lazy(() =>
+  import("../../HR/attendance/pages/AttendanceHistoryPage")
+);
+
+const ApprovalPage = lazy(() =>
+  import("../../HR/attendance/pages/ApprovalPage")
+);
+
+const MyAttendancePage = lazy(() =>
+  import("../../HR/attendance/pages/MyAttendancePage")
+);
+
+const Loading = () => <div>Loading...</div>;
 
 const EmployeeRouter = () => {
   return [
     {
-      path: "", // `/employee` 경로에서 EmployeePage 렌더링
+      path: "",
       element: (
-          <Suspense fallback={<div>Loading...</div>}>
-            <EmployeePage />
-          </Suspense>
+        <Suspense fallback={<Loading />}>
+          <EmployeePage />
+        </Suspense>
       ),
     },
     {
-      path: "create", // `/employee/create` 경로에서 CreateEmployee 렌더링
+      path: "create",
       element: (
-          <Suspense fallback={<div>Loading...</div>}>
-            <CreateEmployee />
-          </Suspense>
+        <Suspense fallback={<Loading />}>
+          <CreateEmployee />
+        </Suspense>
       ),
     },
     {
-      path: ":id", // `/employee/:id` 경로에서 EmployeeDetail 렌더링
+      path: ":id",
       element: (
-          <Suspense fallback={<div>Loading...</div>}>
-            <EmployeeDetail />
-          </Suspense>
+        <Suspense fallback={<Loading />}>
+          <EmployeeDetail />
+        </Suspense>
       ),
     },
-  ]
+    {
+      path: "approval-status",
+      element: (
+        <Suspense fallback={<Loading />}>
+          <ApprovalStatusPage />
+        </Suspense>
+      ),
+    },
+    {
+      path: "attendance",
+      element: (
+        <Suspense fallback={<Loading />}>
+          <AttendancePage />
+        </Suspense>
+      ),
+    },
+    {
+      path: "attendance/request",
+      element: (
+        <Suspense fallback={<Loading />}>
+          <MyAttendanceRequestPage />
+        </Suspense>
+      ),
+    },
+    {
+      path: "attendance/history",
+      element: (
+        <Suspense fallback={<Loading />}>
+          <AttendanceHistoryPage />
+        </Suspense>
+      ),
+    },
+    {
+      path: "attendance/approval",
+      element: (
+        <Suspense fallback={<Loading />}>
+          <ApprovalPage />
+        </Suspense>
+      ),
+    },
+    {
+      path: "myattendance",
+      element: (
+        <Suspense fallback={<Loading />}>
+          <MyAttendancePage />
+        </Suspense>
+      ),
+    },
+  ];
 };
 
 export default EmployeeRouter;

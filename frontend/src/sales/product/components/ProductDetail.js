@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { updateProduct, deleteProduct } from "../api/productApi";
-import { getEmployeeById } from "../../../HR/employee/api/employeeApi";
 import "../scss/ProductDetail.scss";
-import useEmployeeNames from '../../../common/hooks/useEmployeeNames';
+import { getEmployeeById } from "../../../common/member/api/memberApi";
 
 const ProductDetail = ({
   product,
@@ -23,10 +22,27 @@ const ProductDetail = ({
       memo: "",
     }
   );
-  const employeeName = useEmployeeNames(product, "employeeId");
+  const [error, setError] = useState(null);
 
+  // 직원 정보를 불러오는 함수
+  const fetchEmployee = async (employeeId) => {
+    try {
+      const employee = await getEmployeeById(employeeId);
+      setEditedProduct((prevProduct) => ({
+        ...prevProduct,
+        employee: employee || { name: "담당자 없음" },
+      }));
+    } catch (error) {
+      console.error("직원 정보 불러오기 실패:", error);
+      setError("담당자 정보를 불러오는 중 오류가 발생했습니다.");
+    }
+  };
 
-
+  useEffect(() => {
+    if (product && product.employeeId) {
+      fetchEmployee(product.employeeId);
+    }
+  }, [product]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -98,9 +114,12 @@ const ProductDetail = ({
           <input
             type="text"
             name="purchasePrice"
-            value={editedProduct?.purchasePrice
-                ? parseFloat(editedProduct.purchasePrice).toLocaleString() + " 원"
-                : "가격 없음"}
+            value={
+              editedProduct?.purchasePrice
+                ? parseFloat(editedProduct.purchasePrice).toLocaleString() +
+                  " 원"
+                : "가격 없음"
+            }
             onChange={handleChange}
           />
         </div>
@@ -110,9 +129,11 @@ const ProductDetail = ({
           <input
             type="text"
             name="salePrice"
-            value={editedProduct?.salePrice
+            value={
+              editedProduct?.salePrice
                 ? parseFloat(editedProduct.salePrice).toLocaleString() + " 원"
-                : "가격 없음"}
+                : "가격 없음"
+            }
             onChange={handleChange}
           />
         </div>
@@ -143,10 +164,10 @@ const ProductDetail = ({
         </div>
 
         <div className="form-group">
-          <label>담당자</label>
+          <label>제품 담당자</label>
           <input
             type="text"
-            value={employeeName[product.employeeId] || "담당자 없음"}
+            value={editedProduct.employee?.name || "담당자 없음"}
             readOnly
           />
         </div>
@@ -177,6 +198,7 @@ const ProductDetail = ({
           </button>
         </div>
       </form>
+      {error && <div className="error-message">{error}</div>}
     </div>
   );
 };

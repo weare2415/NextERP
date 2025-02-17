@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from "react";
-import "../../order/components/scss/ListRequestClient.scss";
-import { getEmployeeById } from "../../../common/member/api/memberApi";
+import React from "react";
+import "./scss/ListRequestClient.scss";
 import useEmployeeNames from '../../../common/hooks/useEmployeeNames';
 
 const ListRequestClient = ({ clients, onClientSelect }) => {

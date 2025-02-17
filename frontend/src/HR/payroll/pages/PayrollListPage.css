@@ -19,16 +19,28 @@ body {
   display: block;
 }
 
+.payroll-page {
+  max-width: 90%;
+  margin: auto;
+  position: relative;
+  margin-top: 20px;
+}
 .payroll-page .page-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-top: 20px;
   margin-bottom: 20px;
 }
-.payroll-page .page-header h2 {
+.payroll-page .page-header h1 {
   color: #3c485a;
   font-family: "Apple SD Gothic Neo", sans-serif;
   margin: 0;
+}
+.payroll-page .page-header .header-right {
+  display: flex;
+  align-items: center;
+  gap: 20px;
 }
 .payroll-page .page-header .new-payroll-btn {
   padding: 8px 16px;
@@ -38,76 +50,26 @@ body {
   border-radius: 4px;
   cursor: pointer;
   font-family: "Apple SD Gothic Neo", sans-serif;
+  height: 38px;
+  display: flex;
+  align-items: center;
 }
 .payroll-page .page-header .new-payroll-btn:hover {
   background-color: rgb(39.6, 47.52, 59.4);
 }
-.payroll-page .search-section {
-  margin-bottom: 20px;
-}
-.payroll-page .search-section .search-form {
-  display: flex;
-  gap: 10px;
-}
-.payroll-page .search-section .search-form input {
-  flex: 1;
-  padding: 8px;
-  border: 1px solid #929fb4;
-  border-radius: 4px;
-  font-family: "Apple SD Gothic Neo", sans-serif;
-}
-.payroll-page .search-section .search-form input:focus {
-  outline: none;
-  border-color: #3c485a;
-}
-.payroll-page .search-section .search-form button {
-  padding: 8px 16px;
-  background-color: #929fb4;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-family: "Apple SD Gothic Neo", sans-serif;
-}
-.payroll-page .search-section .search-form button:hover {
-  background-color: rgb(115.7880434783, 132.3913043478, 159.2119565217);
-}
-.payroll-page .payroll-list {
-  background-color: white;
-  border-radius: 4px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  overflow-x: auto;
-  padding: 16px;
-}
-.payroll-page .payroll-list table {
-  width: 100%;
-  border-collapse: collapse;
-}
-.payroll-page .payroll-list table th, .payroll-page .payroll-list table td {
-  padding: 12px 15px;
-  text-align: left;
-  border-bottom: 1px solid #f5f7fa;
-  font-family: "Apple SD Gothic Neo", sans-serif;
-}
-.payroll-page .payroll-list table th {
+.payroll-page .page-header .new-payroll-btn button {
+  padding: 10px 16px;
   background-color: #3c485a;
   color: white;
-  font-weight: 500;
-}
-.payroll-page .payroll-list table td {
-  vertical-align: middle;
-}
-.payroll-page .payroll-list table .payroll-name-btn {
-  background: none;
   border: none;
-  color: #3c485a;
+  border-radius: 4px;
   cursor: pointer;
-  padding: 0;
   font-family: "Apple SD Gothic Neo", sans-serif;
-  text-decoration: underline;
+  font-weight: 500;
+  transition: background-color 0.2s;
 }
-.payroll-page .payroll-list table .payroll-name-btn:hover {
-  color: rgb(39.6, 47.52, 59.4);
+.payroll-page .page-header .new-payroll-btn button:hover {
+  background-color: rgb(39.6, 47.52, 59.4);
 }
 
 /*# sourceMappingURL=PayrollListPage.css.map */

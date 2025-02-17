@@ -1,0 +1,87 @@
+@import url("https://cdn.jsdelivr.net/gh/fonts-archive/AppleSDGothicNeo/AppleSDGothicNeo.css");
+@import url(//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSansNeo.css);
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Apple SD Gothic Neo", sans-serif;
+}
+
+body {
+  width: 100%;
+  height: 100%;
+  background-color: #f5f7fa;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Apple SD Gothic Neo", sans-serif;
+  line-height: 1.6;
+  display: block;
+}
+
+.employee-attendance-page-container {
+  max-width: 90%;
+  margin: auto;
+  position: relative;
+}
+.employee-attendance-page-container .employee-attendance-page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 50px;
+  margin-bottom: 10px;
+}
+.employee-attendance-page-container .employee-attendance-page-header h1 {
+  color: #3c485a;
+  font-family: "Apple SD Gothic Neo", sans-serif;
+  margin: 0;
+}
+.employee-attendance-page-container .employee-attendance-page-header .employee-attendance-header-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.employee-attendance-page-container .buttons {
+  display: flex;
+}
+.employee-attendance-page-container .attendance-request-btn {
+  padding: 8px 16px;
+  background-color: #3c485a;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-family: "Apple SD Gothic Neo", sans-serif;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  margin-left: 20px;
+}
+.employee-attendance-page-container .attendance-request-btn:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+.employee-attendance-page-container .attendance-list {
+  background-color: white;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  overflow-x: auto;
+}
+.employee-attendance-page-container .attendance-list table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.employee-attendance-page-container .attendance-list table th,
+.employee-attendance-page-container .attendance-list table td {
+  padding: 12px 15px;
+  text-align: left;
+  border-bottom: 1px solid #f5f7fa;
+  font-family: "Apple SD Gothic Neo", sans-serif;
+}
+.employee-attendance-page-container .attendance-list table th {
+  background-color: #3c485a;
+  color: white;
+  font-weight: 500;
+}
+
+/*# sourceMappingURL=MyAttendanceRequestPage.css.map */

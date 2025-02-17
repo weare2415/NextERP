@@ -14,6 +14,8 @@ package com.nexterp.payroll.repository;
  */
 
 import com.nexterp.payroll.entity.EmployeeSalaryInfo;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -27,7 +29,7 @@ public interface EmployeeSalaryInfoRepository extends JpaRepository<EmployeeSala
 //  현재 전체 직원 급여 정보 데이터 조회
 @Query("SELECT e FROM EmployeeSalaryInfo e WHERE e.effectiveDate <= CURRENT_DATE " +
     "AND (e.endDate IS NULL OR e.endDate >= CURRENT_DATE)")
-List<EmployeeSalaryInfo> findActiveSalaryInfos();
+Page<EmployeeSalaryInfo> findActiveSalaryInfos(Pageable pageable);
 
 //  현재 직원별 급여 정보 데이터 조회
   @Query("SELECT e FROM EmployeeSalaryInfo e WHERE e.employee.id = :employeeId " +
@@ -41,5 +43,5 @@ List<EmployeeSalaryInfo> findActiveSalaryInfos();
   EmployeeSalaryInfo findActiveSalaryInfo_(Integer employeeId);
 
   // 과거 기록 조회
-  List<EmployeeSalaryInfo> findByEmployee_IdAndEndDateIsNotNull(Integer employeeId);
+  Page<EmployeeSalaryInfo> findByEmployee_IdAndEndDateIsNotNull(Integer employeeId, Pageable pageable);
 }

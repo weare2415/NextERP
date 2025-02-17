@@ -15,6 +15,8 @@ package com.nexterp.payroll.service;
 
 
 import com.nexterp.payroll.dto.EmployeeSalaryInfoDTO;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 import java.util.Optional;
@@ -22,7 +24,7 @@ import java.util.Optional;
 public interface EmployeeSalaryInfoService {
   EmployeeSalaryInfoDTO saveSalaryInfo(EmployeeSalaryInfoDTO employeeSalaryInfoDTO);
   Optional<EmployeeSalaryInfoDTO> findByEmployeeId(Integer employeeId);
-  List<EmployeeSalaryInfoDTO> findAllSalaryInfo();
-  List<EmployeeSalaryInfoDTO> findSalaryInfoHistoryByEmployeeId(Integer employeeId);
+  Page<EmployeeSalaryInfoDTO> findAllSalaryInfo(Pageable pageable);
+  Page<EmployeeSalaryInfoDTO> findSalaryInfoHistoryByEmployeeId(Integer employeeId, Pageable pageable);
   void deleteSalaryInfo(Long id);
 }

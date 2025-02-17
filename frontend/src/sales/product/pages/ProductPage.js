@@ -10,6 +10,13 @@ const ProductPage = () => {
   const [showCreateForm, setShowCreateForm] = useState(false);
   const [showDetailForm, setShowDetailForm] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [currentView, setCurrentView] = useState("상태");
+
+  const toggleDropdown = () => {
+    setDropdownOpen(!dropdownOpen);
+  };
+
   const handleProductClick = (product) => {
     setSelectedProduct(product);
     setShowDetailForm(true);
@@ -41,6 +48,7 @@ const ProductPage = () => {
       <div className="product-page-container">
         <div className="page-header">
           <h1>제품 관리</h1>
+          <div className="header-right"></div>
           <button
             className="new-product-btn"
             onClick={() => setShowCreateForm(true)}
@@ -49,10 +57,7 @@ const ProductPage = () => {
           </button>
         </div>
 
-        <ListProduct
-          products={products}
-          onProductSelect={handleProductClick}
-        />
+        <ListProduct products={products} onProductSelect={handleProductClick} />
 
         {(showCreateForm || showDetailForm) && (
           <div className="modal-overlay">

@@ -1,0 +1,138 @@
+@import "../../../App.scss";
+
+.approval-list-wrapper {
+  width: 100%;
+}
+
+.approval-table-section {
+  background-color: white;
+  width: 100%;
+  margin-top: 20px;
+  border-left: 1px solid #ddd;
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+
+    th {
+      padding: 15px;
+      text-align: center;
+      font-size: 1rem;
+      background-color: #4a5568;
+      color: white;
+      font-weight: 500;
+      border: 1px solid #ddd;
+      border-bottom: 1px solid #2d3748;
+      word-wrap: break-word;
+    }
+
+    td {
+      padding: 10px;
+      text-align: center;
+      font-size: 0.9rem;
+      border: 1px solid #ddd;
+      word-wrap: break-word;
+
+      &:first-child {
+        border-left: none;
+      }
+    }
+
+    th {
+      background-color: #4a5568;
+      color: white;
+      font-weight: 500;
+      border-bottom: 1px solid #2d3748;
+      position: relative;
+    }
+
+    tr {
+      &:hover {
+        background-color: #f8f9fa;
+      }
+    }
+
+    // 각 열의 고정된 너비 설정
+    th:nth-child(1),
+    td:nth-child(1) {
+      width: 8%;
+    } // 사원 번호
+    th:nth-child(2),
+    td:nth-child(2) {
+      width: 6%;
+    } // 이름
+    th:nth-child(3),
+    td:nth-child(3) {
+      width: 9%;
+    } // 생년월일
+    th:nth-child(4),
+    td:nth-child(4) {
+      width: 6%;
+    } // 성별
+    th:nth-child(5),
+    td:nth-child(5) {
+      width: 10%;
+    } // 전화번호
+    th:nth-child(6),
+    td:nth-child(6) {
+      width: 12%;
+    } // 이메일
+    th:nth-child(7),
+    td:nth-child(7) {
+      width: 10%;
+    } // 주소
+    th:nth-child(8),
+    td:nth-child(8) {
+      width: 6%;
+    } // 부서
+    th:nth-child(9),
+    td:nth-child(9) {
+      width: 6%;
+    } // 직급
+    th:nth-child(10),
+    td:nth-child(10) {
+      width: 7%;
+    } // 입사일
+    th:nth-child(11),
+    td:nth-child(11) {
+      width: 8%;
+    } // 퇴사 여부
+    th:nth-child(12),
+    td:nth-child(12) {
+      width: 12%;
+    } // 승인/반려
+  }
+}
+
+.approve-btn,
+.reject-btn {
+  padding: 8px 12px;
+  font-size: 0.875rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    opacity: 0.9;
+  }
+}
+
+.approve-btn {
+  background-color: $primary-color;
+  color: white;
+
+  &:hover {
+    background-color: darken($primary-color, 10%);
+  }
+}
+
+.reject-btn {
+  background-color: $error-color;
+  color: white;
+
+  &:hover {
+    background-color: darken($error-color, 10%);
+  }
+}
