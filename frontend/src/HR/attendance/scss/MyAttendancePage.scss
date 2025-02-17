@@ -1,7 +1,7 @@
 @import "../../../App.scss";
 
 .mypage {
-  position: relative; // 상대 위치 설정
+  position: relative;
   width: 90%;
   margin: 50px auto 0;
 
@@ -11,7 +11,6 @@
     margin: 0;
   }
 
-  // 사원 ID와 버튼을 포함하는 컨테이너
   .user-controls {
     position: absolute;
     right: 0;
@@ -22,7 +21,7 @@
     gap: 1rem;
 
     p {
-      margin: 0; // 기본 마진 제거
+      margin: 0; 
       margin-top: 10px;
     }
   }
@@ -30,7 +29,7 @@
 
 .page-container {
   display: flex;
-  flex-direction: column; /* 세로 방향으로 정렬 */
+  flex-direction: column; 
   gap: 2rem;
   margin-top: 1rem;
 }
@@ -90,8 +89,9 @@
   margin: 2rem 0;
 }
 
-.buttons {
+.attendance-buttons {
   display: flex;
+  gap: 0.8rem;
 }
 
 button {

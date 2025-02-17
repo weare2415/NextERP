@@ -1,5 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { getPendingAttendances, approveAttendance, rejectAttendance } from "../api/attendanceApi";
+import {
+  getPendingAttendances,
+  approveAttendance,
+  rejectAttendance,
+} from "../api/attendanceApi";
 import Pagination from "../../../common/component/Pagination";
 import BasicLayout from "../../../common/pages/BasicLayout";
 import "../scss/ApprovalPage.scss";
@@ -9,6 +13,12 @@ const ApprovalPage = () => {
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const pageSize = 10;
+
+  const statusMap = {
+    LEAVE: "휴가",
+    SICK_LEAVE: "병가",
+    REMOTE_WORK: "재택",
+  };
 
   useEffect(() => {
     fetchPendingRequests();
@@ -28,7 +38,7 @@ const ApprovalPage = () => {
     try {
       await approveAttendance(id);
       alert("승인 완료되었습니다.");
-      fetchPendingRequests();
+      fetchPendingRequests(); // ✅ 목록 갱신
     } catch (error) {
       alert("승인 실패: " + error.message);
     }
@@ -38,23 +48,19 @@ const ApprovalPage = () => {
     try {
       await rejectAttendance(id);
       alert("거부 완료되었습니다.");
-      fetchPendingRequests();
+      fetchPendingRequests(); // ✅ 목록 갱신
     } catch (error) {
       alert("거부 실패: " + error.message);
     }
   };
 
-  const paginatedRequests = (() => {
+  // ✅ 페이지네이션 함수
+  const paginate = (data, currentPage, pageSize) => {
     const startIndex = (currentPage - 1) * pageSize;
-    return pendingRequests.slice(startIndex, startIndex + pageSize);
-  })();
-
-  const handlePageChange = (page) => {
-    const totalPages = Math.ceil(pendingRequests.length / pageSize);
-    if (page > 0 && page <= totalPages) {
-      setCurrentPage(page);
-    }
+    return data.slice(startIndex, startIndex + pageSize);
   };
+
+  const paginatedRequests = paginate(pendingRequests, currentPage, pageSize);
 
   return (
     <BasicLayout>
@@ -79,7 +85,7 @@ const ApprovalPage = () => {
                   paginatedRequests.map((request) => (
                     <tr key={request.id}>
                       <td>{request.employeeName}</td>
-                      <td>{request.status}</td>
+                      <td>{statusMap[request.status] || request.status}</td>
                       <td>{request.date}</td>
                       <td>{request.approvalReason}</td>
                       <td>
@@ -105,13 +111,13 @@ const ApprovalPage = () => {
                 )}
               </tbody>
             </table>
-            {pendingRequests.length > 0 && (
-              <Pagination
-                currentPage={currentPage}
-                totalPages={Math.ceil(pendingRequests.length / pageSize)}
-                onPageChange={handlePageChange}
-              />
-            )}
+            {/* Pagination 컴포넌트 추가 */}
+            <Pagination
+              currentPage={currentPage}
+              totalItems={pendingRequests.length}
+              pageSize={pageSize}
+              onPageChange={setCurrentPage}
+            />
           </>
         )}
       </div>

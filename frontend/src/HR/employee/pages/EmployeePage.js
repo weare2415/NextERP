@@ -25,7 +25,7 @@ const EmployeePage = () => {
     <BasicLayout>
       <div className="employee-page-container">
         <div className="employee-page-header">
-          <h2>직원 관리</h2>
+          <h1>직원 관리</h1>
           <div className="search-container">
             <select
               value={searchCategory}

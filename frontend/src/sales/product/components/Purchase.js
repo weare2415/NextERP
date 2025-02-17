@@ -12,7 +12,6 @@ const Purchase = ({ isOpen, onClose, selectedProduct }) => {
   const [suggestions, setSuggestions] = useState([]);
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [isSelecting, setIsSelecting] = useState(false);
-  const todayDate = new Date().toISOString().split("T")[0];
 
   // 초기 주문 데이터
   const initialOrderData = {
@@ -23,7 +22,7 @@ const Purchase = ({ isOpen, onClose, selectedProduct }) => {
     clientName: "",
     employeeName: name,
     employeeId: id,
-    orderDate: todayDate,
+    purchaseDate: new Date().toISOString().split("T")[0],
     memo: "",
     paymentAccountId: "101",
   };
@@ -47,7 +46,6 @@ const Purchase = ({ isOpen, onClose, selectedProduct }) => {
         ...prev,
         productId: selectedProduct.id,
         price: selectedProduct.purchasePrice,
-        orderDate: new Date().toISOString().split("T")[0],
       }));
     }
   }, [selectedProduct]);
@@ -132,6 +130,7 @@ const Purchase = ({ isOpen, onClose, selectedProduct }) => {
         employee: {
           id: orderData.employeeId,
         },
+        purchaseDate : orderData.purchaseDate,
         memo: orderData.memo || "",
       };
 
@@ -162,7 +161,16 @@ const Purchase = ({ isOpen, onClose, selectedProduct }) => {
                 required
             />
           </div>
-
+          <div className="form-group">
+            <label>구매 요청일</label>
+            <input
+                type="date"
+                name="purchaseDate"
+                value={orderData.purchaseDate}
+                onChange={handleChange}
+                required
+            />
+          </div>
           <div className="form-group">
             <label>발주 기업명:</label>
             <input

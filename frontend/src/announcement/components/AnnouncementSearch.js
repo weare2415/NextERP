@@ -1,126 +1,106 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
-    getAllAnnouncements,
-    getAnnouncementsByDepartment,
-    getAnnouncementsByPosition
+  getAllAnnouncements,
+  getAnnouncementsByDepartment,
+  getAnnouncementsByPosition,
 } from "../api/announcementApi";
 import "../scss/AnnouncementSearch.scss";
 
 const departmentMap = {
-    1: "영업팀",
-    2: "회계팀",
-    3: "인사팀",
-  };
-  
-  const positionMap = {
-    1: "인턴",
-    2: "사원",
-    3: "대리",
-    4: "과장",
-    5: "차장",
-    6: "부장",
-    7: "이사",
-    8: "사장",
-  };
-  
-  const AnnouncementSearch = ({ onSearch }) => {
-    const [searchParams, setSearchParams] = useState({
-      searchType: "title", // 기본값
-      searchTerm: "",
-    });
-    const [allAnnouncements, setAllAnnouncements] = useState([]);
-  
-    useEffect(() => {
-      const fetchAnnouncements = async () => {
-        const data = await getAllAnnouncements();
-        setAllAnnouncements(data);
-        onSearch(data);
-      };
-      fetchAnnouncements();
-    }, []);
-  
-    const handleInputChange = (e) => {
-      setSearchParams((prev) => ({ ...prev, [e.target.name]: e.target.value }));
-    };
-  
-    const handleSearch = async (e) => {
-      e.preventDefault();
-      const { searchType, searchTerm } = searchParams;
+  1: "영업팀",
+  2: "회계팀",
+  3: "인사팀",
+};
+
+const positionMap = {
+  1: "인턴",
+  2: "사원",
+  3: "대리",
+  4: "과장",
+  5: "차장",
+  6: "부장",
+  7: "이사",
+  8: "사장",
+};
+
+const AnnouncementSearch = ({ onSearch }) => {
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const handleSearch = async () => {
+    try {
+      let searchResults = [];
+
+      console.log(`🔍 검색 실행됨: ${searchTerm}`);
+
+      // ✅ 입력값이 없으면 전체 공지 조회
       if (!searchTerm.trim()) {
-        onSearch([]);
-        return;
-      }
-  
-      try {
-        let filteredResults = [];
-  
-        switch (searchType) {
-          case "title":
-            filteredResults = allAnnouncements.filter((a) =>
-              a.title.includes(searchTerm)
-            );
-            break;
-          case "author":
-            filteredResults = allAnnouncements.filter((a) =>
-              a.authorName.includes(searchTerm)
-            );
-            break;
-          case "department":
-            const departmentId = Object.keys(departmentMap).find(
-              (key) => departmentMap[key] === searchTerm
-            );
-            if (departmentId)
-              filteredResults = await getAnnouncementsByDepartment(
-                Number(departmentId)
-              );
-            break;
-          case "position":
-            const positionId = Object.keys(positionMap).find(
-              (key) => positionMap[key] === searchTerm
-            );
-            if (positionId)
-              filteredResults = await getAnnouncementsByPosition(
-                Number(positionId)
-              );
-            break;
-          default:
-            break;
+        searchResults = await getAllAnnouncements();
+        console.log("📌 전체 공지 불러옴:", searchResults);
+      } else {
+        const allAnnouncements = await getAllAnnouncements();
+
+        // ✅ 제목, 작성자 검색
+        const filteredResults = allAnnouncements.filter(
+          (announcement) =>
+            announcement.title.includes(searchTerm) ||
+            announcement.authorName.includes(searchTerm)
+        );
+
+        searchResults = [...filteredResults];
+
+        console.log("🔎 제목/작성자 검색 결과:", filteredResults);
+
+        // ✅ 부서 한글 검색 (한글 입력 시 부서 ID로 변환)
+        const departmentId = Object.keys(departmentMap).find(
+          (key) => departmentMap[key] === searchTerm
+        );
+        if (departmentId) {
+          console.log(`📌 부서 검색 (${searchTerm} -> ID ${departmentId})`);
+          const departmentResults = await getAnnouncementsByDepartment(
+            Number(departmentId)
+          ).catch(() => []);
+          searchResults = [...searchResults, ...departmentResults];
         }
-  
-        onSearch(filteredResults || []);
-      } catch (error) {
-        console.error("검색 오류:", error);
+
+        // ✅ 직위 한글 검색 (한글 입력 시 직위 ID로 변환)
+        const positionId = Object.keys(positionMap).find(
+          (key) => positionMap[key] === searchTerm
+        );
+        if (positionId) {
+          console.log(`📌 직위 검색 (${searchTerm} -> ID ${positionId})`);
+          const positionResults = await getAnnouncementsByPosition(
+            Number(positionId)
+          ).catch(() => []);
+          searchResults = [...searchResults, ...positionResults];
+        }
       }
-    };
-  
-    return (
-      <div className="announcement-search">
-        <form onSubmit={handleSearch} className="announcement-search-form">
-          <select
-            name="searchType"
-            value={searchParams.searchType}
-            onChange={handleInputChange}
-          >
-            <option value="title">제목</option>
-            <option value="author">작성자</option>
-            <option value="department">부서명</option>
-            <option value="position">직위명</option>
-          </select>
-          <div className="search-input-wrapper">
-  
-          <input
-            type="text"
-            name="searchTerm"
-            placeholder="검색어를 입력하세요."
-            value={searchParams.searchTerm}
-            onChange={handleInputChange}
-          />
-          </div>
-          <button type="submit">검색</button>
-        </form>
-      </div>
-    );
+
+      // ✅ 중복 데이터 제거
+      const uniqueResults = Array.from(
+        new Set(searchResults.map((a) => a.id))
+      ).map((id) => searchResults.find((a) => a.id === id));
+
+      console.log("🔄 최종 검색 결과:", uniqueResults);
+      onSearch(uniqueResults);
+    } catch (error) {
+      console.error("❌ 공지사항 검색 실패:", error);
+    }
   };
-  
-  export default AnnouncementSearch;
-  
+
+  return (
+    <div className="announcement-search">
+      <input
+        type="text"
+        placeholder="작성자, 제목, 부서명, 직위명 검색"
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+        className="search-input"
+      />
+      <button className="search-btn" onClick={handleSearch}>
+        검색
+      </button>
+    </div>
+  );
+};
+
+export default AnnouncementSearch;

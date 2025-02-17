@@ -12,7 +12,6 @@ const Sale = ({ isOpen, onClose, selectedProduct }) => {
   const [suggestions, setSuggestions] = useState([]);
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [isSelecting, setIsSelecting] = useState(false);
-  const todayDate = new Date().toISOString().split("T")[0];
 
   // 초기 주문 데이터
   const initialOrderData = {
@@ -23,7 +22,7 @@ const Sale = ({ isOpen, onClose, selectedProduct }) => {
     clientName: "",
     employeeName: name,
     employeeId: id,
-    orderDate: todayDate,
+    saleDate: new Date().toISOString().split("T")[0],
     memo: "",
     paymentAccountId: "101",
   };
@@ -48,7 +47,6 @@ const Sale = ({ isOpen, onClose, selectedProduct }) => {
         ...prev,
         productId: selectedProduct.id,
         price: selectedProduct.salePrice,
-        orderDate: new Date().toISOString().split("T")[0],
       }));
     }
   }, [selectedProduct]);
@@ -131,6 +129,7 @@ const Sale = ({ isOpen, onClose, selectedProduct }) => {
         employee: {
           id: orderData.employeeId,
         },
+        saleDate : orderData.saleDate,
         memo: orderData.memo || "",
       };
 
@@ -155,7 +154,16 @@ const Sale = ({ isOpen, onClose, selectedProduct }) => {
             <label>제품 번호:</label>
             <input type="text" name="productId" value={orderData.productId} readOnly required />
           </div>
-
+          <div className="form-group">
+            <label>판매 날짜</label>
+            <input
+                type="date"
+                name="saleDate"
+                value={orderData.saleDate}
+                onChange={handleChange}
+                required
+            />
+          </div>
           <div className="form-group">
             <label>주문 기업명</label>
             <input
