@@ -1,7 +1,6 @@
+import axiosInstance from "../../../common/api/mainApi";
 
 // ✅ 특정 직원 정보 조회 API 추가
-import axiosInstance from '../../../common/api/mainApi';
-
 export const getEmployeeById = async (id) => {
   try {
     const response = await axiosInstance.get(`/api/employees/${id}`);

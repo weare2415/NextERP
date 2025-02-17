@@ -7,21 +7,26 @@ const CreateEmployee = lazy(() =>
 const EmployeeDetail = lazy(() =>
   import("../../HR/employee/components/EmployeeDetail")
 );
-const ApprovalStatus = lazy(() =>
-  import("../../HR/employee/components/ApprovalStatus")
-); // ✅ 승인 여부 페이지 추가
+const ApprovalStatusPage = lazy(() =>
+  import("../../HR/employee/pages/ApprovalStatusPage")
+);
 const AttendancePage = lazy(() =>
   import("../../HR/attendance/pages/AttendancePage")
 );
-const RequestAttendance = lazy(() =>
-  import("../../HR/attendance/components/RequestAttendance")
+const MyAttendanceRequestPage = lazy(() =>
+  import("../../HR/attendance/pages/MyAttendanceRequestPage")
+);
+const AttendanceHistoryPage = lazy(() =>
+  import("../../HR/attendance/pages/AttendanceHistoryPage")
 );
 
-const RequestHistory = lazy(() =>
-  import("../../HR/attendance/components/RequestHistory")
-); // ✅ 신청 내역 페이지 추가
-const ApprovalPage = lazy(() => import("../../HR/attendance/pages/ApprovalPage")); // ✅ 관리자 승인 페이지 추가
-const MyPage = lazy(() => import("../../HR/employee/pages/MyPage")); // ✅ 마이페이지 추가
+const ApprovalPage = lazy(() =>
+  import("../../HR/attendance/pages/ApprovalPage")
+);
+
+const MyAttendancePage = lazy(() =>
+  import("../../HR/attendance/pages/MyAttendancePage")
+);
 
 const Loading = () => <div>Loading...</div>;
 
@@ -55,7 +60,7 @@ const EmployeeRouter = () => {
       path: "approval-status",
       element: (
         <Suspense fallback={<Loading />}>
-          <ApprovalStatus />
+          <ApprovalStatusPage />
         </Suspense>
       ),
     },
@@ -68,23 +73,23 @@ const EmployeeRouter = () => {
       ),
     },
     {
-      path: "attendance/request", // ✅ 근태 신청 페이지 추가
+      path: "attendance/request",
       element: (
         <Suspense fallback={<Loading />}>
-          <RequestAttendance />
+          <MyAttendanceRequestPage />
         </Suspense>
       ),
     },
     {
-      path: "attendance/history", // ✅ 신청 내역 페이지 추가
+      path: "attendance/history",
       element: (
         <Suspense fallback={<Loading />}>
-          <RequestHistory />
+          <AttendanceHistoryPage />
         </Suspense>
       ),
     },
     {
-      path: "attendance/approval", // ✅ 관리자 승인 페이지 추가
+      path: "attendance/approval",
       element: (
         <Suspense fallback={<Loading />}>
           <ApprovalPage />
@@ -92,10 +97,10 @@ const EmployeeRouter = () => {
       ),
     },
     {
-      path: "mypage",
+      path: "myattendance",
       element: (
         <Suspense fallback={<Loading />}>
-          <MyPage />
+          <MyAttendancePage />
         </Suspense>
       ),
     },

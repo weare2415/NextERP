@@ -18,6 +18,8 @@ public class AnnouncementDTO {
     private String content; // 공지 내용
     private Integer authorId; // 작성자 ID
     private String authorName; // 작성자 이름
+    private Integer departmentId; // 부서 ID (nullable)
+    private Integer positionId; // 직위 ID (nullable)
     private LocalDateTime createdAt; // 작성일시
     private LocalDateTime updatedAt; // 수정일시
 }

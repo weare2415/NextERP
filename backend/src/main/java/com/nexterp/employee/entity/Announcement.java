@@ -31,6 +31,15 @@ public class Announcement {
     @JoinColumn(name = "author_id", referencedColumnName = "employee_id", nullable = false)
     private Employee author; // 작성자 (Foreign Key, Employee 참조)
 
+    @ManyToOne
+    @JoinColumn(name = "department_id", referencedColumnName = "department_id", nullable = true)
+    private Department department;
+
+    @ManyToOne
+    @JoinColumn(name = "position_id", referencedColumnName = "position_id", nullable = true)
+    private Position position; // 공지가 적용될 직위 (nullable = true → 모든 직위에 적용 가능)
+
+
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt; // 작성일시
 

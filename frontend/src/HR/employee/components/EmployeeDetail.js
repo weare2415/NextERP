@@ -5,30 +5,34 @@ import {
   getDepartments, 
   getPositions, 
   getEmployeeById 
-} from "../api/employeeApi"; // ✅ API 추가
+} from "../api/employeeApi"; 
 import "../scss/EmployeeDetail.scss";
 
 const EmployeeDetail = ({ employee, onClose, onUpdateSuccess }) => {
   const [editedEmployee, setEditedEmployee] = useState({ ...employee });
   const [departments, setDepartments] = useState([]);
   const [positions, setPositions] = useState([]);
-  const [isTerminated, setIsTerminated] = useState(employee.isTerminated); // ✅ 퇴사 여부 상태 추가
-  const [status, setStatus] = useState(employee.status || "PREPARED"); // ✅ 승인 상태 추가
+  const [isTerminated, setIsTerminated] = useState(
+    employee?.isTerminated || false
+  );
+  const [status, setStatus] = useState(employee?.status || "PREPARED");
 
-  // ✅ 직원 데이터 다시 불러오기 (퇴사 여부, 승인 상태 포함)
+  // 직원 데이터 다시 불러오기 (퇴사 여부, 승인 상태 포함)
   useEffect(() => {
     const fetchEmployeeData = async () => {
       try {
+        if (!employee?.id) return;
         const updatedEmployee = await getEmployeeById(employee.id);
         setEditedEmployee(updatedEmployee);
-        setStatus(updatedEmployee.status || "PREPARED"); // ✅ undefined 방지
+        setStatus(updatedEmployee.status || "PREPARED");
+        setIsTerminated(updatedEmployee.isTerminated || false);
       } catch (error) {
         console.error("❌ 직원 정보 조회 실패:", error);
       }
     };
 
     fetchEmployeeData();
-  }, [employee.id]);
+  }, [employee?.id]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -44,7 +48,6 @@ const EmployeeDetail = ({ employee, onClose, onUpdateSuccess }) => {
     fetchData();
   }, []);
 
-   // ✅ 입력 값 변경 핸들러
   const handleChange = (e) => {
     const { name, value } = e.target;
     let newValue = value;
@@ -59,7 +62,6 @@ const EmployeeDetail = ({ employee, onClose, onUpdateSuccess }) => {
     }));
   };
 
-  // ✅ 직원 정보 수정 요청 (PENDING 상태로 변경)
   const handleUpdateRequest = async () => {
     if (isTerminated) {
       alert("❌ 퇴사한 직원은 수정할 수 없습니다.");
@@ -71,7 +73,7 @@ const EmployeeDetail = ({ employee, onClose, onUpdateSuccess }) => {
 
       if (updated) {
         alert("✅ 수정 요청이 완료되었습니다. 관리자 승인을 기다려주세요.");
-        setStatus("PENDING"); // ✅ 상태를 PENDING으로 변경
+        setStatus("PENDING");
         onUpdateSuccess();
         setTimeout(() => onClose(), 200);
       } else {
@@ -83,7 +85,6 @@ const EmployeeDetail = ({ employee, onClose, onUpdateSuccess }) => {
     }
   };
 
-  // ✅ 실제 수정 (승인된 경우만 가능)
   const handleUpdate = async () => {
     if (status !== "APPROVED") {
       alert("❌ 수정은 승인 후에만 가능합니다.");
@@ -91,15 +92,18 @@ const EmployeeDetail = ({ employee, onClose, onUpdateSuccess }) => {
     }
 
     try {
-      const updated = await updateEmployee(employee.id, editedEmployee);
+      const updatedEmployee = await requestUpdateEmployee(
+        employee.id,
+        editedEmployee
+      );
 
-      if (updated) {
-        alert("✅ 직원 정보가 수정되었습니다.");
-        setEditedEmployee(updated);
+      if (updatedEmployee) {
+        alert("✅ 직원 정보 수정 요청이 완료되었습니다.");
+        setEditedEmployee(updatedEmployee);
         onUpdateSuccess();
         setTimeout(() => onClose(), 200);
       } else {
-        alert("❌ 직원 정보 수정이 실패했습니다.");
+        alert("❌ 직원 정보 수정 요청에 실패했습니다.");
       }
     } catch (error) {
       console.error("❌ 직원 수정 실패:", error);
@@ -112,12 +116,15 @@ const EmployeeDetail = ({ employee, onClose, onUpdateSuccess }) => {
       <div className="modal-container" onClick={(e) => e.stopPropagation()}>
         <div className="modal-header">
           <h2>직원 상세 정보</h2>
-          <button className="close-button" onClick={onClose}>×</button>
+          <button className="close-button" onClick={onClose}>
+            X
+          </button>
         </div>
 
         <div className="modal-content">
-          {isTerminated && <p className="terminated-message">🚨 퇴사한 직원입니다.</p>}
-        
+          {isTerminated && (
+            <p className="terminated-message">🚨 퇴사한 직원입니다.</p>
+          )}
 
           <div className="form-grid">
             <div className="form-group">
@@ -127,32 +134,67 @@ const EmployeeDetail = ({ employee, onClose, onUpdateSuccess }) => {
 
             <div className="form-group">
               <label>이름</label>
-              <input type="text" name="name" value={editedEmployee.name} onChange={handleChange} disabled={isTerminated} />
+              <input
+                type="text"
+                name="name"
+                value={editedEmployee.name}
+                onChange={handleChange}
+                disabled={isTerminated}
+              />
             </div>
 
             <div className="form-group">
               <label>생년월일</label>
-              <input type="date" name="birthDate" value={editedEmployee.birthDate} onChange={handleChange} disabled={isTerminated} />
+              <input
+                type="date"
+                name="birthDate"
+                value={editedEmployee.birthDate}
+                onChange={handleChange}
+                disabled={isTerminated}
+              />
             </div>
 
             <div className="form-group">
               <label>전화번호</label>
-              <input type="text" name="phone" value={editedEmployee.phone || ""} onChange={handleChange} disabled={isTerminated} />
+              <input
+                type="text"
+                name="phone"
+                value={editedEmployee.phone || ""}
+                onChange={handleChange}
+                disabled={isTerminated}
+              />
             </div>
 
             <div className="form-group">
               <label>이메일</label>
-              <input type="email" name="email" value={editedEmployee.email} onChange={handleChange} disabled={isTerminated} />
+              <input
+                type="email"
+                name="email"
+                value={editedEmployee.email}
+                onChange={handleChange}
+                disabled={isTerminated}
+              />
             </div>
 
             <div className="form-group">
               <label>주소</label>
-              <input type="text" name="address" value={editedEmployee.address || ""} onChange={handleChange} disabled={isTerminated} />
+              <input
+                type="text"
+                name="address"
+                value={editedEmployee.address || ""}
+                onChange={handleChange}
+                disabled={isTerminated}
+              />
             </div>
 
             <div className="form-group">
               <label>부서</label>
-              <select name="departmentId" value={editedEmployee.departmentId} onChange={handleChange} disabled={isTerminated}>
+              <select
+                name="departmentId"
+                value={editedEmployee.departmentId}
+                onChange={handleChange}
+                disabled={isTerminated}
+              >
                 {departments.map((dept) => (
                   <option key={dept.id} value={dept.id}>
                     {dept.name}
@@ -163,7 +205,12 @@ const EmployeeDetail = ({ employee, onClose, onUpdateSuccess }) => {
 
             <div className="form-group">
               <label>직급</label>
-              <select name="positionId" value={editedEmployee.positionId || ""} onChange={handleChange} disabled={isTerminated}>
+              <select
+                name="positionId"
+                value={editedEmployee.positionId || ""}
+                onChange={handleChange}
+                disabled={isTerminated}
+              >
                 <option value="">직급 선택</option>
                 {positions.map((pos) => (
                   <option key={pos.positionId} value={pos.positionId}>
@@ -175,24 +222,42 @@ const EmployeeDetail = ({ employee, onClose, onUpdateSuccess }) => {
 
             <div className="form-group">
               <label>입사일</label>
-              <input type="date" name="hireDate" value={editedEmployee.hireDate} onChange={handleChange} disabled={isTerminated} />
+              <input
+                type="date"
+                name="hireDate"
+                value={editedEmployee.hireDate}
+                onChange={handleChange}
+                disabled={isTerminated}
+              />
             </div>
 
             <div className="form-group">
               <label>퇴사일</label>
-              <input type="date" name="terminationDate" value={editedEmployee.terminationDate || ""} onChange={handleChange} disabled={isTerminated} />
+              <input
+                type="date"
+                name="terminationDate"
+                value={editedEmployee.terminationDate || ""}
+                onChange={handleChange}
+                disabled={!isTerminated}
+              />
             </div>
           </div>
         </div>
 
         <div className="button-container">
           {!isTerminated && status !== "PENDING" && (
-            <button className="update-button" onClick={handleUpdateRequest}>수정 요청</button>
+            <button className="update-button" onClick={handleUpdateRequest}>
+              수정 요청
+            </button>
           )}
           {!isTerminated && status === "APPROVED" && (
-            <button className="update-button" onClick={handleUpdate}>최종 수정</button>
+            <button className="update-button" onClick={handleUpdate}>
+              최종 수정
+            </button>
           )}
-          <button className="close-button" onClick={onClose}>닫기</button>
+          <button className="close-button" onClick={onClose}>
+            닫기
+          </button>
         </div>
       </div>
     </div>

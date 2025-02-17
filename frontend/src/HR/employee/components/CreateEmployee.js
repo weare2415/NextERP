@@ -5,7 +5,7 @@ import "../scss/CreateEmployee.scss";
 const departments = [
   { id: 1, name: "영업팀" },
   { id: 2, name: "회계팀" },
-  { id: 3, name: "인사팀" }
+  { id: 3, name: "인사팀" },
 ];
 
 const positions = [
@@ -16,7 +16,7 @@ const positions = [
   { id: 5, title: "차장" },
   { id: 6, title: "부장" },
   { id: 7, title: "이사" },
-  { id: 8, title: "사장" }
+  { id: 8, title: "사장" },
 ];
 
 const CreateEmployee = ({ onClose, onSuccess }) => {
@@ -31,31 +31,31 @@ const CreateEmployee = ({ onClose, onSuccess }) => {
     departmentId: "",
     positionId: "",
     hireDate: "",
-    terminationDate: null
+    terminationDate: null,
   });
-  
-  const [idError, setIdError] = useState(""); // ✅ ID 중복 및 형식 체크 상태
-  const [isIdAvailable, setIsIdAvailable] = useState(false); // ✅ ID 사용 가능 여부
+
+  const [idError, setIdError] = useState(""); 
+  const [isIdAvailable, setIsIdAvailable] = useState(false); 
 
   const handleIdChange = async (e) => {
     const id = e.target.value;
     setEmployeeData({ ...employeeData, id });
-  
-    if (id.length === 8) { // ✅ 8자리 체크
+
+    if (id.length === 8) {
+      // ✅ 8자리 체크
       const exists = await checkEmployeeIdExists(id);
       if (exists) {
         setIdError("❌ 이미 존재하는 ID입니다.");
-        setIsIdAvailable(false); // ID가 중복되면 등록 버튼 비활성화
+        setIsIdAvailable(false); 
       } else {
         setIdError("✅ 사용 가능한 ID입니다.");
-        setIsIdAvailable(true); // ID 사용 가능하면 등록 버튼 활성화
+        setIsIdAvailable(true);
       }
     } else {
       setIdError("❗ 8자리 ID를 입력하세요.");
       setIsIdAvailable(false);
     }
   };
-  
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -83,8 +83,16 @@ const CreateEmployee = ({ onClose, onSuccess }) => {
 
   return (
     <div className="modal-overlay" onClick={onClose}>
-      <div className="create-employee-form" onClick={(e) => e.stopPropagation()}>
-        <h2>신규 직원 등록</h2>
+      <div
+        className="create-employee-form"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div className="form-header">
+          <h2>신규 직원 등록</h2>
+          <button className="close-button" onClick={onClose}>
+            X
+          </button>
+        </div>
         <form onSubmit={handleSubmit}>
           <div className="form-group">
             <label>사원 번호 (8자리 숫자)</label>
@@ -96,17 +104,36 @@ const CreateEmployee = ({ onClose, onSuccess }) => {
               onChange={handleIdChange}
               required
             />
-            {idError && <p className={`id-check-message ${isIdAvailable ? "success" : "error"}`}>{idError}</p>}
+            {idError && (
+              <p
+                className={`id-check-message ${
+                  isIdAvailable ? "success" : "error"
+                }`}
+              >
+                {idError}
+              </p>
+            )}
           </div>
 
           <div className="form-group">
             <label>이름</label>
-            <input type="text" name="name" placeholder="이름" onChange={handleChange} required />
+            <input
+              type="text"
+              name="name"
+              placeholder="이름"
+              onChange={handleChange}
+              required
+            />
           </div>
 
           <div className="form-group">
             <label>생년월일</label>
-            <input type="date" name="birthDate" onChange={handleChange} required />
+            <input
+              type="date"
+              name="birthDate"
+              onChange={handleChange}
+              required
+            />
           </div>
 
           <div className="form-group">
@@ -119,17 +146,33 @@ const CreateEmployee = ({ onClose, onSuccess }) => {
 
           <div className="form-group">
             <label>전화번호</label>
-            <input type="text" name="phone" placeholder="전화번호" onChange={handleChange} />
+            <input
+              type="text"
+              name="phone"
+              placeholder="전화번호"
+              onChange={handleChange}
+            />
           </div>
 
           <div className="form-group">
             <label>이메일</label>
-            <input type="email" name="email" placeholder="이메일" onChange={handleChange} required />
+            <input
+              type="email"
+              name="email"
+              placeholder="이메일"
+              onChange={handleChange}
+              required
+            />
           </div>
 
           <div className="form-group">
             <label>주소</label>
-            <input type="text" name="address" placeholder="주소" onChange={handleChange} />
+            <input
+              type="text"
+              name="address"
+              placeholder="주소"
+              onChange={handleChange}
+            />
           </div>
 
           <div className="form-group">
@@ -137,7 +180,9 @@ const CreateEmployee = ({ onClose, onSuccess }) => {
             <select name="departmentId" onChange={handleChange} required>
               <option value="">부서 선택</option>
               {departments.map((dept) => (
-                <option key={dept.id} value={dept.id}>{dept.name}</option>
+                <option key={dept.id} value={dept.id}>
+                  {dept.name}
+                </option>
               ))}
             </select>
           </div>
@@ -147,19 +192,30 @@ const CreateEmployee = ({ onClose, onSuccess }) => {
             <select name="positionId" onChange={handleChange} required>
               <option value="">직급 선택</option>
               {positions.map((pos) => (
-                   <option key={pos.id} value={pos.id}>{pos.title}</option>
+                <option key={pos.id} value={pos.id}>
+                  {pos.title}
+                </option>
               ))}
             </select>
           </div>
 
           <div className="form-group">
             <label>입사일</label>
-            <input type="date" name="hireDate" onChange={handleChange} required />
+            <input
+              type="date"
+              name="hireDate"
+              onChange={handleChange}
+              required
+            />
           </div>
 
           <div className="button-group">
-            <button type="submit" disabled={!isIdAvailable}>등록</button>
-            <button type="button" className="cancel-btn" onClick={onClose}>취소</button>
+            <button type="submit" disabled={!isIdAvailable}>
+              등록
+            </button>
+            <button type="button" className="cancel-btn" onClick={onClose}>
+              취소
+            </button>
           </div>
         </form>
       </div>
