@@ -64,7 +64,7 @@ public class PurchaseServiceImpl implements PurchaseService {
   private final InvoiceItemRepository invoiceItemRepository;
 
   @Override
-  public void processPurchase(Long productId, int quantity, BigDecimal purchasePrice, String supplierCode, String paymentAccountId, Employee employee, RequestStatus requestStatus, String memo) {
+  public void processPurchase(Long productId, int quantity, BigDecimal purchasePrice, String supplierCode, String paymentAccountId, Employee employee, RequestStatus requestStatus, LocalDate purchaseDate, String memo) {
     // 1. 제품 재고 증가
     Product product = productRepository.findById(productId)
         .orElseThrow(() -> new IllegalArgumentException("Product not found"));
@@ -84,13 +84,13 @@ public class PurchaseServiceImpl implements PurchaseService {
         .amount(totalAmount)
         .type(TransactionType.PURCHASE)
         .description("공급업체로부터 구매: " + supplierCode)
-        .date(LocalDateTime.now())
+        .date(purchaseDate)
         .build();
 
     TransactionDTO savedTransactionDTO = transactionService.createTransaction(transactionDTO);
 
     // 4. Journal Entry 생성
-    createJournalEntries(savedTransactionDTO, purchaseAmount, vatAmount, paymentAccountId);
+    createJournalEntries(savedTransactionDTO, purchaseAmount, vatAmount, paymentAccountId, purchaseDate);
 
     // 5. VAT 처리
     vatService.createVAT(savedTransactionDTO.getId(), BigDecimal.valueOf(0.10), purchaseAmount);
@@ -98,7 +98,7 @@ public class PurchaseServiceImpl implements PurchaseService {
     // 6. Invoice 생성
     InvoiceDTO invoiceDTO = InvoiceDTO.builder()
         .invoiceNumber("PUR" + savedTransactionDTO.getId())
-        .date(LocalDateTime.now())
+        .date(purchaseDate)
         .buyer("My Company")
         .seller("Supplier " + supplierCode)
         .totalAmount(totalAmount)
@@ -281,11 +281,11 @@ public class PurchaseServiceImpl implements PurchaseService {
   }
 
   // Journal Entry 생성 메서드
-  private void createJournalEntries(TransactionDTO transaction, BigDecimal purchaseAmount, BigDecimal vatAmount, String paymentAccountId) {
+  private void createJournalEntries(TransactionDTO transaction, BigDecimal purchaseAmount, BigDecimal vatAmount, String paymentAccountId, LocalDate purchaseDate) {
     // 1. 재고 자산 증가 (차변)
     journalEntryService.createJournalEntry(
         JournalEntryDTO.builder()
-            .date(LocalDate.now())
+            .date(purchaseDate)
             .accountCode("120")
             .debit(purchaseAmount)
             .credit(BigDecimal.ZERO)
@@ -298,7 +298,7 @@ public class PurchaseServiceImpl implements PurchaseService {
     // 2. 지급 계정 대변 (지출)
     journalEntryService.createJournalEntry(
         JournalEntryDTO.builder()
-            .date(LocalDate.now())
+            .date(purchaseDate)
             .accountCode(paymentAccountId)
             .debit(BigDecimal.ZERO)
             .credit(purchaseAmount.add(vatAmount))
@@ -311,7 +311,7 @@ public class PurchaseServiceImpl implements PurchaseService {
     // 3. VAT 대급금(prepaid) (150) 증가 (차변)
     journalEntryService.createJournalEntry(
         JournalEntryDTO.builder()
-            .date(LocalDate.now())
+            .date(purchaseDate)
             .accountCode("150")
             .debit(vatAmount)
             .credit(BigDecimal.ZERO)

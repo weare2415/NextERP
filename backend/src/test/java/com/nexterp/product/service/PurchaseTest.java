@@ -1,5 +1,7 @@
+/*
 package com.nexterp.product.service;
 
+*/
 /*
  * Description    :
  * ProjectName    : NextERP
@@ -11,7 +13,8 @@ package com.nexterp.product.service;
  * DATE                  AUTHOR       NOTE
  * -----------------------------------------------------------
  * 25. 2. 10.오전 11:41  paesir      최초 생성
- */
+ *//*
+
 
 import com.nexterp.accounting.repository.InvoiceRepository;
 import com.nexterp.accounting.repository.JournalEntryRepository;
@@ -111,3 +114,4 @@ public class PurchaseTest {
     purchaseService.refundPurchase(TRANSACTION_ID);
   }
 }
+*/

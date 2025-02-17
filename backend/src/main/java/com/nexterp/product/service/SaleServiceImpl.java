@@ -67,7 +67,7 @@ public class SaleServiceImpl implements SaleService {
   private final TransactionRepository transactionRepository;
 
   @Override
-  public void processSale(Long productId, int quantity, BigDecimal salePrice, String clientCode, String paymentAccountId, Employee employee, RequestStatus requestStatus, String memo) {
+  public void processSale(Long productId, int quantity, BigDecimal salePrice, String clientCode, String paymentAccountId, Employee employee, RequestStatus requestStatus, LocalDate saleDate, String memo) {
     // 1. 제품 재고 차감
     Product product = productRepository.findById(productId)
         .orElseThrow(() -> new IllegalArgumentException("Product not found"));
@@ -96,7 +96,7 @@ public class SaleServiceImpl implements SaleService {
         .amount(totalAmount)
         .type(TransactionType.SALE)
         .description("구매한 고객: " + clientCode)
-        .date(LocalDateTime.now())
+        .date(saleDate)
         .build();
 
     TransactionDTO savedTransactionDTO = transactionService.createTransaction(transactionDTO);
@@ -104,7 +104,7 @@ public class SaleServiceImpl implements SaleService {
     // 4. 매출 계정 증가에 따른 Journal Entry (대변) 생성
     journalEntryService.createJournalEntry(
         JournalEntryDTO.builder()
-            .date(LocalDate.now())
+            .date(saleDate)
             .accountCode("401")
             .debit(BigDecimal.ZERO)
             .credit(saleAmount)
@@ -118,7 +118,7 @@ public class SaleServiceImpl implements SaleService {
     String paymentDescription = getPaymentDescription(paymentAccountId) + ", 거래 ID: " + savedTransactionDTO.getId();
 
     JournalEntryDTO paymentDebitEntryDTO = JournalEntryDTO.builder()
-        .date(LocalDate.now())
+        .date(saleDate)
         .accountCode(paymentAccountId)
         .debit(saleAmount)
         .credit(BigDecimal.ZERO)
@@ -133,7 +133,7 @@ public class SaleServiceImpl implements SaleService {
     String inventoryDescription = "재고 감소 반영 (COGS), 거래 ID:: " + savedTransactionDTO.getId();
 
     JournalEntryDTO inventoryCreditEntryDTO = JournalEntryDTO.builder()
-        .date(LocalDate.now())
+        .date(saleDate)
         .accountCode("120")
         .debit(BigDecimal.ZERO)
         .credit(purchaseAmount)
@@ -147,7 +147,7 @@ public class SaleServiceImpl implements SaleService {
     String cogsDescription = "매출원가 반영, 거래 ID: " + savedTransactionDTO.getId();
 
     JournalEntryDTO cogsDebitEntryDTO = JournalEntryDTO.builder()
-        .date(LocalDate.now())
+        .date(saleDate)
         .accountCode("520")
         .debit(purchaseAmount)
         .credit(BigDecimal.ZERO)
@@ -160,7 +160,7 @@ public class SaleServiceImpl implements SaleService {
     // 8. 영업이익 차변 처리
     journalEntryService.createJournalEntry(
         JournalEntryDTO.builder()
-            .date(LocalDate.now())
+            .date(saleDate)
             .accountCode("320")
             .debit(BigDecimal.ZERO)
             .credit(operatingProfit)
@@ -175,7 +175,7 @@ public class SaleServiceImpl implements SaleService {
 
     // 10. 부가세 Journal Entry 생성 (대변)
     JournalEntryDTO vatCreditEntryDTO = JournalEntryDTO.builder()
-        .date(LocalDate.now())
+        .date(saleDate)
         .accountCode("210")
         .debit(BigDecimal.ZERO)
         .credit(vatAmount)
@@ -187,7 +187,7 @@ public class SaleServiceImpl implements SaleService {
 
     // 11. 부가세 지급 계좌 차변 처리 (부가세 입금)
     JournalEntryDTO vatDebitEntryDTO = JournalEntryDTO.builder()
-        .date(LocalDate.now())
+        .date(saleDate)
         .accountCode(paymentAccountId)
         .debit(vatAmount)
         .credit(BigDecimal.ZERO)
@@ -200,7 +200,7 @@ public class SaleServiceImpl implements SaleService {
     // 12. Invoice 생성
     InvoiceDTO invoiceDTO = InvoiceDTO.builder()
         .invoiceNumber("PRO" + savedTransactionDTO.getId())
-        .date(LocalDateTime.now())
+        .date(saleDate)
         .buyer("Client " + clientCode)
         .seller("My Company")
         .totalAmount(totalAmount)

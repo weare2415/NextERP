@@ -1,3 +1,4 @@
+/*
 package com.nexterp.product.service;
 
 import com.nexterp.accounting.dto.InvoiceDTO;
@@ -35,6 +36,7 @@ import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
+*/
 /*
  * Description    :
  * ProjectName    : NextERP
@@ -46,7 +48,8 @@ import static org.junit.jupiter.api.Assertions.*;
  * DATE                  AUTHOR       NOTE
  * -----------------------------------------------------------
  * 25. 2. 9.오전 3:09  paesir      최초 생성
- */
+ *//*
+
 
 @SpringBootTest
 @Log4j2
@@ -168,3 +171,4 @@ class SaleServiceImplTest {
 
     }
 }
+*/

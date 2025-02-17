@@ -26,7 +26,7 @@ public interface TransactionService {
   Page<TransactionDTO> getAllTransactions(Pageable pageable);
   List<TransactionDTO> getAllTransactionsList();
   TransactionDTO getTransactionById(Long id);
-  Page<TransactionDTO> getTransactionsByDateBetween(LocalDateTime startDate, LocalDateTime endDate, Pageable pageable);
+  Page<TransactionDTO> getTransactionsByDateBetween(LocalDate startDate, LocalDate endDate, Pageable pageable);
   TransactionDTO createTransaction(TransactionDTO transactionDTO);
   TransactionDTO updateTransaction(Long id, TransactionDTO transactionDTO);
   void deleteTransaction(Long id);
