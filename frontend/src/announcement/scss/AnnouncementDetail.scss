@@ -124,19 +124,13 @@
       }
 
       .update-button {
-        background-color: #007bff; // ✅ 파란색(수정)
-
-        &:hover {
-          background-color: darken(#007bff, 10%);
-        }
+        background-color: $primary-color;
+        color: white;
       }
 
       .delete-button {
-        background-color: #dc3545; // ✅ 빨간색(삭제)
-
-        &:hover {
-          background-color: darken(#dc3545, 10%);
-        }
+        background-color: $error-color;
+        color: white;
       }
     }
   }

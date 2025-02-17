@@ -1,0 +1,123 @@
+@import "../../../../App.scss";
+
+.login-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+
+  .login-component {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #fff;
+    border-radius: 2rem;
+    padding: 2rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+    width: 800px;
+
+    @include respond-to("tablet") {
+      width: 600px;
+    }
+
+    @include respond-to("mobile") {
+      padding: 1.5rem;
+      width: 500px;
+    }
+
+    .login-upper {
+      margin-bottom: 0.5rem;
+
+      .logo {
+        width: 400px;
+        height: auto;
+
+        @include respond-to("mobile") {
+          width: 250px;
+        }
+      }
+    }
+
+    .login-form {
+      width: 50%;
+      margin-bottom: 0.2rem;
+
+      .id-input,
+      .password-input {
+        margin-bottom: 0.4rem;
+
+        > div {
+          font-size: 1.2rem;
+          color: $primary-color;
+          margin-bottom: 0.5rem;
+        }
+
+        > input {
+          width: 100%;
+          padding: 1rem;
+          border: 1px solid $secondary-color;
+          border-radius: 4px;
+          font-size: 1rem;
+          font-family: $font-secondary;
+          background-color: #fff;
+
+          &:focus {
+            outline: none;
+            border-color: $primary-color;
+            box-shadow: 0 0 4px rgba($primary-color, 0.4);
+          }
+
+          @include respond-to("mobile") {
+            padding: 0.8rem;
+          }
+        }
+      }
+    }
+
+    .forgot-password {
+      width: 50%;
+      margin-bottom: 0.4rem;
+      text-align: right;
+
+      > a {
+        text-decoration: none;
+        font-size: 1rem;
+        color: lighten($primary-color, 20%);
+
+        &:hover {
+          color: darken($primary-color, 0.5);
+        }
+      }
+    }
+
+    .login-button {
+      > button {
+        width: 370px;
+        padding: 1rem;
+        background-color: $primary-color;
+        color: #fff;
+        border: none;
+        border-radius: 6px;
+        font-size: 1.1rem;
+        font-family: $font-secondary;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+
+        &:hover {
+          background-color: darken($primary-color, 10%);
+        }
+
+        &:focus {
+          outline: none;
+          box-shadow: 0 0 4px rgba($primary-color, 0.4);
+        }
+
+        @include respond-to("mobile") {
+          padding: 0.9rem;
+          font-size: 1rem;
+        }
+      }
+    }
+  }
+}

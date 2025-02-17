@@ -1,13 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import io from "socket.io-client";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { getMessages, getChatRoomById } from "../api/chatApi";
+import { getMessages, getChatRoomById, sendMessage } from "../api/chatApi";
 import {
   getAllEmployees,
   getDepartments,
-} from "../../employee/api/employeeApi";
+} from "../../HR/employee/api/employeeApi";
+import "../scss/ChatRoom.scss";
 
+// WebSocket 서버와 연결
 const socket = io("http://localhost:5000");
 
 const ChatRoom = () => {
@@ -21,40 +23,58 @@ const ChatRoom = () => {
   const [employees, setEmployees] = useState({});
   const [departments, setDepartments] = useState({});
 
+  // ✅ 스크롤을 위한 ref 생성
+  const messagesEndRef = useRef(null);
+
   useEffect(() => {
     if (chatRoomId && myUserId) {
       fetchChatRoomInfo();
       fetchMessages();
       fetchEmployeesAndDepartments();
 
-      // ✅ WebSocket에 내 ID 등록
       socket.emit("register", { user_id: myUserId });
       console.log(`📡 WebSocket 등록 요청: ${myUserId}`);
 
-      // ✅ 기존 리스너 제거 후 새로 등록 (중복 방지)
+      socket.on("connect", () => {
+        console.log("✅ WebSocket 연결됨!");
+      });
+
       socket.off("message");
       socket.on("message", (newMessage) => {
         console.log("📩 실시간 메시지 수신:", newMessage);
 
-        // ✅ 내가 보낸 메시지는 중복 추가 방지
-        if (newMessage.senderId !== myUserId) {
-          setMessages((prevMessages) => [
+        setMessages((prevMessages) => {
+          const updatedMessages = [
             ...prevMessages,
             {
               ...newMessage,
-              content: newMessage.messageText || newMessage.content, // ✅ undefined 방지
-              timestamp: formatTime(newMessage.timestamp), // ✅ 시간 형식 변환
-              showName: newMessage.senderId !== myUserId,
+              content: newMessage.messageText || newMessage.content,
+              timestamp: formatTime(newMessage.timestamp),
+              isMyMessage: newMessage.senderId === myUserId,
+              showName:
+                newMessage.senderId !== myUserId &&
+                (prevMessages.length === 0 ||
+                  prevMessages[prevMessages.length - 1].senderId !==
+                    newMessage.senderId),
             },
-          ]);
-        }
+          ];
+
+          return updatedMessages;
+        });
+
+        scrollToBottom(); // ✅ 새 메시지 수신 시 자동 스크롤
       });
 
       return () => {
-        socket.off("message"); // ✅ 클린업: 기존 리스너 해제
+        socket.off("message");
       };
     }
   }, [chatRoomId, myUserId]);
+
+  // ✅ 팝업 창 닫기 버튼 추가
+  const handleClose = () => {
+    window.close();
+  };
 
   const fetchChatRoomInfo = async () => {
     try {
@@ -76,15 +96,35 @@ const ChatRoom = () => {
     try {
       const chatMessages = await getMessages(chatRoomId);
 
-      // ✅ 메시지 통일 (messageText || content 사용)
-      const updatedMessages = chatMessages.map((msg) => ({
-        ...msg,
-        content: msg.messageText || msg.content,
-        timestamp: formatTime(msg.timestamp), // ✅ 시간 변환 추가
-        showName: msg.senderId !== myUserId,
-      }));
+      // ✅ 내가 나간 채팅방인지 확인
+      const leftChatRooms =
+        JSON.parse(localStorage.getItem(`leftChatRooms_${myUserId}`)) || [];
 
+      const updatedMessages = chatMessages.map((msg, index) => {
+        const isMyMessage = Number(msg.senderId) === Number(myUserId);
+
+        return {
+          ...msg,
+          content: msg.messageText || msg.content,
+          timestamp: formatTime(msg.timestamp),
+          isMyMessage,
+          showName:
+            !isMyMessage &&
+            (index === 0 || chatMessages[index - 1].senderId !== msg.senderId),
+        };
+      });
+
+      // ✅ 내가 나간 채팅방이라면 기존 메시지 제거
+      if (leftChatRooms.includes(chatRoomId)) {
+        updatedMessages = []; // 기존 메시지 초기화
+      }
+
+      console.log("📩 가져온 메시지:", updatedMessages);
       setMessages(updatedMessages);
+
+      setTimeout(() => {
+        scrollToBottom(); // ✅ 기존 메시지 불러올 때도 스크롤
+      }, 100);
     } catch (error) {
       console.error("❌ 메시지 불러오기 오류:", error);
     }
@@ -115,41 +155,69 @@ const ChatRoom = () => {
     }
   };
 
-  const handleSendMessage = () => {
+  // ✅ 메시지 전송 함수
+  const handleSendMessage = async () => {
     if (!message.trim()) return;
 
-    const currentTimestamp = new Date().toISOString(); // ✅ 현재 시간을 ISO 포맷으로 저장
+    const currentTimestamp = new Date().toISOString();
+    const formattedTimestamp = formatTime(currentTimestamp);
 
     const messageData = {
       chatRoomId,
       senderId: myUserId,
       receiverId,
       messageText: message.trim(),
-      content: message.trim(), // ✅ React 내에서 통일된 필드 사용
-      timestamp: currentTimestamp, // ✅ 시간 추가
+      content: message.trim(),
+      timestamp: currentTimestamp,
       jwtToken,
     };
 
     console.log("📤 메시지 전송:", messageData);
+
     socket.emit("message", messageData);
 
-    // ✅ 여기서만 내 메시지를 추가 (WebSocket 중복 방지)
+    const savedMessage = await sendMessage(
+      chatRoomId,
+      myUserId,
+      receiverId,
+      message.trim()
+    );
+
+    if (savedMessage) {
+      console.log("✅ 메시지 저장 완료:", savedMessage);
+    } else {
+      console.error("❌ 메시지 저장 실패");
+    }
+
     setMessages((prevMessages) => [
       ...prevMessages,
       {
-        id: `temp-${Date.now()}`, // ✅ 임시 ID 추가하여 중복 방지
+        id: `temp-${Date.now()}`,
         senderId: myUserId,
         receiverId,
         content: message.trim(),
-        timestamp: formatTime(currentTimestamp), // ✅ 로컬에서 표시할 시간 변환
-        showName: false, // ✅ 내 메시지는 이름 표시 ❌
+        timestamp: formattedTimestamp,
+        isMyMessage: true,
+        showName: false,
       },
     ]);
 
     setMessage("");
+    setTimeout(() => {
+      scrollToBottom(); // ✅ 메시지 전송 후 자동 스크롤
+    }, 100);
   };
 
-  // ✅ ISO 시간을 HH:mm 형식으로 변환하는 함수
+  // ✅ 스크롤을 맨 아래로 이동하는 함수
+  const scrollToBottom = () => {
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({
+        behavior: "instant",
+        block: "end",
+      });
+    }
+  };
+
   const formatTime = (isoString) => {
     if (!isoString) return "";
     const date = new Date(isoString);
@@ -159,49 +227,43 @@ const ChatRoom = () => {
   };
 
   return (
-    <div>
-      <h2>채팅방 {chatRoomId}</h2>
-      <div>
-        {messages.map((msg, index) => {
-          const isMyMessage = msg.senderId === myUserId;
-          const prevMsg = messages[index - 1];
+    <div className="chat-room-container">
+      <div className="chat-header">
+        <h2>채팅방 {chatRoomId}</h2>
+      </div>
 
-          // ✅ 상대방 메시지일 때만 이름을 표시 (내 메시지는 절대 이름 ❌)
-          const showName =
-            !isMyMessage &&
-            (!prevMsg || prevMsg.senderId !== msg.senderId) &&
-            msg.content; // 내용이 있는 경우에만 표시
+      <div className="messages-container">
+        {messages.map((msg, index) => {
+          const isMyMessage = msg.isMyMessage;
 
           return (
-            <div key={index} style={{ marginBottom: "10px" }}>
-              {/* 🔹 상대방 메시지일 때만 이름 표시 (내 메시지는 절대 표시 안 됨) */}
-              {!isMyMessage && showName && employees[msg.senderId] && (
-                <p style={{ fontSize: "12px", color: "#555" }}>
-                  {employees[msg.senderId]?.name} (
-                  {departments[employees[msg.senderId]?.departmentId] ||
-                    "부서 없음"}
-                  )
-                </p>
+            <div
+              key={index}
+              className={`message-group ${isMyMessage ? "sent" : "received"}`}
+            >
+              {!isMyMessage && msg.showName && employees[msg.senderId] && (
+                <div className="sender-info">
+                  {employees[msg.senderId]?.name}
+                  <span>
+                    {departments[employees[msg.senderId]?.departmentId] ||
+                      "부서 없음"}
+                  </span>
+                </div>
               )}
 
-              {/* 🔹 메시지 내용 표시 */}
-              <div style={{ display: "flex", flexDirection: "column" }}>
-                <p style={{ fontSize: "16px", margin: "0px" }}>
-                  {isMyMessage ? `[내 메시지] ${msg.content}` : msg.content}
-                </p>
-                {/* ✅ 시간 표시 추가 */}
-                <span
-                  style={{ fontSize: "12px", color: "#888", marginTop: "3px" }}
-                >
-                  {msg.timestamp}
-                </span>
+              <div className="message-bubble">
+                {msg.content}
+                <span className="timestamp">{msg.timestamp}</span>
               </div>
             </div>
           );
         })}
+
+        {/* ✅ 이 부분이 마지막 메시지 아래로 자동 스크롤하는 역할 */}
+        <div ref={messagesEndRef}></div>
       </div>
 
-      <div>
+      <div className="input-container">
         <input
           type="text"
           value={message}

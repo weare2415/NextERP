@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?><testrun duration="362" footerText="25. 1. 21. 오후 6:25에서 IntelliJ IDEA(으)로 생성" name="NextErpApplicationTests.testEmployeeSalaryFlow">
+    <count name="total" value="1"/>
+    <count name="passed" value="1"/>
+    <config configId="GradleRunConfiguration" name="NextErpApplicationTests.testEmployeeSalaryFlow">
+        <ExternalSystemSettings>
+            <option name="executionName"/>
+            <option name="externalProjectPath" value="/Users/paesir/Desktop/git/NextERP/backend"/>
+            <option name="externalSystemIdString" value="GRADLE"/>
+            <option name="scriptParameters" value=""/>
+            <option name="taskDescriptions">
+                <list/>
+            </option>
+            <option name="taskNames">
+                <list>
+                    <option value=":test"/>
+                    <option value="--tests"/>
+                    <option value="&quot;com.nexterp.NextErpApplicationTests.testEmployeeSalaryFlow&quot;"/>
+                </list>
+            </option>
+            <option name="vmOptions"/>
+        </ExternalSystemSettings>
+        <ExternalSystemDebugServerProcess/>
+        <ExternalSystemReattachDebugProcess/>
+        <DebugAllEnabled/>
+        <RunAsTest/>
+        <method v="2"/>
+    </config>
+    <suite duration="362" locationUrl="java:suite://com.nexterp.NextErpApplicationTests" name="NextErpApplicationTests" status="passed">
+        <test duration="362" locationUrl="java:test://com.nexterp.NextErpApplicationTests/testEmployeeSalaryFlow" name="testEmployeeSalaryFlow" status="passed">
+            <output type="stdout">
+========== 직원 급여 정보 저장 및 급여 지급 테스트 시작 ==========
+    [1] 직원 생성 시작
+    [2] 직원 급여 정보 저장 시작
+    -&gt; 직원 급여 정보 저장 성공: EmployeeSalaryInfoDTO(id=2, employeeId=10000001, baseSalary=5000000, deductions=200000, effectiveDate=2025-01-21, endDate=null)
+    [3] 급여 지급 호출 시작
+    [4] Salary 저장 검증
+    -&gt; Salary 저장 성공: SalaryDTO(id=3, employeeId=10000001, baseSalary=5000000.00, bonus=500000, deductions=200000.00, totalSalary=5300000.00, status=PAID, paymentDate=2025-01-21)
+    [5] BonusLog 저장 검증
+    -&gt; BonusLog 저장 성공: BonusLogDTO(id=2, employeeId=10000001, bonusAmount=500000.00, grantedAt=2025-01-21T18:24:50.342099, description=급여 지급과 함께 지급된 보너스)
+    [6] Transaction 저장 검증
+    -&gt; Transaction 저장 성공: com.nexterp.accounting.entity.Transaction@6236d83a
+    [7] Invoice 저장 검증
+    -&gt; Invoice 저장 성공: com.nexterp.accounting.entity.Invoice@1b047ad
+    [8] JournalEntry 저장 검증
+    -&gt; JournalEntry 저장 성공: [com.nexterp.accounting.entity.JournalEntry@59606589, com.nexterp.accounting.entity.JournalEntry@8aa77a4]
+========== 직원 급여 정보 저장 및 급여 지급 테스트 종료 ==========
+</output>
+        </test>
+    </suite>
+</testrun>

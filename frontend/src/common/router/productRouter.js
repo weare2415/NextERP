@@ -1,11 +1,14 @@
 import { lazy, Suspense } from "react";
 
-const ProductPage = lazy(() => import("../../product/pages/ProductPage"));
+const ProductPage = lazy(() => import("../../sales/product/pages/ProductPage"));
 const CreateProduct = lazy(() =>
-  import("../../product/components/CreateProduct")
+  import("../../sales/product/components/CreateProduct")
 );
 const RequestOrderPage = lazy(() =>
-  import("../../request/pages/RequestOrderPage")
+  import("../../sales/order/pages/RequestOrderPage")
+);
+const ApprovedOrderPage = lazy(() =>
+  import("../../sales/order/pages/ApprovedOrderPage")
 );
 
 const productRouter = () => {
@@ -31,6 +34,14 @@ const productRouter = () => {
       element: (
         <Suspense fallback={<div>Loading...</div>}>
           <RequestOrderPage />
+        </Suspense>
+      ),
+    },
+    {
+      path: "order",
+      element: (
+        <Suspense fallback={<div>Loading...</div>}>
+          <ApprovedOrderPage />
         </Suspense>
       ),
     },

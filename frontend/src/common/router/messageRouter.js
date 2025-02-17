@@ -5,7 +5,7 @@ const ChatList = lazy(() => import("../../message/components/ChatList"));
 const ChatRoom = lazy(() => import("../../message/components/ChatRoom"));
 const ChatCreate = lazy(() => import("../../message/components/ChatCreate")); // ✅ 추가
 
-const messageRouter = [
+const messageRoutes = [
   {
     path: "/message",
     element: (
@@ -40,4 +40,4 @@ const messageRouter = [
   },
 ];
 
-export default messageRouter;
+export default messageRoutes;

@@ -8,8 +8,8 @@
   width: 400px;
   display: flex;
   flex-direction: column;
-  max-height: 80vh; // 모달의 최대 높이 설정
-  overflow-y: auto; // 내용이 많을 경우 스크롤 가능
+  max-height: 80vh;
+  overflow-y: auto;
 }
 
 .announcement-create-header {
@@ -18,7 +18,7 @@
   background-color: $primary-color;
   color: white;
   padding: 10px 10px;
-  z-index: 1; // 헤더가 다른 요소 위에 고정되도록 설정
+  z-index: 1;
   display: flex;
   justify-content: space-between;
   align-items: center;

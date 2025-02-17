@@ -1,0 +1,154 @@
+@import "../../App.scss";
+
+.chat-room-container {
+  width: 380px;
+  height: 600px;
+  background-color: #f5f6f8;
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+
+  .chat-header {
+    padding-bottom: 16px;
+    border-bottom: 1px solid #e6e6e6;
+    margin-bottom: 16px;
+
+    h2 {
+      font-size: 16px;
+      font-weight: bold;
+      margin: 0;
+    }
+  }
+
+  .messages-container {
+    flex: 1;
+    overflow-y: auto;
+    padding-right: 8px;
+    display: flex;
+    flex-direction: column;
+
+    &::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color: #d9d9d9;
+      border-radius: 3px;
+    }
+  }
+
+  .message-group {
+    margin-bottom: 20px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+
+    .sender-info {
+      font-size: 16px;
+      color: #000;
+      margin-bottom: 6px;
+      padding-left: 5px;
+      display: flex;
+      align-items: left;
+      gap: 2px;
+
+      // 부서 정보 스타일
+      span {
+        color: #000;
+        font-size: 12px;
+        display: inline-block; // ✅ 인라인 요소처럼 작동
+        margin-left: 4px; // ✅ 왼쪽 여백을 추가하여 조정
+        &::before {
+          content: "(";
+        }
+        &::after {
+          content: ")";
+        }
+      }
+    }
+
+    .message-bubble {
+      display: inline-block;
+      max-width: 70%;
+      padding: 8px 12px;
+      border-radius: 12px;
+      position: relative;
+      word-break: break-word;
+      line-height: 1.4;
+      font-size: 14px;
+
+      .timestamp {
+        font-size: 11px;
+        color: #888;
+        position: absolute;
+        bottom: 2px;
+        white-space: nowrap;
+      }
+    }
+
+    &.received {
+      align-items: flex-start;
+
+      .message-bubble {
+        background-color: #ffffff;
+        border: 1px solid #e6e6e6;
+        border-top-left-radius: 2px;
+        margin-right: auto;
+
+        .timestamp {
+          right: -45px;
+        }
+      }
+    }
+
+    &.sent {
+      align-items: flex-end;
+
+      .message-bubble {
+        background-color: #fee500;
+        border-top-right-radius: 2px;
+        margin-left: auto;
+
+        .timestamp {
+          left: -45px;
+        }
+      }
+    }
+  }
+
+  .input-container {
+    margin-top: auto;
+    display: flex;
+    gap: 8px;
+    padding-top: 16px;
+    border-top: 1px solid #e6e6e6;
+
+    input {
+      flex: 1;
+      padding: 8px 12px;
+      border: 1px solid #e6e6e6;
+      border-radius: 20px;
+      outline: none;
+      font-size: 14px;
+
+      &:focus {
+        border-color: #fee500;
+      }
+    }
+
+    button {
+      padding: 8px 16px;
+      background-color: #fee500;
+      border: none;
+      border-radius: 20px;
+      font-size: 14px;
+      cursor: pointer;
+
+      &:hover {
+        background-color: #fdd835;
+      }
+    }
+  }
+}

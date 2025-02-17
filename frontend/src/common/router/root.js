@@ -7,7 +7,6 @@ import productRouter from "./productRouter";
 import clientRouter from "./clientRouter";
 import employeeRouter from "./employeeRouter";
 import payrollRouter from "./payrollRouter";
-import orderRouter from "./orderRouter";
 import announcementRouter from "./announcementRouter";
 import messageRouter from "./messageRouter";
 
@@ -35,24 +34,18 @@ const root = createBrowserRouter([
     children: clientRouter(),
   },
   {
-    path: "order",
-    children: orderRouter(),
-  },
-  {
     path: "employee", // ✅ employee 관련 경로 추가
     children: employeeRouter(),
   },
 
   {
-    path: "announcement", // ✅ 공지사항 관련 경로 추가
-    children: announcementRouter, // ✅ 함수를 호출하는 것이 아니라 변수 자체를 사용해야 함
+    path: "announcement",
+    children: announcementRouter,
   },
-
   {
-    path: "message", // ✅ 공지사항 관련 경로 추가
-    children: messageRouter, // ✅ 함수를 호출하는 것이 아니라 변수 자체를 사용해야 함
+    path: "message",
+    children: messageRouter,
   },
-
   {
     path: "test",
     element: (

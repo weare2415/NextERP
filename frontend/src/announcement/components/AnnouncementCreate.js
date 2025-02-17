@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { useSelector } from "react-redux"; // Redux에서 로그인 정보 가져오기
-import { createAnnouncement } from "../api/announcementApi"; // API 호출 함수
-import { getEmployeeById } from "../../employee/api/employeeApi"; // ✅ 기존 API 활용
-import "../scss/AnnouncementCreate.scss"; // ✅ 스타일 적용
+import { useSelector } from "react-redux";
+import { createAnnouncement } from "../api/announcementApi";
+import { getEmployeeById } from "../../HR/employee/api/employeeApi";
+import "../scss/AnnouncementCreate.scss";
 
 const AnnouncementCreate = ({ onClose, onAddSuccess }) => {
-  // ✅ onClose 부모에서 전달받음
   const employeeId = useSelector((state) => state.loginSlice?.id || null);
   const [employeeData, setEmployeeData] = useState(null);
   const [isAuthorized, setIsAuthorized] = useState(false);
@@ -33,7 +32,7 @@ const AnnouncementCreate = ({ onClose, onAddSuccess }) => {
     if (employeeId) {
       getEmployeeById(employeeId)
         .then((employee) => {
-          console.log("📌 직원 데이터 확인:", employee); // ✅ 디버깅용 로그 추가
+          console.log("📌 직원 데이터 확인:", employee);
           setEmployeeData(employee);
 
           const { departmentId, positionId } = employee;
@@ -56,7 +55,7 @@ const AnnouncementCreate = ({ onClose, onAddSuccess }) => {
         positionId: employeeData.positionId || null,
       }));
     }
-  }, [employeeData]); // ✅ employeeData가 업데이트될 때 announcement 상태 변경
+  }, [employeeData]);
 
   const [announcement, setAnnouncement] = useState({
     title: "",
@@ -102,7 +101,6 @@ const AnnouncementCreate = ({ onClose, onAddSuccess }) => {
       await createAnnouncement(newAnnouncement);
       alert("공지사항이 성공적으로 생성되었습니다.");
 
-      // ✅ 리스트 갱신 함수 호출
       onAddSuccess();
 
       setAnnouncement({
@@ -114,7 +112,7 @@ const AnnouncementCreate = ({ onClose, onAddSuccess }) => {
         isGlobal: false,
       });
 
-      onClose(); // ✅ 창 닫기
+      onClose();
     } catch (error) {
       alert("공지사항 생성에 실패했습니다.");
       console.error("❌ 공지사항 생성 실패:", error);

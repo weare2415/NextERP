@@ -41,14 +41,18 @@ const PayrollFilter = ({ setPayrolls }) => {
   };
 
   return (
-    <div className="payroll-filter">
-      <input
-        type="text"
-        placeholder="직원 이름 검색"
-        value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
-      />
-      <button onClick={handleSearch}>검색</button>
+    <div className="search-payroll-container">
+      <form className="search-payroll-form">
+        <div className="search-input-wrapper">
+          <input
+            type="text"
+            placeholder="직원 이름 검색"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+        </div>
+        <button onClick={handleSearch}>검색</button>
+      </form>
     </div>
   );
 };

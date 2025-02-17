@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { FiLogOut } from "react-icons/fi";
 import "../pages/scss/BasicLayout.scss";
-import { getEmployeeById } from "../../member/api/memberApi";
+import { getEmployeeById } from "../../common/member/api/memberApi";
 import { useSelector } from "react-redux";
-import { useCustomLogin } from "../../member/hook/useCustomLogin";
-import { Link, useLocation, useNavigate } from "react-router-dom"; // Import 추가
+import { useCustomLogin } from "../../common/member/hook/useCustomLogin";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 const BasicLayout = ({ children }) => {
   const [user, setUser] = useState({
@@ -53,10 +53,19 @@ const BasicLayout = ({ children }) => {
     }
   }, [location.pathname]);
 
+  // ✅ 메신저 버튼 클릭 시 ChatList를 새 창에서 열기
+  const handleOpenChatList = () => {
+    window.open(
+      "/message/list",
+      "ChatList",
+      "width=380,height=600,resizable=no,scrollbars=no"
+    );
+  };
+
   const menuItems = {
     마이페이지: [
-      { name: "출/퇴근 관리", path: "/employee/mypage" },
-      { name: "근태 신청", path: "/employee/attendance/request" },
+      { name: "My 출/퇴근 조회", path: "/employee/myattendance" },
+      { name: "My 근태 신청", path: "/employee/attendance/request" },
       { name: "급여 조회", path: "/mypage/salary" },
       { name: "공지 사항", path: "/announcement" },
     ],
@@ -73,7 +82,7 @@ const BasicLayout = ({ children }) => {
       { name: "대쉬보드", path: "/sales/dashboard" },
       { name: "거래처 관리", path: "/clients" },
       { name: "제품 관리", path: "/product" },
-      { name: "주문 내역 조회", path: "/order" },
+      { name: "주문 내역 조회", path: "/product/order" },
     ],
     인사: [
       { name: "대쉬보드", path: "/hr/dashboard" },
@@ -147,13 +156,15 @@ const BasicLayout = ({ children }) => {
           {/* Header */}
           <header className="header">
             <div className="header-buttons">
-              <div>메신저</div>
-              <div
+            <button className="messenger-btn" onClick={handleOpenChatList}>
+                메신저
+              </button>
+              <button
                 onClick={() => navigate("/member/change-password")}
                 style={{ cursor: "pointer" }}
               >
                 비밀번호 변경
-              </div>
+              </button>
               <button className="logout-btn">
                 <FiLogOut onClick={handleClickLogout} />
               </button>

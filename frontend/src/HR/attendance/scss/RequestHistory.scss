@@ -1,0 +1,50 @@
+@import "../../../App.scss";
+
+.history-list-wrapper {
+  width: 100%;
+}
+
+.history-table-section {
+  background-color: white;
+  width: 100%;
+  margin-top: 20px;
+  border-left: 1px solid #ddd;
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+
+    th, td {
+      padding: 15px;
+      text-align: center;
+      border: 1px solid #ddd;
+      word-wrap: break-word;
+      
+      &:first-child {
+        border-left: none;
+      }
+    }
+
+    th {
+      background-color: #4a5568;
+      color: white;
+      font-weight: 500;
+      border-bottom: 1px solid #2d3748;
+      position: relative;
+    }
+
+    tr {
+      &:hover {
+        background-color: #f8f9fa;
+      }
+    }
+
+    // 각 열의 고정된 너비 설정
+    th:nth-child(1), td:nth-child(1) { width: 15%; }
+    th:nth-child(2), td:nth-child(2) { width: 25%; }
+    th:nth-child(3), td:nth-child(3) { width: 15%; }
+    th:nth-child(4), td:nth-child(4) { width: 30%; }
+    th:nth-child(5), td:nth-child(5) { width: 15%; }
+  }
+}

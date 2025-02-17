@@ -56,13 +56,13 @@ const AnnouncementDetail = ({ announcement, onClose, onUpdateTrigger }) => {
 
       alert("공지사항이 성공적으로 수정되었습니다.");
       if (onUpdateTrigger && typeof onUpdateTrigger === "function") {
-        onUpdateTrigger(); // 부모로부터 받은 함수 실행
+        onUpdateTrigger();
       } else {
         console.error("onUpdateTrigger 함수가 전달되지 않았습니다.");
       }
 
       setIsEditing(false);
-      onClose(); // 모달 닫기
+      onClose();
     } catch (error) {
       alert("공지사항 수정에 실패했습니다. 다시 시도해주세요.");
     }
@@ -79,10 +79,10 @@ const AnnouncementDetail = ({ announcement, onClose, onUpdateTrigger }) => {
 
       alert("공지사항이 성공적으로 삭제되었습니다.");
       if (onUpdateTrigger && typeof onUpdateTrigger === "function") {
-        onUpdateTrigger(); // 부모로부터 받은 함수 실행
+        onUpdateTrigger();
       }
 
-      onClose(); // 모달 닫기
+      onClose();
     } catch (error) {
       alert("공지사항 삭제에 실패했습니다. 다시 시도해주세요.");
     }
@@ -109,7 +109,7 @@ const AnnouncementDetail = ({ announcement, onClose, onUpdateTrigger }) => {
             name="title"
             value={editedAnnouncement.title}
             onChange={handleChange}
-            readOnly={!isEditing} // 수정 모드에서만 편집 가능
+            readOnly={!isEditing}
           />
         </div>
 
@@ -176,7 +176,7 @@ const AnnouncementDetail = ({ announcement, onClose, onUpdateTrigger }) => {
             name="content"
             value={editedAnnouncement.content}
             onChange={handleChange}
-            readOnly={!isEditing} // 수정 모드에서만 편집 가능
+            readOnly={!isEditing}
           />
         </div>
 
@@ -185,7 +185,7 @@ const AnnouncementDetail = ({ announcement, onClose, onUpdateTrigger }) => {
             <>
               <button
                 type="button"
-                onClick={() => setIsEditing(true)} // 수정 모드로 변경
+                onClick={() => setIsEditing(true)}
                 className="update-button"
               >
                 수정

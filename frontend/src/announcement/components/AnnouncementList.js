@@ -6,9 +6,9 @@ import React, {
 } from "react";
 import { useSelector } from "react-redux";
 import { getAllAnnouncements } from "../api/announcementApi";
-import { getEmployeeById } from "../../employee/api/employeeApi";
-import "../scss/AnnouncementList.scss";
+import { getEmployeeById } from "../../HR/employee/api/employeeApi";
 import AnnouncementDetail from "./AnnouncementDetail";
+import "../scss/AnnouncementList.scss";
 
 const positionMap = {
   1: "인턴",
@@ -33,6 +33,7 @@ const AnnouncementList = forwardRef(
     const [selectedAnnouncement, setSelectedAnnouncement] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
 
+    // 직원 정보를 불러와 부서 ID와 직위 ID 저장
     useEffect(() => {
       if (employeeId) {
         getEmployeeById(employeeId)
@@ -45,11 +46,13 @@ const AnnouncementList = forwardRef(
       }
     }, [employeeId]);
 
+    // 공지사항 가져오기
     useEffect(() => {
+      console.log("🔄 useEffect 실행됨, onUpdateTrigger:", onUpdateTrigger);
       fetchAnnouncements();
-    }, []);
+    }, [onUpdateTrigger]);
 
-    // ✅ 검색 결과를 반영
+    // 검색 결과에 따른 필터링 처리
     useEffect(() => {
       if (searchResults && searchResults.length > 0) {
         console.log("🔍 검색 결과 적용:", searchResults);
@@ -57,22 +60,33 @@ const AnnouncementList = forwardRef(
       } else {
         filterAnnouncements();
       }
-    }, [searchResults, announcements, userDepartmentId]);
+    }, [announcements]);
+
+    useEffect(() => {
+      if (userDepartmentId !== null) {
+        filterAnnouncements();
+      }
+    }, [userDepartmentId]);
 
     const filterAnnouncements = () => {
       if (userDepartmentId === null) return;
 
       const filtered = announcements.filter(
         (announcement) =>
-          // ✅ 전체 공지는 모든 부서에서 볼 수 있음
           announcement.departmentId === null ||
-          // ✅ 같은 부서의 공지만 볼 수 있음
           announcement.departmentId === userDepartmentId
       );
 
-      setFilteredAnnouncements(filtered);
+      console.log("📌 필터링된 데이터:", filtered);
+
+      setFilteredAnnouncements(filtered.length > 0 ? filtered : announcements);
     };
 
+    useEffect(() => {
+      console.log("📢 화면에 표시될 데이터:", filteredAnnouncements);
+    }, [filteredAnnouncements]);
+
+    // 공지사항을 불러오는 함수 (직위 ID에 따라 필터링)
     const fetchAnnouncements = async () => {
       try {
         setLoading(true);
@@ -82,8 +96,8 @@ const AnnouncementList = forwardRef(
         const sortedData = data.sort(
           (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
         );
-        setAnnouncements(sortedData);
-        filterAnnouncements();
+        setAnnouncements([...sortedData]);
+        setFilteredAnnouncements([...sortedData]);
       } catch (error) {
         console.error("❌ 공지사항 불러오기 실패:", error);
         setError("공지사항을 불러오는 중 오류가 발생했습니다.");
@@ -92,13 +106,9 @@ const AnnouncementList = forwardRef(
       }
     };
 
-    // ✅ "내용" 클릭 시만 모달 열기
-    const handleContentClick = (announcement, e) => {
-      // "내용" 부분만 클릭 시 모달 열리도록 처리
-      if (e.target.tagName === "TD" && e.target.cellIndex === 1) {
-        setSelectedAnnouncement(announcement);
-        setIsModalOpen(true);
-      }
+    const handleAnnouncementClick = (announcement) => {
+      setSelectedAnnouncement(announcement);
+      setIsModalOpen(true);
     };
 
     // ✅ 부모에서 `fetchAnnouncements()` 실행 가능하도록 설정
@@ -112,26 +122,22 @@ const AnnouncementList = forwardRef(
         {error && <p className="error-message">{error}</p>}
 
         <div className="announcement-table-section">
-          <table>
-            <thead>
-              <tr>
-                <th>제목</th>
-                <th>내용</th>
-                <th>작성자</th>
-                <th>부서</th>
-                <th>직위</th>
-                <th>작성일시</th>
-                <th>수정일시</th>
-              </tr>
-            </thead>
-            <tbody>
-              {/* 데이터가 있을 때만 행을 표시 */}
-              {filteredAnnouncements.length > 0 ? (
-                filteredAnnouncements.map((announcement) => (
-                  <tr
-                    key={announcement.id}
-                    onClick={(e) => handleContentClick(announcement, e)}
-                  >
+          {filteredAnnouncements.length > 0 ? (
+            <table>
+              <thead>
+                <tr>
+                  <th>제목</th>
+                  <th>내용</th>
+                  <th>작성자</th>
+                  <th>부서</th>
+                  <th>직위</th>
+                  <th>작성일시</th>
+                  <th>수정일시</th>
+                </tr>
+              </thead>
+              <tbody>
+                {filteredAnnouncements.map((announcement) => (
+                  <tr key={announcement.id}>
                     <td>{announcement.title}</td>
                     <td>{announcement.content}</td>
                     <td>{announcement.authorName}</td>
@@ -146,35 +152,32 @@ const AnnouncementList = forwardRef(
                         ? positionMap[announcement.positionId] || "N/A"
                         : "N/A"}
                     </td>
-                    <td>{new Date(announcement.createdAt).toLocaleString()}</td>
+                    <td>
+                      {announcement.createdAt
+                        ? new Date(announcement.createdAt).toLocaleString()
+                        : "-"}
+                    </td>
                     <td>
                       {announcement.updatedAt
                         ? new Date(announcement.updatedAt).toLocaleString()
                         : "-"}
                     </td>
                   </tr>
-                ))
-              ) : (
-                // 데이터가 없을 때는 "등록된 공지사항이 없습니다." 메시지 표시
-                <tr>
-                  <td colSpan="7" style={{ textAlign: "center" }}>
-                    등록된 공지사항이 없습니다.
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
-        </div>
+                ))}
+              </tbody>
+            </table>
+          ) : (
+            !loading && !error && <p>📌 등록된 공지사항이 없습니다.</p>
+          )}
 
-        {isModalOpen && selectedAnnouncement && (
-          <div className="modal-overlay">
+          {isModalOpen && selectedAnnouncement && (
             <AnnouncementDetail
               announcement={selectedAnnouncement}
               onClose={() => setIsModalOpen(false)}
-              onUpdateTrigger={fetchAnnouncements} // `fetchAnnouncements` 함수 직접 전달
+              onUpdateTrigger={fetchAnnouncements} // ✅ `fetchAnnouncements` 함수 직접 전달
             />
-          </div>
-        )}
+          )}
+        </div>
       </div>
     );
   }
