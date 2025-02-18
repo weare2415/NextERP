@@ -14,6 +14,7 @@ package com.nexterp.accounting.service;
  */
 
 
+import com.nexterp.accounting.dto.MonthlyProductSalesDTO;
 import com.nexterp.accounting.dto.TransactionDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -21,6 +22,7 @@ import org.springframework.data.domain.Pageable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 public interface TransactionService {
   Page<TransactionDTO> getAllTransactions(Pageable pageable);
@@ -30,4 +32,7 @@ public interface TransactionService {
   TransactionDTO createTransaction(TransactionDTO transactionDTO);
   TransactionDTO updateTransaction(Long id, TransactionDTO transactionDTO);
   void deleteTransaction(Long id);
+
+  // 월 제품별 판매 수량 비율
+  Map<String, List<MonthlyProductSalesDTO>> getMonthlyProductSales();
 }

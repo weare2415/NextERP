@@ -14,19 +14,27 @@ package com.nexterp.accounting.controller;
  */
 
 import com.nexterp.accounting.dto.JournalEntryDTO;
+import com.nexterp.accounting.dto.MonthlyCashFlowDTO;
+import com.nexterp.accounting.dto.WeeklyProfitDTO;
+import com.nexterp.accounting.repository.JournalEntryRepository;
 import com.nexterp.accounting.service.JournalEntryService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @RestController
 @RequestMapping("/journal-entries")
 public class JournalEntryController {
   private final JournalEntryService journalEntryService;
-  public JournalEntryController(JournalEntryService journalEntryService) {
+  private final JournalEntryRepository journalEntryRepository;
+  public JournalEntryController(JournalEntryService journalEntryService,
+                                JournalEntryRepository journalEntryRepository) {
     this.journalEntryService = journalEntryService;
+    this.journalEntryRepository = journalEntryRepository;
   }
 
   @GetMapping
@@ -56,5 +64,17 @@ public class JournalEntryController {
   @DeleteMapping("/{id}")
   public void deleteJournalEntry(@PathVariable Long id) {
     journalEntryService.deleteJournalEntry(id);
+  }
+
+  @GetMapping("/cashflow/monthly")
+  public ResponseEntity<List<MonthlyCashFlowDTO>> getMonthlyCashFlow() {
+    List<MonthlyCashFlowDTO> cashFlowData = journalEntryRepository.getMonthlyCashFlow();
+    return ResponseEntity.ok(cashFlowData);
+  }
+
+  @GetMapping("/profit/weekly")
+  public ResponseEntity<List<WeeklyProfitDTO>> getWeeklyProfit() {
+    List<WeeklyProfitDTO> profitData = journalEntryRepository.getWeeklyProfit();
+    return ResponseEntity.ok(profitData);
   }
 }

@@ -13,24 +13,31 @@ package com.nexterp.accounting.controller;
  * 25. 1. 16.오후 2:52  paesir      최초 생성
  */
 
+import com.nexterp.accounting.dto.MonthlyProductSalesDTO;
+import com.nexterp.accounting.dto.MonthlySalesDTO;
 import com.nexterp.accounting.dto.TransactionDTO;
+import com.nexterp.accounting.repository.TransactionRepository;
 import com.nexterp.accounting.service.TransactionService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/transactions")
 public class TransactionController {
   private final TransactionService transactionService;
+  private final TransactionRepository transactionRepository;
 
-  public TransactionController(TransactionService transactionService) {
+  public TransactionController(TransactionService transactionService, TransactionRepository transactionRepository) {
     this.transactionService = transactionService;
+    this.transactionRepository = transactionRepository;
   }
 
   // 거래 목록 조회 (페이지네이션 지원)
@@ -89,4 +96,16 @@ public class TransactionController {
     transactionService.deleteTransaction(id);
   }
 
+  // 월별 매출 및 수량
+  @GetMapping("/sales/monthly")
+  public ResponseEntity<List<MonthlySalesDTO>> getMonthlySales() {
+    List<MonthlySalesDTO> salesData = transactionRepository.getMonthlySales();
+    return ResponseEntity.ok(salesData);
+  }
+
+  //월 제품별 판매수량 비율
+  @GetMapping("/sales/product/monthly")
+  public ResponseEntity<Map<String, List<MonthlyProductSalesDTO>>> getMonthlyProductSales() {
+    return ResponseEntity.ok(transactionService.getMonthlyProductSales());
+  }
 }

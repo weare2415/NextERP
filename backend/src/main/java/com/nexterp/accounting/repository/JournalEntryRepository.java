@@ -15,6 +15,8 @@ package com.nexterp.accounting.repository;
 
 
 import com.nexterp.accounting.dto.JournalEntryDTO;
+import com.nexterp.accounting.dto.MonthlyCashFlowDTO;
+import com.nexterp.accounting.dto.WeeklyProfitDTO;
 import com.nexterp.accounting.entity.Account;
 import com.nexterp.accounting.entity.JournalEntry;
 import org.springframework.data.domain.Page;
@@ -49,4 +51,30 @@ public interface JournalEntryRepository extends JpaRepository<JournalEntry, Long
   List<JournalEntry> findByTransactionId(Long transactionId);
 
   void deleteByTransactionId(Long transactionId);
+
+  // 월별 현금흐름
+  @Query("""
+    SELECT new com.nexterp.accounting.dto.MonthlyCashFlowDTO(
+        CONCAT(CAST(YEAR(j.date) AS string), '-', LPAD(CAST(MONTH(j.date) AS string), 2, '0')),
+        COALESCE(CAST(SUM(CASE WHEN j.account.code = '101' THEN j.amount ELSE 0 END) AS BigDecimal), 0)
+    )
+    FROM JournalEntry j
+    WHERE j.account.code IN ('101')
+    GROUP BY YEAR(j.date), MONTH(j.date)
+    ORDER BY YEAR(j.date), MONTH(j.date)
+""")
+  List<MonthlyCashFlowDTO> getMonthlyCashFlow();
+
+  // 주별 영업이익 흐름
+  @Query("""
+    SELECT new com.nexterp.accounting.dto.WeeklyProfitDTO(
+    CONCAT(YEAR(j.date), '-', WEEK(j.date)),
+    COALESCE(CAST(SUM(CASE WHEN j.account.code = '320' THEN j.amount ELSE 0 END) AS BigDecimal), 0)
+    )
+    FROM JournalEntry j
+    WHERE j.account.code IN ('320')
+    GROUP BY YEAR(j.date), MONTH(j.date)
+    ORDER BY YEAR(j.date), MONTH(j.date)
+""")
+  List<WeeklyProfitDTO> getWeeklyProfit();
 }
