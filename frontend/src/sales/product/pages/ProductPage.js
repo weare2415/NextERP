@@ -48,13 +48,14 @@ const ProductPage = () => {
       <div className="product-page-container">
         <div className="page-header">
           <h1>제품 관리</h1>
-          <div className="header-right"></div>
+          <div className="header-right">
           <button
             className="new-product-btn"
             onClick={() => setShowCreateForm(true)}
           >
             신규등록
           </button>
+          </div>
         </div>
 
         <ListProduct products={products} onProductSelect={handleProductClick} />

@@ -30,8 +30,7 @@ body {
   max-height: 80vh;
   overflow-y: auto;
 }
-
-.announcement-create-header {
+.announcement-create-form .announcement-create-header {
   position: sticky;
   top: 0;
   background-color: #3c485a;
@@ -42,14 +41,13 @@ body {
   justify-content: space-between;
   align-items: center;
 }
-.announcement-create-header h2 {
+.announcement-create-form .announcement-create-header h2 {
   margin: 0;
   font-size: 18px;
   font-weight: 500;
   color: white;
 }
-
-.close-button {
+.announcement-create-form .close-button {
   background: none;
   border: none;
   color: white;
@@ -59,21 +57,19 @@ body {
   padding: 0;
   margin: 0;
 }
-
-.modal-error-message {
+.announcement-create-form .modal-error-message {
   color: #e74c3c;
   font-size: 14px;
   margin-bottom: 10px;
   text-align: center;
 }
-
-form {
+.announcement-create-form form {
   display: flex;
   flex-direction: column;
   padding: 10px;
 }
-form input[type=text],
-form textarea {
+.announcement-create-form form input[type=text],
+.announcement-create-form form textarea {
   margin-bottom: 10px;
   padding: 10px;
   font-size: 14px;
@@ -82,21 +78,20 @@ form textarea {
   resize: vertical;
   width: 100%;
 }
-form textarea {
+.announcement-create-form form textarea {
   height: 150px;
 }
-form label {
+.announcement-create-form form label {
   font-size: 14px;
   margin-bottom: 5px;
 }
-
-.modal-button-group {
+.announcement-create-form .modal-button-group {
   display: flex;
   justify-content: center;
   margin-top: 10px;
   gap: 10px;
 }
-.modal-button-group button {
+.announcement-create-form .modal-button-group button {
   padding: 8px 12px;
   background-color: #3c485a;
   color: white;
@@ -106,13 +101,13 @@ form label {
   font-size: 14px;
   transition: background-color 0.2s;
 }
-.modal-button-group button:hover {
+.announcement-create-form .modal-button-group button:hover {
   background-color: rgb(39.6, 47.52, 59.4);
 }
-.modal-button-group .modal-cancel-btn {
+.announcement-create-form .modal-button-group .modal-cancel-btn {
   background-color: #929fb4;
 }
-.modal-button-group .modal-cancel-btn:hover {
+.announcement-create-form .modal-button-group .modal-cancel-btn:hover {
   background-color: rgb(115.7880434783, 132.3913043478, 159.2119565217);
 }
 

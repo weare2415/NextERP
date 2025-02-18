@@ -19,30 +19,29 @@ body {
   display: block;
 }
 
-.payroll-page {
+.employee-payroll-page-container {
   max-width: 90%;
   margin: auto;
   position: relative;
-  margin-top: 20px;
 }
-.payroll-page .page-header {
+.employee-payroll-page-container .payroll-page-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-top: 20px;
   margin-bottom: 20px;
 }
-.payroll-page .page-header h1 {
+.employee-payroll-page-container .payroll-page-header h1 {
   color: #3c485a;
   font-family: "Apple SD Gothic Neo", sans-serif;
   margin: 0;
 }
-.payroll-page .page-header .header-right {
+.employee-payroll-page-container .payroll-page-header .header-right {
   display: flex;
   align-items: center;
   gap: 20px;
 }
-.payroll-page .page-header .new-payroll-btn {
+.employee-payroll-page-container .payroll-page-header .new-payroll-btn {
   padding: 8px 16px;
   background-color: #3c485a;
   color: white;
@@ -54,24 +53,10 @@ body {
   display: flex;
   align-items: center;
 }
-.payroll-page .page-header .new-payroll-btn:hover {
+.employee-payroll-page-container .payroll-page-header .new-payroll-btn:hover {
   background-color: rgb(39.6, 47.52, 59.4);
 }
-.payroll-page .page-header .new-payroll-btn button {
-  padding: 10px 16px;
-  background-color: #3c485a;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-family: "Apple SD Gothic Neo", sans-serif;
-  font-weight: 500;
-  transition: background-color 0.2s;
-}
-.payroll-page .page-header .new-payroll-btn button:hover {
-  background-color: rgb(39.6, 47.52, 59.4);
-}
-.payroll-page .modal-overlay {
+.employee-payroll-page-container .modal-overlay {
   position: fixed;
   top: 0;
   left: 0;

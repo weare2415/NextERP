@@ -4,7 +4,7 @@ import "./scss/RequestPage.scss";
 import BasicLayout from "../../../common/pages/BasicLayout";
 import ListRequestClient from "../component/ListRequestClient";
 import { getPendingClients } from "../api/clientApi";
-import Pagination from '../../../common/component/Pagination';
+import Pagination from "../../../common/component/Pagination";
 
 const RequestPage = () => {
   const [showDetailForm, setShowDetailForm] = useState(false);
@@ -14,7 +14,7 @@ const RequestPage = () => {
   const [size] = useState(10);
   const [totalPages, setTotalPages] = useState(1);
 
-  // 클라이언트 목록을 가져오는 함수
+   // 클라이언트 목록을 가져오는 함수
   const fetchClients = async (page) => {
     try {
       const data = await getPendingClients(page, size);
@@ -27,8 +27,8 @@ const RequestPage = () => {
 
   // 초기 데이터 로딩
   useEffect(() => {
-    fetchClients();
-  }, []);
+    fetchClients(page);
+  }, [page]);
 
   const handleClientClick = (client) => {
     setSelectedClient(client);
@@ -45,23 +45,20 @@ const RequestPage = () => {
 
   return (
     <BasicLayout>
-      <div className="Request-page">
+      <div className="request-client-page-container">
         <div className="page-header">
-          <h2>거래처 승인 요청 관리</h2>
+          <h1>거래처 승인 요청 관리</h1>
         </div>
-
+        
         <ListRequestClient
           clients={clients}
           onClientSelect={handleClientClick}
-        />
-
-        {totalPages > 0 && (
+           />
             <Pagination
                 currentPage={page}
                 totalPages={totalPages}
                 onPageChange={setPage}
             />
-        )}
 
         {showDetailForm && selectedClient && (
           <div className="modal-overlay">

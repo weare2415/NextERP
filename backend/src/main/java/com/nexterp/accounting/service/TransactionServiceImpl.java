@@ -13,6 +13,7 @@ package com.nexterp.accounting.service;
  * 25. 1. 16.오후 2:47  paesir      최초 생성
  */
 
+import com.nexterp.accounting.dto.MonthlyProductSalesDTO;
 import com.nexterp.accounting.dto.TransactionDTO;
 import com.nexterp.accounting.entity.Transaction;
 import com.nexterp.accounting.repository.TransactionRepository;
@@ -24,6 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -107,5 +109,14 @@ public TransactionServiceImpl(TransactionRepository transactionRepository) {
     transaction.setType(dto.getType());
     transaction.setDescription(dto.getDescription());
     return transaction;
+  }
+
+  // 월 제품별 판매 수량 비율
+
+  @Override
+  public Map<String, List<MonthlyProductSalesDTO>> getMonthlyProductSales() {
+    List<MonthlyProductSalesDTO> sales = transactionRepository.getMonthlyProductSales();
+    return sales.stream()
+        .collect(Collectors.groupingBy(MonthlyProductSalesDTO::getMonth));
   }
 }

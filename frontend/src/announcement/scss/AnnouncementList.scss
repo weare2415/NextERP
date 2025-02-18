@@ -1,51 +1,103 @@
 @import "../../App.scss";
 
-.announcement-list {
+.announcement-list-wrapper {
   width: 100%;
-  padding: 20px;
+}
+
+.announcement-table-section {
+  background-color: white;
+  width: 100%;
+  border-left: 1px solid #ddd;
 
   table {
     width: 100%;
     border-collapse: collapse;
-    background-color: #fff;
+    table-layout: fixed;
+
+    th,
+    td {
+      padding: 15px;
+      text-align: center;
+      border: 1px solid #ddd;
+      word-wrap: break-word;
+
+      &:first-child {
+        border-left: none;
+      }
+    }
 
     th {
-      background-color: $secondary-color;
+      background-color: #4a5568;
       color: white;
-      padding: 12px;
-      border: 1px solid #dee2e6;
-      text-align: center;
       font-weight: 500;
+      border-bottom: 1px solid #2d3748;
+      position: relative;
     }
 
-    td {
-      padding: 12px;
-      border: 1px solid #dee2e6;
-      text-align: center;
-      font-family: $font-secondary;
-
-      &:nth-child(2) {
-        text-align: left;
-        font-weight: bold;
-        color: $primary-color;
+    tr {
+      &:hover {
+        background-color: #f8f9fa;
       }
     }
 
-    tbody {
-      tr {
-        &:hover {
-          background-color: $background-color;
-          cursor: pointer;
-          transition: background-color 0.2s ease-in-out;
-        }
+    // 각 열의 고정된 너비 설정
+    th:nth-child(1),
+    td:nth-child(1) {
+      width: 8%;
+    }
+    th:nth-child(2),
+    td:nth-child(2) {
+      width: 15%;
+    }
+    th:nth-child(3),
+    td:nth-child(3) {
+      width: 8%;
+    }
+    th:nth-child(4),
+    td:nth-child(4) {
+      width: 12%;
+    }
+    th:nth-child(5),
+    td:nth-child(5) {
+      width: 12%;
+    }
+    th:nth-child(6),
+    td:nth-child(6) {
+      width: 15%;
+    }
+    th:nth-child(7),
+    td:nth-child(7) {
+      width: 15%;
+    }
+
+    // "내용" 열에 대한 스타일
+    td:nth-child(2) {
+      cursor: pointer; // 마우스 포인터 변경
+
+      &:hover {
+        text-decoration: underline; // 밑줄 추가
+        font-weight: bold; // 폰트 진하게
+        color: #2d3748; // 호버시 글자 색 변경 (선택 사항)
       }
     }
-  }
 
-  .error-message {
-    color: $error-color;
-    text-align: center;
-    padding: 20px;
-    font-weight: bold;
+    .announcement-table-name-btn {
+      appearance: none;
+      background: none;
+      border: none;
+      color: #4a5568;
+      cursor: pointer;
+      padding: 0;
+      font-family: inherit;
+      font-weight: bolder;
+      font-size: 16px;
+      text-decoration: none;
+      text-align: left; // 버튼 내용도 왼쪽 정렬
+
+      &:hover {
+        text-decoration: underline;
+        color: #2d3748;
+      }
+    }
   }
 }

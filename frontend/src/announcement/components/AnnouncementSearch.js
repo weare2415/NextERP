@@ -89,16 +89,18 @@ const AnnouncementSearch = ({ onSearch }) => {
 
   return (
     <div className="announcement-search">
-      <input
-        type="text"
-        placeholder="작성자, 제목, 부서명, 직위명 검색"
-        value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
-        className="search-input"
-      />
-      <button className="search-btn" onClick={handleSearch}>
-        검색
-      </button>
+      <form onSubmit={handleSearch} className="announcement-search-form">
+        <input
+          type="text"
+          placeholder="작성자, 제목, 부서명, 직위명 검색"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          className="search-input"
+        />
+        <button className="search-btn" onClick={handleSearch}>
+          검색
+        </button>
+      </form>
     </div>
   );
 };

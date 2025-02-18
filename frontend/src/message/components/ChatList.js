@@ -31,6 +31,7 @@ const ChatList = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [contextMenu, setContextMenu] = useState(null);
+  
   // ✅ 검색어 변경 시 필터링
   useEffect(() => {
     if (!searchTerm) {

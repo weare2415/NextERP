@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import './scss/ListClient.scss';
-import { getEmployeeById } from "../../../common/member/api/memberApi";
 import useEmployeeNames from '../../../common/hooks/useEmployeeNames';
 
 const ListClient = ({ clients, onClientSelect }) => {

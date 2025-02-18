@@ -87,13 +87,11 @@ const ClientPage = () => {
         clients={searchResults || clients}
         onClientSelect={handleClientClick}
            />
-        {!searchResults && totalPages > 1 && (
             <Pagination
                 currentPage={page}
                 totalPages={totalPages}
                 onPageChange={setPage}
             />
-        )}
         {showCreateForm && (
           <div className="modal-overlay">
             <CreateClient

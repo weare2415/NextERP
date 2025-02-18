@@ -5,15 +5,15 @@ import PayrollFilter from '../components/PayrollFilter';
 import PayrollDetailModal from '../components/PayrollDetailModal';
 import BasicLayout from '../../../common/pages/BasicLayout';
 import "./PayrollListPage.scss";
-import PayrollForm from '../components/PayrollForm';
+import EmployeeSalaryModal from '../components/EmployeeSalaryModal';
 import Pagination from '../../../common/component/Pagination';
 
 
 const PayrollListPage = () => {
 	const [payrolls, setPayrolls] = useState([]);
 	const [selectedPayroll, setSelectedPayroll] = useState(null);
-	const [isModalOpen, setIsModalOpen] = useState(false);
-	const [isFormModalOpen, setIsFormModalOpen] = useState(false);
+	const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
+	const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
 	const [page, setPage] = useState(0);
 	const [size] = useState(10);
 	const [totalPages, setTotalPages] = useState(1);
@@ -36,59 +36,52 @@ const PayrollListPage = () => {
   
 	const handleSelectPayroll = (payroll) => {
 	  setSelectedPayroll(payroll);
-	  setIsModalOpen(true);
+		setIsDetailModalOpen(true);
 	};
-
-	const handleFormModal = () => {
-		setIsFormModalOpen(!isFormModalOpen);
-	}
   
 	return (
-	  <BasicLayout>
-		<div className="payroll-page">
-		  <div className="page-header">
-			<h1>급여 정보 관리</h1>
-			<div className="header-right">
-			<PayrollFilter setPayrolls={setPayrolls} />
-			<button
-			  className="new-payroll-btn"
-			  onClick={handleFormModal}
-			>
-			  급여 정보 추가 / 생성
-			</button>
-			</div>
-		  </div>
-		  <div className="payroll-table-container">
-		  {payrolls.length === 0 ? (
-            <p>내역이 없습니다.</p>
-          ) : (
-            <PayrollTable
-              payrolls={payrolls}
-              onSelectPayroll={handleSelectPayroll}
-            />
-          )}
-          {totalPages > 1 && (
-            <Pagination
-              currentPage={page}
-              totalPages={totalPages}
-              onPageChange={setPage}
-            />
-          )}
-          {isModalOpen && selectedPayroll && (
-            <PayrollDetailModal
-              payroll={selectedPayroll}
-              onClose={() => setIsModalOpen(false)}
-            />
-          )}
-			</div>
-		  </div>
-			{isFormModalOpen && (
-					<div className="modal-overlay">
-						<button onClick={handleFormModal}>x</button>
-						<PayrollForm/>
+			<BasicLayout>
+				<div className="employee-payroll-page-container">
+					<div className="payroll-page-header">
+						<h1>급여 정보 관리</h1>
+						<div className="header-right">
+							<PayrollFilter setPayrolls={setPayrolls} />
+							{/* 신규 급여 정보 생성을 위한 모달 호출 버튼 */}
+							<button className="new-payroll-btn" onClick={() => setIsCreateModalOpen(true)}>
+								+ 급여 추가
+							</button>
+						</div>
 					</div>
-			)}
-		</BasicLayout>
+					<PayrollTable
+							payrolls={payrolls}
+							onSelectPayroll={handleSelectPayroll}
+					/>
+					{totalPages > 1 && (
+							<Pagination
+									currentPage={page}
+									totalPages={totalPages}
+									onPageChange={setPage}
+							/>
+					)}
+					{isDetailModalOpen && selectedPayroll && (
+							<PayrollDetailModal
+									payroll={selectedPayroll}
+									onClose={() => setIsDetailModalOpen(false)}
+							/>
+					)}
+					{isCreateModalOpen && (
+							<EmployeeSalaryModal
+									onClose={() => setIsCreateModalOpen(false)}
+									onSuccess={() => {
+										// 저장 후 데이터 재조회
+										fetchAllEmployeeSalaries()
+												.then(data => setPayrolls(data))
+												.catch(error => console.error("급여 정보 로딩 실패:", error));
+									}}
+							/>
+					)}
+				</div>
+			</BasicLayout>
 	);
   };
   

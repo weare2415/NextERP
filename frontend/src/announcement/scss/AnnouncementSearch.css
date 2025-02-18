@@ -22,15 +22,13 @@ body {
 .announcement-search {
   display: flex;
   align-items: center;
-  justify-content: flex-end;
-  gap: 10px;
 }
 .announcement-search .announcement-search-form {
   display: flex;
   flex-direction: row;
   align-items: center;
-  margin-top: 1px;
-  gap: 10px;
+  gap: 8px;
+  position: relative;
 }
 .announcement-search .announcement-search-form select {
   padding: 8px;
@@ -48,11 +46,11 @@ body {
   flex: 1;
   width: 250px;
   padding: 8px;
-  margin-top: 10px;
-  border: 1px solid #ddd;
+  border: 1px solid #929fb4;
   border-radius: 4px;
   font-family: "Apple SD Gothic Neo", sans-serif;
   position: relative;
+  margin-top: 11px;
 }
 .announcement-search .announcement-search-form input:focus {
   outline: none;
@@ -70,7 +68,7 @@ body {
   height: 38px;
 }
 .announcement-search .announcement-search-form button:hover {
-  background-color: rgb(115.7880434783, 132.3913043478, 159.2119565217);
+  background-color: rgb(39.6, 47.52, 59.4);
 }
 
 /*# sourceMappingURL=AnnouncementSearch.css.map */

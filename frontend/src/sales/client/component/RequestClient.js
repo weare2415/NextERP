@@ -1,61 +1,46 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { approveClient, rejectClient } from "../api/clientApi";
 import "./scss/RequestClient.scss";
-import { getEmployeeById } from "../../../common/member/api/memberApi";
 import useEmployeeNames from '../../../common/hooks/useEmployeeNames';
 
 const RequestClient = ({ client, onClose, onUpdateSuccess }) => {
   const employeeNames = useEmployeeNames(client, "employeeId");
 
-  // ✅ 거래처 승인 처리
-  const handleApprove = async () => {
-    try {
-      await approveClient(client.clientCode, client.employeeId);
-      alert("거래처 수정이 승인되었습니다.");
-      onUpdateSuccess(client.clientCode); // 승인된 거래처 반영
-      onClose();
-    } catch (error) {
-      console.error("승인 요청 실패:", error);
-      alert("승인 요청이 실패되었습니다.");
-    }
-  };
+    // ✅ 거래처 승인 처리
+    const handleApprove = async () => {
+        try {
+          await approveClient(client.clientCode, client.employeeId);
+          alert("거래처 수정이 승인되었습니다.");
+          onUpdateSuccess(client.clientCode); 
+          onClose();
+        } catch (error) {
+          console.error("승인 요청 실패:", error);
+          alert("승인 요청이 실패되었습니다.");
+        }
+      };
 
-  // ✅ 거래처 반려 처리
-  const handleReject = async () => {
-    try {
-      await rejectClient(client.clientCode, client.employeeId);
-      alert("거래처 수정 요청이 반려되었습니다.");
-      onUpdateSuccess(client.clientCode); // 반려된 거래처 반영
-      onClose();
-    } catch (error) {
-      console.error("반려 요청 실패:", error);
-      alert("반려 요청이 실패되었습니다.");
-    }
-  };
-
-  return (
-    <div className="modal-container">
-      <div className="modal-header">
-        <h2>수정 승인 요청</h2>
-        <button className="close-button" onClick={onClose}>
-          X
-        </button>
-      </div>
-      <div className="modal-content">
-        <form>
-          <div className="form-grid">
-            <div className="form-group">
-              <label>기업명</label>
-              <input
-                type="text"
-                name="clientName"
-                value={client.clientName}
-                readOnly
-              />
-            </div>
-
-            <div className="form-group">
-              <label>회사 코드</label>
+      // ✅ 거래처 반려 처리
+    const handleReject = async () => {
+        try {
+          await rejectClient(client.clientCode, client.employeeId);
+          alert("거래처 수정 요청이 반려되었습니다.");
+          onUpdateSuccess(client.clientCode); 
+          onClose();
+        } catch (error) {
+          console.error("반려 요청 실패:", error);
+          alert("반려 요청이 실패되었습니다.");
+        }
+    };
+  
+    return (
+      <div className="request-client-detail-form">
+        <div className="request-client-detail-header">
+          <h2>수정 승인 요청</h2>
+          <button className="close-button" onClick={onClose}>X</button>
+        </div>
+          <form>
+          <div className="form-group">
+              <label>거래처 코드</label>
               <input
                 type="text"
                 name="clientCode"
@@ -63,9 +48,25 @@ const RequestClient = ({ client, onClose, onUpdateSuccess }) => {
                 readOnly
               />
             </div>
-
+              <div className="form-group">
+                <label>기업명</label>
+                <input
+                  type="text"
+                  name="clientName"
+                  value={client.clientName}
+                  readOnly
+                />
+              </div>
+              <div className="form-group">
+              <label>영업 담당자</label>
+              <input
+                  type="text"
+                  value={employeeNames[client.employeeId]}
+                  readOnly
+                />
+          </div>
             <div className="form-group">
-              <label>회사 전화</label>
+              <label>거래처 전화</label>
               <input
                 type="text"
                 name="clientPhone"
@@ -76,7 +77,6 @@ const RequestClient = ({ client, onClose, onUpdateSuccess }) => {
 
             <div className="form-group">
               <label>우편번호</label>
-              <div className="input-with-button">
                 <input
                   type="text"
                   name="zipCode"
@@ -84,7 +84,6 @@ const RequestClient = ({ client, onClose, onUpdateSuccess }) => {
                   readOnly
                 />
                 <button type="button">우편번호 찾기</button>
-              </div>
             </div>
 
             <div className="form-group full-width">
@@ -108,7 +107,7 @@ const RequestClient = ({ client, onClose, onUpdateSuccess }) => {
             </div>
 
             <div className="form-group">
-              <label>회사 이메일</label>
+              <label>거래처 이메일</label>
               <input
                 type="email"
                 name="clientEmail"
@@ -138,16 +137,6 @@ const RequestClient = ({ client, onClose, onUpdateSuccess }) => {
             </div>
 
             <div className="form-group">
-              <label>계좌번호</label>
-              <input
-                type="text"
-                name="clientAccountNumber"
-                value={client.clientAccountNumber}
-                readOnly
-              />
-            </div>
-
-            <div className="form-group">
               <label>예금주</label>
               <input
                 type="text"
@@ -158,40 +147,33 @@ const RequestClient = ({ client, onClose, onUpdateSuccess }) => {
             </div>
 
             <div className="form-group">
-              <label>메모</label>
-              <textarea name="memo" value={client.memo} readOnly />
-            </div>
-
-            <div className="form-group">
-              <label>영업 담당자</label>
+              <label>계좌번호</label>
               <input
                 type="text"
-                value={employeeNames[client.employeeId]}
+                name="clientAccountNumber"
+                value={client.clientAccountNumber}
                 readOnly
               />
             </div>
-          </div>
-
-          <div className="button-container">
-            <button
-              type="button"
-              onClick={handleApprove}
-              className="approve-button"
-            >
+            <div className="form-group">
+              <label>메모</label>
+              <textarea
+                name="memo"
+                value={client.memo}
+                readOnly
+              />
+            </div>
+            <div className="request-client-detail-buttons">
+            <button type="button" onClick={handleApprove} className="approve-button">
               승인
             </button>
-            <button
-              type="button"
-              onClick={handleReject}
-              className="reject-button"
-            >
+            <button type="button" onClick={handleReject} className="reject-button">
               반려
             </button>
-          </div>
-        </form>
-      </div>
-    </div>
-  );
-};
+            </div>
+          </form>
+        </div>
+    );
+  };
 
 export default RequestClient;
