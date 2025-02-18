@@ -92,6 +92,9 @@ const ChatCreate = () => {
 
   return (
     <div>
+      <h2>새 채팅방 만들기</h2>
+      <button onClick={() => setIsModalOpen(true)}>채팅 상대 선택</button>
+
       {/* 모달 창 */}
       {isModalOpen && (
         <div
@@ -108,8 +111,7 @@ const ChatCreate = () => {
             zIndex: 1000,
           }}
         >
-          <h3 style={{ marginBottom: "10px" }}>새 채팅방 만들기</h3>
-
+          <h3>채팅 상대 검색</h3>
           <input
             type="text"
             placeholder="직원 이름 검색"
@@ -144,8 +146,8 @@ const ChatCreate = () => {
               marginTop: "10px",
               width: "100%",
               padding: "8px",
-              background: "#ffe812",
-              color: "black",
+              background: "#f44336",
+              color: "white",
               border: "none",
               cursor: "pointer",
             }}
@@ -154,9 +156,6 @@ const ChatCreate = () => {
           </button>
         </div>
       )}
-      <button className="new-chat-button" onClick={() => setIsModalOpen(true)}>
-        +
-      </button>
 
       {/* 모달 배경 (클릭하면 닫힘) */}
       {isModalOpen && (

@@ -19,6 +19,10 @@ const BasicLayout = ({ children }) => {
   const location = useLocation();
   const [openMenu, setOpenMenu] = useState(null);
 
+  useEffect(() => {
+    console.log("📍 현재 경로:", location.pathname);
+  }, [location]);
+
   const handleClickLogout = () => {
     doLogout();
     alert("로그아웃되었습니다.");
@@ -65,7 +69,7 @@ const BasicLayout = ({ children }) => {
   const menuItems = {
     마이페이지: [
       { name: "My 출/퇴근 조회", path: "/employee/myattendance" },
-      { name: "My 근태 신청", path: "/employee/attendance/request" },
+      { name: "근태 신청 조회", path: "/employee/attendance/request" },
       { name: "급여 조회", path: "/mypage/salary" },
       { name: "공지 사항", path: "/announcement" },
     ],
@@ -86,8 +90,9 @@ const BasicLayout = ({ children }) => {
     ],
     인사: [
       { name: "대쉬보드", path: "/hr/dashboard" },
-      { name: "사원 관리", path: "/employee" },
-      { name: "근태 관리", path: "/employee/attendance" },
+      // { name: "출/퇴근 관리", path: "/hr/platform" },
+      { name: "직원 관리", path: "/employee" },
+      { name: "출/퇴근 관리", path: "/employee/attendance" },
       { name: "근태 신청 내역", path: "/employee/attendance/history" },
     ],
     운영관리: [
@@ -155,7 +160,7 @@ const BasicLayout = ({ children }) => {
           {/* Header */}
           <header className="header">
             <div className="header-buttons">
-            <button className="messenger-btn" onClick={handleOpenChatList}>
+              <button className="messenger-btn" onClick={handleOpenChatList}>
                 메신저
               </button>
               <button

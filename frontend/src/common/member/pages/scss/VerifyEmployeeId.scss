@@ -1,0 +1,136 @@
+// VerifyEmployeeId.scss
+
+// Variables
+$primary-color: #3a4d63;
+$accent-color: #4e5d6c;
+$light-bg: #f8f9fa;
+$error-color: #dc3545;
+$success-color: #28a745;
+$border-radius: 4px;
+$box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+$transition: all 0.3s ease;
+
+// Full page container to enable vertical centering
+.page-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: $light-bg;
+}
+
+.verify-employee-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 450px;
+  padding: 40px 30px;
+  background-color: white;
+  border-radius: $border-radius;
+  box-shadow: $box-shadow;
+
+  .next-logo {
+    width: 200px;
+    margin-bottom: 25px;
+  }
+
+  .verify-title {
+    color: $primary-color;
+    font-size: 22px;
+    font-weight: 500;
+    margin-bottom: 15px;
+    text-align: center;
+  }
+
+  .verify-description {
+    color: $accent-color;
+    font-size: 15px;
+    margin-bottom: 30px;
+    text-align: center;
+    line-height: 1.5;
+  }
+
+  .verify-form {
+    width: 100%;
+
+    .form-group {
+      margin-bottom: 20px;
+      width: 100%;
+
+      label {
+        display: block;
+        margin-bottom: 8px;
+        color: $primary-color;
+        font-weight: 500;
+      }
+
+      input {
+        width: 100%;
+        padding: 10px 12px;
+        border: 1px solid #ddd;
+        border-radius: $border-radius;
+        font-size: 15px;
+        transition: $transition;
+
+        &:focus {
+          outline: none;
+          border-color: $primary-color;
+          box-shadow: 0 0 0 2px rgba($primary-color, 0.2);
+        }
+
+        &::placeholder {
+          color: #aaa;
+        }
+      }
+    }
+
+    .error-message {
+      color: $error-color;
+      font-size: 14px;
+      margin-top: 8px;
+      padding: 8px;
+      background-color: rgba($error-color, 0.1);
+      border-radius: $border-radius;
+    }
+
+    .verify-button {
+      width: 100%;
+      padding: 12px;
+      background-color: $primary-color;
+      color: white;
+      border: none;
+      border-radius: $border-radius;
+      font-size: 16px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: $transition;
+      margin-top: 10px;
+
+      &:hover {
+        background-color: darken($primary-color, 5%);
+      }
+
+      &:active {
+        transform: translateY(1px);
+      }
+    }
+  }
+}
+
+// Responsive adjustments
+@media (max-width: 576px) {
+  .verify-employee-container {
+    padding: 25px 20px;
+    margin: 15px;
+
+    .verify-title {
+      font-size: 20px;
+    }
+
+    .verify-description {
+      font-size: 14px;
+    }
+  }
+}

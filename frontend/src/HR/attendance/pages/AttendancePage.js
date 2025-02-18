@@ -2,42 +2,42 @@ import React, { useEffect, useState } from "react";
 import {
   getAttendancesPresentLateOffWork,
   requestApproval,
-} from "../api/attendanceApi"; // ✅ 변경된 API 적용
+} from "../api/attendanceApi"; 
 import BasicLayout from "../../../common/pages/BasicLayout";
 import AttendanceList from "../components/AttendanceList";
 import "../scss/AttendancePage.scss";
 
 const AttendancePage = () => {
   const [attendances, setAttendances] = useState([]);
-  const [filteredAttendances, setFilteredAttendances] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [page, setPage] = useState(0);
+  const [totalPages, setTotalPages] = useState(1);
 
   useEffect(() => {
-    fetchAttendances();
-  }, []);
+    fetchAttendances(page);
+  }, [page]);
 
-  const fetchAttendances = async () => {
+  const fetchAttendances = async (currentPage) => {
     setLoading(true);
     try {
       console.log("📢 출근/지각/퇴근 근태 기록 요청...");
-      const data = await getAttendancesPresentLateOffWork(); // ✅ API 호출
-      console.log("📢 API 응답 데이터:", JSON.stringify(data, null, 2)); // 응답 데이터 확인
+      const data = await getAttendancesPresentLateOffWork(currentPage, 10); // 
+      console.log("📢 API 응답 데이터:", data);
 
-      // ✅ 데이터 구조 변경 반영
-      setAttendances(data); // content가 없으므로 직접 설정
-      setFilteredAttendances(data);
+      setAttendances(data.content);
+      setTotalPages(data.totalPages);
     } catch (error) {
       console.error("❌ 근태 기록 조회 실패:", error);
     }
     setLoading(false);
   };
 
-  // ✅ 승인 요청 함수 (휴가, 병가, 재택만 승인 요청 가능)
+  //  승인 요청 함수
   const handleApprovalRequest = async (id) => {
     try {
       await requestApproval(id);
       alert("승인 요청이 완료되었습니다.");
-      fetchAttendances();
+      fetchAttendances(page);
     } catch (error) {
       console.error("승인 요청 실패:", error);
       alert("승인 요청 실패");
@@ -54,7 +54,10 @@ const AttendancePage = () => {
           <p>⏳ 로딩 중...</p>
         ) : (
           <AttendanceList
-            attendances={filteredAttendances}
+            attendances={attendances}
+            totalPages={totalPages}
+            currentPage={page}
+            onPageChange={setPage}
             onRequestApproval={handleApprovalRequest}
           />
         )}

@@ -8,6 +8,10 @@ import com.nexterp.employee.entity.Employee;
 import com.nexterp.employee.repository.AttendanceRepository;
 import com.nexterp.employee.repository.EmployeeRepository;
 import jakarta.transaction.Transactional;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -30,7 +34,7 @@ public class AttendanceService {
         this.employeeRepository = employeeRepository;
     }
 
-    // ✅ DTO 변환 메서드
+    //
     private AttendanceDTO convertToDTO(Attendance attendance) {
         return new AttendanceDTO(
                 attendance.getId(),
@@ -50,43 +54,71 @@ public class AttendanceService {
     }
 
     // 전체 근태 기록 조회 (DTO 변환)
-    public List<AttendanceDTO> getAllAttendances() {
-        return attendanceRepository.findAll()
-            .stream()
-            .map(this::convertToDTO)
-            .collect(Collectors.toList());
+    public Page<AttendanceDTO> getAllAttendances(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return attendanceRepository.findAll(pageable)
+                .map(this::convertToDTO);
     }
 
     // 특정 직원의 근태 기록 조회 (DTO 변환)
-    public List<AttendanceDTO> getAttendanceByEmployee(Employee employee) {
-        return attendanceRepository.findByEmployee(employee)
-            .stream()
-            .map(this::convertToDTO)
-            .collect(Collectors.toList());
+    public Page<AttendanceDTO> getAttendanceByEmployee(Employee employee, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return attendanceRepository.findByEmployee(employee, pageable)
+                .map(this::convertToDTO);
     }
 
     // 특정 날짜의 근태 기록 조회 (DTO 변환)
-    public List<AttendanceDTO> getAttendanceByDate(LocalDate date) {
-        return attendanceRepository.findByDate(date)
-            .stream()
-            .map(this::convertToDTO)
-            .collect(Collectors.toList());
+    public Page<AttendanceDTO> getAttendanceByDate(LocalDate date, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return attendanceRepository.findByDate(date, pageable)
+                .map(this::convertToDTO);
     }
 
-    // ✅ 승인 대기 중인 근태 기록 조회 (PENDING 상태)
-    public List<AttendanceDTO> getPendingAttendances() {
-        return attendanceRepository.findPendingAttendances() // ✅ 변경: JPQL 메서드 사용
-                .stream()
-                .map(this::convertToDTO)
-                .collect(Collectors.toList());
+    // 승인 대기 중인 근태 기록 조회 (PENDING 상태)
+    public Page<AttendanceDTO> getPendingAttendances(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size,
+                Sort.by(Sort.Direction.DESC, "requestDate")
+                        .and(Sort.by(Sort.Direction.ASC, "employee.id")));
+
+        Page<Attendance> attendances = attendanceRepository.findPendingAttendances(pageable);
+
+        System.out.println("📌 요청한 페이지 번호: " + page + ", 한 페이지 크기: " + size);
+        System.out.println("📌 전체 데이터 개수 (totalElements): " + attendances.getTotalElements());
+        System.out.println("📌 총 페이지 수 (totalPages): " + attendances.getTotalPages());
+        System.out.println("📌 현재 페이지에서 반환된 데이터 개수: " + attendances.getContent().size());
+
+        attendances.getContent().forEach(a -> System.out.println("📌 데이터: " + a));
+
+        return attendances.map(this::convertToDTO);
     }
 
-    // ✅ 승인 완료된 근태 기록 조회 (PREPARED, APPROVED, REJECTED)
-    public List<AttendanceDTO> getAllActiveAttendances() {
-        return attendanceRepository.findAllActiveAttendances()
-                .stream()
-                .map(this::convertToDTO)
-                .collect(Collectors.toList());
+
+    // 승인 완료된 근태 기록 조회 (PREPARED, APPROVED, REJECTED)
+    public Page<AttendanceDTO> getAllActiveAttendances(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return attendanceRepository.findAllActiveAttendances(pageable)
+                .map(this::convertToDTO);
+    }
+
+
+    // 출근(PRESENT), 지각(LATE), 퇴근(OFF_WORK) 상태만 조회 (페이징 적용)
+    public Page<AttendanceDTO> getAttendancesPresentLateOffWork(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Attendance> attendances = attendanceRepository.findByStatusPresentLateOffWork(pageable);
+        return attendances.map(this::convertToDTO);
+    }
+
+    // 휴가 병가 조회 서비스
+    public Page<AttendanceDTO> getAttendancesByEmployeeAndStatus(Integer employeeId, List<AttendanceStatus> statuses, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return attendanceRepository.findByEmployeeAndStatuses(employeeId, statuses, pageable)
+                .map(this::convertToDTO);
+    }
+
+    // 재택 근무 조회
+    public Page<Attendance> getRemoteWorkAttendance(Integer employeeId, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return attendanceRepository.findRemoteWorkByEmployee(employeeId, pageable);
     }
 
 
@@ -192,9 +224,6 @@ public class AttendanceService {
     }
 
 
-
-
-
     // ✅ 승인 거부 처리
     @Transactional
     public AttendanceDTO rejectAttendance(Integer id) {
@@ -227,12 +256,9 @@ public class AttendanceService {
     }
 
     // 특정 상태의 근태 기록 조회 (DTO 변환)
-    public List<AttendanceDTO> getAttendancesByStatus(String status) {
-        AttendanceStatus attendanceStatus = AttendanceStatus.valueOf(status.toUpperCase());
-        return attendanceRepository.findByStatus(attendanceStatus)
-                .stream()
-                .map(this::convertToDTO)
-                .collect(Collectors.toList());
+    public Page<AttendanceDTO> getAttendancesByStatus(AttendanceStatus status, Pageable pageable) {
+        return attendanceRepository.findByStatus(status, pageable)
+                .map(this::convertToDTO);
     }
 
 

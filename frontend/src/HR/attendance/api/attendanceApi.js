@@ -84,70 +84,48 @@ export const getVacationAndSickAttendance = async (
       `📢 휴가 & 병가 근태 기록 요청: 사원ID=${employeeId}, page=${page}, size=${size}`
     );
 
-    // ✅ 로그인한 사원의 데이터만 가져오기 위해 employeeId 추가
-    const [vacationRes, sickRes] = await Promise.all([
-      axiosInstance.get(`/api/attendances/attendance/status/휴가`, {
-        params: { employeeId, page, size }, // ✅ employeeId 추가
-      }),
-      axiosInstance.get(`/api/attendances/attendance/status/병가`, {
-        params: { employeeId, page, size }, // ✅ employeeId 추가
-      }),
-    ]);
-
-    // ✅ 응답 로그 확인
-    console.log("✅ 휴가 응답 데이터:", vacationRes.data);
-    console.log("✅ 병가 응답 데이터:", sickRes.data);
-
-    // ✅ 사원 ID가 일치하는 데이터만 필터링
-    const filteredVacation = vacationRes.data.content.filter(
-      (record) => record.employeeId === Number(employeeId)
-    );
-    const filteredSick = sickRes.data.content.filter(
-      (record) => record.employeeId === Number(employeeId)
+    const response = await axiosInstance.get(
+      `/api/attendances/employee/${employeeId}/statuses`,
+      {
+        params: { statuses: "LEAVE,SICK_LEAVE", page, size }, //  문자열로 변환
+        paramsSerializer: (params) => {
+          return Object.entries(params)
+            .map(
+              ([key, value]) =>
+                `${key}=${Array.isArray(value) ? value.join(",") : value}`
+            )
+            .join("&");
+        },
+      }
     );
 
-    console.log("📌 필터링된 휴가 데이터:", filteredVacation);
-    console.log("📌 필터링된 병가 데이터:", filteredSick);
-
-    return {
-      content: [...filteredVacation, ...filteredSick],
-      totalPages: Math.max(
-        vacationRes.data.totalPages,
-        sickRes.data.totalPages
-      ),
-    };
+    console.log("✅ 응답 데이터:", response.data);
+    return response.data;
   } catch (error) {
     console.error(`❌ [${employeeId}] 휴가 & 병가 근태 기록 조회 실패:`, error);
     throw error;
   }
 };
 
-// 자택 근무
-export const getRemoteWorkAttendance = async (
-  employeeId,
-  page = 0,
-  size = 5
-) => {
+//  로그인한 사용자의 재택근무 데이터만 가져오기
+export const getRemoteWorkAttendance = async (employeeId, page = 0, size = 5) => {
   try {
     console.log(
-      `📢 [${employeeId}] 재택근무 근태 기록 요청: page=${page}, size=${size}`
+      `📢 재택근무 근태 기록 요청: 사원ID=${employeeId}, page=${page}, size=${size}`
     );
 
-    // ✅ 로그인한 사원의 ID를 API에 전달하여 해당 사원의 데이터만 조회
-    const response = await axiosInstance.get(
-      `/api/attendances/attendance/status/재택근무`,
-      {
-        params: { employeeId, page, size }, // ✅ employeeId 추가
-      }
-    );
+    const response = await axiosInstance.get(`/api/attendances/remote-work`, {
+      params: { employeeId, page, size }, // employeeId를 쿼리 파라미터로 전달
+    });
 
-    console.log("✅ API 응답 데이터 (재택근무):", response.data);
+    console.log("✅ 응답 데이터 (재택근무):", response.data);
     return response.data;
   } catch (error) {
-    console.error(`❌ [${employeeId}] 재택근무 기록 조회 실패:`, error);
+    console.error(`❌ [${employeeId}] 재택근무 근태 기록 조회 실패:`, error);
     throw error;
   }
 };
+
 
 // 근태 기록 생성 (출근)
 export const saveAttendance = async (attendanceData) => {
@@ -258,21 +236,28 @@ export const updateAttendanceStatus = async (id, newStatus) => {
 };
 
 // 승인 대기 중인 근태 기록 조회
-export const getPendingAttendances = async (page = 0, size = 10) => {
+export const getPendingAttendances = async (page = 0, size = 5) => {
   try {
     console.log(`📢 승인 대기 근태 기록 요청: page=${page}, size=${size}`);
-    const response = await axiosInstance.get("/api/attendances/pending", {
+
+    const response = await axiosInstance.get(`/api/attendances/pending`, {
       params: { page, size },
     });
+
+    console.log("✅ 응답 데이터 (승인 대기):", response.data);
+    console.log("✅ totalPages 값:", response.data.totalPages);
+    console.log("✅ totalElements 값:", response.data.totalElements);
+
     return response.data;
   } catch (error) {
-    console.error("❌ 승인 대기 근태 기록 조회 실패:", error);
+    console.error(`❌ 승인 대기 근태 기록 조회 실패:`, error);
     throw error;
   }
 };
 
+
 //승인 완료된 근태 기록 조회 (PREPARED, APPROVED, REJECTED 상태)
-export const getApprovedAttendances = async (page = 0, size = 10) => {
+export const getApprovedAttendances = async (page = 0, size = 5) => {
   try {
     console.log(`📢 승인된 근태 기록 요청: page=${page}, size=${size}`);
     const response = await axiosInstance.get("/api/attendances/approved", {
@@ -315,10 +300,10 @@ export const requestApproval = async (id, status, date, reason) => {
       null,
       {
         params: {
-          // ✅ 요청 파라미터 방식으로 전달
-          status, // ✅ 근태 유형
-          date, // ✅ 신청 날짜
-          reason, // ✅ 신청 사유
+          
+          status, 
+          date, 
+          reason,
         },
       }
     );

@@ -1,48 +1,22 @@
 import React, { useEffect, useState } from "react";
-import { getAllAttendances } from "../api/attendanceApi";
-import SearchAttendance from "./SearchAttendance";
-import Pagination from "../../../common/component/Pagination"; // ✅ 페이징 컴포넌트 추가
+import Pagination from "../../../common/component/Pagination";
 import "../scss/AttendanceList.scss";
 
-const AttendanceList = () => {
-  const [attendances, setAttendances] = useState([]);
+const AttendanceList = ({
+  attendances,
+  totalPages,
+  currentPage,
+  onPageChange,
+  onRequestApproval,
+}) => {
   const [filteredAttendances, setFilteredAttendances] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-
-  // ✅ 페이징 상태 추가
-  const [page, setPage] = useState(0); // 현재 페이지
-  const [size] = useState(10); // 한 페이지당 항목 수 (기본값: 10)
-  const [totalPages, setTotalPages] = useState(1); // 전체 페이지 수
 
   useEffect(() => {
-    fetchAttendanceRecords(page);
-  }, [page]); // ✅ 페이지 변경 시 API 호출
-
-  // ✅ 페이징된 근태 목록 가져오기
-  const fetchAttendanceRecords = async (currentPage) => {
-    try {
-      setLoading(true);
-      const data = await getAllAttendances(currentPage, size); // ✅ 페이지 & 사이즈 전달
-      setAttendances(data.content);
-      setFilteredAttendances(data.content);
-      setTotalPages(data.totalPages);
-      console.log("📌 서버 응답 데이터:", data);
-    } catch (error) {
-      console.error("❌ 근태 기록 조회 실패:", error);
-      setError("근태 기록을 불러오지 못했습니다.");
-    } finally {
-      setLoading(false);
-    }
-  };
+    setFilteredAttendances(attendances);
+  }, [attendances]);
 
   return (
     <div className="attendance-list-wrapper">
-      <SearchAttendance setFilteredAttendances={setFilteredAttendances} />
-
-      {loading && <p>⏳ 데이터 불러오는 중...</p>}
-      {error && <p className="error-message">{error}</p>}
-
       <div className="attendance-table-section">
         <table>
           <thead>
@@ -59,7 +33,7 @@ const AttendanceList = () => {
           <tbody>
             {filteredAttendances.length > 0 ? (
               filteredAttendances.map((attendance) => (
-                <tr key={attendance.id} className="clickable-row">
+                <tr key={attendance.id}>
                   <td>{attendance.employeeId}</td>
                   <td>{attendance.employeeName}</td>
                   <td>{attendance.date}</td>
@@ -71,31 +45,35 @@ const AttendanceList = () => {
                         PRESENT: "출근",
                         OFF_WORK: "퇴근",
                         LATE: "지각",
-                        LEAVE: "휴가",
-                        SICK_LEAVE: "병가",
-                        REMOTE_WORK: "재택근무",
                       };
                       return statusMap[attendance.status] || "기타";
                     })()}
                   </td>
                   <td>{attendance.overtimeHours}</td>
+                  <td>
+                    {attendance.requestStatus !== "APPROVED" && (
+                      <button onClick={() => onRequestApproval(attendance.id)}>
+                        승인 요청
+                      </button>
+                    )}
+                  </td>
                 </tr>
               ))
             ) : (
               <tr>
-                <td colSpan="7">근태 기록이 없습니다.</td>
+                <td colSpan="8">근태 기록이 없습니다.</td>
               </tr>
             )}
           </tbody>
         </table>
       </div>
 
-      {/* ✅ 페이징 적용 */}
+     
       {totalPages > 1 && (
         <Pagination
-          currentPage={page}
+          currentPage={currentPage}
           totalPages={totalPages}
-          onPageChange={setPage}
+          onPageChange={onPageChange}
         />
       )}
     </div>
