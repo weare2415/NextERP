@@ -19,18 +19,30 @@ body {
   display: block;
 }
 
-.product-detail-form {
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-container {
   background-color: white;
   border-radius: 4px;
   width: 90%;
-  max-width: 700px;
+  max-width: 800px;
   max-height: 90vh;
-  padding: 0;
-  font-family: "Apple SD Gothic Neo", sans-serif;
   display: flex;
   flex-direction: column;
+  font-family: "Apple SD Gothic Neo", sans-serif;
 }
-.product-detail-form .product-detail-header {
+.modal-container .modal-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -41,13 +53,12 @@ body {
   border-top-right-radius: 4px;
   width: 100%;
 }
-.product-detail-form .product-detail-header h2 {
+.modal-container .modal-header h2 {
   margin: 0;
   font-size: 18px;
   font-weight: 500;
-  color: white;
 }
-.product-detail-form .product-detail-header .close-button {
+.modal-container .modal-header .close-button {
   background: none;
   border: none;
   color: white;
@@ -55,23 +66,26 @@ body {
   cursor: pointer;
   padding: 0 5px;
 }
-.product-detail-form .product-detail-header .close-button:hover {
+.modal-container .modal-header .close-button:hover {
   opacity: 0.8;
 }
-.product-detail-form form {
+.modal-container .modal-content {
   padding: 20px;
   overflow-y: auto;
+  flex: 1;
+}
+.modal-container .modal-content .form-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 0;
   align-items: center;
 }
-.product-detail-form form .form-group {
+.modal-container .modal-content .form-grid .form-group {
   display: flex;
   align-items: center;
   margin-bottom: 1px;
 }
-.product-detail-form form .form-group label {
+.modal-container .modal-content .form-grid .form-group label {
   width: 140px;
   background-color: #e9edf4;
   padding: 8px 15px;
@@ -83,9 +97,9 @@ body {
   justify-content: center;
   margin: 0;
 }
-.product-detail-form form .form-group input,
-.product-detail-form form .form-group select,
-.product-detail-form form .form-group textarea {
+.modal-container .modal-content .form-grid .form-group input,
+.modal-container .modal-content .form-grid .form-group select,
+.modal-container .modal-content .form-grid .form-group textarea {
   flex: 1;
   padding: 8px 10px;
   border: 1px solid #e9edf4;
@@ -96,34 +110,59 @@ body {
   border-radius: 0;
   margin: 0;
 }
-.product-detail-form form .form-group input:focus,
-.product-detail-form form .form-group select:focus,
-.product-detail-form form .form-group textarea:focus {
+.modal-container .modal-content .form-grid .form-group input:focus,
+.modal-container .modal-content .form-grid .form-group select:focus,
+.modal-container .modal-content .form-grid .form-group textarea:focus {
   outline: none;
   border-color: #929fb4;
 }
-.product-detail-form form .form-group:has(textarea[name=memo]) {
+.modal-container .modal-content .form-grid .form-group:has(input[name=zipCode]) {
+  grid-column: 1/-1;
+  display: flex;
+  align-items: center;
+}
+.modal-container .modal-content .form-grid .form-group:has(input[name=zipCode]) input {
+  flex: 1;
+}
+.modal-container .modal-content .form-grid .form-group:has(input[name=zipCode]) button {
+  margin-left: 5px;
+  width: 100px;
+  height: 35px;
+  background-color: #929fb4;
+  color: white;
+  border: none;
+  font-size: 13px;
+  cursor: pointer;
+}
+.modal-container .modal-content .form-grid .form-group:has(input[name=zipCode]) button:hover {
+  background-color: rgb(115.7880434783, 132.3913043478, 159.2119565217);
+}
+.modal-container .modal-content .form-grid .form-group:has(input[name=clientAddress]), .modal-container .modal-content .form-grid .form-group:has(input[name=clientDetailedAddress]), .modal-container .modal-content .form-grid .form-group:has(input[name=clientAccountNumber]) {
+  grid-column: 1/-1;
+}
+.modal-container .modal-content .form-grid .form-group:has(textarea[name=memo]) {
   grid-column: 1/-1;
   display: flex;
   align-items: flex-start;
 }
-.product-detail-form form .form-group:has(textarea[name=memo]) label {
+.modal-container .modal-content .form-grid .form-group:has(textarea[name=memo]) label {
   height: 100px;
   justify-content: center;
   line-height: normal;
 }
-.product-detail-form form .form-group:has(textarea[name=memo]) textarea {
+.modal-container .modal-content .form-grid .form-group:has(textarea[name=memo]) textarea {
   height: 100px;
   resize: none;
 }
-.product-detail-form form .product-detail-buttons {
-  grid-column: 1/-1;
+.modal-container .button-container {
   display: flex;
   justify-content: center;
   gap: 10px;
-  margin-top: 20px;
+  padding: 15px;
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px;
 }
-.product-detail-form form .product-detail-buttons button {
+.modal-container .button-container button {
   width: 100px;
   height: 40px;
   border: none;
@@ -132,13 +171,20 @@ body {
   font-weight: 500;
   cursor: pointer;
 }
-.product-detail-form form .product-detail-buttons .update-button {
+.modal-container .button-container .update-button {
   background-color: #3c485a;
   color: white;
 }
-.product-detail-form form .product-detail-buttons .delete-button {
+.modal-container .button-container .update-button:hover {
+  background-color: rgb(39.6, 47.52, 59.4);
+}
+.modal-container .button-container .delete-button {
   background-color: red;
   color: white;
 }
+.modal-container .button-container .close-button {
+  background-color: gray;
+  color: white;
+}
 
-/*# sourceMappingURL=ProductDetail.css.map */
+/*# sourceMappingURL=EmployeeDetail.css.map */

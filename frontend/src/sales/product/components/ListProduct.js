@@ -42,10 +42,8 @@ const ListProduct = ({ onProductSelect }) => {
 
   return (
     <div className="product-list-wrapper">
-      <SearchProduct onSearchResults={handleSearchResults} />
-
       <div className="product-table-section">
-        <table>
+        <table className="product-list-grid">
           <thead>
             <tr>
               <th>제품 ID</th>
@@ -53,7 +51,6 @@ const ListProduct = ({ onProductSelect }) => {
               <th>판매 가격</th>
               <th>재고 수량</th>
               <th>담당자</th>
-              <th>상세정보</th>
               <th>판매/구매</th>
             </tr>
           </thead>
@@ -68,7 +65,12 @@ const ListProduct = ({ onProductSelect }) => {
               products.map((product) => (
                 <tr key={product.id}>
                   <td>{product.id}</td>
-                  <td>{product.productName}</td>
+                  <td
+                    className="product-name-btn"
+                    onClick={() => onProductSelect(product)}
+                  >
+                    {product.productName}
+                  </td>
                   <td>
                     {product?.salePrice
                       ? parseFloat(product.salePrice).toLocaleString() + " 원"
@@ -76,18 +78,6 @@ const ListProduct = ({ onProductSelect }) => {
                   </td>
                   <td>{product.stock}</td>
                   <td>{employeeNames[product.employeeId] || "Loading..."}</td>
-                  <td>
-                    <button
-                      className="product-table-detail-btn"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        onProductSelect(product);
-                      }}
-                      onClose={() => fetchAllProducts}
-                    >
-                      보기
-                    </button>
-                  </td>
                   <td>
                     <button
                       className="sale-btn"
@@ -128,7 +118,7 @@ const ListProduct = ({ onProductSelect }) => {
         onPageChange={setPage}
       />
       {(isSaleModalOpen || isPurchaseModalOpen) && (
-        <div className="modal-overlay">
+        <div className>
           {isSaleModalOpen && (
             <Sale
               isOpen={isSaleModalOpen}

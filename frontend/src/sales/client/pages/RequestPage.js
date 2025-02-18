@@ -61,7 +61,7 @@ const RequestPage = () => {
             />
 
         {showDetailForm && selectedClient && (
-          <div className="modal-overlay">
+          <div>
             <RequestClient
               client={selectedClient}
               onClose={() => {

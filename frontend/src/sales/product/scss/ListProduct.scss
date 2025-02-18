@@ -9,7 +9,7 @@
     border-left: 1px solid #ddd;
     margin-top: 20px;
 
-    table {
+    .product-list-grid {
       width: 100%;
       border-collapse: collapse;
       table-layout: fixed;
@@ -41,19 +41,19 @@
 
       th:nth-child(1),
       td:nth-child(1) {
-        width: 10%;
+        width: 8%;
       }
       th:nth-child(2),
       td:nth-child(2) {
-        width: 20%;
+        width: 10%;
       }
       th:nth-child(3),
       td:nth-child(3) {
-        width: 15%;
+        width: 12%;
       }
       th:nth-child(4),
       td:nth-child(4) {
-        width: 15%;
+        width: 12%;
       }
       th:nth-child(5),
       td:nth-child(5) {
@@ -61,11 +61,22 @@
       }
       th:nth-child(6),
       td:nth-child(6) {
-        width: 10%;
+        width: 15%;
       }
-      th:nth-child(7),
-      td:nth-child(7) {
-        width: 20%;
+    }
+
+    .product-name-btn {
+      font-weight: bold;
+      border: none;
+      color: #4a5568;
+      cursor: pointer;
+      padding: 10;
+      font-size: 16px;
+      border: 1px solid #ddd;
+
+      &:hover {
+        text-decoration: underline;
+        color: #2d3748;
       }
     }
 
@@ -89,30 +100,22 @@
 
     .sale-btn,
     .purchase-btn {
-      padding: 5px 10px;
+      padding: 6px 16px;
       margin: 0 5px;
       border: none;
       border-radius: 4px;
       cursor: pointer;
-      font-weight: 500;
+      font-size: 14px;
     }
 
     .sale-btn {
-      background-color: #4299e1;
+      background-color: $secondary-color;
       color: white;
-
-      &:hover {
-        background-color: #3182ce;
-      }
     }
 
     .purchase-btn {
-      background-color: #48bb78;
+      background-color: $secondary-color;
       color: white;
-
-      &:hover {
-        background-color: #38a169;
-      }
     }
   }
 }

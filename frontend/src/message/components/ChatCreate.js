@@ -7,7 +7,6 @@ import {
   getDepartments,
   getPositions,
 } from "../../HR/employee/api/employeeApi";
-import "../scss/ChatCreate.scss";
 
 const ChatCreate = () => {
   const myUserId = useSelector((state) => state.loginSlice.id); // 👤 로그인한 사용자 ID (숫자)
@@ -93,51 +92,87 @@ const ChatCreate = () => {
 
   return (
     <div>
-      <h2>새 채팅방 만들기</h2>
-      <button onClick={() => setIsModalOpen(true)} className="create-chat-btn">
-        채팅 상대 선택
-      </button>
-  
       {/* 모달 창 */}
       {isModalOpen && (
-        <div className="chat-create-modal">
-          <div className="modal-content">
-            <h3>채팅 상대 검색</h3>
-            <input
-              type="text"
-              placeholder="직원 이름 검색"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="search-input"
-            />
-            <ul className="employee-list">
-              {filteredEmployees.length > 0 ? (
-                filteredEmployees.map((emp) => (
-                  <li
-                    key={emp.id}
-                    onClick={() => handleCreateChatRoom(emp.id)}
-                    className="employee-item"
-                  >
-                    <strong>{emp.name}</strong> ({departments[emp.departmentId]} /{" "}
-                    {positions[emp.positionId]})
-                  </li>
-                ))
-              ) : (
-                <li className="no-results">검색 결과 없음</li>
-              )}
-            </ul>
-            <button
-              onClick={() => setIsModalOpen(false)}
-              className="close-button"
-            >
-              닫기
-            </button>
-          </div>
+        <div
+          style={{
+            position: "fixed",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            width: "400px",
+            background: "white",
+            boxShadow: "0px 4px 6px rgba(0,0,0,0.1)",
+            padding: "20px",
+            borderRadius: "10px",
+            zIndex: 1000,
+          }}
+        >
+          <h3 style={{ marginBottom: "10px" }}>새 채팅방 만들기</h3>
+
+          <input
+            type="text"
+            placeholder="직원 이름 검색"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            style={{ width: "100%", padding: "8px", marginBottom: "10px" }}
+          />
+          <ul style={{ maxHeight: "200px", overflowY: "auto", padding: 0 }}>
+            {filteredEmployees.length > 0 ? (
+              filteredEmployees.map((emp) => (
+                <li
+                  key={emp.id}
+                  onClick={() => handleCreateChatRoom(emp.id)}
+                  style={{
+                    cursor: "pointer",
+                    padding: "10px",
+                    borderBottom: "1px solid #ddd",
+                    listStyle: "none",
+                  }}
+                >
+                  <strong>{emp.name}</strong> ({departments[emp.departmentId]} /{" "}
+                  {positions[emp.positionId]})
+                </li>
+              ))
+            ) : (
+              <li style={{ padding: "10px", color: "gray" }}>검색 결과 없음</li>
+            )}
+          </ul>
+          <button
+            onClick={() => setIsModalOpen(false)}
+            style={{
+              marginTop: "10px",
+              width: "100%",
+              padding: "8px",
+              background: "#ffe812",
+              color: "black",
+              border: "none",
+              cursor: "pointer",
+            }}
+          >
+            닫기
+          </button>
         </div>
       )}
-  
+      <button className="new-chat-button" onClick={() => setIsModalOpen(true)}>
+        +
+      </button>
+
       {/* 모달 배경 (클릭하면 닫힘) */}
-      {isModalOpen && <div className="modal-overlay" onClick={() => setIsModalOpen(false)} />}
+      {isModalOpen && (
+        <div
+          onClick={() => setIsModalOpen(false)}
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            width: "100vw",
+            height: "100vh",
+            background: "rgba(0, 0, 0, 0.5)",
+            zIndex: 999,
+          }}
+        />
+      )}
     </div>
   );
 };

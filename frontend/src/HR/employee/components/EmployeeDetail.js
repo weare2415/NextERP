@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { 
-  updateEmployee, 
-  requestUpdateEmployee, 
-  getDepartments, 
-  getPositions, 
-  getEmployeeById 
-} from "../api/employeeApi"; 
+import {
+  updateEmployee,
+  requestUpdateEmployee,
+  getDepartments,
+  getPositions,
+  getEmployeeById,
+} from "../api/employeeApi";
 import "../scss/EmployeeDetail.scss";
 
 const EmployeeDetail = ({ employee, onClose, onUpdateSuccess }) => {
@@ -113,15 +113,18 @@ const EmployeeDetail = ({ employee, onClose, onUpdateSuccess }) => {
 
   return (
     <div className="modal-overlay" onClick={onClose}>
-      <div className="modal-container" onClick={(e) => e.stopPropagation()}>
-        <div className="modal-header">
+      <div
+        className="employee-detail-modal"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div className="employee-detail-modal-header">
           <h2>직원 상세 정보</h2>
           <button className="close-button" onClick={onClose}>
             X
           </button>
         </div>
 
-        <div className="modal-content">
+        <div className="employee-detail-form">
           {isTerminated && (
             <p className="terminated-message">🚨 퇴사한 직원입니다.</p>
           )}
@@ -244,7 +247,7 @@ const EmployeeDetail = ({ employee, onClose, onUpdateSuccess }) => {
           </div>
         </div>
 
-        <div className="button-container">
+        <div className="employee-detail-button-container">
           {!isTerminated && status !== "PENDING" && (
             <button className="update-button" onClick={handleUpdateRequest}>
               수정 요청
@@ -255,9 +258,6 @@ const EmployeeDetail = ({ employee, onClose, onUpdateSuccess }) => {
               최종 수정
             </button>
           )}
-          <button className="close-button" onClick={onClose}>
-            닫기
-          </button>
         </div>
       </div>
     </div>

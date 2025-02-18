@@ -24,11 +24,14 @@ const AnnouncementPage = () => {
 
   return (
     <BasicLayout>
-      <div className="announcement-page">
-        <div className="announcement-page-header">
+      <div className="all-announcement-page-container">
+        <div className="page-header">
           <h1>공지사항 관리</h1>
           <div className="header-right">
+
+          {/* 🔍 검색 기능 추가 */}
           <AnnouncementSearch onSearch={handleSearchResults} />
+
           <button
             className="new-announcement-btn"
             onClick={() => setShowCreateForm(true)}
@@ -37,14 +40,15 @@ const AnnouncementPage = () => {
           </button>
         </div>
         </div>
+
         <AnnouncementList
           ref={announcementListRef}
-          searchResults={searchResults}
+          searchResults={searchResults} // 🔍 검색 결과 전달
           onUpdateTrigger={updateTrigger}
         />
 
         {showCreateForm && (
-          <div className="modal-overlay">
+          <div>
             <AnnouncementCreate
               onClose={() => setShowCreateForm(false)}
               onAddSuccess={onUpdateTrigger}

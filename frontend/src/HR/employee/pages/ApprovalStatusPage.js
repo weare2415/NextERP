@@ -1,6 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { getPendingEmployees, approveEmployee, rejectEmployee, getDepartments, getPositions } from "../api/employeeApi";
+import {
+  getPendingEmployees,
+  approveEmployee,
+  rejectEmployee,
+  getDepartments,
+  getPositions,
+} from "../api/employeeApi";
 import ApprovalStatus from "../components/ApprovalStatus";
 import BasicLayout from "../../../common/pages/BasicLayout";
 import "../scss/ApprovalStatusPage.scss";

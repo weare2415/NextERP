@@ -23,13 +23,13 @@ body {
   display: flex;
   align-items: center;
 }
-.search-client-container .search-client-form {
+.search-client-container .search-client-all {
   display: flex;
   align-items: center;
   gap: 8px;
   position: relative;
 }
-.search-client-container .search-client-form select {
+.search-client-container .search-client-all .search-client-type {
   padding: 8px;
   border: 1px solid #929fb4;
   border-radius: 4px;
@@ -37,11 +37,11 @@ body {
   background-color: white;
   cursor: pointer;
 }
-.search-client-container .search-client-form select:focus {
+.search-client-container .search-client-all .search-client-type:focus {
   outline: none;
   border-color: #3c485a;
 }
-.search-client-container .search-client-form input {
+.search-client-container .search-client-all input {
   flex: 1;
   width: 250px;
   padding: 8px;
@@ -50,11 +50,11 @@ body {
   font-family: "Apple SD Gothic Neo", sans-serif;
   position: relative;
 }
-.search-client-container .search-client-form input:focus {
+.search-client-container .search-client-all input:focus {
   outline: none;
   border-color: #3c485a;
 }
-.search-client-container .search-client-form button {
+.search-client-container .search-client-all button {
   padding: 8px 16px;
   background-color: #3c485a;
   color: white;
@@ -65,10 +65,10 @@ body {
   margin: 0;
   height: 38px;
 }
-.search-client-container .search-client-form button:hover {
+.search-client-container .search-client-all button:hover {
   background-color: rgb(39.6, 47.52, 59.4);
 }
-.search-client-container .search-client-form .suggestions-list {
+.search-client-container .search-client-all .suggestions-list {
   position: absolute;
   top: 100%;
   left: 50%;
@@ -85,16 +85,16 @@ body {
   max-height: 300px;
   overflow-y: auto;
 }
-.search-client-container .search-client-form .suggestions-list li {
+.search-client-container .search-client-all .suggestions-list li {
   padding: 8px 16px;
   cursor: pointer;
   font-family: "Apple SD Gothic Neo", sans-serif;
   border-bottom: 1px solid #f0f0f0;
 }
-.search-client-container .search-client-form .suggestions-list li:last-child {
+.search-client-container .search-client-all .suggestions-list li:last-child {
   border-bottom: none;
 }
-.search-client-container .search-client-form .suggestions-list li:hover, .search-client-container .search-client-form .suggestions-list li.selected {
+.search-client-container .search-client-all .suggestions-list li:hover, .search-client-container .search-client-all .suggestions-list li.selected {
   background-color: #f5f5f5;
 }
 

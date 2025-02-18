@@ -91,15 +91,15 @@ const ListRequestOrder = ({
 
   return (
     <>
-      <div className="request-product-list-wrapper">
-        <div className="product-table-section">
-          <table>
+      <div className="request-order-list-wrapper">
+        <div className="request-order-table-section">
+          <table className="request-order-list">
             <thead>
               <tr>
-                <th>제품ID</th>
+                <th>제품 ID</th>
                 <th>제품명</th>
-                <th>기업명</th>
-                <th>수량</th>
+                <th>주문 기업명</th>
+                <th>주문 수량</th>
                 <th>판매/구매</th>
                 <th>승인 요청자</th>
               </tr>
@@ -111,7 +111,7 @@ const ListRequestOrder = ({
                     <td>{order.productId}</td>
                     <td>
                       <button
-                        className="product-table-name-btn"
+                        className="order-list-name-btn"
                         onClick={() => handleOrderClick(order)}
                       >
                         {productNames[order.productId] || "Loading..."}
@@ -137,8 +137,8 @@ const ListRequestOrder = ({
 
       {/* ✅ 모달 적용 */}
       {showModal && selectedOrder && (
-        <div className="modal-overlay" onClick={() => setShowModal(false)}>
-          <div className="modal-wrapper" onClick={(e) => e.stopPropagation()}>
+        <div onClick={() => setShowModal(false)}>
+          <div onClick={(e) => e.stopPropagation()}>
             <RequestOrder
               order={selectedOrder}
               onClose={() => setShowModal(false)}

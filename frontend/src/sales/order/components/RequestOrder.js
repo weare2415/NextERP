@@ -61,16 +61,17 @@ const RequestOrder = ({ order, onClose, onUpdateSuccess }) => {
   };
 
   return (
+    <div className="modal-overlay">
     <div className="request-product-detail-form">
       <div className="request-product-detail-header">
-        <h2>거래 승인 요청</h2>
+        <h2>주문 승인 요청</h2>
         <button className="close-button" onClick={onClose}>
           X
         </button>
       </div>
-        <form>
+        <form className="form-container">
             <div className="form-group">
-              <label>제품 번호</label>
+              <label>제품 ID</label>
               <input type="text" value={order.productId} readOnly />
             </div>
 
@@ -80,7 +81,7 @@ const RequestOrder = ({ order, onClose, onUpdateSuccess }) => {
             </div>
 
             <div className="form-group">
-              <label>거래 기업명</label>
+              <label>주문 기업명</label>
               <input type="text" value={order.clientName} readOnly />
             </div>
 
@@ -95,7 +96,7 @@ const RequestOrder = ({ order, onClose, onUpdateSuccess }) => {
             </div>
 
             <div className="form-group">
-              <label>거래 승인 요청자</label>
+              <label>승인 요청자</label>
               <input type="text" value={order.employeeName} readOnly />
             </div>
 
@@ -131,6 +132,7 @@ const RequestOrder = ({ order, onClose, onUpdateSuccess }) => {
             </button>
           </div>
         </form>
+      </div>
       </div>
   );
 };

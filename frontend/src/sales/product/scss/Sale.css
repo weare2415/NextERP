@@ -19,7 +19,19 @@ body {
   display: block;
 }
 
-.product-order-detail-form {
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+.modal-overlay .product-order-detail-form {
   background-color: white;
   border-radius: 4px;
   width: 90%;
@@ -30,7 +42,7 @@ body {
   display: flex;
   flex-direction: column;
 }
-.product-order-detail-form .product-order-detail-header {
+.modal-overlay .product-order-detail-form .product-order-detail-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -41,13 +53,13 @@ body {
   border-top-right-radius: 4px;
   width: 100%;
 }
-.product-order-detail-form .product-order-detail-header h2 {
+.modal-overlay .product-order-detail-form .product-order-detail-header h2 {
   margin: 0;
   font-size: 18px;
   font-weight: 500;
   color: white;
 }
-.product-order-detail-form .product-order-detail-header .close-button {
+.modal-overlay .product-order-detail-form .product-order-detail-header .close-button {
   background: none;
   border: none;
   color: white;
@@ -55,10 +67,10 @@ body {
   cursor: pointer;
   padding: 0 5px;
 }
-.product-order-detail-form .product-order-detail-header .close-button:hover {
+.modal-overlay .product-order-detail-form .product-order-detail-header .close-button:hover {
   opacity: 0.8;
 }
-.product-order-detail-form form {
+.modal-overlay .product-order-detail-form .product-for-order-grid {
   padding: 20px;
   overflow-y: auto;
   display: grid;
@@ -66,13 +78,13 @@ body {
   gap: 0;
   align-items: center;
 }
-.product-order-detail-form form .form-group {
+.modal-overlay .product-order-detail-form .product-for-order-grid .form-group {
   display: flex;
   align-items: center;
   margin-bottom: 1px;
   position: relative;
 }
-.product-order-detail-form form .form-group label {
+.modal-overlay .product-order-detail-form .product-for-order-grid .form-group label {
   width: 140px;
   background-color: #e9edf4;
   padding: 8px 15px;
@@ -84,9 +96,9 @@ body {
   justify-content: center;
   margin: 0;
 }
-.product-order-detail-form form .form-group input,
-.product-order-detail-form form .form-group select,
-.product-order-detail-form form .form-group textarea {
+.modal-overlay .product-order-detail-form .product-for-order-grid .form-group input,
+.modal-overlay .product-order-detail-form .product-for-order-grid .form-group select,
+.modal-overlay .product-order-detail-form .product-for-order-grid .form-group textarea {
   flex: 1;
   padding: 8px 10px;
   border: 1px solid #e9edf4;
@@ -97,13 +109,13 @@ body {
   border-radius: 0;
   margin: 0;
 }
-.product-order-detail-form form .form-group input:focus,
-.product-order-detail-form form .form-group select:focus,
-.product-order-detail-form form .form-group textarea:focus {
+.modal-overlay .product-order-detail-form .product-for-order-grid .form-group input:focus,
+.modal-overlay .product-order-detail-form .product-for-order-grid .form-group select:focus,
+.modal-overlay .product-order-detail-form .product-for-order-grid .form-group textarea:focus {
   outline: none;
   border-color: #929fb4;
 }
-.product-order-detail-form form .form-group .suggestions-list {
+.modal-overlay .product-order-detail-form .product-for-order-grid .form-group .suggestions-list {
   position: absolute;
   top: 35px;
   left: 140px;
@@ -119,42 +131,42 @@ body {
   list-style: none;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
-.product-order-detail-form form .form-group .suggestions-list li {
+.modal-overlay .product-order-detail-form .product-for-order-grid .form-group .suggestions-list li {
   padding: 8px 10px;
   cursor: pointer;
   font-size: 14px;
 }
-.product-order-detail-form form .form-group .suggestions-list li:hover {
+.modal-overlay .product-order-detail-form .product-for-order-grid .form-group .suggestions-list li:hover {
   background-color: #f5f7fa;
 }
-.product-order-detail-form form .form-group .suggestions-list li.selected {
+.modal-overlay .product-order-detail-form .product-for-order-grid .form-group .suggestions-list li.selected {
   background-color: #f5f7fa;
 }
-.product-order-detail-form form .form-group .suggestions-list li:not(:last-child) {
+.modal-overlay .product-order-detail-form .product-for-order-grid .form-group .suggestions-list li:not(:last-child) {
   border-bottom: 1px solid #e9edf4;
 }
-.product-order-detail-form form .form-group:has(textarea[name=memo]) {
+.modal-overlay .product-order-detail-form .product-for-order-grid .form-group:has(textarea[name=memo]) {
   grid-column: 1/-1;
   display: flex;
   align-items: flex-start;
 }
-.product-order-detail-form form .form-group:has(textarea[name=memo]) label {
+.modal-overlay .product-order-detail-form .product-for-order-grid .form-group:has(textarea[name=memo]) label {
   height: 100px;
   justify-content: center;
   line-height: normal;
 }
-.product-order-detail-form form .form-group:has(textarea[name=memo]) textarea {
+.modal-overlay .product-order-detail-form .product-for-order-grid .form-group:has(textarea[name=memo]) textarea {
   height: 100px;
   resize: none;
 }
-.product-order-detail-form form .product-order-detail-buttons {
+.modal-overlay .product-order-detail-form .product-for-order-grid .product-order-detail-buttons {
   grid-column: 1/-1;
   display: flex;
   justify-content: center;
   gap: 10px;
   margin-top: 20px;
 }
-.product-order-detail-form form .product-order-detail-buttons button {
+.modal-overlay .product-order-detail-form .product-for-order-grid .product-order-detail-buttons button {
   width: 100px;
   height: 40px;
   border: none;
@@ -163,12 +175,8 @@ body {
   font-weight: 500;
   cursor: pointer;
 }
-.product-order-detail-form form .product-order-detail-buttons .update-button {
+.modal-overlay .product-order-detail-form .product-for-order-grid .product-order-detail-buttons .update-button {
   background-color: #3c485a;
-  color: white;
-}
-.product-order-detail-form form .product-order-detail-buttons .close-button {
-  background-color: red;
   color: white;
 }
 

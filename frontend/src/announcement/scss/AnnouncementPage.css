@@ -19,29 +19,29 @@ body {
   display: block;
 }
 
-.announcement-page {
+.all-announcement-page-container {
   max-width: 90%;
   margin: auto;
   position: relative;
 }
-.announcement-page .announcement-page-header {
+.all-announcement-page-container .page-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: 10px;
-  margin-bottom: 10px;
+  margin-top: 20px;
+  margin-bottom: 20px;
 }
-.announcement-page .announcement-page-header h1 {
+.all-announcement-page-container .page-header h1 {
   color: #3c485a;
   font-family: "Apple SD Gothic Neo", sans-serif;
   margin: 0;
 }
-.announcement-page .announcement-page-header .header-right {
+.all-announcement-page-container .page-header .header-right {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 20px;
 }
-.announcement-page .announcement-page-header .new-announcement-btn {
+.all-announcement-page-container .page-header .new-announcement-btn {
   padding: 8px 16px;
   background-color: #3c485a;
   color: white;
@@ -53,20 +53,8 @@ body {
   display: flex;
   align-items: center;
 }
-.announcement-page .announcement-page-header .new-announcement-btn:hover {
-  background-color: rgb(115.7880434783, 132.3913043478, 159.2119565217);
-}
-.announcement-page .modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
+.all-announcement-page-container .page-header .new-announcement-btn:hover {
+  background-color: rgb(39.6, 47.52, 59.4);
 }
 
 /*# sourceMappingURL=AnnouncementPage.css.map */

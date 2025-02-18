@@ -113,6 +113,7 @@ const SearchProduct = ({ onSearchResults }) => {
           name="searchType"
           value={searchParams.searchType}
           onChange={handleInputChange}
+          className="product-search-all"
         >
           <option value="productName">제품명</option>
           <option value="id">제품 번호</option>

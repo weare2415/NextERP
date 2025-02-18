@@ -1,62 +1,87 @@
-@import "../../../App.scss";
+// @import "../../../App.scss";
 
-.attendance-list-wrapper {
-  width: 100%;
-}
+// .attendance-list-wrapper {
+//   width: 100%;
+// }
 
-.attendance-table-section {
-  background-color: white;
-  width: 100%;
-  margin-top: 20px;
-  border-left: 1px solid #ddd;
+// .attendance-table-section {
+//   background-color: white;
+//   width: 100%;
+//   margin-top: 20px;
+//   border-left: 1px solid #ddd;
+//   border-radius: 8px;
+//   overflow-x: auto; // 반응형 지원
 
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    table-layout: fixed;
+//   table {
+//     width: 100%;
+//     border-collapse: collapse;
+//     table-layout: fixed;
+//     min-width: 600px; // 최소 너비 설정
 
-    th,
-    td {
-      padding: 15px;
-      text-align: center;
-      border: 1px solid #ddd;
-      word-wrap: break-word;
+//     th,
+//     td {
+//       padding: 15px;
+//       text-align: center;
+//       border: 1px solid #ddd;
+//       word-wrap: break-word;
 
-      &:first-child {
-        border-left: none;
-      }
-    }
+//       &:first-child {
+//         border-left: none;
+//       }
+//     }
 
-    th {
-      background-color: #4a5568;
-      color: white;
-      font-weight: 500;
-      border-bottom: 1px solid #2d3748;
-      position: relative;
-    }
+//     th {
+//       background-color: #4a5568;
+//       color: white;
+//       font-weight: 500;
+//       border-bottom: 2px solid #2d3748;
+//       position: relative;
+//       font-size: 1rem;
+//     }
 
-    tr {
-      &:hover {
-        background-color: #f8f9fa;
-      }
-    }
+//     td {
+//       font-size: 0.95rem;
+//       color: #333;
+//     }
 
-    // 각 열의 고정된 너비 설정
-    th:nth-child(1),
-    td:nth-child(1) {
-      width: 15%;
-    }
-    th:nth-child(2),
-    td:nth-child(2) {
-      width: 10%;
-    }
-    th:nth-child(3),
-    td:nth-child(3) {
-      width: 15%;
-    }
-    th:nth-child(4),
-    td:nth-child(4) {
-      width: 15%;
-    }
-  }
-}
+//     tr {
+//       &:hover {
+//         background-color: #f8f9fa;
+//       }
+//     }
+
+//     // ✅ 각 열의 고정된 너비 설정 (날짜 / 근태 유형 / 사유)
+//     th:nth-child(1),
+//     td:nth-child(1) {
+//       width: 20%; // 날짜
+//     }
+//     th:nth-child(2),
+//     td:nth-child(2) {
+//       width: 20%; // 근태 유형
+//     }
+//     th:nth-child(3),
+//     td:nth-child(3) {
+//       width: 60%; // 사유 (넓게 설정)
+//     }
+//   }
+
+//   // ✅ 반응형 디자인 (768px 이하)
+//   @media (max-width: 768px) {
+//     .attendance-table-section {
+//       overflow-x: auto;
+//     }
+
+//     table {
+//       min-width: 100%;
+//       display: block;
+//       overflow-x: auto;
+//       white-space: nowrap;
+//     }
+
+//     th,
+//     td {
+//       padding: 10px;
+//       font-size: 0.9rem;
+//     }
+//   }
+// }

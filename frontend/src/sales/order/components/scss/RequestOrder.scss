@@ -1,136 +1,149 @@
 @import "../../../../App.scss";
 
-.request-product-detail-form {
-  background-color: white;
-  border-radius: 4px;
-  width: 90%;
-  max-width: 700px;
-  max-height: 90vh;
-  padding: 0;
-  font-family: $font-primary;
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
   display: flex;
-  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
 
-  .request-product-detail-header {
+  .request-product-detail-form {
+    background-color: white;
+    border-radius: 4px;
+    width: 90%;
+    max-width: 700px;
+    max-height: 90vh;
+    padding: 0;
+    font-family: $font-primary;
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 15px 20px;
-    background-color: $primary-color;
-    color: white;
-    border-top-left-radius: 4px;
-    border-top-right-radius: 4px;
-    width: 100%;
+    flex-direction: column;
 
-    h2 {
-      margin: 0;
-      font-size: 18px;
-      font-weight: 500;
+    .request-product-detail-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 20px;
+      background-color: $primary-color;
       color: white;
-    }
+      border-top-left-radius: 4px;
+      border-top-right-radius: 4px;
+      width: 100%;
 
-    .close-button {
-      background: none;
-      border: none;
-      color: white;
-      font-size: 20px;
-      cursor: pointer;
-      padding: 0 5px;
+      h2 {
+        margin: 0;
+        font-size: 18px;
+        font-weight: 500;
+        color: white;
+      }
 
-      &:hover {
-        opacity: 0.8;
+      .close-button {
+        background: none;
+        border: none;
+        color: white;
+        font-size: 20px;
+        cursor: pointer;
+        padding: 0 5px;
+
+        &:hover {
+          opacity: 0.8;
+        }
       }
     }
-  }
 
-  form {
-    padding: 20px;
-    overflow-y: auto;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 0;
-    align-items: center;
-
-    .form-group {
-      display: flex;
+    .form-container {
+      padding: 20px;
+      overflow-y: auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
       align-items: center;
-      margin-bottom: 1px;
 
-      label {
-        width: 140px;
-        background-color: #e9edf4;
-        padding: 8px 15px;
-        font-size: 14px;
-        color: $primary-color;
-        text-align: center;
+      .form-group {
         display: flex;
         align-items: center;
-        justify-content: center;
-        margin: 0;
-      }
-
-      input, 
-      select, 
-      textarea {
-        flex: 1;
-        padding: 8px 10px;
-        border: 1px solid #e9edf4;
-        font-family: $font-primary;
-        font-size: 14px;
-        height: 35px;
-        width: 100%;
-        border-radius: 0;
-        margin: 0;
-
-        &:focus {
-          outline: none;
-          border-color: $secondary-color;
-        }
-      }
-
-      &:has(textarea[name="memo"]) {
-        grid-column: 1 / -1;
-        display: flex;
-        align-items: flex-start;
+        margin-bottom: 1px;
 
         label {
-          height: 100px;
+          width: 140px;
+          background-color: #e9edf4;
+          padding: 8px 15px;
+          font-size: 14px;
+          color: $primary-color;
+          text-align: center;
+          display: flex;
+          align-items: center;
           justify-content: center;
-          line-height: normal;
+          margin: 0;
         }
 
+        input, 
+        select, 
         textarea {
-          height: 100px;
-          resize: none;
+          flex: 1;
+          padding: 8px 10px;
+          border: 1px solid #e9edf4;
+          font-family: $font-primary;
+          font-size: 14px;
+          height: 35px;
+          width: 100%;
+          border-radius: 0;
+          margin: 0;
+
+          &:focus {
+            outline: none;
+            border-color: $secondary-color;
+          }
+        }
+
+        &:has(textarea[name="memo"]) {
+          grid-column: 1 / -1;
+          display: flex;
+          align-items: flex-start;
+
+          label {
+            height: 100px;
+            justify-content: center;
+            line-height: normal;
+          }
+
+          textarea {
+            height: 100px;
+            resize: none;
+          }
         }
       }
-    }
 
-    .request-product-detail-buttons {
-      grid-column: 1 / -1;
-      display: flex;
-      justify-content: center;
-      gap: 10px;
-      margin-top: 20px;
-    
-      button {
-        width: 100px;
-        height: 40px;
-        border: none;
-        border-radius: 4px;
-        font-size: 14px;
-        font-weight: 500;
-        cursor: pointer;
-      }
+      .request-product-detail-buttons {
+        grid-column: 1 / -1;
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        margin-top: 20px;
+      
+        button {
+          width: 100px;
+          height: 40px;
+          border: none;
+          border-radius: 4px;
+          font-size: 14px;
+          font-weight: 500;
+          cursor: pointer;
+        }
 
-      .approve-button {
-        background-color: $primary-color;
-        color: white;
-      }
+        .approve-button {
+          background-color: $primary-color;
+          color: white;
+        }
 
-      .reject-button {
-        background-color: $error-color;
-        color: white;
+        .reject-button {
+          background-color: $error-color;
+          color: white;
+        }
       }
     }
   }

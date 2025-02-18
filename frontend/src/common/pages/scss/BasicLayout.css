@@ -41,6 +41,7 @@ body {
 .basic-layout .main-layout .sidebar .logo {
   padding: 1rem;
   margin-bottom: 1rem;
+  cursor: pointer;
 }
 .basic-layout .main-layout .sidebar .logo > img {
   width: 200px;

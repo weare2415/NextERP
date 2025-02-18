@@ -1,4 +1,4 @@
-@import "../../../../App";
+@import "../../../../App.scss";
 
 .search-payroll-container {
   display: flex;
@@ -82,7 +82,8 @@
           border-bottom: none;
         }
 
-        &:hover, &.selected {
+        &:hover,
+        &.selected {
           background-color: #f5f5f5;
         }
       }

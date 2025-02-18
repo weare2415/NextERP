@@ -22,64 +22,63 @@ body {
 .request-client-list-wrapper {
   width: 100%;
 }
-
-.client-table-section {
+.request-client-list-wrapper .request-client-table-section {
   background-color: white;
   width: 100%;
   margin-top: 10px;
   border-left: 1px solid #ddd;
 }
-.client-table-section table {
+.request-client-list-wrapper .request-client-table-section .request-client-list {
   width: 100%;
   border-collapse: collapse;
   table-layout: fixed;
 }
-.client-table-section table th,
-.client-table-section table td {
+.request-client-list-wrapper .request-client-table-section .request-client-list th,
+.request-client-list-wrapper .request-client-table-section .request-client-list td {
   padding: 15px;
   text-align: center;
   border: 1px solid #ddd;
   word-wrap: break-word;
 }
-.client-table-section table th:first-child,
-.client-table-section table td:first-child {
+.request-client-list-wrapper .request-client-table-section .request-client-list th:first-child,
+.request-client-list-wrapper .request-client-table-section .request-client-list td:first-child {
   border-left: none;
 }
-.client-table-section table th {
+.request-client-list-wrapper .request-client-table-section .request-client-list th {
   background-color: #4a5568;
   color: white;
   font-weight: 500;
   border-bottom: 1px solid #2d3748;
   position: relative;
 }
-.client-table-section table tr:hover {
+.request-client-list-wrapper .request-client-table-section .request-client-list tr:hover {
   background-color: #f8f9fa;
 }
-.client-table-section table th:nth-child(1),
-.client-table-section table td:nth-child(1) {
+.request-client-list-wrapper .request-client-table-section .request-client-list th:nth-child(1),
+.request-client-list-wrapper .request-client-table-section .request-client-list td:nth-child(1) {
   width: 10%;
 }
-.client-table-section table th:nth-child(2),
-.client-table-section table td:nth-child(2) {
+.request-client-list-wrapper .request-client-table-section .request-client-list th:nth-child(2),
+.request-client-list-wrapper .request-client-table-section .request-client-list td:nth-child(2) {
   width: 20%;
 }
-.client-table-section table th:nth-child(3),
-.client-table-section table td:nth-child(3) {
+.request-client-list-wrapper .request-client-table-section .request-client-list th:nth-child(3),
+.request-client-list-wrapper .request-client-table-section .request-client-list td:nth-child(3) {
   width: 15%;
 }
-.client-table-section table th:nth-child(4),
-.client-table-section table td:nth-child(4) {
+.request-client-list-wrapper .request-client-table-section .request-client-list th:nth-child(4),
+.request-client-list-wrapper .request-client-table-section .request-client-list td:nth-child(4) {
   width: 25%;
 }
-.client-table-section table th:nth-child(5),
-.client-table-section table td:nth-child(5) {
+.request-client-list-wrapper .request-client-table-section .request-client-list th:nth-child(5),
+.request-client-list-wrapper .request-client-table-section .request-client-list td:nth-child(5) {
   width: 15%;
 }
-.client-table-section table th:nth-child(6),
-.client-table-section table td:nth-child(6) {
+.request-client-list-wrapper .request-client-table-section .request-client-list th:nth-child(6),
+.request-client-list-wrapper .request-client-table-section .request-client-list td:nth-child(6) {
   width: 15%;
 }
-.client-table-section table .client-table-name-btn {
+.request-client-list-wrapper .request-client-table-section .request-client-list .client-table-name-btn {
   appearance: none;
   background: none;
   border: none;
@@ -92,7 +91,7 @@ body {
   text-decoration: none;
   text-align: left;
 }
-.client-table-section table .client-table-name-btn:hover {
+.request-client-list-wrapper .request-client-table-section .request-client-list .client-table-name-btn:hover {
   text-decoration: underline;
   color: #2d3748;
 }

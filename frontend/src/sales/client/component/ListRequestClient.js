@@ -7,8 +7,8 @@ const ListRequestClient = ({ clients, onClientSelect }) => {
 
   return (
     <div className="request-client-list-wrapper">
-    <div className="client-table-section">
-      <table>
+    <div className="request-client-table-section">
+      <table className="request-client-list">
         <thead>
           <tr>
               <th>거래처 코드</th>

@@ -20,9 +20,10 @@ body {
 }
 
 .mypage {
+  max-width: 90%;
+  margin: auto;
   position: relative;
-  width: 90%;
-  margin: 20px auto 0;
+  margin-top: 20px;
 }
 .mypage h1 {
   color: #3c485a;
@@ -49,21 +50,25 @@ body {
   gap: 2rem;
   margin-top: 1rem;
 }
-
-.left-section,
-.right-section {
+.page-container .left-section,
+.page-container .right-section {
   flex: 1;
   background: white;
   padding: 2rem;
   border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(60, 72, 90, 0.1);
 }
-.left-section h3,
-.right-section h3 {
+.page-container .left-section h3,
+.page-container .right-section h3 {
   color: #3c485a;
   font-size: 1.5rem;
   font-weight: 700;
   margin-bottom: 1rem;
+}
+.page-container .loading {
+  text-align: center;
+  color: #929fb4;
+  font-size: 1.1rem;
+  margin: 2rem 0;
 }
 
 .attendance-table {
@@ -100,14 +105,14 @@ body {
   margin: 2rem 0;
 }
 
-.attendance-buttons {
+.buttons {
   display: flex;
-  gap: 0.8rem;
+  gap: 10px;
 }
 
 button {
   padding: 0.5rem 1rem;
-  background-color: #4caf50;
+  background-color: #3c485a;
   color: white;
   border: none;
   border-radius: 5px;

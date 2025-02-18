@@ -1,0 +1,96 @@
+@import "../../../App.scss";
+
+.approval-list-wrapper {
+  width: 100%;
+
+  .approval-list-section {
+    background-color: white;
+    width: 100%;
+    margin-top: 10px;
+    border-left: 1px solid #ddd;
+
+    .approval-list-grid {
+      width: 100%;
+      border-collapse: collapse;
+      table-layout: fixed;
+
+      th,
+      td {
+        padding: 15px;
+        text-align: center;
+        border: 1px solid #ddd;
+        word-wrap: break-word;
+
+        &:first-child {
+          border-left: none;
+        }
+      }
+
+      th {
+        background-color: #4a5568;
+        color: white;
+        font-weight: 500;
+        border-bottom: 1px solid #2d3748;
+        position: relative;
+      }
+
+      tr {
+        &:hover {
+          background-color: #f8f9fa;
+        }
+      }
+
+      // Column width settings
+      th:nth-child(1),
+      td:nth-child(1) {
+        width: 15%;
+      }
+      th:nth-child(2),
+      td:nth-child(2) {
+        width: 15%;
+      }
+      th:nth-child(3),
+      td:nth-child(3) {
+        width: 15%;
+      }
+      th:nth-child(4),
+      td:nth-child(4) {
+        width: 20%;
+      }
+      th:nth-child(5),
+      td:nth-child(5) {
+        width: 20%;
+      }
+      th:nth-child(6),
+      td:nth-child(6) {
+        width: 15%;
+      }
+    }
+  }
+
+  // 버튼 스타일을 최상위 레벨로 이동
+  .approval-table-approve-btn {
+    display: inline-block;
+    padding: 6px 16px;
+    border: none;
+    border-radius: 4px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    background-color: $primary-color;
+    color: white;
+  }
+
+  .approval-table-reject-btn {
+    display: inline-block;
+    padding: 6px 16px;
+    border: none;
+    border-radius: 4px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    background-color: $error-color;
+    color: white;
+    margin-left: 8px;
+  }
+}

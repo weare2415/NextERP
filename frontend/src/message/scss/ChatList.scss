@@ -1,211 +1,211 @@
 .chat-messenger-container {
-  width: 100%;
-  height: 100vh;
-  background: #fff;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-
-  // Chat list header
-  h2 {
-    padding: 20px;
-    margin: 0;
-    font-size: 16px;
-    font-weight: bold;
-    border-bottom: 1px solid #eee;
-  }
-
-  // Chat search
-  .chat-search {
-    padding: 10px 20px;
+    width: 100%;
+    height: 100vh;
     background: #fff;
-    border-bottom: 1px solid #eee;
-  }
-
-  // Chat list
-  #chat-list-container {
-    flex: 1;
-    overflow-y: auto;
-    padding: 0;
-    margin: 0;
-    list-style: none;
-
-    li {
-      padding: 12px 20px;
-      border-bottom: 1px solid #eee;
-      cursor: pointer;
-      transition: background-color 0.2s;
-
-      &:hover {
-        background-color: #f5f5f5;
-      }
-
-      .chat-item {
-        display: flex;
-        align-items: flex-start;
-        gap: 10px;
-
-        .chat-content {
-          flex: 1;
-
-          .chat-name {
-            font-size: 14px;
-            font-weight: bold;
-            margin-bottom: 4px;
-          }
-
-          .chat-preview {
-            font-size: 13px;
-            color: #666;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-
-            .message {
-              flex: 1;
-              white-space: nowrap;
-              overflow: hidden;
-              text-overflow: ellipsis;
-            }
-
-            .timestamp {
-              font-size: 12px;
-              color: #999;
-              margin-left: 8px;
-              white-space: nowrap;
-            }
-          }
-        }
-      }
-    }
-  }
-
-  // New chat button
-  .new-chat-button {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    background: #ffe812;
-    color: #000;
-    border: none;
-    border-radius: 50%;
-    width: 50px;
-    height: 50px;
     display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    font-size: 24px;
-
-    &:hover {
-      background: #ffd900;
+    flex-direction: column;
+    overflow: hidden;
+  
+    // Chat list header
+    h2 {
+      padding: 20px;
+      margin: 0;
+      font-size: 16px;
+      font-weight: bold;
+      border-bottom: 1px solid #eee;
+    }
+  
+    // Chat search
+    .chat-search {
+      padding: 10px 20px;
+      background: #fff;
+      border-bottom: 1px solid #eee;
+    }
+  
+    // Chat list
+    #chat-list-container {
+      flex: 1;
+      overflow-y: auto;
+      padding: 0;
+      margin: 0;
+      list-style: none;
+  
+      li {
+        padding: 12px 20px;
+        border-bottom: 1px solid #eee;
+        cursor: pointer;
+        transition: background-color 0.2s;
+  
+        &:hover {
+          background-color: #f5f5f5;
+        }
+  
+        .chat-item {
+          display: flex;
+          align-items: flex-start;
+          gap: 10px;
+  
+          .chat-content {
+            flex: 1;
+  
+            .chat-name {
+              font-size: 14px;
+              font-weight: bold;
+              margin-bottom: 4px;
+            }
+  
+            .chat-preview {
+              font-size: 13px;
+              color: #666;
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+  
+              .message {
+                flex: 1;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+              }
+  
+              .timestamp {
+                font-size: 12px;
+                color: #999;
+                margin-left: 8px;
+                white-space: nowrap;
+              }
+            }
+          }
+        }
+      }
+    }
+  
+    // New chat button
+    .new-chat-button {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: #ffe812;
+      color: #000;
+      border: none;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      font-size: 24px;
+  
+      &:hover {
+        background: #ffd900;
+      }
     }
   }
-}
-
-// Scrollbar customization
-#chat-list-container::-webkit-scrollbar {
-  width: 5px;
-}
-
-#chat-list-container::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-#chat-list-container::-webkit-scrollbar-thumb {
-  background: #ddd;
-  border-radius: 3px;
-}
-
-#chat-list-container::-webkit-scrollbar-thumb:hover {
-  background: #ccc;
-}
-
-// Unread badge styles
-.unread-badge {
-  background: #ff5f4a;
-  color: white;
-  padding: 2px 6px;
-  border-radius: 10px;
-  font-size: 12px;
-  min-width: 20px;
-  text-align: center;
-  margin-left: 8px;
-}
-
-.context-menu-modal {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background: #ffffff; // ✅ 카카오톡처럼 밝은 배경
-  border-radius: 16px;
-  padding: 16px;
-  z-index: 1000;
-  min-width: 260px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
-  animation: fadeIn 0.2s ease-in-out;
-
-  ul {
-    margin: 0;
-    padding: 0;
-    list-style: none;
-
-    li {
-      color: #3c3c3c; // ✅ 카톡 스타일의 짙은 회색 텍스트
-      padding: 16px;
-      cursor: pointer;
-      font-size: 16px;
-      text-align: center;
-      font-weight: 500;
-      border-radius: 12px;
-      transition: all 0.2s ease;
-      margin: 6px 0;
-
-      &:hover {
-        background: #fce300; // ✅ 카톡 노란색 hover 효과
-        color: #3c3c3c;
-        transform: translateY(-1px);
-      }
-
-      &.leave-chat {
-        color: #ff5a5a; // ✅ 부담스럽지 않은 레드 계열
-        font-weight: 600;
-
+  
+  // Scrollbar customization
+  #chat-list-container::-webkit-scrollbar {
+    width: 5px;
+  }
+  
+  #chat-list-container::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  
+  #chat-list-container::-webkit-scrollbar-thumb {
+    background: #ddd;
+    border-radius: 3px;
+  }
+  
+  #chat-list-container::-webkit-scrollbar-thumb:hover {
+    background: #ccc;
+  }
+  
+  // Unread badge styles
+  .unread-badge {
+    background: #ff5f4a;
+    color: white;
+    padding: 2px 6px;
+    border-radius: 10px;
+    font-size: 12px;
+    min-width: 20px;
+    text-align: center;
+    margin-left: 8px;
+  }
+  
+  .context-menu-modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #ffffff; // ✅ 카카오톡처럼 밝은 배경
+    border-radius: 16px;
+    padding: 16px;
+    z-index: 1000;
+    min-width: 260px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+    animation: fadeIn 0.2s ease-in-out;
+  
+    ul {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+  
+      li {
+        color: #3c3c3c; // ✅ 카톡 스타일의 짙은 회색 텍스트
+        padding: 16px;
+        cursor: pointer;
+        font-size: 16px;
+        text-align: center;
+        font-weight: 500;
+        border-radius: 12px;
+        transition: all 0.2s ease;
+        margin: 6px 0;
+  
         &:hover {
-          background: rgba(255, 90, 90, 0.2);
+          background: #fce300; // ✅ 카톡 노란색 hover 효과
+          color: #3c3c3c;
+          transform: translateY(-1px);
+        }
+  
+        &.leave-chat {
+          color: #ff5a5a; // ✅ 부담스럽지 않은 레드 계열
+          font-weight: 600;
+  
+          &:hover {
+            background: rgba(255, 90, 90, 0.2);
+          }
         }
       }
     }
   }
-}
-
-.context-menu-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.2); // ✅ 오버레이 투명도 높여 부드럽게
-  z-index: 999;
-  backdrop-filter: blur(4px);
-  animation: fadeIn 0.2s ease-in-out;
-}
-
-.chat-messenger-container {
-  position: relative;
-
-  .chat-item {
+  
+  .context-menu-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.2); // ✅ 오버레이 투명도 높여 부드럽게
+    z-index: 999;
+    backdrop-filter: blur(4px);
+    animation: fadeIn 0.2s ease-in-out;
+  }
+  
+  .chat-messenger-container {
     position: relative;
+  
+    .chat-item {
+      position: relative;
+    }
   }
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
   }
-  to {
-    opacity: 1;
-  }
-}
