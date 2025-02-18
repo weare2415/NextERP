@@ -31,9 +31,16 @@ const MyAttendancePage = () => {
     setLoading(true);
     try {
       const data = await getAttendanceByEmployee(employeeId);
-      setAllAttendance(data); // 전체 근태 기록 저장
 
-      setAttendance(data.length > 0 ? data[0] : null); // 오늘 출근 기록 설정
+      // 오늘 날짜 구하기
+      const today = new Date().toISOString().split("T")[0];
+
+      // ✅ 당일 출퇴근 내역 필터링 (오늘 날짜인 데이터만)
+      const todayRecord = data.find((record) => record.date === today) || null;
+      setAttendance(todayRecord);
+
+      // ✅ 전체 출퇴근 내역: 기존 기록 유지 + 오늘 기록 추가 (중복 방지)
+      setAllAttendance(data);
     } catch (error) {
       console.error("❌ 근태 기록 조회 실패:", error);
     }

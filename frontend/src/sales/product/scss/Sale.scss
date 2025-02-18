@@ -70,8 +70,8 @@
         margin: 0;
       }
 
-      input,
-      select,
+      input, 
+      select, 
       textarea {
         flex: 1;
         padding: 8px 10px;
@@ -89,40 +89,40 @@
         }
       }
 
-      .suggestions-list {
-        position: absolute;
-        top: 35px; // input 높이에 맞춰 조정
-        left: 140px; // label 너비에 맞춰 조정
-        width: calc(100% - 140px);
-        background-color: white;
-        border: 1px solid #e9edf4;
-        border-top: none;
-        max-height: 200px;
-        overflow-y: auto;
-        z-index: 1000;
-        margin: 0;
-        padding: 0;
-        list-style: none;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-
-        li {
-          padding: 8px 10px;
-          cursor: pointer;
-          font-size: 14px;
-
-          &:hover {
-            background-color: #f5f7fa;
-          }
-
-          &.selected {
-            background-color: #f5f7fa;
-          }
-
-          &:not(:last-child) {
-            border-bottom: 1px solid #e9edf4;
+        .suggestions-list {
+          position: absolute;
+          top: 35px; // input 높이에 맞춰 조정
+          left: 140px; // label 너비에 맞춰 조정
+          width: calc(100% - 140px);
+          background-color: white;
+          border: 1px solid #e9edf4;
+          border-top: none;
+          max-height: 200px;
+          overflow-y: auto;
+          z-index: 1000;
+          margin: 0;
+          padding: 0;
+          list-style: none;
+          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        
+          li {
+            padding: 8px 10px;
+            cursor: pointer;
+            font-size: 14px;
+            
+            &:hover {
+              background-color: #f5f7fa;
+            }
+        
+            &.selected {
+              background-color: #f5f7fa;
+            }
+        
+            &:not(:last-child) {
+              border-bottom: 1px solid #e9edf4;
+            }
           }
         }
-      }
 
       &:has(textarea[name="memo"]) {
         grid-column: 1 / -1;
@@ -148,7 +148,7 @@
       justify-content: center;
       gap: 10px;
       margin-top: 20px;
-
+    
       button {
         width: 100px;
         height: 40px;
@@ -170,4 +170,4 @@
       }
     }
   }
-}
+  }

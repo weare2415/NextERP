@@ -1,11 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./scss/RequestOrder.scss";
-import {
-  approvePurchaseOrder,
-  approveSaleOrder,
-  rejectPurchaseOrder,
-  rejectSaleOrder,
-} from "../api/orderApi";
+import { approvePurchaseOrder, approveSaleOrder, rejectPurchaseOrder, rejectSaleOrder } from "../../order/api/orderApi";
 import { getProductById } from "../../product/api/productApi";
 
 const RequestOrder = ({ order, onClose, onUpdateSuccess }) => {
@@ -66,16 +61,14 @@ const RequestOrder = ({ order, onClose, onUpdateSuccess }) => {
   };
 
   return (
-    <div className="modal-container">
-      <div className="modal-header">
+    <div className="request-product-detail-form">
+      <div className="request-product-detail-header">
         <h2>거래 승인 요청</h2>
         <button className="close-button" onClick={onClose}>
           X
         </button>
       </div>
-      <div className="modal-content">
         <form>
-          <div className="form-grid">
             <div className="form-group">
               <label>제품 번호</label>
               <input type="text" value={order.productId} readOnly />
@@ -98,11 +91,7 @@ const RequestOrder = ({ order, onClose, onUpdateSuccess }) => {
 
             <div className="form-group">
               <label>판매/구매</label>
-              <input
-                type="text"
-                value={order.orderType === "SALE" ? "판매" : "구매"}
-                readOnly
-              />
+              <input type="text" value={order.orderType === "SALE" ? "판매" : "구매"} readOnly />
             </div>
 
             <div className="form-group">
@@ -113,11 +102,19 @@ const RequestOrder = ({ order, onClose, onUpdateSuccess }) => {
             <div className="form-group">
               <label>제품 재고</label>
               <input type="text" value={productData.stock} readOnly />
-            </div>
           </div>
 
-          {/* ✅ 버튼 컨테이너 */}
-          <div className="button-container">
+          <div className="form-group">
+              <label>주문 일자</label>
+              <input type="text" readOnly />
+          </div>
+
+          <div className="form-group">
+                <label>메모</label>
+                <textarea name="memo" value={order.memo} readOnly />
+          </div>
+
+          <div className="request-product-detail-buttons">
             <button
               type="button"
               onClick={handleApprove}
@@ -135,7 +132,6 @@ const RequestOrder = ({ order, onClose, onUpdateSuccess }) => {
           </div>
         </form>
       </div>
-    </div>
   );
 };
 

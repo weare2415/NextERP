@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import BasicLayout from "../../../common/pages/BasicLayout";
 import "../scss/MyAttendanceRequestPage.scss";
 import { getAttendanceByEmployee } from "../api/attendanceApi";
-import SearchAttendance from "../components/SearchAttendance";
+import MySearchAttendance from "../components/SearchAttendance";
 import MyAttendanceRequestList from "../components/MyAttendanceRequestList";
 import RequestAttendance from "../components/RequestAttendance";
 
@@ -50,7 +50,7 @@ const MyAttendanceRequestPage = () => {
         <div className="employee-attendance-page-header">
           <h1>My 근태 신청 조회</h1>
           <div className="employee-attendance-header-right">
-            <SearchAttendance />
+            <MySearchAttendance />
             <button
               className="attendance-request-btn"
               onClick={() => setIsModalOpen(true)}

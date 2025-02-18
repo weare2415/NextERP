@@ -1,9 +1,11 @@
 // 1. 전체 직원 급여 정보 조회
 import axiosInstance from '../../../common/api/mainApi';
 
-export const fetchAllEmployeeSalaries = async () => {
+export const fetchAllEmployeeSalaries = async (page, size) => {
 	try {
-		const response = await axiosInstance.get("/api/employee-salaries");
+		const response = await axiosInstance.get("/api/employee-salaries",{
+			params:{page, size},
+		});
 		return response.data;
 	} catch (error) {
 		console.error("직원 급여 정보를 불러오는 중 오류 발생:", error);

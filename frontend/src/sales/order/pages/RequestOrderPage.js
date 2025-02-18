@@ -30,9 +30,9 @@ const RequestOrderPage = () => {
 
   return (
     <BasicLayout>
-      <div className="Request-page">
+      <div className="request-order-page-container">
         <div className="page-header">
-          <h2>주문 승인 요청 관리</h2>
+          <h1>주문 승인 요청 관리</h1>
         </div>
 
         <ListRequestOrder

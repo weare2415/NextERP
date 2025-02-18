@@ -10,6 +10,7 @@ import "../scss/AnnouncementList.scss";
 import { getAllAnnouncements } from "../api/announcementApi";
 import { getEmployeeById } from "../../HR/employee/api/employeeApi";
 import AnnouncementDetail from "./AnnouncementDetail";
+import Pagination from "../../common/component/Pagination";
 
 const positionMap = {
   1: "인턴",
@@ -105,11 +106,11 @@ const AnnouncementList = forwardRef(
     }));
 
     return (
-      <div className="announcement-list">
+      <div className="announcement-list-wrapper">
         {loading && <p>⏳ 불러오는 중...</p>}
         {error && <p className="error-message">{error}</p>}
 
-        {!loading && !error && filteredAnnouncements.length > 0 ? (
+        <div className="announcement-table-section">
           <table>
             <thead>
               <tr>
@@ -123,37 +124,44 @@ const AnnouncementList = forwardRef(
               </tr>
             </thead>
             <tbody>
-              {filteredAnnouncements.map((announcement) => (
-                <tr
-                  key={announcement.id}
-                  onClick={() => handleAnnouncementClick(announcement)}
-                >
-                  <td>{announcement.title}</td>
-                  <td>{announcement.content}</td>
-                  <td>{announcement.authorName}</td>
-                  <td>
-                    {announcement.departmentId
-                      ? departmentMap[announcement.departmentId] || "알 수 없음"
-                      : "전체"}
-                  </td>
-                  <td>
-                    {announcement.positionId
-                      ? positionMap[announcement.positionId] || "N/A"
-                      : "N/A"}
-                  </td>
-                  <td>{new Date(announcement.createdAt).toLocaleString()}</td>
-                  <td>
-                    {announcement.updatedAt
-                      ? new Date(announcement.updatedAt).toLocaleString()
-                      : "-"}
+              {filteredAnnouncements.length > 0 ? (
+                filteredAnnouncements.map((announcement) => (
+                  <tr
+                    key={announcement.id}
+                    onClick={() => handleAnnouncementClick(announcement)}
+                  >
+                    <td>{announcement.title}</td>
+                    <td>{announcement.content}</td>
+                    <td>{announcement.authorName}</td>
+                    <td>
+                      {announcement.departmentId
+                        ? departmentMap[announcement.departmentId] ||
+                          "알 수 없음"
+                        : "전체"}
+                    </td>
+                    <td>
+                      {announcement.positionId
+                        ? positionMap[announcement.positionId] || "N/A"
+                        : "N/A"}
+                    </td>
+                    <td>{new Date(announcement.createdAt).toLocaleString()}</td>
+                    <td>
+                      {announcement.updatedAt
+                        ? new Date(announcement.updatedAt).toLocaleString()
+                        : "-"}
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan="7" style={{ textAlign: "center" }}>
+                    등록된 공지사항이 없습니다.
                   </td>
                 </tr>
-              ))}
+              )}
             </tbody>
           </table>
-        ) : (
-          !loading && !error && <p>📌 등록된 공지사항이 없습니다.</p>
-        )}
+        </div>
 
         {isModalOpen && selectedAnnouncement && (
           <AnnouncementDetail
@@ -166,5 +174,4 @@ const AnnouncementList = forwardRef(
     );
   }
 );
-
 export default AnnouncementList;

@@ -112,112 +112,118 @@ const AnnouncementDetail = ({ announcement, onClose, onUpdateTrigger }) => {
   };
 
   return (
-    <div className="modal-overlay" onClick={onClose}>
-      <div className="modal-container" onClick={(e) => e.stopPropagation()}>
-        <div className="modal-header">
-          <h2>📌 공지사항 상세</h2>
-          <button className="close-button" onClick={onClose}>
-            ×
-          </button>
-        </div>
-
-        <div className="modal-content">
-          <div className="announcement-detail">
-            <p>
-              <strong>공지 ID:</strong> {announcement.id}
-            </p>
-            {isEditing ? (
-              <>
-                <div className="form-group">
-                  <label>
-                    <strong>제목:</strong>
-                  </label>
-                  <input
-                    type="text"
-                    name="title"
-                    value={editedAnnouncement.title}
-                    onChange={handleChange}
-                  />
-                </div>
-                <div className="form-group">
-                  <label>
-                    <strong>내용:</strong>
-                  </label>
-                  <textarea
-                    name="content"
-                    value={editedAnnouncement.content}
-                    onChange={handleChange}
-                  />
-                </div>
-              </>
-            ) : (
-              <>
-                <p>
-                  <strong>제목:</strong> {announcement.title}
-                </p>
-                <p>
-                  <strong>내용:</strong> {announcement.content}
-                </p>
-              </>
-            )}
-            <p>
-              <strong>작성자:</strong> {announcement.authorName} (ID:{" "}
-              {announcement.authorId})
-            </p>
-            <p>
-              <strong>부서:</strong>{" "}
-              {announcement.departmentId
-                ? departmentMap[announcement.departmentId] || "알 수 없음"
-                : "전체"}
-            </p>
-            <p>
-              <strong>직위:</strong>{" "}
-              {announcement.positionId
-                ? positionMap[announcement.positionId] || "N/A"
-                : "N/A"}
-            </p>
-            <p>
-              <strong>작성일시:</strong>{" "}
-              {new Date(announcement.createdAt).toLocaleString()}
-            </p>
-            <p>
-              <strong>수정일시:</strong>{" "}
-              {announcement.updatedAt
-                ? new Date(announcement.updatedAt).toLocaleString()
-                : "-"}
-            </p>
-          </div>
-        </div>
-
-        <div className="modal-footer">
-          {isAuthor &&
-            (isEditing ? (
-              <>
-                <button className="save-btn" onClick={handleUpdate}>
-                  저장
-                </button>
-                <button
-                  className="cancel-btn"
-                  onClick={() => setIsEditing(false)}
-                >
-                  취소
-                </button>
-              </>
-            ) : (
-              <>
-                <button className="edit-btn" onClick={() => setIsEditing(true)}>
-                  수정
-                </button>
-                <button className="delete-btn" onClick={handleDelete}>
-                  삭제
-                </button>
-              </>
-            ))}
-          <button className="close-btn" onClick={onClose}>
-            닫기
-          </button>
-        </div>
+    <div className="announcement-detail-form">
+      <div className="announcement-detail-header">
+        <h2>공지사항 상세</h2>
+        <button className="close-button" onClick={onClose}>
+          X
+        </button>
       </div>
+      <form>
+        <div className="form-group">
+          <label>공지 ID</label>
+          <input type="text" name="id" value={announcement.id} readOnly />
+        </div>
+
+        <div className="form-group">
+          <label>제목</label>
+          <input
+            type="text"
+            name="title"
+            value={editedAnnouncement.title}
+            onChange={handleChange}
+            readOnly={!isEditing}
+          />
+        </div>
+
+        <div className="form-group">
+          <label>작성자</label>
+          <input
+            type="text"
+            value={`${announcement.authorName} (ID: ${announcement.authorId})`}
+            readOnly
+          />
+        </div>
+
+        <div className="form-group">
+          <label>부서</label>
+          <input
+            type="text"
+            value={
+              announcement.departmentId
+                ? departmentMap[announcement.departmentId] || "알 수 없음"
+                : "전체"
+            }
+            readOnly
+          />
+        </div>
+
+        <div className="form-group">
+          <label>직위</label>
+          <input
+            type="text"
+            value={
+              announcement.positionId
+                ? positionMap[announcement.positionId] || "N/A"
+                : "N/A"
+            }
+            readOnly
+          />
+        </div>
+
+        <div className="form-group">
+          <label>작성일시</label>
+          <input
+            type="text"
+            value={new Date(announcement.createdAt).toLocaleString()}
+            readOnly
+          />
+        </div>
+
+        <div className="form-group">
+          <label>수정일시</label>
+          <input
+            type="text"
+            value={
+              announcement.updatedAt
+                ? new Date(announcement.updatedAt).toLocaleString()
+                : "-"
+            }
+            readOnly
+          />
+        </div>
+
+        <div className="form-group">
+          <label>내용</label>
+          <textarea
+            name="content"
+            value={editedAnnouncement.content}
+            onChange={handleChange}
+            readOnly={!isEditing}
+          />
+        </div>
+
+        <div className="announcement-detail-buttons">
+          {isAuthor && (
+            <>
+              <button
+                type="button"
+                onClick={() => setIsEditing(true)}
+                className="update-button"
+              >
+                수정
+              </button>
+              <button
+                type="button"
+                onClick={handleDelete}
+                className="delete-button"
+              >
+                삭제
+              </button>
+            </>
+          )}
+        </div>
+      </form>
     </div>
   );
 };

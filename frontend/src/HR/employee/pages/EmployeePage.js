@@ -69,6 +69,10 @@ const EmployeePage = () => {
           searchCategory={searchCategory} 
         />
 
+        <form>
+
+        </form>
+
         {/* 직원 등록 모달 */}
         {showCreateForm && (
           <div className="modal-overlay">

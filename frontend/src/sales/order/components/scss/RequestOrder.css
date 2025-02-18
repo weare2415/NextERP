@@ -70,7 +70,6 @@ body {
   display: flex;
   align-items: center;
   margin-bottom: 1px;
-  position: relative;
 }
 .request-product-detail-form form .form-group label {
   width: 140px;
@@ -102,29 +101,6 @@ body {
 .request-product-detail-form form .form-group textarea:focus {
   outline: none;
   border-color: #929fb4;
-}
-.request-product-detail-form form .form-group .suggestions-list {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  width: 100%;
-  background: white;
-  border: 1px solid gray;
-  border-radius: 4px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  max-height: 200px;
-  overflow-y: auto;
-  z-index: 100;
-}
-.request-product-detail-form form .form-group .suggestions-list li {
-  padding: 8px 12px;
-  cursor: pointer;
-  font-family: "Apple SD Gothic Neo", sans-serif;
-  transition: background 0.2s;
-}
-.request-product-detail-form form .form-group .suggestions-list li:hover, .request-product-detail-form form .form-group .suggestions-list li.selected {
-  background-color: #3c485a;
-  color: white;
 }
 .request-product-detail-form form .form-group:has(textarea[name=memo]) {
   grid-column: 1/-1;

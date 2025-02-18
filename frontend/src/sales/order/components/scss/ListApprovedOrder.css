@@ -61,15 +61,15 @@ body {
 }
 .order-list table th:nth-child(2),
 .order-list table td:nth-child(2) {
-  width: 6%;
+  width: 12%;
 }
 .order-list table th:nth-child(3),
 .order-list table td:nth-child(3) {
-  width: 6%;
+  width: 8%;
 }
 .order-list table th:nth-child(4),
 .order-list table td:nth-child(4) {
-  width: 15%;
+  width: 12%;
 }
 .order-list table th:nth-child(5),
 .order-list table td:nth-child(5) {
@@ -85,7 +85,7 @@ body {
 }
 .order-list table th:nth-child(8),
 .order-list table td:nth-child(8) {
-  width: 15%;
+  width: 10%;
 }
 .order-list table th:nth-child(9),
 .order-list table td:nth-child(9) {

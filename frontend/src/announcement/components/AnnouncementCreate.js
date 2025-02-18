@@ -122,21 +122,22 @@ const AnnouncementCreate = ({ onClose, onAddSuccess }) => {
   };
 
   return (
-    <div className="modal-overlay" onClick={onClose}>
-      {" "}
-      {/* ✅ 모달 바깥 클릭 시 닫기 */}
-      <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-        {" "}
-        {/* ✅ 내부 클릭 시 닫히지 않음 */}
-        <h3>📢 공지사항 생성</h3>
-        {!employeeId ? (
-          <p className="error-message">⚠️ 로그인이 필요합니다.</p>
-        ) : !isAuthorized ? (
-          <p className="error-message">
-            ⚠️ 공지사항을 작성할 권한이 없습니다. (차장 이상만 가능)
-          </p>
-        ) : (
-          <form onSubmit={handleSubmit}>
+    <div className="announcement-create-form">
+      <div className="announcement-create-header">
+        <h2>공지사항 생성</h2>
+        <button className="close-button" onClick={onClose}>
+          X
+        </button>
+      </div>
+      {!employeeId ? (
+        <p className="modal-error-message">⚠️ 로그인이 필요합니다.</p>
+      ) : !isAuthorized ? (
+        <p className="modal-error-message">
+          ⚠️ 공지사항을 작성할 권한이 없습니다. (차장 이상만 가능)
+        </p>
+      ) : (
+        <form onSubmit={handleSubmit}>
+          <div className="form-group">
             <input
               type="text"
               name="title"
@@ -153,8 +154,7 @@ const AnnouncementCreate = ({ onClose, onAddSuccess }) => {
               required
             />
 
-            {/* ✅ 전체 공지사항 체크박스 */}
-            {isGlobalAnnouncement && (
+            {announcement.isGlobal && (
               <label>
                 <input
                   type="checkbox"
@@ -165,7 +165,6 @@ const AnnouncementCreate = ({ onClose, onAddSuccess }) => {
               </label>
             )}
 
-            {/* ✅ 로그인된 사용자 정보 자동 입력 (보이지만 수정 불가) */}
             <input
               type="hidden"
               name="authorId"
@@ -182,7 +181,6 @@ const AnnouncementCreate = ({ onClose, onAddSuccess }) => {
               }
               readOnly
             />
-
             <input
               type="hidden"
               name="positionId"
@@ -194,16 +192,19 @@ const AnnouncementCreate = ({ onClose, onAddSuccess }) => {
               readOnly
             />
 
-            <div className="button-group">
+            <div className="modal-button-group">
               <button type="submit">공지 생성</button>
-              <button type="button" onClick={onClose} className="cancel-btn">
+              <button
+                type="button"
+                onClick={onClose}
+                className="modal-cancel-btn"
+              >
                 취소
-              </button>{" "}
-              {/* ✅ 취소 버튼 추가 */}
+              </button>
             </div>
-          </form>
-        )}
-      </div>
+          </div>
+        </form>
+      )}
     </div>
   );
 };

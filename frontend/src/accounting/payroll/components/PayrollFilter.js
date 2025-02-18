@@ -19,6 +19,7 @@ const PayrollFilter = ({ setPayrolls }) => {
 			employees.map(async (employee) => {
 			  try {
 				const salaryInfo = await fetchEmployeeSalaryById(employee.id);
+				console.log(salaryInfo);
 				return { ...salaryInfo, employeeName: employee.name };
 			  } catch (error) {
 				console.error(
@@ -41,19 +42,19 @@ const PayrollFilter = ({ setPayrolls }) => {
 	};
   
 	return (
-	  <div className="search-payroll-container">
-		<form className="search-payroll-form">
-			<div className="search-input-wrapper">
-		<input
-		  type="text"
-		  placeholder="직원 이름 검색"
-		  value={searchTerm}
-		  onChange={(e) => setSearchTerm(e.target.value)}
-		/>
-		</div>
-		<button onClick={handleSearch}>검색</button>
-		</form>
-	  </div>
+			<div className="search-payroll-container">
+				<form className="search-payroll-form">
+					<div className="search-input-wrapper">
+						<input
+								type="text"
+								placeholder="직원 이름 검색"
+								value={searchTerm}
+								onChange={(e) => setSearchTerm(e.target.value)}
+						/>
+					</div>
+					<button onClick={handleSearch}>검색</button>
+				</form>
+			</div>
 	);
   };
   

@@ -1,0 +1,185 @@
+@import "../../../../App";
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-container {
+  position: relative;
+  background-color: white;
+  border-radius: 4px;
+  width: 90%;
+  max-width: 700px;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* 모달 헤더 (제목): 왼쪽 정렬 */
+h2 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 500;
+  color: white;
+  background-color: $primary-color;
+  padding: 15px 20px;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+  text-align: left;
+}
+
+/* X 버튼: 오른쪽 중간에 위치 */
+.modal-close-btn {
+  position: absolute;
+  top: 15px; // 헤더의 패딩과 동일하게
+  right: 20px;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 20px;
+  cursor: pointer;
+
+  &:hover {
+    opacity: 0.8;
+  }
+}
+
+.salary-form {
+  padding: 20px;
+  overflow-y: auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+
+  .form-group:first-of-type {
+    grid-column: 1 / -1;
+  }
+
+  .employee-results,
+  .submit-btn {
+    grid-column: 1 / -1;
+  }
+}
+
+/* 기존 .form-group 스타일 */
+.form-group {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0; // 아래쪽 여백 제거
+
+  label {
+    width: 140px;
+    background-color: #e9edf4;
+    padding: 8px 15px;
+    font-size: 14px;
+    color: $primary-color;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+  }
+
+  input,
+  select,
+  textarea {
+    flex: 1;
+    padding: 8px 10px;
+    border: 1px solid #e9edf4;
+    font-family: $font-primary;
+    font-size: 14px;
+    height: 35px;
+    width: 100%; // 입력창을 100% 너비로 확장
+    border-radius: 0;
+    margin: 0;
+
+    &:focus {
+      outline: none;
+      border-color: $secondary-color;
+    }
+  }
+}
+
+.search-wrapper {
+  display: flex;
+  gap: 5px;
+  width: 80%;
+
+  button {
+    background-color: $primary-color;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    cursor: pointer;
+    border-radius: 4px;
+    height: 35px; /* 버튼의 높이도 일치시킴 */
+    width: auto; /* 버튼 너비를 자동으로 설정하여 더 길게 조정 */
+
+    &:hover {
+      background-color: darken($primary-color, 10%);
+    }
+  }
+}
+
+/* 직원 검색 결과: 상단 여백 제거 */
+.employee-results {
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  max-height: 150px;
+  overflow-y: auto;
+  margin-top: 0; // 위쪽 여백 제거
+
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+
+    li {
+      padding: 10px;
+      cursor: pointer;
+
+      &:hover {
+        background-color: #f5f5f5;
+      }
+    }
+  }
+}
+
+/* 저장 버튼: 중앙 정렬 및 여백 제거 */
+.submit-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 30px; // 위쪽 여백 제거
+  background-color: $primary-color;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  width: 80px;
+  height: 35px;
+  padding: 5px 10px;
+  justify-self: center; // 그리드 셀 내에서 중앙 배치
+
+  &:hover {
+    background-color: darken($primary-color, 10%);
+  }
+
+  &:disabled {
+    background-color: gray;
+    cursor: not-allowed;
+  }
+}

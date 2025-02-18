@@ -34,13 +34,15 @@ body {
   border-collapse: collapse;
   table-layout: fixed;
 }
-.client-table-section table th, .client-table-section table td {
+.client-table-section table th,
+.client-table-section table td {
   padding: 15px;
   text-align: center;
   border: 1px solid #ddd;
   word-wrap: break-word;
 }
-.client-table-section table th:first-child, .client-table-section table td:first-child {
+.client-table-section table th:first-child,
+.client-table-section table td:first-child {
   border-left: none;
 }
 .client-table-section table th {
@@ -53,22 +55,28 @@ body {
 .client-table-section table tr:hover {
   background-color: #f8f9fa;
 }
-.client-table-section table th:nth-child(1), .client-table-section table td:nth-child(1) {
+.client-table-section table th:nth-child(1),
+.client-table-section table td:nth-child(1) {
   width: 10%;
 }
-.client-table-section table th:nth-child(2), .client-table-section table td:nth-child(2) {
+.client-table-section table th:nth-child(2),
+.client-table-section table td:nth-child(2) {
   width: 20%;
 }
-.client-table-section table th:nth-child(3), .client-table-section table td:nth-child(3) {
+.client-table-section table th:nth-child(3),
+.client-table-section table td:nth-child(3) {
   width: 15%;
 }
-.client-table-section table th:nth-child(4), .client-table-section table td:nth-child(4) {
+.client-table-section table th:nth-child(4),
+.client-table-section table td:nth-child(4) {
   width: 25%;
 }
-.client-table-section table th:nth-child(5), .client-table-section table td:nth-child(5) {
+.client-table-section table th:nth-child(5),
+.client-table-section table td:nth-child(5) {
   width: 15%;
 }
-.client-table-section table th:nth-child(6), .client-table-section table td:nth-child(6) {
+.client-table-section table th:nth-child(6),
+.client-table-section table td:nth-child(6) {
   width: 15%;
 }
 .client-table-section table .client-table-name-btn {
