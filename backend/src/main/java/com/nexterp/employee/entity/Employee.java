@@ -67,6 +67,6 @@ public class Employee {
     @JoinColumn(name = "parent_employee_id")
     private Employee parent; // 수정 요청 시 부모 Client 참조
 
-}
+    }
 
 

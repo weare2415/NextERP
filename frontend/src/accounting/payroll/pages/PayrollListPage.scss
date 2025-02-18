@@ -1,0 +1,44 @@
+@import "../../../App";
+
+.payroll-page-container {
+  max-width: 90%;
+  margin: auto;
+  position: relative;
+
+  .payroll-page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+
+    h1 {
+      color: $primary-color;
+      font-family: $font-primary;
+      margin: 0;
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .new-payroll-btn {
+      padding: 8px 16px;
+      background-color: $primary-color;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-family: $font-primary;
+      height: 38px; // 검색 버튼과 동일한 높이로 설정
+      display: flex;
+      align-items: center;
+
+      &:hover {
+        background-color: darken($primary-color, 10%);
+      }
+    }
+  }
+}

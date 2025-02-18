@@ -19,9 +19,7 @@ const SearchAttendance = ({ setFilteredAttendances }) => {
     재택근무: "REMOTE_WORK",
   };
 
-  const handleSearch = async (event) => {
-    event.preventDefault(); // 폼 제출 방지
-
+  const handleSearch = async () => {
     if (!searchValue.trim()) {
       alert("검색어를 입력하세요.");
       return;
@@ -68,7 +66,7 @@ const SearchAttendance = ({ setFilteredAttendances }) => {
           value={searchValue}
           onChange={(e) => setSearchValue(e.target.value)}
         />
-        <button onClick={(e) => handleSearch(e)}>검색</button>
+        <button onClick={handleSearch}>검색</button>
       </form>
     </div>
   );

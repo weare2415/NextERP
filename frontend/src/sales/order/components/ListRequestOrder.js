@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from "react";
-import "./scss/ListRequestOrder.css";
+import "./scss/ListRequestOrder.scss";
 import { getProductById } from "../../product/api/productApi";
 import { getClientById } from "../../client/api/clientApi";
 import RequestOrder from "./RequestOrder";
-import useEmployeeNames from "../../../common/hooks/useEmployeeNames";
+import useEmployeeNames from '../../../common/hooks/useEmployeeNames';
 
-const ListRequestOrder = ({ orders, onUpdateSuccess }) => {
+const ListRequestOrder = ({
+  orders,
+  onUpdateSuccess,
+}) => {
   const employeeNames = useEmployeeNames(orders, "employeeId");
   const [productNames, setProductNames] = useState({});
   const [clientNames, setClientNames] = useState({});
@@ -44,21 +47,21 @@ const ListRequestOrder = ({ orders, onUpdateSuccess }) => {
       const clientData = {};
 
       await Promise.all(
-        clientCodes.map(async (code) => {
-          try {
-            const response = await getClientById(code); // API 호출
+          clientCodes.map(async (code) => {
+            try {
+              const response = await getClientById(code); // API 호출
 
-            // Page 형식 응답 처리: content 배열이 있는지 확인 후 첫 번째 요소 가져오기
-            if (response?.content?.length > 0) {
-              clientData[code] = response.content[0].clientName;
-            } else {
-              clientData[code] = "알 수 없음"; // 데이터가 없을 경우 기본값 설정
+              // Page 형식 응답 처리: content 배열이 있는지 확인 후 첫 번째 요소 가져오기
+              if (response?.content?.length > 0) {
+                clientData[code] = response.content[0].clientName;
+              } else {
+                clientData[code] = "알 수 없음"; // 데이터가 없을 경우 기본값 설정
+              }
+            } catch (error) {
+              console.error(`거래처 정보 조회 오류 (코드: ${code})`, error);
+              clientData[code] = "알 수 없음";
             }
-          } catch (error) {
-            console.error(`거래처 정보 조회 오류 (코드: ${code})`, error);
-            clientData[code] = "알 수 없음";
-          }
-        })
+          })
       );
 
       setClientNames(clientData);
@@ -88,15 +91,15 @@ const ListRequestOrder = ({ orders, onUpdateSuccess }) => {
 
   return (
     <>
-      <div className="request-product-list-wrapper">
-        <div className="product-table-section">
-          <table>
+      <div className="request-order-list-wrapper">
+        <div className="request-order-table-section">
+          <table className="request-order-list">
             <thead>
               <tr>
-                <th>제품ID</th>
+                <th>제품 ID</th>
                 <th>제품명</th>
-                <th>기업명</th>
-                <th>수량</th>
+                <th>주문 기업명</th>
+                <th>주문 수량</th>
                 <th>판매/구매</th>
                 <th>승인 요청자</th>
               </tr>
@@ -108,20 +111,13 @@ const ListRequestOrder = ({ orders, onUpdateSuccess }) => {
                     <td>{order.productId}</td>
                     <td>
                       <button
-                        className="product-table-name-btn"
+                        className="order-list-name-btn"
                         onClick={() => handleOrderClick(order)}
                       >
                         {productNames[order.productId] || "Loading..."}
                       </button>
                     </td>
-                    <td>
-                      <button
-                        className="order-name-btn"
-                        onClick={() => handleOrderClick(order)}
-                      >
-                        {clientNames[order.clientCode] || "Loading..."}
-                      </button>
-                    </td>
+                    <td>{clientNames[order.clientCode] || "Loading..."}</td>
                     <td>{order.orderCount} 개</td>
                     <td>{order.orderType === "SALE" ? "판매" : "구매"}</td>
                     <td>{employeeNames[order.employeeId] || "Loading..."}</td>
@@ -141,8 +137,8 @@ const ListRequestOrder = ({ orders, onUpdateSuccess }) => {
 
       {/* ✅ 모달 적용 */}
       {showModal && selectedOrder && (
-        <div className="modal-overlay" onClick={() => setShowModal(false)}>
-          <div className="modal-wrapper" onClick={(e) => e.stopPropagation()}>
+        <div onClick={() => setShowModal(false)}>
+          <div onClick={(e) => e.stopPropagation()}>
             <RequestOrder
               order={selectedOrder}
               onClose={() => setShowModal(false)}

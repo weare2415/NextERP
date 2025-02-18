@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { createEmployee ,checkEmployeeIdExists } from "../api/employeeApi";
+import { createEmployee, checkEmployeeIdExists } from "../api/employeeApi";
 import "../scss/CreateEmployee.scss";
 
 const departments = [
@@ -34,8 +34,8 @@ const CreateEmployee = ({ onClose, onSuccess }) => {
     terminationDate: null,
   });
 
-  const [idError, setIdError] = useState(""); 
-  const [isIdAvailable, setIsIdAvailable] = useState(false); 
+  const [idError, setIdError] = useState("");
+  const [isIdAvailable, setIsIdAvailable] = useState(false);
 
   const handleIdChange = async (e) => {
     const id = e.target.value;
@@ -46,7 +46,7 @@ const CreateEmployee = ({ onClose, onSuccess }) => {
       const exists = await checkEmployeeIdExists(id);
       if (exists) {
         setIdError("❌ 이미 존재하는 ID입니다.");
-        setIsIdAvailable(false); 
+        setIsIdAvailable(false);
       } else {
         setIdError("✅ 사용 가능한 ID입니다.");
         setIsIdAvailable(true);
@@ -212,9 +212,6 @@ const CreateEmployee = ({ onClose, onSuccess }) => {
           <div className="button-group">
             <button type="submit" disabled={!isIdAvailable}>
               등록
-            </button>
-            <button type="button" className="cancel-btn" onClick={onClose}>
-              취소
             </button>
           </div>
         </form>

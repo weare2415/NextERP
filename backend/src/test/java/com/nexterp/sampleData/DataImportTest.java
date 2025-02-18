@@ -76,20 +76,20 @@ public class DataImportTest {
       if (row == null) continue;
 
       ClientDTO clientDTO = ClientDTO.builder()
-              .clientName(getCellStringValue(row.getCell(1)))
-              .clientCode(getCellStringValue(row.getCell(2)))
-              .clientPhone(getCellStringValue(row.getCell(3)))
-              .zipCode(getCellStringValue(row.getCell(4)))
-              .clientAddress(getCellStringValue(row.getCell(5)))
-              .clientDetailedAddress(getCellStringValue(row.getCell(6)))
-              .clientEmail(getCellStringValue(row.getCell(7)))
-              .registrationNumber(getCellStringValue(row.getCell(8)))
-              .clientBank(getCellStringValue(row.getCell(9)))
-              .clientAccountNumber(getCellStringValue(row.getCell(10)))
-              .clientAccountOwner(getCellStringValue(row.getCell(11)))
-              .memo(getCellStringValue(row.getCell(12)))
-              .employeeId((int) row.getCell(13).getNumericCellValue())
-              .build();
+          .clientName(getCellStringValue(row.getCell(1)))
+          .clientCode(getCellStringValue(row.getCell(2)))
+          .clientPhone(getCellStringValue(row.getCell(3)))
+          .zipCode(getCellStringValue(row.getCell(4)))
+          .clientAddress(getCellStringValue(row.getCell(5)))
+          .clientDetailedAddress(getCellStringValue(row.getCell(6)))
+          .clientEmail(getCellStringValue(row.getCell(7)))
+          .registrationNumber(getCellStringValue(row.getCell(8)))
+          .clientBank(getCellStringValue(row.getCell(9)))
+          .clientAccountNumber(getCellStringValue(row.getCell(10)))
+          .clientAccountOwner(getCellStringValue(row.getCell(11)))
+          .memo(getCellStringValue(row.getCell(12)))
+          .employeeId((int) row.getCell(13).getNumericCellValue())
+          .build();
 
       clientDTOList.add(clientDTO);
     }
@@ -107,16 +107,16 @@ public class DataImportTest {
       if (row == null) continue;
 
       ProductDTO productDTO = ProductDTO.builder()
-              .productName(row.getCell(0).getStringCellValue().trim())
-              .purchasePrice(BigDecimal.valueOf(row.getCell(1).getNumericCellValue()))
-              .salePrice(BigDecimal.valueOf(row.getCell(2).getNumericCellValue()))
-              .createdDate(convertExcelDateToLocalDate(row.getCell(3)))
-              .stock((int) row.getCell(4).getNumericCellValue())
-              .specifications(row.getCell(5).getStringCellValue().trim())
-              .memo(row.getCell(6).getStringCellValue().trim())
-              .isDeleted(row.getCell(7).getBooleanCellValue())
-              .employeeId((int) row.getCell(8).getNumericCellValue())
-              .build();
+          .productName(row.getCell(0).getStringCellValue().trim())
+          .purchasePrice(BigDecimal.valueOf(row.getCell(1).getNumericCellValue()))
+          .salePrice(BigDecimal.valueOf(row.getCell(2).getNumericCellValue()))
+          .createdDate(convertExcelDateToLocalDate(row.getCell(3)))
+          .stock((int) row.getCell(4).getNumericCellValue())
+          .specifications(row.getCell(5).getStringCellValue().trim())
+          .memo(row.getCell(6).getStringCellValue().trim())
+          .isDeleted(row.getCell(7).getBooleanCellValue())
+          .employeeId((int) row.getCell(8).getNumericCellValue())
+          .build();
 
       productDTOList.add(productDTO);
     }

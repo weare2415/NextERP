@@ -1,113 +1,111 @@
-@import "../../App.scss";
-
 .chat-search-container {
-  position: relative;
-  padding: 8px 12px;
-  border-bottom: 1px solid #ddd;
-
-  .search-input-wrapper {
     position: relative;
-    display: flex;
-    align-items: center;
-
-    input {
-      width: 100%;
-      padding: 6px 30px 6px 12px;
-      background: #f7f7f7;
-      border: none;
-      border-radius: 15px;
-      font-size: 13px;
-      color: #333;
-
-      &::placeholder {
-        color: #999;
-      }
-
-      &:focus {
-        outline: none;
-        background: #f0f0f0;
-      }
-    }
-
-    .search-button {
-      position: absolute;
-      right: 25px;
-      background: none;
-      border: none;
-      color: #999;
-      cursor: pointer;
-      padding: 4px;
-      font-size: 12px;
-
-      &:hover {
-        color: #666;
-      }
-    }
-
-    .clear-button {
-      position: absolute;
-      right: 5px;
-      background: none;
-      border: none;
-      color: #999;
-      cursor: pointer;
-      padding: 4px;
-      font-size: 12px;
-
-      &:hover {
-        color: #666;
-      }
-    }
-  }
-
-  // 자동완성 목록
-  .suggestions-list {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    right: 0;
-    background: white;
-    border: 1px solid #eee;
-    border-radius: 8px;
-    margin-top: 4px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    z-index: 1000;
-    max-height: 200px;
-    overflow-y: auto;
-
-    ul {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-
-      li {
-        padding: 8px 12px;
-        cursor: pointer;
+    padding: 8px 12px;
+    border-bottom: 1px solid #ddd;
+  
+    .search-input-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+  
+      input {
+        width: 100%;
+        padding: 6px 30px 6px 12px;
+        background: #f7f7f7;
+        border: none;
+        border-radius: 15px;
         font-size: 13px;
         color: #333;
-
-        &:hover {
-          background: #f7f7f7;
+  
+        &::placeholder {
+          color: #999;
         }
-
-        &:not(:last-child) {
-          border-bottom: 1px solid #eee;
+  
+        &:focus {
+          outline: none;
+          background: #f0f0f0;
+        }
+      }
+  
+      .search-button {
+        position: absolute;
+        right: 25px;
+        background: none;
+        border: none;
+        color: #999;
+        cursor: pointer;
+        padding: 4px;
+        font-size: 12px;
+  
+        &:hover {
+          color: #666;
+        }
+      }
+  
+      .clear-button {
+        position: absolute;
+        right: 5px;
+        background: none;
+        border: none;
+        color: #999;
+        cursor: pointer;
+        padding: 4px;
+        font-size: 12px;
+  
+        &:hover {
+          color: #666;
         }
       }
     }
-
-    // 스크롤바 커스텀
-    &::-webkit-scrollbar {
-      width: 5px;
-    }
-
-    &::-webkit-scrollbar-thumb {
-      background: #ddd;
-      border-radius: 5px;
-    }
-
-    &::-webkit-scrollbar-track {
-      background: transparent;
+  
+    // 자동완성 목록
+    .suggestions-list {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background: white;
+      border: 1px solid #eee;
+      border-radius: 8px;
+      margin-top: 4px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      z-index: 1000;
+      max-height: 200px;
+      overflow-y: auto;
+  
+      ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+  
+        li {
+          padding: 8px 12px;
+          cursor: pointer;
+          font-size: 13px;
+          color: #333;
+  
+          &:hover {
+            background: #f7f7f7;
+          }
+  
+          &:not(:last-child) {
+            border-bottom: 1px solid #eee;
+          }
+        }
+      }
+  
+      // 스크롤바 커스텀
+      &::-webkit-scrollbar {
+        width: 5px;
+      }
+  
+      &::-webkit-scrollbar-thumb {
+        background: #ddd;
+        border-radius: 5px;
+      }
+  
+      &::-webkit-scrollbar-track {
+        background: transparent;
+      }
     }
   }
-}

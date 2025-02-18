@@ -31,8 +31,8 @@ public class APIRefreshController {
 
   @PostMapping("/api/member/refresh")
   public Map<String, Object> refresh(
-          @RequestHeader(value = "Authorization", required = false) String authHeader,
-          @RequestHeader(value = "Refresh-Token", required = false) String refreshToken) {
+      @RequestHeader(value = "Authorization", required = false) String authHeader,
+      @RequestHeader(value = "Refresh-Token", required = false) String refreshToken) {
 
     log.info("Refresh token: " + refreshToken);
     log.info("accessToken : "+ authHeader.substring(authHeader.indexOf("Bearer")+7));

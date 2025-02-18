@@ -1,9 +1,13 @@
 import axiosInstance from "../../common/api/mainApi";
 
-// ✅ 모든 공지사항 조회
-export const getAllAnnouncements = async () => {
+//  모든 공지사항 조회 (페이지네이션 적용)
+export const getAllAnnouncements = async (page = 0, size = 10) => {
   try {
-    const response = await axiosInstance.get("/api/announcements");
+    console.log(`📢 공지사항 요청: page=${page}, size=${size}`); // ✅ 콘솔 로그 추가
+    const response = await axiosInstance.get(`/api/announcements`, {
+      params: { page, size }, // ✅ 페이지네이션 적용
+    });
+    console.log("📌 서버 응답 데이터:", response.data);
     return response.data;
   } catch (error) {
     console.error("❌ 공지사항 조회 실패:", error);
@@ -11,7 +15,7 @@ export const getAllAnnouncements = async () => {
   }
 };
 
-// ✅ 특정 공지사항 조회 (ID 기준)
+//  특정 공지사항 조회 (ID 기준)
 export const getAnnouncementById = async (id) => {
   try {
     const response = await axiosInstance.get(`/api/announcements/${id}`);
@@ -22,11 +26,21 @@ export const getAnnouncementById = async (id) => {
   }
 };
 
-// ✅ 특정 부서에 대한 공지사항 조회
-export const getAnnouncementsByDepartment = async (departmentId) => {
+// 특정 부서에 대한 공지사항 조회 (페이지네이션 적용)
+export const getAnnouncementsByDepartment = async (
+  departmentId,
+  page = 0,
+  size = 10
+) => {
   try {
+    console.log(
+      `📢 부서 ${departmentId} 공지사항 요청: page=${page}, size=${size}`
+    );
     const response = await axiosInstance.get(
-      `/api/announcements/department/${departmentId}`
+      `/api/announcements/department/${departmentId}`,
+      {
+        params: { page, size }, // ✅ 페이지네이션 적용
+      }
     );
     return response.data;
   } catch (error) {
@@ -35,11 +49,21 @@ export const getAnnouncementsByDepartment = async (departmentId) => {
   }
 };
 
-// ✅ 특정 직위에 대한 공지사항 조회
-export const getAnnouncementsByPosition = async (positionId) => {
+// 특정 직위에 대한 공지사항 조회 (페이지네이션 적용)
+export const getAnnouncementsByPosition = async (
+  positionId,
+  page = 0,
+  size = 10
+) => {
   try {
+    console.log(
+      `📢 직위 ${positionId} 공지사항 요청: page=${page}, size=${size}`
+    );
     const response = await axiosInstance.get(
-      `/api/announcements/position/${positionId}`
+      `/api/announcements/position/${positionId}`,
+      {
+        params: { page, size }, //  페이지네이션 적용
+      }
     );
     return response.data;
   } catch (error) {

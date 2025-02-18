@@ -85,15 +85,16 @@ const ProductDetail = ({
   };
 
   return (
+    <div className="modal-overlay">
     <div className="product-detail-form" onClick={onClose}>
       <div className="product-detail-header">
         <h2>제품 상세 정보</h2>
         <button className="close-button" onClick={onClose}>
-          ×
+          X
         </button>
       </div>
 
-      <form onClick={(e) => e.stopPropagation()}>
+      <form onClick={(e) => e.stopPropagation()} className="product-detail-grid">
         <div className="form-group">
           <label>제품 ID</label>
           <input type="text" value={editedProduct.id} readOnly />
@@ -199,6 +200,7 @@ const ProductDetail = ({
         </div>
       </form>
       {error && <div className="error-message">{error}</div>}
+    </div>
     </div>
   );
 };

@@ -3,7 +3,7 @@ import "./scss/RequestOrderPage.scss";
 import BasicLayout from "../../../common/pages/BasicLayout";
 import ListRequestOrder from "../components/ListRequestOrder";
 import { fetchPendingOrders } from "../api/orderApi";
-import Pagination from "../../../common/component/Pagination";
+import Pagination from '../../../common/component/Pagination';
 
 const RequestOrderPage = () => {
   const [orders, setOrders] = useState([]);
@@ -27,6 +27,7 @@ const RequestOrderPage = () => {
     loadPendingOrders();
   }, []);
 
+
   return (
     <BasicLayout>
       <div className="request-order-page-container">
@@ -34,13 +35,15 @@ const RequestOrderPage = () => {
           <h1>주문 승인 요청 관리</h1>
         </div>
 
-        <ListRequestOrder orders={orders} />
+        <ListRequestOrder
+          orders={orders}
+        />
         {totalPages > 0 && (
-          <Pagination
-            currentPage={page}
-            totalPages={totalPages}
-            onPageChange={setPage}
-          />
+            <Pagination
+                currentPage={page}
+                totalPages={totalPages}
+                onPageChange={setPage}
+            />
         )}
       </div>
     </BasicLayout>

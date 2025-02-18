@@ -19,98 +19,60 @@ body {
   display: block;
 }
 
-.request-product-list-wrapper {
-  width: 100%;
-}
-.request-product-list-wrapper .product-table-section {
+.client-list {
   background-color: white;
-  width: 100%;
-  margin-top: 10px;
-  border-left: 1px solid #ddd;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  overflow-x: auto;
+  padding: 16px;
 }
-.request-product-list-wrapper .product-table-section table {
+.client-list table {
   width: 100%;
   border-collapse: collapse;
-  table-layout: fixed;
 }
-.request-product-list-wrapper .product-table-section table th, .request-product-list-wrapper .product-table-section table td {
-  padding: 15px;
-  text-align: center;
-  border: 1px solid #ddd;
-  word-wrap: break-word;
+.client-list table th,
+.client-list table td {
+  padding: 12px 15px;
+  text-align: center !important;
+  display: table-cell;
+  border-bottom: 1px solid #f5f7fa;
+  font-family: "Apple SD Gothic Neo", sans-serif;
 }
-.request-product-list-wrapper .product-table-section table th:first-child, .request-product-list-wrapper .product-table-section table td:first-child {
-  border-left: none;
-}
-.request-product-list-wrapper .product-table-section table th {
-  background-color: #4a5568;
+.client-list table th {
+  background-color: #3c485a;
   color: white;
   font-weight: 500;
-  border-bottom: 1px solid #2d3748;
-  position: relative;
 }
-.request-product-list-wrapper .product-table-section table tr:hover {
-  background-color: #f8f9fa;
+.client-list table th:hover {
+  background-color: rgb(39.6, 47.52, 59.4);
 }
-.request-product-list-wrapper .product-table-section table th:nth-child(1), .request-product-list-wrapper .product-table-section table td:nth-child(1) {
-  width: 10%;
+.client-list table td {
+  vertical-align: middle;
 }
-.request-product-list-wrapper .product-table-section table th:nth-child(2), .request-product-list-wrapper .product-table-section table td:nth-child(2) {
-  width: 20%;
-}
-.request-product-list-wrapper .product-table-section table th:nth-child(3), .request-product-list-wrapper .product-table-section table td:nth-child(3) {
-  width: 15%;
-}
-.request-product-list-wrapper .product-table-section table th:nth-child(4), .request-product-list-wrapper .product-table-section table td:nth-child(4) {
-  width: 25%;
-}
-.request-product-list-wrapper .product-table-section table th:nth-child(5), .request-product-list-wrapper .product-table-section table td:nth-child(5) {
-  width: 15%;
-}
-.request-product-list-wrapper .product-table-section table th:nth-child(6), .request-product-list-wrapper .product-table-section table td:nth-child(6) {
-  width: 15%;
-}
-.request-product-list-wrapper .product-table-section table .product-table-name-btn {
-  appearance: none;
+.client-list table .client-name-btn {
   background: none;
   border: none;
-  color: #4a5568;
+  color: #3c485a;
   cursor: pointer;
   padding: 0;
-  font-family: inherit;
-  font-weight: bolder;
-  font-size: 16px;
-  text-decoration: none;
-}
-.request-product-list-wrapper .product-table-section table .product-table-name-btn:hover {
+  font-family: "Apple SD Gothic Neo", sans-serif;
   text-decoration: underline;
-  color: rgb(25.3846153846, 31.0256410256, 40.6153846154);
 }
-.request-product-list-wrapper .pagination-controls {
+.client-list table .client-name-btn:hover {
+  color: rgb(39.6, 47.52, 59.4);
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 20px;
-  gap: 10px;
-}
-.request-product-list-wrapper .pagination-controls button {
-  padding: 8px 16px;
-  background-color: #3c485a;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
-.request-product-list-wrapper .pagination-controls button:disabled {
-  background-color: #cbd5e0;
-  cursor: not-allowed;
-}
-.request-product-list-wrapper .pagination-controls button:hover:not(:disabled) {
-  background-color: rgb(39.6, 47.52, 59.4);
-}
-.request-product-list-wrapper .pagination-controls span {
-  font-size: 1rem;
-  color: #3c485a;
+  z-index: 1000;
 }
 
 /*# sourceMappingURL=ListRequestOrder.css.map */

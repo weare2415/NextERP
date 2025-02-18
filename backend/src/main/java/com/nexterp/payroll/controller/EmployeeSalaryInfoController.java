@@ -50,8 +50,8 @@ public class EmployeeSalaryInfoController {
   @GetMapping("/{employeeId}")
   public ResponseEntity<EmployeeSalaryInfoDTO> getEmployeeSalaryById(@PathVariable Integer employeeId) {
     return employeeSalaryInfoService.findByEmployeeId(employeeId)
-            .map(ResponseEntity::ok)
-            .orElse(ResponseEntity.notFound().build());
+        .map(ResponseEntity::ok)
+        .orElse(ResponseEntity.notFound().build());
   }
 
   /**

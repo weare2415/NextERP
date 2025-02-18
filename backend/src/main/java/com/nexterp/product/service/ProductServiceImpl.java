@@ -43,26 +43,26 @@ public class ProductServiceImpl implements ProductService {
 
         return productRepository.findById(id).map(existingProduct -> {
             Product updatedProduct = Product.builder()
-                    .id(existingProduct.getId())
-                    .productName(productDTO.getProductName() != null ? productDTO.getProductName() : existingProduct.getProductName())
-                    .purchasePrice(productDTO.getPurchasePrice() != null && productDTO.getPurchasePrice().compareTo(BigDecimal.ZERO) != 0
-                            ? productDTO.getPurchasePrice()
-                            : existingProduct.getPurchasePrice())
+                .id(existingProduct.getId())
+                .productName(productDTO.getProductName() != null ? productDTO.getProductName() : existingProduct.getProductName())
+                .purchasePrice(productDTO.getPurchasePrice() != null && productDTO.getPurchasePrice().compareTo(BigDecimal.ZERO) != 0
+                    ? productDTO.getPurchasePrice()
+                    : existingProduct.getPurchasePrice())
 
-                    .salePrice(productDTO.getSalePrice() != null && productDTO.getSalePrice().compareTo(BigDecimal.ZERO) != 0
-                            ? productDTO.getSalePrice()
-                            : existingProduct.getSalePrice()).createdDate(existingProduct.getCreatedDate())
-                    .stock(productDTO.getStock() != 0 ? productDTO.getStock() : existingProduct.getStock())
-                    .specifications(productDTO.getSpecifications() != null ? productDTO.getSpecifications() : existingProduct.getSpecifications())
-                    .memo(productDTO.getMemo() != null ? productDTO.getMemo() : existingProduct.getMemo())
-                    .isDeleted(productDTO.isDeleted())
-                    .employee(existingProduct.getEmployee())
-                    .build();
+                .salePrice(productDTO.getSalePrice() != null && productDTO.getSalePrice().compareTo(BigDecimal.ZERO) != 0
+                    ? productDTO.getSalePrice()
+                    : existingProduct.getSalePrice()).createdDate(existingProduct.getCreatedDate())
+                .stock(productDTO.getStock() != 0 ? productDTO.getStock() : existingProduct.getStock())
+                .specifications(productDTO.getSpecifications() != null ? productDTO.getSpecifications() : existingProduct.getSpecifications())
+                .memo(productDTO.getMemo() != null ? productDTO.getMemo() : existingProduct.getMemo())
+                .isDeleted(productDTO.isDeleted())
+                .employee(existingProduct.getEmployee())
+                .build();
 
             // Employee 설정: 직원 ID가 있으면 새로 설정, 없으면 기존 값 유지
             if (productDTO.getEmployeeId() != null) {
                 Employee employee = employeeRepository.findById(productDTO.getEmployeeId())
-                        .orElseThrow(() -> new IllegalArgumentException("Employee with ID " + productDTO.getEmployeeId() + " not found"));
+                    .orElseThrow(() -> new IllegalArgumentException("Employee with ID " + productDTO.getEmployeeId() + " not found"));
                 updatedProduct.updateEmployee(employee);
             }
 
@@ -82,14 +82,14 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Page<ProductDTO> getAllProducts(Pageable pageable) {
         return productRepository.findByIsDeletedFalse(pageable)
-                .map(this::convertToDTO);
+            .map(this::convertToDTO);
     }
 
     // 제품 논리 삭제
     @Override
     public void deleteProductById(Long id) {
         Product product = productRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Product with ID " + id + " not found"));
+            .orElseThrow(() -> new IllegalArgumentException("Product with ID " + id + " not found"));
 
         product.markAsDeleted();
         productRepository.save(product);
@@ -99,23 +99,23 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Page<ProductDTO> getProductsByName(String productName, Pageable pageable) {
         return productRepository.findByProductNameContainingAndIsDeletedFalse(productName, pageable)
-                .map(this::convertToDTO);
+            .map(this::convertToDTO);
     }
 
     // Entity → DTO 변환
     private ProductDTO convertToDTO(Product product) {
         return ProductDTO.builder()
-                .id(product.getId())
-                .productName(product.getProductName())
-                .purchasePrice(product.getPurchasePrice())
-                .salePrice(product.getSalePrice())
-                .createdDate(product.getCreatedDate())
-                .stock(product.getStock())
-                .specifications(product.getSpecifications())
-                .memo(product.getMemo())
-                .isDeleted(product.isDeleted())
-                .employeeId(product.getEmployee() != null ? product.getEmployee().getId() : null)
-                .build();
+            .id(product.getId())
+            .productName(product.getProductName())
+            .purchasePrice(product.getPurchasePrice())
+            .salePrice(product.getSalePrice())
+            .createdDate(product.getCreatedDate())
+            .stock(product.getStock())
+            .specifications(product.getSpecifications())
+            .memo(product.getMemo())
+            .isDeleted(product.isDeleted())
+            .employeeId(product.getEmployee() != null ? product.getEmployee().getId() : null)
+            .build();
     }
 
     // DTO → Entity 변환
@@ -123,19 +123,19 @@ public class ProductServiceImpl implements ProductService {
         Employee employee = null;
         if (dto.getEmployeeId() != null) {
             employee = employeeRepository.findById(dto.getEmployeeId())
-                    .orElseThrow(() -> new IllegalArgumentException("Employee with ID " + dto.getEmployeeId() + " not found"));
+                .orElseThrow(() -> new IllegalArgumentException("Employee with ID " + dto.getEmployeeId() + " not found"));
         }
 
         return Product.builder()
-                .productName(dto.getProductName())
-                .purchasePrice(dto.getPurchasePrice())
-                .salePrice(dto.getSalePrice())
-                .createdDate(dto.getCreatedDate())
-                .stock(dto.getStock())
-                .specifications(dto.getSpecifications())
-                .memo(dto.getMemo())
-                .isDeleted(dto.isDeleted())
-                .employee(employee)
-                .build();
+            .productName(dto.getProductName())
+            .purchasePrice(dto.getPurchasePrice())
+            .salePrice(dto.getSalePrice())
+            .createdDate(dto.getCreatedDate())
+            .stock(dto.getStock())
+            .specifications(dto.getSpecifications())
+            .memo(dto.getMemo())
+            .isDeleted(dto.isDeleted())
+            .employee(employee)
+            .build();
     }
 }

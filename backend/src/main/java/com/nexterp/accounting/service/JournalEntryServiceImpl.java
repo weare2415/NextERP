@@ -54,7 +54,7 @@ public class JournalEntryServiceImpl implements JournalEntryService {
   public JournalEntryDTO createJournalEntry(JournalEntryDTO journalEntryDTO) {
     JournalEntry journalEntry = dtoToEntity(journalEntryDTO);
 
-    String accountCode = journalEntry.getAccount().getCode();
+    String accountCode = journalEntry.getAccount().getCode(); 
     int accountType = Integer.parseInt(accountCode.substring(0, 1)) * 100; // 100단위로 변환
 
     BigDecimal debitAmount = journalEntry.getDebit();
@@ -83,10 +83,10 @@ public class JournalEntryServiceImpl implements JournalEntryService {
   @Override
   public JournalEntryDTO updateJournalEntry(Long id, JournalEntryDTO journalEntryDTO) {
     JournalEntry existingEntry = journalEntryRepository.findById(id)
-            .orElseThrow(() -> new IllegalArgumentException("Journal Entry not found: " + id));
+        .orElseThrow(() -> new IllegalArgumentException("Journal Entry not found: " + id));
 
     Account account = accountRepository.findById(journalEntryDTO.getAccountCode())
-            .orElseThrow(() -> new IllegalArgumentException("Invalid account code: " + journalEntryDTO.getAccountCode()));
+        .orElseThrow(() -> new IllegalArgumentException("Invalid account code: " + journalEntryDTO.getAccountCode()));
 
     existingEntry.setDate(journalEntryDTO.getDate());
     existingEntry.setAccount(account);
@@ -101,7 +101,7 @@ public class JournalEntryServiceImpl implements JournalEntryService {
   @Override
   public void deleteJournalEntry(Long id) {
     JournalEntry entry = journalEntryRepository.findById(id)
-            .orElseThrow(() -> new IllegalArgumentException("Journal Entry not found: " + id));
+        .orElseThrow(() -> new IllegalArgumentException("Journal Entry not found: " + id));
 
     // 잔액 복구 (삭제 시)
     if (entry.getDebit().compareTo(BigDecimal.ZERO) > 0) {
@@ -115,21 +115,21 @@ public class JournalEntryServiceImpl implements JournalEntryService {
 
   private JournalEntryDTO entityToDto(JournalEntry journalEntry) {
     return JournalEntryDTO.builder()
-            .id(journalEntry.getId())
-            .date(journalEntry.getDate())
-            .accountCode(journalEntry.getAccount().getCode())
-            .accountName(journalEntry.getAccount().getName())
-            .debit(journalEntry.getDebit())
-            .credit(journalEntry.getCredit())
-            .description(journalEntry.getDescription())
-            .amount(journalEntry.getAmount())
-            .transactionId(journalEntry.getTransaction().getId())  // ✅ 트랜잭션 ID 포함
-            .build();
+        .id(journalEntry.getId())
+        .date(journalEntry.getDate())
+        .accountCode(journalEntry.getAccount().getCode())
+        .accountName(journalEntry.getAccount().getName())
+        .debit(journalEntry.getDebit())
+        .credit(journalEntry.getCredit())
+        .description(journalEntry.getDescription())
+        .amount(journalEntry.getAmount())
+        .transactionId(journalEntry.getTransaction().getId())  // ✅ 트랜잭션 ID 포함
+        .build();
   }
 
   private JournalEntry dtoToEntity(JournalEntryDTO journalEntryDTO) {
     Account account = accountRepository.findById(journalEntryDTO.getAccountCode())
-            .orElseThrow(() -> new IllegalArgumentException("Invalid account code: " + journalEntryDTO.getAccountCode()));
+        .orElseThrow(() -> new IllegalArgumentException("Invalid account code: " + journalEntryDTO.getAccountCode()));
 
     JournalEntry journalEntry = new JournalEntry();
     journalEntry.setId(journalEntryDTO.getId());
@@ -141,7 +141,7 @@ public class JournalEntryServiceImpl implements JournalEntryService {
 
     if (journalEntryDTO.getTransactionId() != null) {
       Transaction transaction = transactionRepository.findById(journalEntryDTO.getTransactionId())
-              .orElseThrow(() -> new IllegalArgumentException("Transaction not found: " + journalEntryDTO.getTransactionId()));
+          .orElseThrow(() -> new IllegalArgumentException("Transaction not found: " + journalEntryDTO.getTransactionId()));
       journalEntry.setTransaction(transaction);
     }
 

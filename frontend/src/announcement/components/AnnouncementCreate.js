@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
-import { createAnnouncement } from "../api/announcementApi";
-import { getEmployeeById } from "../../HR/employee/api/employeeApi";
-import "../scss/AnnouncementCreate.scss";
+import { useSelector } from "react-redux"; // Redux에서 로그인 정보 가져오기
+import { createAnnouncement } from "../api/announcementApi"; // API 호출 함수
+import { getEmployeeById } from "../../HR/employee/api/employeeApi"; // ✅ 기존 API 활용
+import "../scss/AnnouncementCreate.scss"; // ✅ 스타일 적용
 
 const AnnouncementCreate = ({ onClose, onAddSuccess }) => {
+  // ✅ onClose 부모에서 전달받음
   const employeeId = useSelector((state) => state.loginSlice?.id || null);
   const [employeeData, setEmployeeData] = useState(null);
   const [isAuthorized, setIsAuthorized] = useState(false);
@@ -32,7 +33,7 @@ const AnnouncementCreate = ({ onClose, onAddSuccess }) => {
     if (employeeId) {
       getEmployeeById(employeeId)
         .then((employee) => {
-          console.log("📌 직원 데이터 확인:", employee);
+          console.log("📌 직원 데이터 확인:", employee); // ✅ 디버깅용 로그 추가
           setEmployeeData(employee);
 
           const { departmentId, positionId } = employee;
@@ -55,7 +56,7 @@ const AnnouncementCreate = ({ onClose, onAddSuccess }) => {
         positionId: employeeData.positionId || null,
       }));
     }
-  }, [employeeData]);
+  }, [employeeData]); // ✅ employeeData가 업데이트될 때 announcement 상태 변경
 
   const [announcement, setAnnouncement] = useState({
     title: "",
@@ -101,6 +102,7 @@ const AnnouncementCreate = ({ onClose, onAddSuccess }) => {
       await createAnnouncement(newAnnouncement);
       alert("공지사항이 성공적으로 생성되었습니다.");
 
+      // ✅ 리스트 갱신 함수 호출
       onAddSuccess();
 
       setAnnouncement({
@@ -112,7 +114,7 @@ const AnnouncementCreate = ({ onClose, onAddSuccess }) => {
         isGlobal: false,
       });
 
-      onClose();
+      onClose(); // ✅ 창 닫기
     } catch (error) {
       alert("공지사항 생성에 실패했습니다.");
       console.error("❌ 공지사항 생성 실패:", error);
@@ -120,22 +122,20 @@ const AnnouncementCreate = ({ onClose, onAddSuccess }) => {
   };
 
   return (
-    <div className="announcement-create-form">
+    <div className="modal-overlay"  onClick={(e) => e.stopPropagation()}>
+      <div className="announcement-create-form">
       <div className="announcement-create-header">
         <h2>공지사항 생성</h2>
-        <button className="close-button" onClick={onClose}>
-          X
-        </button>
-      </div>
-      {!employeeId ? (
-        <p className="modal-error-message">⚠️ 로그인이 필요합니다.</p>
-      ) : !isAuthorized ? (
-        <p className="modal-error-message">
-          ⚠️ 공지사항을 작성할 권한이 없습니다. (차장 이상만 가능)
-        </p>
-      ) : (
-        <form onSubmit={handleSubmit}>
-          <div className="form-group">
+        <button className="close-button" onClick={onClose}>X</button>
+        </div>
+        {!employeeId ? (
+          <p className="error-message">⚠️ 로그인이 필요합니다.</p>
+        ) : !isAuthorized ? (
+          <p className="error-message">
+            ⚠️ 공지사항을 작성할 권한이 없습니다. (차장 이상만 가능)
+          </p>
+        ) : (
+          <form className="create-announcement-input" onSubmit={handleSubmit}>
             <input
               type="text"
               name="title"
@@ -152,17 +152,21 @@ const AnnouncementCreate = ({ onClose, onAddSuccess }) => {
               required
             />
 
-            {announcement.isGlobal && (
-              <label>
-                <input
-                  type="checkbox"
-                  checked={announcement.isGlobal}
-                  onChange={handleCheckboxChange}
-                />
-                전체 공지사항으로 등록 (이사 이상만 가능)
-              </label>
-            )}
+            {/* ✅ 전체 공지사항 체크박스 */}
+            {isGlobalAnnouncement && (
+                  <div className="checkbox-container">
+                    <label>
+                      <input
+                        type="checkbox"
+                        checked={announcement.isGlobal}
+                        onChange={handleCheckboxChange}
+                      />
+                      전체 공지사항으로 등록 (이사 이상만 가능)
+                    </label>
+                  </div>
+                )}
 
+            {/* ✅ 로그인된 사용자 정보 자동 입력 (보이지만 수정 불가) */}
             <input
               type="hidden"
               name="authorId"
@@ -179,6 +183,7 @@ const AnnouncementCreate = ({ onClose, onAddSuccess }) => {
               }
               readOnly
             />
+
             <input
               type="hidden"
               name="positionId"
@@ -190,19 +195,12 @@ const AnnouncementCreate = ({ onClose, onAddSuccess }) => {
               readOnly
             />
 
-            <div className="modal-button-group">
+            <div className="button-group">
               <button type="submit">공지 생성</button>
-              <button
-                type="button"
-                onClick={onClose}
-                className="modal-cancel-btn"
-              >
-                취소
-              </button>
             </div>
-          </div>
-        </form>
-      )}
+          </form>
+        )}
+      </div>
     </div>
   );
 };

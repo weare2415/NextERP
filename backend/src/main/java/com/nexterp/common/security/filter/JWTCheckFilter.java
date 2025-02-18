@@ -30,7 +30,7 @@ public class JWTCheckFilter extends OncePerRequestFilter {
 
   @Override
   protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
-          throws ServletException, IOException {
+      throws ServletException, IOException {
 
     log.info("Executing JWTCheckFilter...");
 
@@ -104,7 +104,7 @@ public class JWTCheckFilter extends OncePerRequestFilter {
     log.info("Authenticated Member: " + memberDTO);
 
     UsernamePasswordAuthenticationToken authenticationToken =
-            new UsernamePasswordAuthenticationToken(memberDTO, null, memberDTO.getAuthorities());
+        new UsernamePasswordAuthenticationToken(memberDTO, null, memberDTO.getAuthorities());
 
     SecurityContextHolder.getContext().setAuthentication(authenticationToken);
   }

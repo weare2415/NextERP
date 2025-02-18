@@ -1,9 +1,10 @@
 @import "../../../App.scss";
 
 .mypage {
-  position: relative; // 상대 위치 설정
-  width: 90%;
-  margin: 50px auto 0;
+  max-width: 90%;
+  margin: auto;
+  position: relative;
+  margin-top: 20px;
 
   h1 {
     color: $primary-color;
@@ -11,7 +12,6 @@
     margin: 0;
   }
 
-  // 사원 ID와 버튼을 포함하는 컨테이너
   .user-controls {
     position: absolute;
     right: 0;
@@ -22,7 +22,7 @@
     gap: 1rem;
 
     p {
-      margin: 0; // 기본 마진 제거
+      margin: 0;
       margin-top: 10px;
     }
   }
@@ -30,24 +30,30 @@
 
 .page-container {
   display: flex;
-  flex-direction: column; /* 세로 방향으로 정렬 */
+  flex-direction: column;
   gap: 2rem;
   margin-top: 1rem;
-}
 
-.left-section,
-.right-section {
-  flex: 1;
-  background: white;
-  padding: 2rem;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(60, 72, 90, 0.1);
+  .left-section,
+  .right-section {
+    flex: 1;
+    background: white;
+    padding: 2rem;
+    border-radius: 8px;
 
-  h3 {
-    color: $primary-color;
-    font-size: 1.5rem;
-    font-weight: 700;
-    margin-bottom: 1rem;
+    h3 {
+      color: $primary-color;
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+    }
+  }
+
+  .loading {
+    text-align: center;
+    color: $secondary-color;
+    font-size: 1.1rem;
+    margin: 2rem 0;
   }
 }
 
@@ -92,11 +98,12 @@
 
 .buttons {
   display: flex;
+  gap: 10px;
 }
 
 button {
   padding: 0.5rem 1rem;
-  background-color: #4caf50;
+  background-color: $primary-color;
   color: white;
   border: none;
   border-radius: 5px;

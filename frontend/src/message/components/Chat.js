@@ -39,10 +39,7 @@ const Chat = () => {
       return;
     }
 
-    socket.emit("create_chatroom", {
-      user1_id: myUserId,
-      user2_id: parseInt(receiverId),
-    });
+    socket.emit("create_chatroom", { user1_id: myUserId, user2_id: parseInt(receiverId) });
   };
 
   const sendMessage = () => {
@@ -79,8 +76,7 @@ const Chat = () => {
       <div>
         {messages.map((msg, index) => (
           <p key={index}>
-            <strong>{msg.senderId}: </strong>
-            {msg.messageText}
+            <strong>{msg.senderId}: </strong>{msg.messageText}
           </p>
         ))}
       </div>

@@ -36,10 +36,10 @@ public class JournalEntryController {
 
   @GetMapping("/date-range")
   public Page<JournalEntryDTO> getJournalEntriesByDateRange(
-          @RequestParam LocalDate startDate,
-          @RequestParam LocalDate endDate,
-          Pageable pageable
-  ){
+      @RequestParam LocalDate startDate,
+      @RequestParam LocalDate endDate,
+      Pageable pageable
+      ){
     return journalEntryService.getJournalEntriesByDateRange(startDate, endDate, pageable);
   }
 

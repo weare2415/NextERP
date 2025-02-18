@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import './scss/ListClient.scss';
-import { getEmployeeById } from "../../../common/member/api/memberApi";
 import useEmployeeNames from '../../../common/hooks/useEmployeeNames';
 
 const ListClient = ({ clients, onClientSelect }) => {
@@ -9,7 +8,7 @@ const ListClient = ({ clients, onClientSelect }) => {
   return (
     <div className="client-list-wrapper">
       <div className="client-table-section">
-        <table>
+        <table className="client-list-grid">
           <thead>
             <tr>
               <th>거래처 코드</th>

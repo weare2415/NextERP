@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import "../scss/ApprovalStatus.scss";
-import Pagination from "../../../common/component/Pagination";
 
 const ApprovalStatus = ({
   pendingRequests,
@@ -9,16 +8,6 @@ const ApprovalStatus = ({
   onApprove,
   onReject,
 }) => {
-  const [currentPage, setCurrentPage] = useState(1);
-  const pageSize = 10;
-
-  const paginate = (data, currentPage, pageSize) => {
-    const startIndex = (currentPage - 1) * pageSize;
-    return data.slice(startIndex, startIndex + pageSize);
-  };
-
-  const paginatedRequests = paginate(pendingRequests, currentPage, pageSize);
-
   const highlightChange = (fieldName, newValue, parentValue, changedFields) => {
     if (parentValue === undefined || parentValue === null)
       return newValue || "-";
@@ -55,19 +44,17 @@ const ApprovalStatus = ({
               <th>사원 번호</th>
               <th>이름</th>
               <th>생년월일</th>
-              <th>성별</th>
               <th>전화번호</th>
               <th>이메일</th>
               <th>주소</th>
               <th>부서</th>
               <th>직급</th>
-              <th>입사일</th>
               <th>퇴사 여부</th>
               <th>승인/반려</th>
             </tr>
           </thead>
           <tbody>
-            {paginatedRequests.length === 0 ? (
+            {pendingRequests.length === 0 ? (
               <tr>
                 <td
                   colSpan="12"
@@ -77,7 +64,7 @@ const ApprovalStatus = ({
                 </td>
               </tr>
             ) : (
-              paginatedRequests.map((request) => {
+              pendingRequests.map((request) => {
                 const parent = request.parent || {};
                 const changedFields = request.changedFields || {};
 
@@ -97,14 +84,6 @@ const ApprovalStatus = ({
                         "생년월일",
                         request.birthDate,
                         parent.birthDate,
-                        changedFields
-                      )}
-                    </td>
-                    <td>
-                      {highlightChange(
-                        "성별",
-                        request.gender ? "여성" : "남성",
-                        parent.gender ? "여성" : "남성",
                         changedFields
                       )}
                     </td>
@@ -150,14 +129,6 @@ const ApprovalStatus = ({
                     </td>
                     <td>
                       {highlightChange(
-                        "입사일",
-                        request.hireDate,
-                        parent.hireDate,
-                        changedFields
-                      )}
-                    </td>
-                    <td>
-                      {highlightChange(
                         "퇴사 여부",
                         request.isTerminated ? "✅ 퇴사" : "🔵 재직 중",
                         parent.isTerminated ? "✅ 퇴사" : "🔵 재직 중",
@@ -166,16 +137,16 @@ const ApprovalStatus = ({
                     </td>
                     <td>
                       <button
-                        className="approve-btn"
+                        className="approval-table-approve-btn"
                         onClick={() => onApprove(request.id)}
                       >
-                        ✅ 승인
+                        승인
                       </button>
                       <button
-                        className="reject-btn"
+                        className="approval-table-reject-btn"
                         onClick={() => onReject(request.id)}
                       >
-                        ⛔ 반려
+                        반려
                       </button>
                     </td>
                   </tr>
@@ -185,14 +156,6 @@ const ApprovalStatus = ({
           </tbody>
         </table>
       </div>
-
-      {/* Pagination 컴포넌트 추가 */}
-      <Pagination
-        currentPage={currentPage}
-        totalItems={pendingRequests.length}
-        pageSize={pageSize}
-        onPageChange={setCurrentPage}
-      />
     </div>
   );
 };

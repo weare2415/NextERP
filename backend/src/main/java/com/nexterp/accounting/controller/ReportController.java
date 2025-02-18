@@ -31,8 +31,8 @@ public class ReportController {
 
   @GetMapping
   public Page<ReportDTO> getAllReports(
-          @RequestParam(defaultValue = "0") int page,
-          @RequestParam(defaultValue = "10") int size
+      @RequestParam(defaultValue = "0") int page,
+      @RequestParam(defaultValue = "10") int size
   ) {
     Pageable pageable = PageRequest.of(page, size);
     return reportService.getAllReports(pageable);
@@ -45,9 +45,9 @@ public class ReportController {
 
   @PostMapping
   public ReportDTO createReport(
-          @RequestBody ReportDTO reportDTO,
-          @RequestParam(defaultValue = "0") int page,
-          @RequestParam(defaultValue = "10") int size
+      @RequestBody ReportDTO reportDTO,
+      @RequestParam(defaultValue = "0") int page,
+      @RequestParam(defaultValue = "10") int size
   ) {
     Pageable pageable = PageRequest.of(page, size);
     return reportService.createReport(reportDTO, pageable); // Pageable 추가
@@ -55,8 +55,8 @@ public class ReportController {
 
   @PutMapping("/{id}")
   public ReportDTO updateReport(
-          @PathVariable Long id,
-          @RequestBody ReportDTO reportDTO
+      @PathVariable Long id,
+      @RequestBody ReportDTO reportDTO
   ) {
     return reportService.updateReport(id, reportDTO);
   }

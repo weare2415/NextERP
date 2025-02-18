@@ -44,15 +44,15 @@ public class InvoiceServiceImpl implements InvoiceService {
   @Override
   public InvoiceDTO getInvoiceById(Long id) {
     return invoiceRepository.findById(id)
-            .map(this::entityToDTO)
-            .orElseThrow(() -> new IllegalArgumentException("Invoice not found: " + id));
+        .map(this::entityToDTO)
+        .orElseThrow(() -> new IllegalArgumentException("Invoice not found: " + id));
   }
 
   // 인보이스 생성
   @Override
   public InvoiceDTO createInvoice(InvoiceDTO invoiceDTO, Long transactionId) {
     Transaction transaction = transactionRepository.findById(transactionId)
-            .orElseThrow(() -> new IllegalArgumentException("Transaction not found: " + transactionId));
+        .orElseThrow(() -> new IllegalArgumentException("Transaction not found: " + transactionId));
 
     Invoice invoice = dtoToEntity(invoiceDTO, transaction);
     Invoice savedInvoice = invoiceRepository.save(invoice);
@@ -68,7 +68,7 @@ public class InvoiceServiceImpl implements InvoiceService {
   @Override
   public InvoiceDTO updateInvoice(Long id, InvoiceDTO invoiceDTO) {
     Invoice invoice = invoiceRepository.findById(id)
-            .orElseThrow(() -> new IllegalArgumentException("Invoice not found: " + id));
+        .orElseThrow(() -> new IllegalArgumentException("Invoice not found: " + id));
 
     Transaction transaction = invoice.getTransaction();
 
@@ -90,16 +90,16 @@ public class InvoiceServiceImpl implements InvoiceService {
 
   private InvoiceDTO entityToDTO(Invoice invoice) {
     return InvoiceDTO.builder()
-            .id(invoice.getId())  // Transaction ID와 동일한 ID 사용
-            .invoiceNumber(invoice.getInvoiceNumber())
-            .date(invoice.getDate())
-            .buyer(invoice.getBuyer())
-            .seller(invoice.getSeller())
-            .totalAmount(invoice.getTotalAmount())
-            .vatAmount(invoice.getVatAmount())
-            .description(invoice.getDescription())
-            .items(null) // ✅ InvoiceItem 관련 처리는 별도 서비스에서 진행
-            .build();
+        .id(invoice.getId())  // Transaction ID와 동일한 ID 사용
+        .invoiceNumber(invoice.getInvoiceNumber())
+        .date(invoice.getDate())
+        .buyer(invoice.getBuyer())
+        .seller(invoice.getSeller())
+        .totalAmount(invoice.getTotalAmount())
+        .vatAmount(invoice.getVatAmount())
+        .description(invoice.getDescription())
+        .items(null) // ✅ InvoiceItem 관련 처리는 별도 서비스에서 진행
+        .build();
   }
 
   private Invoice dtoToEntity(InvoiceDTO invoiceDTO, Transaction transaction) {

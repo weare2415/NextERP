@@ -29,36 +29,36 @@ import java.util.stream.Collectors;
 @Service
 @Transactional
 public class TransactionServiceImpl implements TransactionService {
-  private final TransactionRepository transactionRepository;
+private final TransactionRepository transactionRepository;
 
-  public TransactionServiceImpl(TransactionRepository transactionRepository) {
-    this.transactionRepository = transactionRepository;
-  }
+public TransactionServiceImpl(TransactionRepository transactionRepository) {
+  this.transactionRepository = transactionRepository;
+}
 
   @Override
   public Page<TransactionDTO> getAllTransactions(Pageable pageable) {
     return transactionRepository.findAll(pageable)
-            .map(this::entityToDTO);
+        .map(this::entityToDTO);
   }
 
   @Override
   public List<TransactionDTO> getAllTransactionsList() {
     return transactionRepository.findAll().stream()
-            .map(this::entityToDTO)
-            .collect(Collectors.toList());
+        .map(this::entityToDTO)
+        .collect(Collectors.toList());
   }
 
   @Override
   public TransactionDTO getTransactionById(Long id) {
     return transactionRepository.findById(id)
-            .map(this::entityToDTO)
-            .orElseThrow(() -> new IllegalArgumentException("Transaction not found: " + id));
+        .map(this::entityToDTO)
+        .orElseThrow(() -> new IllegalArgumentException("Transaction not found: " + id));
   }
 
   @Override
   public Page<TransactionDTO> getTransactionsByDateBetween(LocalDate startDate, LocalDate endDate, Pageable pageable) {
     return transactionRepository.findByDateBetweenOrderByDate(startDate, endDate, pageable)
-            .map(this::entityToDTO);
+        .map(this::entityToDTO);
   }
 
   @Override
@@ -71,7 +71,7 @@ public class TransactionServiceImpl implements TransactionService {
   @Override
   public TransactionDTO updateTransaction(Long id, TransactionDTO transactionDTO) {
     Transaction transaction = transactionRepository.findById(id)
-            .orElseThrow(() -> new IllegalArgumentException("Transaction not found: " + id));
+        .orElseThrow(() -> new IllegalArgumentException("Transaction not found: " + id));
 
     transaction.setDate(transactionDTO.getDate());
     transaction.setAmount(transactionDTO.getAmount());

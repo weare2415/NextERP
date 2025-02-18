@@ -121,22 +121,22 @@ public class SaleServiceTest {
 
     for (SaleData data : saleDataList) {
       Product product = productRepository.findById(data.getProductId())
-              .orElseThrow(() -> new IllegalArgumentException("Product not found"));
+          .orElseThrow(() -> new IllegalArgumentException("Product not found"));
       Client client = clientRepository.findById(data.getClientId())
-              .orElseThrow(() -> new IllegalArgumentException("Client not found"));
+          .orElseThrow(() -> new IllegalArgumentException("Client not found"));
       Employee employee = employeeRepository.findById(data.getEmployeeId())
-              .orElseThrow(() -> new IllegalArgumentException("Employee not found"));
+          .orElseThrow(() -> new IllegalArgumentException("Employee not found"));
 
       saleService.processSale(
-              data.getProductId(),
-              data.getQuantity(),
-              data.getSalePrice(),
-              client.getClientCode(),
-              data.getPaymentAccountId(),
-              employee,
-              RequestStatus.PENDING,
-              data.saleDate,
-              data.getMemo()
+          data.getProductId(),
+          data.getQuantity(),
+          data.getSalePrice(),
+          client.getClientCode(),
+          data.getPaymentAccountId(),
+          employee,
+          RequestStatus.PENDING,
+          data.saleDate,
+          data.getMemo()
       );
     }
   }
@@ -183,20 +183,20 @@ public class SaleServiceTest {
 
       // 1. PENDING 상태의 주문이 존재하는지 확인
       Order order = orderRepository.findById(currentTransactionId)
-              .orElseThrow(() -> new IllegalArgumentException("Order not found: " + currentTransactionId));
+          .orElseThrow(() -> new IllegalArgumentException("Order not found: " + currentTransactionId));
 
       assertEquals(RequestStatus.PENDING, order.getRequestStatus(),
-              "🚨 주문 상태가 PENDING이어야 합니다. (Transaction ID: " + currentTransactionId + ")");
+          "🚨 주문 상태가 PENDING이어야 합니다. (Transaction ID: " + currentTransactionId + ")");
 
       // 2. 승인 실행
       saleService.approveSale(currentTransactionId);
 
       // 3. 변경된 상태 확인
       Order approvedOrder = orderRepository.findById(currentTransactionId)
-              .orElseThrow(() -> new IllegalArgumentException("Order not found after approval: " + currentTransactionId));
+          .orElseThrow(() -> new IllegalArgumentException("Order not found after approval: " + currentTransactionId));
 
       assertEquals(RequestStatus.APPROVED, approvedOrder.getRequestStatus(),
-              "🚨 주문 상태가 APPROVED로 변경되어야 합니다. (Transaction ID: " + currentTransactionId + ")");
+          "🚨 주문 상태가 APPROVED로 변경되어야 합니다. (Transaction ID: " + currentTransactionId + ")");
     }
   }
 }

@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { getAllAttendances, requestApproval } from "../api/attendanceApi";
+import {
+  getAttendancesPresentLateOffWork,
+  requestApproval,
+} from "../api/attendanceApi"; // ✅ 변경된 API 적용
 import BasicLayout from "../../../common/pages/BasicLayout";
 import AttendanceList from "../components/AttendanceList";
 import "../scss/AttendancePage.scss";
@@ -16,11 +19,15 @@ const AttendancePage = () => {
   const fetchAttendances = async () => {
     setLoading(true);
     try {
-      const data = await getAllAttendances();
-      setAttendances(data);
+      console.log("📢 출근/지각/퇴근 근태 기록 요청...");
+      const data = await getAttendancesPresentLateOffWork(); // ✅ API 호출
+      console.log("📢 API 응답 데이터:", JSON.stringify(data, null, 2)); // 응답 데이터 확인
+
+      // ✅ 데이터 구조 변경 반영
+      setAttendances(data); // content가 없으므로 직접 설정
       setFilteredAttendances(data);
     } catch (error) {
-      console.error("근태 기록 조회 실패:", error);
+      console.error("❌ 근태 기록 조회 실패:", error);
     }
     setLoading(false);
   };
@@ -37,12 +44,11 @@ const AttendancePage = () => {
     }
   };
 
-
   return (
     <BasicLayout>
       <div className="employee-attendance-page-container">
         <div className="page-header">
-        <h1>근태 관리</h1>
+          <h1>근태 관리</h1>
         </div>
         {loading ? (
           <p>⏳ 로딩 중...</p>
@@ -56,6 +62,5 @@ const AttendancePage = () => {
     </BasicLayout>
   );
 };
-
 
 export default AttendancePage;

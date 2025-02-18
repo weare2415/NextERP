@@ -20,9 +20,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 public interface InvoiceService {
-    Page<InvoiceDTO> getAllInvoices(Pageable pageable);
-    InvoiceDTO getInvoiceById(Long id);
-    InvoiceDTO createInvoice(InvoiceDTO invoiceDTO, Long transactionId);
-    InvoiceDTO updateInvoice(Long id, InvoiceDTO invoiceDTO);
-    void deleteInvoice(Long id);
+Page<InvoiceDTO> getAllInvoices(Pageable pageable);
+InvoiceDTO getInvoiceById(Long id);
+InvoiceDTO createInvoice(InvoiceDTO invoiceDTO, Long transactionId);
+InvoiceDTO updateInvoice(Long id, InvoiceDTO invoiceDTO);
+void deleteInvoice(Long id);
 }

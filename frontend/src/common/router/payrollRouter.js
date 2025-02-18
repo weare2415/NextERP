@@ -1,6 +1,6 @@
 import React, {lazy, Suspense} from 'react';
 
-const PayrollList = lazy(() => import("../../HR/payroll/pages/PayrollListPage"));
+const PayrollList = lazy(() => import("../../accounting/payroll/pages/PayrollListPage"));
 
 const PayrollRouter = () => {
 	return [

@@ -5,6 +5,7 @@ import {
   getAnnouncementsByPosition,
 } from "../api/announcementApi";
 import "../scss/AnnouncementSearch.scss";
+import { div } from "@tensorflow/tfjs";
 
 const departmentMap = {
   1: "영업팀",
@@ -24,92 +25,70 @@ const positionMap = {
 };
 
 const AnnouncementSearch = ({ onSearch }) => {
-  // searchParams 상태 정의 (검색 유형과 검색어 관리)
-  const [searchParams, setSearchParams] = useState({
-    searchType: "title", // 기본값
-    searchTerm: "",
-  });
+  const [searchTerm, setSearchTerm] = useState("");
 
-  // 입력값을 처리하는 함수
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setSearchParams((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
-
-  // 검색 실행 함수
-  const handleSearch = async (e) => {
-    e.preventDefault();
-
-    const { searchType, searchTerm } = searchParams;
+  const handleSearch = async () => {
     try {
       let searchResults = [];
 
       console.log(`🔍 검색 실행됨: ${searchTerm}`);
 
-      // 검색어가 없으면 전체 공지 조회
-      if (!searchTerm.trim()) {
-        searchResults = await getAllAnnouncements();
-        console.log("📌 전체 공지 불러옴:", searchResults);
-      } else {
-        const allAnnouncements = await getAllAnnouncements();
+      // ✅ 전체 공지를 가져올 때 첫 페이지의 100개 데이터를 가져와 필터링
+      const response = await getAllAnnouncements(0, 100);
+      const allAnnouncements = response.content || []; // ✅ `content` 배열 사용
 
-        // 제목과 작성자 검색 시, 작성자 검색은 announcement.authorName 필드 사용
-        if (searchType === "title" || searchType === "author") {
-          searchResults = allAnnouncements.filter((announcement) => {
-            const fieldValue =
-              searchType === "author"
-                ? announcement.authorName
-                : announcement.title;
-            return (
-              fieldValue &&
-              fieldValue.toLowerCase().includes(searchTerm.toLowerCase().trim())
-            );
-          });
-          console.log(`🔎 ${searchType} 검색 결과:`, searchResults);
-        }
+      console.log("📌 전체 공지 불러옴:", allAnnouncements);
 
-        // 부서 검색 (대소문자, 공백 무시)
-        if (searchType === "department") {
-          const departmentId = Object.keys(departmentMap).find(
-            (key) =>
-              departmentMap[key].toLowerCase() ===
-              searchTerm.toLowerCase().trim()
-          );
-          if (departmentId) {
-            console.log(`📌 부서 검색 (${searchTerm} -> ID ${departmentId})`);
-            const departmentResults = await getAnnouncementsByDepartment(
-              Number(departmentId)
-            );
-            searchResults = [...departmentResults];
-            console.log("🔎 부서 검색 결과:", departmentResults);
-          } else {
-            searchResults = [];
-          }
-        }
-
-        // 직위 검색 (대소문자, 공백 무시)
-        if (searchType === "position") {
-          const positionId = Object.keys(positionMap).find(
-            (key) =>
-              positionMap[key].toLowerCase() === searchTerm.toLowerCase().trim()
-          );
-          if (positionId) {
-            console.log(`📌 직위 검색 (${searchTerm} -> ID ${positionId})`);
-            const positionResults = await getAnnouncementsByPosition(
-              Number(positionId)
-            );
-            searchResults = [...positionResults];
-            console.log("🔎 직위 검색 결과:", positionResults);
-          } else {
-            searchResults = [];
-          }
-        }
+      if (!Array.isArray(allAnnouncements)) {
+        console.error(
+          "🚨 allAnnouncements가 배열이 아닙니다!",
+          allAnnouncements
+        );
+        return;
       }
 
-      // 중복 데이터 제거
+      if (searchTerm.trim()) {
+        // ✅ 제목, 작성자 검색
+        const filteredResults = allAnnouncements.filter(
+          (announcement) =>
+            announcement.title.includes(searchTerm) ||
+            announcement.authorName.includes(searchTerm)
+        );
+
+        searchResults = [...filteredResults];
+
+        console.log("🔎 제목/작성자 검색 결과:", filteredResults);
+
+        // ✅ 부서 한글 검색 (한글 입력 시 부서 ID로 변환)
+        const departmentId = Object.keys(departmentMap).find(
+          (key) => departmentMap[key] === searchTerm
+        );
+        if (departmentId) {
+          console.log(`📌 부서 검색 (${searchTerm} -> ID ${departmentId})`);
+          const departmentResponse = await getAnnouncementsByDepartment(
+            Number(departmentId)
+          );
+          const departmentResults = departmentResponse.content || [];
+          searchResults = [...searchResults, ...departmentResults];
+        }
+
+        // ✅ 직위 한글 검색 (한글 입력 시 직위 ID로 변환)
+        const positionId = Object.keys(positionMap).find(
+          (key) => positionMap[key] === searchTerm
+        );
+        if (positionId) {
+          console.log(`📌 직위 검색 (${searchTerm} -> ID ${positionId})`);
+          const positionResponse = await getAnnouncementsByPosition(
+            Number(positionId)
+          );
+          const positionResults = positionResponse.content || [];
+          searchResults = [...searchResults, ...positionResults];
+        }
+      } else {
+        searchResults = allAnnouncements;
+      }
+
+      // ✅ 중복 데이터 제거
       const uniqueResults = Array.from(
         new Set(searchResults.map((a) => a.id))
       ).map((id) => searchResults.find((a) => a.id === id));
@@ -122,27 +101,18 @@ const AnnouncementSearch = ({ onSearch }) => {
   };
 
   return (
-    <div className="announcement-search">
-      <form onSubmit={handleSearch} className="announcement-search-form">
-        <select
-          name="searchType"
-          value={searchParams.searchType}
-          onChange={handleInputChange}
-        >
-          <option value="title">제목</option>
-          <option value="author">작성자</option>
-          <option value="department">부서명</option>
-          <option value="position">직위명</option>
-        </select>
-
+    <div className="announcement-search-section">
+      <form className="announcement-search-form">
         <input
           type="text"
-          name="searchTerm"
-          placeholder="검색어를 입력하세요."
-          value={searchParams.searchTerm}
-          onChange={handleInputChange}
+          placeholder="작성자, 제목, 부서명, 직위명 검색"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          className="search-input"
         />
-        <button type="submit">검색</button>
+        <button type="button" onClick={handleSearch}>
+          검색
+        </button>
       </form>
     </div>
   );

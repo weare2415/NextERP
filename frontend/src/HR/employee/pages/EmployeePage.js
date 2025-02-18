@@ -7,7 +7,7 @@ import BasicLayout from "../../../common/pages/BasicLayout";
 const EmployeePage = () => {
   const [showCreateForm, setShowCreateForm] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
-  const [searchCategory, setSearchCategory] = useState("name");
+  const [searchCategory, setSearchCategory] = useState("name"); 
   const listEmployeeRef = useRef();
 
   // ✅ 검색 버튼 클릭 시 검색어를 적용
@@ -65,8 +65,8 @@ const EmployeePage = () => {
         {/* 직원 목록 */}
         <ListEmployee
           ref={listEmployeeRef}
-          searchTerm={searchTerm}
-          searchCategory={searchCategory}
+          searchTerm={searchTerm} 
+          searchCategory={searchCategory} 
         />
 
         {/* 직원 등록 모달 */}

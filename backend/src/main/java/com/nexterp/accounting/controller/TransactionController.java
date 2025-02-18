@@ -36,8 +36,8 @@ public class TransactionController {
   // 거래 목록 조회 (페이지네이션 지원)
   @GetMapping
   public Page<TransactionDTO> getAllTransactions(
-          @RequestParam(defaultValue = "0") int page,    // 기본 페이지 번호
-          @RequestParam(defaultValue = "10") int size    // 기본 페이지 크기
+      @RequestParam(defaultValue = "0") int page,    // 기본 페이지 번호
+      @RequestParam(defaultValue = "10") int size    // 기본 페이지 크기
   ) {
     Pageable pageable = PageRequest.of(page, size);
     return transactionService.getAllTransactions(pageable);
@@ -58,10 +58,10 @@ public class TransactionController {
   // 특정 기간 조회
   @GetMapping("/search/date")
   public Page<TransactionDTO> getTransactionsByDateBetween(
-          @RequestParam("startDate") String startDateStr,
-          @RequestParam("endDate") String endDateStr,
-          @RequestParam(defaultValue = "0") int page,
-          @RequestParam(defaultValue = "10") int size) {
+      @RequestParam("startDate") String startDateStr,
+      @RequestParam("endDate") String endDateStr,
+      @RequestParam(defaultValue = "0") int page,
+      @RequestParam(defaultValue = "10") int size) {
     LocalDate startDate = LocalDate.parse(startDateStr);
     LocalDate endDate = LocalDate.parse(endDateStr);
     Pageable pageable = PageRequest.of(page, size);
@@ -77,8 +77,8 @@ public class TransactionController {
   // 거래 수정
   @PutMapping("/{id}")
   public TransactionDTO updateTransaction(
-          @PathVariable Long id,
-          @RequestBody TransactionDTO transactionDTO
+      @PathVariable Long id,
+      @RequestBody TransactionDTO transactionDTO
   ) {
     return transactionService.updateTransaction(id, transactionDTO);
   }

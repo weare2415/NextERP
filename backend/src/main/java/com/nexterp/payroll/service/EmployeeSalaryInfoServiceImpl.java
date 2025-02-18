@@ -38,7 +38,7 @@ public class EmployeeSalaryInfoServiceImpl implements EmployeeSalaryInfoService 
     @Override
     public EmployeeSalaryInfoDTO saveSalaryInfo(EmployeeSalaryInfoDTO dto) {
         Employee employee = employeeRepository.findById(dto.getEmployeeId())
-                .orElseThrow(() -> new IllegalArgumentException("Invalid employee ID: " + dto.getEmployeeId()));
+            .orElseThrow(() -> new IllegalArgumentException("Invalid employee ID: " + dto.getEmployeeId()));
 
         // 기존 활성화 된 급여 정보가 있는지 확인
         EmployeeSalaryInfo currentSalaryInfo = salaryInfoRepository.findActiveSalaryInfo_(employee.getId());
@@ -92,12 +92,12 @@ public class EmployeeSalaryInfoServiceImpl implements EmployeeSalaryInfoService 
 
     private EmployeeSalaryInfoDTO entityToDTO(EmployeeSalaryInfo entity) {
         return new EmployeeSalaryInfoDTO(
-                entity.getId(),
-                entity.getEmployee().getId(),
-                entity.getBaseSalary(),
-                entity.getDeductions(),
-                entity.getEffectiveDate(),
-                entity.getEndDate()
+            entity.getId(),
+            entity.getEmployee().getId(),
+            entity.getBaseSalary(),
+            entity.getDeductions(),
+            entity.getEffectiveDate(),
+            entity.getEndDate()
         );
     }
 }

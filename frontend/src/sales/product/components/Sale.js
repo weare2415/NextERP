@@ -9,10 +9,10 @@ const Sale = ({ isOpen, onClose, selectedProduct }) => {
   const id = useSelector((state) => state.loginSlice.id) || "";
   const [searchTerm, setSearchTerm] = useState("");
   const [suggestions, setSuggestions] = useState([]);
-  const [selectedIndex, setSelectedIndex] = useState(-1);
+  const [selectedIndex, setSelectedIndex] = useState(0);
   const [isSelecting, setIsSelecting] = useState(false);
-  const todayDate = new Date().toISOString().split("T")[0];
 
+  // 초기 주문 데이터
   const initialOrderData = {
     productId: selectedProduct ? selectedProduct.id : "",
     quantity: "",
@@ -21,13 +21,14 @@ const Sale = ({ isOpen, onClose, selectedProduct }) => {
     clientName: "",
     employeeName: name,
     employeeId: id,
-    orderDate: todayDate,
+    saleDate: new Date().toISOString().split("T")[0],
     memo: "",
     paymentAccountId: "101",
   };
 
   const [orderData, setOrderData] = useState(initialOrderData);
 
+  // 주문 데이터 초기화
   const resetOrderData = () => {
     setSearchTerm("");
     setSuggestions([]);
@@ -45,7 +46,6 @@ const Sale = ({ isOpen, onClose, selectedProduct }) => {
         ...prev,
         productId: selectedProduct.id,
         price: selectedProduct.salePrice,
-        orderDate: new Date().toISOString().split("T")[0],
       }));
     }
   }, [selectedProduct]);
@@ -131,6 +131,7 @@ const Sale = ({ isOpen, onClose, selectedProduct }) => {
         employee: {
           id: orderData.employeeId,
         },
+        saleDate: orderData.saleDate,
         memo: orderData.memo || "",
       };
 
@@ -144,15 +145,19 @@ const Sale = ({ isOpen, onClose, selectedProduct }) => {
   };
 
   return (
-    isOpen && (
+    <div className="modal-overlay">
       <div className="product-order-detail-form" onClick={onClose}>
         <div className="product-order-detail-header">
           <h2>판매 요청</h2>
           <button className="close-button" onClick={handleClose}>
-            ×
+            X
           </button>
         </div>
-        <form onClick={(e) => e.stopPropagation()} onSubmit={handleSubmit}>
+        <form
+          onClick={(e) => e.stopPropagation()}
+          onSubmit={handleSubmit}
+          className="product-for-order-grid"
+        >
           <div className="form-group">
             <label>제품 번호:</label>
             <input
@@ -163,17 +168,16 @@ const Sale = ({ isOpen, onClose, selectedProduct }) => {
               required
             />
           </div>
-
           <div className="form-group">
-            <label>판매 요청일</label>
+            <label>판매 날짜</label>
             <input
-              type="text"
-              name="orderDate"
-              value={orderData.orderDate}
+              type="date"
+              name="saleDate"
+              value={orderData.saleDate}
+              onChange={handleChange}
               required
             />
           </div>
-
           <div className="form-group">
             <label>주문 기업명</label>
             <input
@@ -190,16 +194,22 @@ const Sale = ({ isOpen, onClose, selectedProduct }) => {
                 {suggestions.map((item, index) => (
                   <li
                     key={item.clientCode || item.clientName || index}
-                    className={selectedIndex === index ? "selected" : ""}
+                    className={
+                      selectedIndex === index && selectedIndex !== -1
+                        ? "selected"
+                        : ""
+                    }
+                    onMouseEnter={() => setSelectedIndex(index)}
                     onMouseDown={() => {
                       setIsSelecting(true);
                       setSearchTerm(item.clientName);
-                      setSuggestions([]);
                       setOrderData((prev) => ({
                         ...prev,
                         clientName: item.clientName,
                         clientCode: item.clientCode,
                       }));
+                      setSuggestions([]);
+                      setSelectedIndex(-1);
                     }}
                   >
                     {item.clientName}
@@ -266,17 +276,10 @@ const Sale = ({ isOpen, onClose, selectedProduct }) => {
             <button type="submit" className="update-button">
               판매 요청
             </button>
-            <button
-              type="button"
-              className="close-button"
-              onClick={handleClose}
-            >
-              취소
-            </button>
           </div>
         </form>
       </div>
-    )
+    </div>
   );
 };
 

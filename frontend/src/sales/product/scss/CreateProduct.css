@@ -1,3 +1,4 @@
+@charset "UTF-8";
 @import url("https://cdn.jsdelivr.net/gh/fonts-archive/AppleSDGothicNeo/AppleSDGothicNeo.css");
 @import url(//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSansNeo.css);
 * {
@@ -19,153 +20,91 @@ body {
   display: block;
 }
 
-.product-create-form {
+.create-product-form {
   background-color: white;
-  border-radius: 4px;
-  width: 90%;
-  max-width: 700px;
-  max-height: 90vh;
-  padding: 0;
+  border-radius: 8px;
+  width: 100%;
+  max-width: 50vw;
+  padding: 15px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   font-family: "Apple SD Gothic Neo", sans-serif;
+}
+.create-product-form h2 {
+  color: #3c485a;
+  font-size: 20px;
+  font-weight: 500;
+  text-align: center;
+  margin-bottom: 15px;
+}
+.create-product-form form {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+.create-product-form form .form-group {
   display: flex;
   flex-direction: column;
+  margin-bottom: 0;
 }
-.product-create-form .product-create-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 15px 20px;
-  background-color: #3c485a;
-  color: white;
-  @import url("https://cdn.jsdelivr.net/gh/fonts-archive/AppleSDGothicNeo/AppleSDGothicNeo.css");
-  @import url(//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSansNeo.css);
-  border-top-left-radius: 4px;
-  border-top-right-radius: 4px;
-  width: 100%;
+.create-product-form form .form-group:nth-last-child(2), .create-product-form form .form-group:last-child {
+  grid-column: 1/-1;
 }
-.product-create-form .product-create-header * {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: "Apple SD Gothic Neo", sans-serif;
-}
-.product-create-form .product-create-header body {
-  width: 100%;
-  height: 100%;
-  background-color: #f5f7fa;
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: "Apple SD Gothic Neo", sans-serif;
-  line-height: 1.6;
+.create-product-form form .form-group label {
   display: block;
-}
-.product-create-form .product-create-header .product-create-form {
-  background-color: white;
-  border-radius: 4px;
-  width: 90%;
-  max-width: 700px;
-  max-height: 90vh;
-  padding: 0;
-  font-family: "Apple SD Gothic Neo", sans-serif;
-  display: flex;
-  flex-direction: column;
-}
-.product-create-form .product-create-header .product-create-form .product-create-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 15px 20px;
-  background-color: #3c485a;
-  color: white;
-  border-top-left-radius: 4px;
-  border-top-right-radius: 4px;
-  width: 100%;
-}
-.product-create-form .product-create-header .product-create-form .product-create-header h2 {
-  margin: 0;
-  font-size: 18px;
-  font-weight: 500;
-  color: white;
-}
-.product-create-form .product-create-header .product-create-form .product-create-header .close-button {
-  background: none;
-  border: none;
-  color: white;
-  font-size: 20px;
-  cursor: pointer;
-  padding: 0 5px;
-}
-.product-create-form .product-create-header .product-create-form .product-create-header .close-button:hover {
-  opacity: 0.8;
-}
-.product-create-form .product-create-header .product-create-form form {
-  padding: 20px;
-  overflow-y: auto;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0;
-  align-items: center;
-}
-.product-create-form .product-create-header .product-create-form form .form-group {
-  display: flex;
-  align-items: center;
-  margin-bottom: 1px;
-}
-.product-create-form .product-create-header .product-create-form form .form-group label {
-  width: 140px;
-  background-color: #e9edf4;
-  padding: 8px 15px;
-  font-size: 14px;
+  margin-bottom: 4px;
   color: #3c485a;
-  text-align: center;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 0;
-}
-.product-create-form .product-create-header .product-create-form form .form-group input,
-.product-create-form .product-create-header .product-create-form form .form-group select,
-.product-create-form .product-create-header .product-create-form form .form-group textarea {
-  flex: 1;
-  padding: 8px 10px;
-  border: 1px solid #e9edf4;
-  font-family: "Apple SD Gothic Neo", sans-serif;
+  font-weight: 500;
   font-size: 14px;
-  height: 35px;
+  text-align: left;
+}
+.create-product-form form .form-group input,
+.create-product-form form .form-group select,
+.create-product-form form .form-group textarea {
   width: 100%;
-  border-radius: 0;
-  margin: 0;
+  padding: 6px 8px;
+  border: 1px solid #929fb4;
+  border-radius: 4px;
+  font-family: "Apple SD Gothic Neo", sans-serif;
+  font-size: 13px;
+  height: 36px;
+  text-align: left;
 }
-.product-create-form .product-create-header .product-create-form form .form-group input:focus,
-.product-create-form .product-create-header .product-create-form form .form-group select:focus,
-.product-create-form .product-create-header .product-create-form form .form-group textarea:focus {
+.create-product-form form .form-group input:focus,
+.create-product-form form .form-group select:focus,
+.create-product-form form .form-group textarea:focus {
   outline: none;
-  border-color: #929fb4;
+  border-color: #3c485a;
+  box-shadow: 0 0 0 2px rgba(60, 72, 90, 0.1);
 }
-.product-create-form .product-create-header .product-create-form form .form-group:has(textarea[name=memo]) {
-  grid-column: 1/-1;
+.create-product-form form .form-group input[readonly] {
+  background-color: #f5f5f5;
+  cursor: not-allowed;
+}
+.create-product-form form .form-group input[type=number] {
+  -moz-appearance: textfield;
+  appearance: none;
+  text-align: left;
+  /* ✅ Chrome, Safari에서 숫자 조절 화살표 제거 */
+}
+.create-product-form form .form-group input[type=number]::-webkit-outer-spin-button, .create-product-form form .form-group input[type=number]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+  display: none;
+}
+.create-product-form form .form-group textarea {
+  min-height: 60px;
+  height: auto;
+  resize: vertical;
+  text-align: left;
+}
+.create-product-form form .form-group:last-child {
+  margin-top: 10px;
   display: flex;
-  align-items: flex-start;
+  justify-content: flex-end !important;
 }
-.product-create-form .product-create-header .product-create-form form .form-group:has(textarea[name=memo]) label {
-  height: 70px;
-  justify-content: center;
-  line-height: normal;
-}
-.product-create-form .product-create-header .product-create-form form .form-group:has(textarea[name=memo]) textarea {
-  height: 70px;
-  resize: none;
-}
-.product-create-form .product-create-header .product-create-form form .product-create-buttons {
-  grid-column: 1/-1;
-  display: flex;
-  justify-content: center;
-  margin-top: 20px;
-}
-.product-create-form .product-create-header .product-create-form form .product-create-buttons button {
+.create-product-form form .form-group:last-child button[type=submit] {
   width: 100px;
-  height: 40px;
+  padding: 8px;
   background-color: #3c485a;
   color: white;
   border: none;
@@ -173,104 +112,16 @@ body {
   font-size: 14px;
   font-weight: 500;
   cursor: pointer;
+  transition: background-color 0.2s;
+  height: 36px;
+  margin-left: auto !important;
 }
-.product-create-form .product-create-header .product-create-form form .product-create-buttons button:hover {
+.create-product-form form .form-group:last-child button[type=submit]:hover {
   background-color: rgb(39.6, 47.52, 59.4);
 }
-.product-create-form .product-create-header h2 {
-  margin: 0;
-  font-size: 18px;
-  font-weight: 500;
-  color: white;
-}
-.product-create-form .product-create-header .close-button {
-  background: none;
-  border: none;
-  color: white;
-  font-size: 20px;
-  cursor: pointer;
-  padding: 0 5px;
-}
-.product-create-form .product-create-header .close-button:hover {
-  opacity: 0.8;
-}
-.product-create-form form {
-  padding: 20px;
-  overflow-y: auto;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0;
-  align-items: center;
-}
-.product-create-form form .form-group {
-  display: flex;
-  align-items: center;
-  margin-bottom: 1px;
-}
-.product-create-form form .form-group label {
-  width: 140px;
-  background-color: #e9edf4;
-  padding: 8px 15px;
-  font-size: 14px;
-  color: #3c485a;
-  text-align: center;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 0;
-}
-.product-create-form form .form-group input,
-.product-create-form form .form-group select,
-.product-create-form form .form-group textarea {
-  flex: 1;
-  padding: 8px 10px;
-  border: 1px solid #e9edf4;
-  font-family: "Apple SD Gothic Neo", sans-serif;
-  font-size: 14px;
-  height: 35px;
-  width: 100%;
-  border-radius: 0;
-  margin: 0;
-}
-.product-create-form form .form-group input:focus,
-.product-create-form form .form-group select:focus,
-.product-create-form form .form-group textarea:focus {
+.create-product-form form .form-group:last-child button[type=submit]:focus {
   outline: none;
-  border-color: #929fb4;
-}
-.product-create-form form .form-group:has(textarea[name=memo]) {
-  grid-column: 1/-1;
-  display: flex;
-  align-items: flex-start;
-}
-.product-create-form form .form-group:has(textarea[name=memo]) label {
-  height: 70px;
-  justify-content: center;
-  line-height: normal;
-}
-.product-create-form form .form-group:has(textarea[name=memo]) textarea {
-  height: 70px;
-  resize: none;
-}
-.product-create-form form .product-create-buttons {
-  grid-column: 1/-1;
-  display: flex;
-  justify-content: center;
-  margin-top: 20px;
-}
-.product-create-form form .product-create-buttons button {
-  width: 100px;
-  height: 40px;
-  background-color: #3c485a;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  font-size: 14px;
-  font-weight: 500;
-  cursor: pointer;
-}
-.product-create-form form .product-create-buttons button:hover {
-  background-color: rgb(39.6, 47.52, 59.4);
+  box-shadow: 0 0 0 2px rgba(60, 72, 90, 0.2);
 }
 
 /*# sourceMappingURL=CreateProduct.css.map */

@@ -34,7 +34,7 @@ public class DepartmentService {
     }
 
 
-    // 특정 부서 조회 (DTO 반환)
+  // 특정 부서 조회 (DTO 반환)
     public DepartmentDTO getDepartmentById(Integer id) {
         Department department = departmentRepository.findById(id).orElse(null);
         if (department != null) {

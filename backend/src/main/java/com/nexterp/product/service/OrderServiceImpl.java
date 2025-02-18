@@ -40,13 +40,13 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public OrderDTO createOrder(OrderDTO orderDTO) {
         Transaction transaction = transactionRepository.findById(orderDTO.getTransactionId())
-                .orElseThrow(() -> new RuntimeException("Transaction not found"));
+            .orElseThrow(() -> new RuntimeException("Transaction not found"));
         Product product = productRepository.findById(orderDTO.getProductId())
-                .orElseThrow(() -> new RuntimeException("Product not found"));
+            .orElseThrow(() -> new RuntimeException("Product not found"));
         Client client = clientRepository.findByClientCode(orderDTO.getClientCode())
-                .orElseThrow(() -> new RuntimeException("Client not found"));
+            .orElseThrow(() -> new RuntimeException("Client not found"));
         Employee employee = employeeRepository.findById(orderDTO.getEmployeeId())
-                .orElseThrow(() -> new RuntimeException("Employee not found"));
+            .orElseThrow(() -> new RuntimeException("Employee not found"));
 
         Order order = toEntity(orderDTO, transaction, product, client, employee);
 
@@ -97,28 +97,28 @@ public class OrderServiceImpl implements OrderService {
     // Entity를 DTO로 변환
     private OrderDTO convertToDTO(Order order) {
         return OrderDTO.builder()
-                .id(order.getId())
-                .transactionId(order.getTransaction().getId())
-                .employeeId(order.getEmployee().getId())
-                .clientCode(order.getClient().getClientCode())
-                .productId(order.getProduct().getId())
-                .orderCount(order.getOrderCount())
-                .orderType(order.getOrderType())
-                .memo(order.getMemo())
-                .build();
+            .id(order.getId())
+            .transactionId(order.getTransaction().getId())
+            .employeeId(order.getEmployee().getId())
+            .clientCode(order.getClient().getClientCode())
+            .productId(order.getProduct().getId())
+            .orderCount(order.getOrderCount())
+            .orderType(order.getOrderType())
+            .memo(order.getMemo())
+            .build();
     }
 
     // DTO를 Entity로 변환
     private Order toEntity(OrderDTO orderDTO, Transaction transaction, Product product, Client client, Employee employee) {
         return Order.builder()
-                .transaction(transaction)
-                .orderType(orderDTO.getOrderType())
-                .product(product)
-                .orderCount(orderDTO.getOrderCount())
-                .client(client)
-                .employee(employee)
-                .memo(orderDTO.getMemo())
-                .requestStatus(RequestStatus.PENDING)
-                .build();
+            .transaction(transaction)
+            .orderType(orderDTO.getOrderType())
+            .product(product)
+            .orderCount(orderDTO.getOrderCount())
+            .client(client)
+            .employee(employee)
+            .memo(orderDTO.getMemo())
+            .requestStatus(RequestStatus.PENDING)
+            .build();
     }
 }

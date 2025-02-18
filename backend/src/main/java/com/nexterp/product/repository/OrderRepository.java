@@ -35,7 +35,7 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     Page<Order> findPendingOrders(Pageable pageable);
 
     Page<Order> findByRequestStatusAndOrderTypeAndClient_ClientCode(
-            RequestStatus requestStatus, OrderType orderType, String clientCode, Pageable pageable);
+        RequestStatus requestStatus, OrderType orderType, String clientCode, Pageable pageable);
 
     // 주문 타입과 승인 상태로 주문 조회
     @Query("SELECT o FROM Order o WHERE o.requestStatus = :status AND o.orderType = :orderType")

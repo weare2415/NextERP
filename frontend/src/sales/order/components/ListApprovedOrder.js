@@ -34,7 +34,7 @@ const ListApprovedOrder = ({ mergedOrders, clientNames, productNames }) => {
     <div className="order-list-container">
       <div className="order-header"></div>
       <div className="order-list">
-        <table>
+        <table className="order-list-grid">
           <thead>
             <tr>
               <th>

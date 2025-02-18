@@ -19,57 +19,94 @@ body {
   display: block;
 }
 
-.request-order-page-container {
-  max-width: 90%;
-  margin: auto;
-  position: relative;
-}
-.request-order-page-container .page-header {
+.Request-page .page-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: 20px;
   margin-bottom: 20px;
 }
-.request-order-page-container .page-header h1 {
+.Request-page .page-header h2 {
   color: #3c485a;
   font-family: "Apple SD Gothic Neo", sans-serif;
   margin: 0;
 }
-.request-order-page-container .Request-order-list {
+.Request-page .page-header .new-Request-btn {
+  padding: 8px 16px;
+  background-color: #3c485a;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-family: "Apple SD Gothic Neo", sans-serif;
+}
+.Request-page .page-header .new-Request-btn:hover {
+  background-color: rgb(39.6, 47.52, 59.4);
+}
+.Request-page .search-section {
+  margin-bottom: 20px;
+}
+.Request-page .search-section .search-form {
+  display: flex;
+  gap: 10px;
+}
+.Request-page .search-section .search-form input {
+  flex: 1;
+  padding: 8px;
+  border: 1px solid #929fb4;
+  border-radius: 4px;
+  font-family: "Apple SD Gothic Neo", sans-serif;
+}
+.Request-page .search-section .search-form input:focus {
+  outline: none;
+  border-color: #3c485a;
+}
+.Request-page .search-section .search-form button {
+  padding: 8px 16px;
+  background-color: #929fb4;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-family: "Apple SD Gothic Neo", sans-serif;
+}
+.Request-page .search-section .search-form button:hover {
+  background-color: rgb(115.7880434783, 132.3913043478, 159.2119565217);
+}
+.Request-page .Request-list {
   background-color: white;
   border-radius: 4px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   overflow-x: auto;
 }
-.request-order-page-container .Request-order-list table {
+.Request-page .Request-list table {
   width: 100%;
   border-collapse: collapse;
 }
-.request-order-page-container .Request-order-list table th, .request-order-page-container .Request-order-list table td {
+.Request-page .Request-list table th,
+.Request-page .Request-list table td {
   padding: 12px 15px;
   text-align: left;
   border-bottom: 1px solid #f5f7fa;
   font-family: "Apple SD Gothic Neo", sans-serif;
 }
-.request-order-page-container .Request-order-list table th {
+.Request-page .Request-list table th {
   background-color: #3c485a;
   color: white;
   font-weight: 500;
 }
-.request-order-page-container .Request-order-list table .request-product-name-btn {
+.Request-page .Request-list table .Request-name-btn {
   background: none;
   border: none;
   color: #3c485a;
   cursor: pointer;
   padding: 0;
   font-family: "Apple SD Gothic Neo", sans-serif;
-  text-decoration: none;
+  text-decoration: underline;
 }
-.request-order-page-container .Request-order-list table .request-product-name-btn:hover {
+.Request-page .Request-list table .Request-name-btn:hover {
   color: rgb(39.6, 47.52, 59.4);
 }
-.request-order-page-container .modal-overlay {
+.Request-page .modal-overlay {
   position: fixed;
   top: 0;
   left: 0;

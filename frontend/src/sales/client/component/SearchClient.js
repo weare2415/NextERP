@@ -112,8 +112,9 @@ const SearchClient = ({ onSearchResults }) => {
 
 	return (
 			<div className="search-client-container">
-				<form onSubmit={handleSearch} className="search-client-form">
-					<select name="searchType" value={searchParams.searchType} onChange={handleInputChange}>
+				<form onSubmit={handleSearch} className="search-client-all">
+					<select name="searchType" value={searchParams.searchType} onChange={handleInputChange}
+					className="search-client-type">
 						<option value="clientName">기업명</option>
 						<option value="clientCode">거래처 코드</option>
 						<option value="employeeName">영업 담당자</option>

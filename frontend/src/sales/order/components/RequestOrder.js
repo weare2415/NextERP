@@ -1,11 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./scss/RequestOrder.scss";
-import {
-  approvePurchaseOrder,
-  approveSaleOrder,
-  rejectPurchaseOrder,
-  rejectSaleOrder,
-} from "../api/orderApi";
+import { approvePurchaseOrder, approveSaleOrder, rejectPurchaseOrder, rejectSaleOrder } from "../../order/api/orderApi";
 import { getProductById } from "../../product/api/productApi";
 
 const RequestOrder = ({ order, onClose, onUpdateSuccess }) => {
@@ -66,81 +61,79 @@ const RequestOrder = ({ order, onClose, onUpdateSuccess }) => {
   };
 
   return (
+    <div className="modal-overlay">
     <div className="request-product-detail-form">
       <div className="request-product-detail-header">
-        <h2>거래 승인 요청</h2>
+        <h2>주문 승인 요청</h2>
         <button className="close-button" onClick={onClose}>
           X
         </button>
       </div>
-      <form>
-        <div className="form-group">
-          <label>제품 번호</label>
-          <input type="text" value={order.productId} readOnly />
-        </div>
+        <form className="form-container">
+            <div className="form-group">
+              <label>제품 ID</label>
+              <input type="text" value={order.productId} readOnly />
+            </div>
 
-        <div className="form-group">
-          <label>제품명</label>
-          <input type="text" value={order.productName} readOnly />
-        </div>
+            <div className="form-group">
+              <label>제품명</label>
+              <input type="text" value={order.productName} readOnly />
+            </div>
 
-        <div className="form-group">
-          <label>거래 기업명</label>
-          <input type="text" value={order.clientName} readOnly />
-        </div>
+            <div className="form-group">
+              <label>주문 기업명</label>
+              <input type="text" value={order.clientName} readOnly />
+            </div>
 
-        <div className="form-group">
-          <label>수량</label>
-          <input type="number" value={order.orderCount} readOnly />
-        </div>
+            <div className="form-group">
+              <label>수량</label>
+              <input type="number" value={order.orderCount} readOnly />
+            </div>
 
-        <div className="form-group">
-          <label>판매/구매</label>
-          <input
-            type="text"
-            value={order.orderType === "SALE" ? "판매" : "구매"}
-            readOnly
-          />
-        </div>
+            <div className="form-group">
+              <label>판매/구매</label>
+              <input type="text" value={order.orderType === "SALE" ? "판매" : "구매"} readOnly />
+            </div>
 
-        <div className="form-group">
-          <label>거래 승인 요청자</label>
-          <input type="text" value={order.employeeName} readOnly />
-        </div>
+            <div className="form-group">
+              <label>승인 요청자</label>
+              <input type="text" value={order.employeeName} readOnly />
+            </div>
 
-        <div className="form-group">
-          <label>제품 재고</label>
-          <input type="text" value={productData.stock} readOnly />
-        </div>
+            <div className="form-group">
+              <label>제품 재고</label>
+              <input type="text" value={productData.stock} readOnly />
+          </div>
 
-        <div className="form-group">
-          <label>주문 일자</label>
-          <input type="text" readOnly />
-        </div>
+          <div className="form-group">
+              <label>주문 일자</label>
+              <input type="text" readOnly />
+          </div>
 
-        <div className="form-group">
-          <label>메모</label>
-          <textarea name="memo" value={order.memo} readOnly />
-        </div>
+          <div className="form-group">
+                <label>메모</label>
+                <textarea name="memo" value={order.memo} readOnly />
+          </div>
 
-        <div className="request-product-detail-buttons">
-          <button
-            type="button"
-            onClick={handleApprove}
-            className="approve-button"
-          >
-            승인
-          </button>
-          <button
-            type="button"
-            onClick={handleReject}
-            className="reject-button"
-          >
-            반려
-          </button>
-        </div>
-      </form>
-    </div>
+          <div className="request-product-detail-buttons">
+            <button
+              type="button"
+              onClick={handleApprove}
+              className="approve-button"
+            >
+              승인
+            </button>
+            <button
+              type="button"
+              onClick={handleReject}
+              className="reject-button"
+            >
+              반려
+            </button>
+          </div>
+        </form>
+      </div>
+      </div>
   );
 };
 

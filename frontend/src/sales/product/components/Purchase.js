@@ -11,7 +11,6 @@ const Purchase = ({ isOpen, onClose, selectedProduct }) => {
   const [suggestions, setSuggestions] = useState([]);
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [isSelecting, setIsSelecting] = useState(false);
-  const todayDate = new Date().toISOString().split("T")[0];
 
   // 초기 주문 데이터
   const initialOrderData = {
@@ -22,7 +21,7 @@ const Purchase = ({ isOpen, onClose, selectedProduct }) => {
     clientName: "",
     employeeName: name,
     employeeId: id,
-    orderDate: todayDate,
+    purchaseDate: new Date().toISOString().split("T")[0],
     memo: "",
     paymentAccountId: "101",
   };
@@ -46,7 +45,6 @@ const Purchase = ({ isOpen, onClose, selectedProduct }) => {
         ...prev,
         productId: selectedProduct.id,
         price: selectedProduct.purchasePrice,
-        orderDate: new Date().toISOString().split("T")[0],
       }));
     }
   }, [selectedProduct]);
@@ -134,6 +132,7 @@ const Purchase = ({ isOpen, onClose, selectedProduct }) => {
         employee: {
           id: orderData.employeeId,
         },
+        purchaseDate: orderData.purchaseDate,
         memo: orderData.memo || "",
       };
 
@@ -147,17 +146,21 @@ const Purchase = ({ isOpen, onClose, selectedProduct }) => {
   };
 
   return (
-    isOpen && (
+    <div className="modal-overlay">
       <div className="product-order-detail-form" onClick={onClose}>
         <div className="product-order-detail-header">
           <h2>구매 요청</h2>
           <button className="close-button" onClick={handleClose}>
-            ×
+            X
           </button>
         </div>
-        <form onClick={(e) => e.stopPropagation()} onSubmit={handleSubmit}>
+        <form
+          onClick={(e) => e.stopPropagation()}
+          onSubmit={handleSubmit}
+          className="product-for-order-grid"
+        >
           <div className="form-group">
-            <label>제품 번호:</label>
+            <label>제품 번호</label>
             <input
               type="text"
               name="productId"
@@ -168,17 +171,18 @@ const Purchase = ({ isOpen, onClose, selectedProduct }) => {
           </div>
 
           <div className="form-group">
-            <label>구매 요청일</label>
+            <label>구매 날짜</label>
             <input
-              type="text"
-              name="orderDate"
-              value={orderData.orderDate}
+              type="date"
+              name="purchaseDate"
+              value={orderData.purchaseDate}
+              onChange={handleChange}
               required
             />
           </div>
 
           <div className="form-group">
-            <label>발주 기업명:</label>
+            <label>발주 기업명</label>
             <input
               type="text"
               placeholder="거래처명을 입력하세요"
@@ -197,12 +201,12 @@ const Purchase = ({ isOpen, onClose, selectedProduct }) => {
                     onMouseDown={() => {
                       setIsSelecting(true);
                       setSearchTerm(item.clientName);
-                      setSuggestions([]);
                       setOrderData((prev) => ({
                         ...prev,
                         clientName: item.clientName,
                         clientCode: item.clientCode,
                       }));
+                      setSuggestions([]);
                     }}
                   >
                     {item.clientName}
@@ -213,7 +217,7 @@ const Purchase = ({ isOpen, onClose, selectedProduct }) => {
           </div>
 
           <div className="form-group">
-            <label>발주 가격:</label>
+            <label>발주 가격</label>
             <input
               type="number"
               name="price"
@@ -224,7 +228,7 @@ const Purchase = ({ isOpen, onClose, selectedProduct }) => {
           </div>
 
           <div className="form-group">
-            <label>발주 수량:</label>
+            <label>발주 수량</label>
             <input
               type="number"
               name="quantity"
@@ -250,7 +254,7 @@ const Purchase = ({ isOpen, onClose, selectedProduct }) => {
             <label>발주 담당자:</label>
             <input
               type="text"
-              name="employeeName"
+              name="employeename"
               value={name}
               readOnly
               required
@@ -258,7 +262,7 @@ const Purchase = ({ isOpen, onClose, selectedProduct }) => {
           </div>
 
           <div className="form-group">
-            <label>메모</label>
+            <label>메모:</label>
             <textarea
               name="memo"
               value={orderData.memo}
@@ -269,17 +273,10 @@ const Purchase = ({ isOpen, onClose, selectedProduct }) => {
             <button type="submit" className="update-button">
               구매 요청
             </button>
-            <button
-              type="button"
-              className="close-button"
-              onClick={handleClose}
-            >
-              취소
-            </button>
           </div>
         </form>
       </div>
-    )
+    </div>
   );
 };
 

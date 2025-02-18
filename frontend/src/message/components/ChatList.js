@@ -13,7 +13,6 @@ import {
   getDepartments,
 } from "../../HR/employee/api/employeeApi";
 import ChatSearch from "./ChatSearch";
-import { useNavigate } from "react-router-dom";
 import ChatCreate from "./ChatCreate"; // ✅ ChatCreate 컴포넌트 import
 
 import io from "socket.io-client";
@@ -31,7 +30,9 @@ const ChatList = () => {
   const [filteredRooms, setFilteredRooms] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [contextMenu, setContextMenu] = useState(null);
+
   // ✅ 검색어 변경 시 필터링
   useEffect(() => {
     if (!searchTerm) {
@@ -365,13 +366,6 @@ const ChatList = () => {
           </div>
         </>
       )}
-
-      <button
-        className="new-chat-button"
-        onClick={() => setIsCreateModalOpen(true)}
-      >
-        +
-      </button>
 
       <ChatCreate
         isOpen={isCreateModalOpen}

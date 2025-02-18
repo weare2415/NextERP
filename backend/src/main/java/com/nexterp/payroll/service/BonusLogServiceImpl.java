@@ -35,7 +35,7 @@ public class BonusLogServiceImpl implements BonusLogService {
   @Transactional
   public BonusLogDTO save(BonusLogDTO dto) {
     Employee employee = employeeRepository.findById(dto.getEmployeeId())
-            .orElseThrow(() -> new IllegalArgumentException("Invalid employee ID: " + dto.getEmployeeId()));
+        .orElseThrow(() -> new IllegalArgumentException("Invalid employee ID: " + dto.getEmployeeId()));
 
     BonusLog entity = new BonusLog();
     entity.setEmployee(employee);
@@ -67,11 +67,11 @@ public class BonusLogServiceImpl implements BonusLogService {
 
   private BonusLogDTO entityToDTO(BonusLog entity) {
     return new BonusLogDTO(
-            entity.getId(),
-            entity.getEmployee().getId(),
-            entity.getBonusAmount(),
-            entity.getGrantedAt(),
-            entity.getDescription()
+        entity.getId(),
+        entity.getEmployee().getId(),
+        entity.getBonusAmount(),
+        entity.getGrantedAt(),
+        entity.getDescription()
     );
   }
 

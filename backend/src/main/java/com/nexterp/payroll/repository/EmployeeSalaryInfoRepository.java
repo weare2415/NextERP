@@ -26,20 +26,20 @@ import java.util.Optional;
 
 @Repository
 public interface EmployeeSalaryInfoRepository extends JpaRepository<EmployeeSalaryInfo, Long> {
-  //  현재 전체 직원 급여 정보 데이터 조회
-  @Query("SELECT e FROM EmployeeSalaryInfo e WHERE e.effectiveDate <= CURRENT_DATE " +
-          "AND (e.endDate IS NULL OR e.endDate >= CURRENT_DATE)")
-  Page<EmployeeSalaryInfo> findActiveSalaryInfos(Pageable pageable);
+//  현재 전체 직원 급여 정보 데이터 조회
+@Query("SELECT e FROM EmployeeSalaryInfo e WHERE e.effectiveDate <= CURRENT_DATE " +
+    "AND (e.endDate IS NULL OR e.endDate >= CURRENT_DATE)")
+Page<EmployeeSalaryInfo> findActiveSalaryInfos(Pageable pageable);
 
-  //  현재 직원별 급여 정보 데이터 조회
+//  현재 직원별 급여 정보 데이터 조회
   @Query("SELECT e FROM EmployeeSalaryInfo e WHERE e.employee.id = :employeeId " +
-          "AND e.effectiveDate <= CURRENT_DATE " +
-          "AND (e.endDate IS NULL OR e.endDate >= CURRENT_DATE)")
+      "AND e.effectiveDate <= CURRENT_DATE " +
+      "AND (e.endDate IS NULL OR e.endDate >= CURRENT_DATE)")
   Optional<EmployeeSalaryInfo> findActiveSalaryInfo(@Param("employeeId") Integer employeeId);
 
   @Query("SELECT e FROM EmployeeSalaryInfo e WHERE e.employee.id = :employeeId " +
-          "AND e.effectiveDate <= CURRENT_DATE " +
-          "AND (e.endDate IS NULL OR e.endDate >= CURRENT_DATE)")
+      "AND e.effectiveDate <= CURRENT_DATE " +
+      "AND (e.endDate IS NULL OR e.endDate >= CURRENT_DATE)")
   EmployeeSalaryInfo findActiveSalaryInfo_(Integer employeeId);
 
   // 과거 기록 조회

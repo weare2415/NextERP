@@ -1,38 +1,20 @@
 @import "../../App.scss";
 
-.announcement-search {
+.announcement-search-section {
   display: flex;
   align-items: center;
-  justify-content: flex-end; // 오른쪽 정렬
-  gap: 10px;
 
   .announcement-search-form {
     display: flex;
-    flex-direction: row;
     align-items: center;
-    margin-top: 1px;
-    gap: 10px;
-
-    select {
-      padding: 8px;
-      border: 1px solid $secondary-color;
-      border-radius: 4px;
-      font-family: $font-primary;
-      background-color: white;
-      cursor: pointer;
-
-      &:focus {
-        outline: none;
-        border-color: $primary-color;
-      }
-    }
+    gap: 8px;
+    position: relative;
 
     input {
       flex: 1;
       width: 250px;
       padding: 8px;
-      margin-top: 10px;
-      border: 1px solid #ddd;
+      border: 1px solid $secondary-color;
       border-radius: 4px;
       font-family: $font-primary;
       position: relative;
@@ -55,7 +37,7 @@
       height: 38px;
 
       &:hover {
-        background-color: darken($secondary-color, 10%);
+        background-color: darken($primary-color, 10%);
       }
     }
   }
