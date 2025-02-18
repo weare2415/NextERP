@@ -19,43 +19,44 @@ body {
   display: block;
 }
 
-.attendance-history-page-container {
+.approval-page-container {
   max-width: 90%;
   margin: auto;
   position: relative;
 }
-.attendance-history-page-container .page-header {
+.approval-page-container .page-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-top: 20px;
   margin-bottom: 20px;
 }
-.attendance-history-page-container .page-header h1 {
+.approval-page-container .page-header h1 {
   color: #3c485a;
   font-family: "Apple SD Gothic Neo", sans-serif;
   margin: 0;
 }
-.attendance-history-page-container .history-list {
+.approval-page-container .approval-list {
   background-color: white;
   border-radius: 4px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   overflow-x: auto;
 }
-.attendance-history-page-container .history-list table {
+.approval-page-container .approval-list table {
   width: 100%;
   border-collapse: collapse;
 }
-.attendance-history-page-container .history-list table th, .attendance-history-page-container .history-list table td {
+.approval-page-container .approval-list table th,
+.approval-page-container .approval-list table td {
   padding: 12px 15px;
   text-align: left;
   border-bottom: 1px solid #f5f7fa;
   font-family: "Apple SD Gothic Neo", sans-serif;
 }
-.attendance-history-page-container .history-list table th {
+.approval-page-container .approval-list table th {
   background-color: #3c485a;
   color: white;
   font-weight: 500;
 }
 
-/*# sourceMappingURL=AttendanceHistoryPage.css.map */
+/*# sourceMappingURL=ApprovalStatusPage.css.map */

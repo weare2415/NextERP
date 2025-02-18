@@ -19,57 +19,54 @@ body {
   display: block;
 }
 
-.attendance-list-wrapper {
+.history-list-wrapper {
   width: 100%;
 }
 
-.attendance-table-section {
+.history-table-section {
   background-color: white;
   width: 100%;
   margin-top: 20px;
   border-left: 1px solid #ddd;
 }
-.attendance-table-section table {
+.history-table-section table {
   width: 100%;
   border-collapse: collapse;
   table-layout: fixed;
 }
-.attendance-table-section table th,
-.attendance-table-section table td {
+.history-table-section table th, .history-table-section table td {
   padding: 15px;
   text-align: center;
   border: 1px solid #ddd;
   word-wrap: break-word;
 }
-.attendance-table-section table th:first-child,
-.attendance-table-section table td:first-child {
+.history-table-section table th:first-child, .history-table-section table td:first-child {
   border-left: none;
 }
-.attendance-table-section table th {
+.history-table-section table th {
   background-color: #4a5568;
   color: white;
   font-weight: 500;
   border-bottom: 1px solid #2d3748;
   position: relative;
 }
-.attendance-table-section table tr:hover {
+.history-table-section table tr:hover {
   background-color: #f8f9fa;
 }
-.attendance-table-section table th:nth-child(1),
-.attendance-table-section table td:nth-child(1) {
+.history-table-section table th:nth-child(1), .history-table-section table td:nth-child(1) {
   width: 15%;
 }
-.attendance-table-section table th:nth-child(2),
-.attendance-table-section table td:nth-child(2) {
-  width: 10%;
+.history-table-section table th:nth-child(2), .history-table-section table td:nth-child(2) {
+  width: 25%;
 }
-.attendance-table-section table th:nth-child(3),
-.attendance-table-section table td:nth-child(3) {
+.history-table-section table th:nth-child(3), .history-table-section table td:nth-child(3) {
   width: 15%;
 }
-.attendance-table-section table th:nth-child(4),
-.attendance-table-section table td:nth-child(4) {
+.history-table-section table th:nth-child(4), .history-table-section table td:nth-child(4) {
+  width: 30%;
+}
+.history-table-section table th:nth-child(5), .history-table-section table td:nth-child(5) {
   width: 15%;
 }
 
-/*# sourceMappingURL=MyAttendanceRequestList.css.map */
+/*# sourceMappingURL=RequestHistory.css.map */

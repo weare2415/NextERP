@@ -19,16 +19,17 @@ body {
   display: block;
 }
 
-.search-attendance-container {
+.search-my-attendance-container {
   display: flex;
   align-items: center;
 }
-.search-attendance-container .search-attendance-form {
+.search-my-attendance-container .search-my-attendance-form {
   display: flex;
   align-items: center;
   gap: 8px;
+  position: relative;
 }
-.search-attendance-container .search-attendance-form select {
+.search-my-attendance-container .search-my-attendance-form select {
   padding: 8px;
   border: 1px solid #929fb4;
   border-radius: 4px;
@@ -36,23 +37,24 @@ body {
   background-color: white;
   cursor: pointer;
 }
-.search-attendance-container .search-attendance-form select:focus {
+.search-my-attendance-container .search-my-attendance-form select:focus {
   outline: none;
   border-color: #3c485a;
 }
-.search-attendance-container .search-attendance-form input {
+.search-my-attendance-container .search-my-attendance-form input {
   flex: 1;
   width: 250px;
   padding: 8px;
   border: 1px solid #929fb4;
   border-radius: 4px;
   font-family: "Apple SD Gothic Neo", sans-serif;
+  position: relative;
 }
-.search-attendance-container .search-attendance-form input:focus {
+.search-my-attendance-container .search-my-attendance-form input:focus {
   outline: none;
   border-color: #3c485a;
 }
-.search-attendance-container .search-attendance-form button {
+.search-my-attendance-container .search-my-attendance-form button {
   padding: 8px 16px;
   background-color: #3c485a;
   color: white;
@@ -63,8 +65,8 @@ body {
   margin: 0;
   height: 38px;
 }
-.search-attendance-container .search-attendance-form button:hover {
+.search-my-attendance-container .search-my-attendance-form button:hover {
   background-color: rgb(39.6, 47.52, 59.4);
 }
 
-/*# sourceMappingURL=SearchAttendance.css.map */
+/*# sourceMappingURL=MySearchAttendance.css.map */

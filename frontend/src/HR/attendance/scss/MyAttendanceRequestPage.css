@@ -24,38 +24,38 @@ body {
   margin: auto;
   position: relative;
 }
-.employee-attendance-page-container .page-header {
+.employee-attendance-page-container .employee-attendance-page-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-top: 20px;
   margin-bottom: 20px;
 }
-.employee-attendance-page-container .page-header h1 {
+.employee-attendance-page-container .employee-attendance-page-header h1 {
   color: #3c485a;
   font-family: "Apple SD Gothic Neo", sans-serif;
   margin: 0;
 }
-.employee-attendance-page-container .attendance-list {
-  background-color: white;
-  border-radius: 4px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  overflow-x: auto;
+.employee-attendance-page-container .employee-attendance-page-header .employee-attendance-header-right {
+  display: flex;
+  align-items: center;
+  gap: 20px;
 }
-.employee-attendance-page-container .attendance-list table {
-  width: 100%;
-  border-collapse: collapse;
-}
-.employee-attendance-page-container .attendance-list table th, .employee-attendance-page-container .attendance-list table td {
-  padding: 12px 15px;
-  text-align: left;
-  border-bottom: 1px solid #f5f7fa;
-  font-family: "Apple SD Gothic Neo", sans-serif;
-}
-.employee-attendance-page-container .attendance-list table th {
+.employee-attendance-page-container .employee-attendance-page-header .attendance-request-btn {
+  padding: 8px 16px;
   background-color: #3c485a;
   color: white;
-  font-weight: 500;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-family: "Apple SD Gothic Neo", sans-serif;
+  height: 38px;
+  display: flex;
+  align-items: center;
+}
+.employee-attendance-page-container .employee-attendance-page-header .attendance-request-btn:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
 }
 
-/*# sourceMappingURL=AttendancePage.css.map */
+/*# sourceMappingURL=MyAttendanceRequestPage.css.map */
