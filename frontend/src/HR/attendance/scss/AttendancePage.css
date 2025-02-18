@@ -19,58 +19,43 @@ body {
   display: block;
 }
 
-.attendance-page {
+.employee-attendance-page-container {
+  max-width: 90%;
+  margin: auto;
+  position: relative;
+}
+.employee-attendance-page-container .page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+.employee-attendance-page-container .page-header h1 {
+  color: #3c485a;
+  font-family: "Apple SD Gothic Neo", sans-serif;
+  margin: 0;
+}
+.employee-attendance-page-container .attendance-list {
   background-color: white;
   border-radius: 4px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  padding: 16px;
   overflow-x: auto;
 }
-.attendance-page h2 {
-  font-family: "Apple SD Gothic Neo", sans-serif;
-  text-align: center;
-  margin-bottom: 20px;
-  color: #3c485a;
-}
-.attendance-page table {
+.employee-attendance-page-container .attendance-list table {
   width: 100%;
   border-collapse: collapse;
+}
+.employee-attendance-page-container .attendance-list table th, .employee-attendance-page-container .attendance-list table td {
+  padding: 12px 15px;
+  text-align: left;
+  border-bottom: 1px solid #f5f7fa;
   font-family: "Apple SD Gothic Neo", sans-serif;
 }
-.attendance-page table th, .attendance-page table td {
-  padding: 12px 15px;
-  text-align: center;
-  border-bottom: 1px solid #f5f7fa;
-  display: table-cell;
-}
-.attendance-page table th {
+.employee-attendance-page-container .attendance-list table th {
   background-color: #3c485a;
   color: white;
   font-weight: 500;
-}
-.attendance-page table th:hover {
-  background-color: rgb(39.6, 47.52, 59.4);
-}
-.attendance-page table td {
-  vertical-align: middle;
-}
-.attendance-page table select {
-  padding: 5px;
-  border: 1px solid #3c485a;
-  border-radius: 4px;
-  background-color: white;
-  cursor: pointer;
-  font-family: "Apple SD Gothic Neo", sans-serif;
-}
-.attendance-page table select:hover {
-  background-color: rgb(161.4, 173.88, 192.6);
-}
-.attendance-page table .overtime {
-  font-weight: bold;
-  color: #929fb4;
-}
-.attendance-page table .status-select {
-  font-weight: bold;
 }
 
 /*# sourceMappingURL=AttendancePage.css.map */
