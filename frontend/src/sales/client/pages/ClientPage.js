@@ -93,7 +93,7 @@ const ClientPage = () => {
                 onPageChange={setPage}
             />
         {showCreateForm && (
-          <div className="modal-overlay">
+          <div>
             <CreateClient
               onClose={() => setShowCreateForm(false)}
               onSuccess={handleCreateSuccess}
@@ -102,7 +102,7 @@ const ClientPage = () => {
         )}
         
         {showDetailForm && selectedClient && (
-          <div className="modal-overlay">
+          <div>
             <ClientDetail
               client={selectedClient}
               onClose={() => {

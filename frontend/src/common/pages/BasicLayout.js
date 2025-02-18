@@ -86,8 +86,7 @@ const BasicLayout = ({ children }) => {
     ],
     인사: [
       { name: "대쉬보드", path: "/hr/dashboard" },
-      { name: "출/퇴근 관리", path: "/hr/platform" },
-      { name: "직원 관리", path: "/employee" },
+      { name: "사원 관리", path: "/employee" },
       { name: "근태 관리", path: "/employee/attendance" },
       { name: "근태 신청 내역", path: "/employee/attendance/history" },
     ],

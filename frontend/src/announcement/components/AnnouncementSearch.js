@@ -88,8 +88,8 @@ const AnnouncementSearch = ({ onSearch }) => {
   };
 
   return (
-    <div className="announcement-search">
-      <form onSubmit={handleSearch} className="announcement-search-form">
+    <div className="announcement-search-section">
+      <form className="announcement-search-form">
         <input
           type="text"
           placeholder="작성자, 제목, 부서명, 직위명 검색"
@@ -97,7 +97,7 @@ const AnnouncementSearch = ({ onSearch }) => {
           onChange={(e) => setSearchTerm(e.target.value)}
           className="search-input"
         />
-        <button className="search-btn" onClick={handleSearch}>
+        <button type="button" onClick={handleSearch}>
           검색
         </button>
       </form>

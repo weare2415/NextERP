@@ -7,12 +7,14 @@ import {
 import Pagination from "../../../common/component/Pagination";
 import BasicLayout from "../../../common/pages/BasicLayout";
 import "../scss/ApprovalPage.scss";
+import ApprovalList from "../components/ApprovalList";
 
 const ApprovalPage = () => {
   const [pendingRequests, setPendingRequests] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [currentPage, setCurrentPage] = useState(1);
-  const pageSize = 10;
+  const [currentPage, setCurrentPage] = useState(0); // 0부터 시작
+  const [totalPages, setTotalPages] = useState(1); // 전체 페이지 수
+  const pageSize = 10; // 한 페이지당 10개
 
   const statusMap = {
     LEAVE: "휴가",
@@ -22,14 +24,17 @@ const ApprovalPage = () => {
 
   useEffect(() => {
     fetchPendingRequests();
-  }, []);
+  }, [currentPage]);
 
   const fetchPendingRequests = async () => {
+    setLoading(true);
     try {
-      const data = await getPendingAttendances();
-      setPendingRequests(data);
+      const data = await getPendingAttendances(currentPage, pageSize); // ✅ page, size 추가
+      console.log("📌 가져온 승인 대기 데이터:", data);
+      setPendingRequests(data.content); // ✅ 페이징된 데이터만 저장
+      setTotalPages(data.totalPages); // ✅ 전체 페이지 수 업데이트
     } catch (error) {
-      console.error("승인 대기 목록 조회 실패:", error);
+      console.error("❌ 승인 대기 목록 조회 실패:", error);
     }
     setLoading(false);
   };
@@ -54,68 +59,25 @@ const ApprovalPage = () => {
     }
   };
 
-  // ✅ 페이지네이션 함수
-  const paginate = (data, currentPage, pageSize) => {
-    const startIndex = (currentPage - 1) * pageSize;
-    return data.slice(startIndex, startIndex + pageSize);
-  };
-
-  const paginatedRequests = paginate(pendingRequests, currentPage, pageSize);
-
   return (
     <BasicLayout>
-      <div className="approval-page">
-        <h1>근태 승인 관리</h1>
+      <div className="approval-page-wrapper">
+        <div className="page-header">
+          <h1>근태 승인 관리</h1>
+        </div>
         {loading ? (
-          <p>⏳ 로딩 중...</p>
+          <p className="approval-page-loading">⏳ 로딩 중...</p>
         ) : (
           <>
-            <table>
-              <thead>
-                <tr>
-                  <th>사원명</th>
-                  <th>신청 유형</th>
-                  <th>신청 날짜</th>
-                  <th>신청 사유</th>
-                  <th>관리</th>
-                </tr>
-              </thead>
-              <tbody>
-                {paginatedRequests.length > 0 ? (
-                  paginatedRequests.map((request) => (
-                    <tr key={request.id}>
-                      <td>{request.employeeName}</td>
-                      <td>{statusMap[request.status] || request.status}</td>
-                      <td>{request.date}</td>
-                      <td>{request.approvalReason}</td>
-                      <td>
-                        <button
-                          className="approve-btn"
-                          onClick={() => handleApprove(request.id)}
-                        >
-                          승인
-                        </button>
-                        <button
-                          className="reject-btn"
-                          onClick={() => handleReject(request.id)}
-                        >
-                          거부
-                        </button>
-                      </td>
-                    </tr>
-                  ))
-                ) : (
-                  <tr>
-                    <td colSpan="5">승인 대기 요청이 없습니다.</td>
-                  </tr>
-                )}
-              </tbody>
-            </table>
-            {/* Pagination 컴포넌트 추가 */}
+            <ApprovalList
+              requests={pendingRequests}
+              statusMap={statusMap}
+              onApprove={handleApprove}
+              onReject={handleReject}
+            />
             <Pagination
               currentPage={currentPage}
-              totalItems={pendingRequests.length}
-              pageSize={pageSize}
+              totalPages={totalPages}
               onPageChange={setCurrentPage}
             />
           </>

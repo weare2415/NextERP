@@ -19,7 +19,19 @@ body {
   display: block;
 }
 
-.request-product-detail-form {
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+.modal-overlay .request-product-detail-form {
   background-color: white;
   border-radius: 4px;
   width: 90%;
@@ -30,7 +42,7 @@ body {
   display: flex;
   flex-direction: column;
 }
-.request-product-detail-form .request-product-detail-header {
+.modal-overlay .request-product-detail-form .request-product-detail-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -41,13 +53,13 @@ body {
   border-top-right-radius: 4px;
   width: 100%;
 }
-.request-product-detail-form .request-product-detail-header h2 {
+.modal-overlay .request-product-detail-form .request-product-detail-header h2 {
   margin: 0;
   font-size: 18px;
   font-weight: 500;
   color: white;
 }
-.request-product-detail-form .request-product-detail-header .close-button {
+.modal-overlay .request-product-detail-form .request-product-detail-header .close-button {
   background: none;
   border: none;
   color: white;
@@ -55,10 +67,10 @@ body {
   cursor: pointer;
   padding: 0 5px;
 }
-.request-product-detail-form .request-product-detail-header .close-button:hover {
+.modal-overlay .request-product-detail-form .request-product-detail-header .close-button:hover {
   opacity: 0.8;
 }
-.request-product-detail-form form {
+.modal-overlay .request-product-detail-form .form-container {
   padding: 20px;
   overflow-y: auto;
   display: grid;
@@ -66,12 +78,12 @@ body {
   gap: 0;
   align-items: center;
 }
-.request-product-detail-form form .form-group {
+.modal-overlay .request-product-detail-form .form-container .form-group {
   display: flex;
   align-items: center;
   margin-bottom: 1px;
 }
-.request-product-detail-form form .form-group label {
+.modal-overlay .request-product-detail-form .form-container .form-group label {
   width: 140px;
   background-color: #e9edf4;
   padding: 8px 15px;
@@ -83,9 +95,9 @@ body {
   justify-content: center;
   margin: 0;
 }
-.request-product-detail-form form .form-group input,
-.request-product-detail-form form .form-group select,
-.request-product-detail-form form .form-group textarea {
+.modal-overlay .request-product-detail-form .form-container .form-group input,
+.modal-overlay .request-product-detail-form .form-container .form-group select,
+.modal-overlay .request-product-detail-form .form-container .form-group textarea {
   flex: 1;
   padding: 8px 10px;
   border: 1px solid #e9edf4;
@@ -96,34 +108,34 @@ body {
   border-radius: 0;
   margin: 0;
 }
-.request-product-detail-form form .form-group input:focus,
-.request-product-detail-form form .form-group select:focus,
-.request-product-detail-form form .form-group textarea:focus {
+.modal-overlay .request-product-detail-form .form-container .form-group input:focus,
+.modal-overlay .request-product-detail-form .form-container .form-group select:focus,
+.modal-overlay .request-product-detail-form .form-container .form-group textarea:focus {
   outline: none;
   border-color: #929fb4;
 }
-.request-product-detail-form form .form-group:has(textarea[name=memo]) {
+.modal-overlay .request-product-detail-form .form-container .form-group:has(textarea[name=memo]) {
   grid-column: 1/-1;
   display: flex;
   align-items: flex-start;
 }
-.request-product-detail-form form .form-group:has(textarea[name=memo]) label {
+.modal-overlay .request-product-detail-form .form-container .form-group:has(textarea[name=memo]) label {
   height: 100px;
   justify-content: center;
   line-height: normal;
 }
-.request-product-detail-form form .form-group:has(textarea[name=memo]) textarea {
+.modal-overlay .request-product-detail-form .form-container .form-group:has(textarea[name=memo]) textarea {
   height: 100px;
   resize: none;
 }
-.request-product-detail-form form .request-product-detail-buttons {
+.modal-overlay .request-product-detail-form .form-container .request-product-detail-buttons {
   grid-column: 1/-1;
   display: flex;
   justify-content: center;
   gap: 10px;
   margin-top: 20px;
 }
-.request-product-detail-form form .request-product-detail-buttons button {
+.modal-overlay .request-product-detail-form .form-container .request-product-detail-buttons button {
   width: 100px;
   height: 40px;
   border: none;
@@ -132,11 +144,11 @@ body {
   font-weight: 500;
   cursor: pointer;
 }
-.request-product-detail-form form .request-product-detail-buttons .approve-button {
+.modal-overlay .request-product-detail-form .form-container .request-product-detail-buttons .approve-button {
   background-color: #3c485a;
   color: white;
 }
-.request-product-detail-form form .request-product-detail-buttons .reject-button {
+.modal-overlay .request-product-detail-form .form-container .request-product-detail-buttons .reject-button {
   background-color: red;
   color: white;
 }

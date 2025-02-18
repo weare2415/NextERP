@@ -22,81 +22,80 @@ body {
 .order-list-container {
   width: 100%;
 }
-
-.order-list {
+.order-list-container .order-list {
   background-color: white;
   width: 100%;
   margin-top: 20px;
   border-left: 1px solid #ddd;
 }
-.order-list table {
+.order-list-container .order-list .order-list-grid {
   width: 100%;
   border-collapse: collapse;
   table-layout: fixed;
 }
-.order-list table th,
-.order-list table td {
+.order-list-container .order-list .order-list-grid th,
+.order-list-container .order-list .order-list-grid td {
   padding: 15px;
   text-align: center;
   border: 1px solid #ddd;
   word-wrap: break-word;
 }
-.order-list table th:first-child,
-.order-list table td:first-child {
+.order-list-container .order-list .order-list-grid th:first-child,
+.order-list-container .order-list .order-list-grid td:first-child {
   border-left: none;
 }
-.order-list table th {
+.order-list-container .order-list .order-list-grid th {
   background-color: #4a5568;
   color: white;
   font-weight: 500;
   border-bottom: 1px solid #2d3748;
   position: relative;
 }
-.order-list table tr:hover {
+.order-list-container .order-list .order-list-grid tr:hover {
   background-color: #f8f9fa;
 }
-.order-list table th:nth-child(1),
-.order-list table td:nth-child(1) {
+.order-list-container .order-list .order-list-grid th:nth-child(1),
+.order-list-container .order-list .order-list-grid td:nth-child(1) {
   width: 5%;
 }
-.order-list table th:nth-child(2),
-.order-list table td:nth-child(2) {
+.order-list-container .order-list .order-list-grid th:nth-child(2),
+.order-list-container .order-list .order-list-grid td:nth-child(2) {
   width: 12%;
 }
-.order-list table th:nth-child(3),
-.order-list table td:nth-child(3) {
+.order-list-container .order-list .order-list-grid th:nth-child(3),
+.order-list-container .order-list .order-list-grid td:nth-child(3) {
   width: 8%;
 }
-.order-list table th:nth-child(4),
-.order-list table td:nth-child(4) {
+.order-list-container .order-list .order-list-grid th:nth-child(4),
+.order-list-container .order-list .order-list-grid td:nth-child(4) {
   width: 12%;
 }
-.order-list table th:nth-child(5),
-.order-list table td:nth-child(5) {
+.order-list-container .order-list .order-list-grid th:nth-child(5),
+.order-list-container .order-list .order-list-grid td:nth-child(5) {
   width: 15%;
 }
-.order-list table th:nth-child(6),
-.order-list table td:nth-child(6) {
+.order-list-container .order-list .order-list-grid th:nth-child(6),
+.order-list-container .order-list .order-list-grid td:nth-child(6) {
   width: 18%;
 }
-.order-list table th:nth-child(7),
-.order-list table td:nth-child(7) {
+.order-list-container .order-list .order-list-grid th:nth-child(7),
+.order-list-container .order-list .order-list-grid td:nth-child(7) {
   width: 10%;
 }
-.order-list table th:nth-child(8),
-.order-list table td:nth-child(8) {
+.order-list-container .order-list .order-list-grid th:nth-child(8),
+.order-list-container .order-list .order-list-grid td:nth-child(8) {
   width: 10%;
 }
-.order-list table th:nth-child(9),
-.order-list table td:nth-child(9) {
+.order-list-container .order-list .order-list-grid th:nth-child(9),
+.order-list-container .order-list .order-list-grid td:nth-child(9) {
   width: 10%;
 }
-.order-list table input[type=checkbox] {
+.order-list-container .order-list .order-list-grid input[type=checkbox] {
   cursor: pointer;
   width: 18px;
   height: 18px;
 }
-.order-list table button {
+.order-list-container .order-list .order-list-grid button {
   appearance: none;
   background-color: #007bff;
   color: white;
@@ -106,29 +105,12 @@ body {
   cursor: pointer;
   font-size: 14px;
 }
-.order-list table button:hover {
+.order-list-container .order-list .order-list-grid button:hover {
   background-color: #0056b3;
 }
-.order-list table td .loading-text {
+.order-list-container .order-list .order-list-grid td .loading-text {
   color: #999;
   font-style: italic;
-}
-.order-list table .client-table-name-btn {
-  appearance: none;
-  background: none;
-  border: none;
-  color: #4a5568;
-  cursor: pointer;
-  padding: 0;
-  font-family: inherit;
-  font-weight: bolder;
-  font-size: 16px;
-  text-decoration: none;
-  text-align: left;
-}
-.order-list table .client-table-name-btn:hover {
-  text-decoration: underline;
-  color: #2d3748;
 }
 
 /*# sourceMappingURL=ListApprovedOrder.css.map */

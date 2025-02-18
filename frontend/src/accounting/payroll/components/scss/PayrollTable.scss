@@ -1,4 +1,4 @@
-@import "../../../../App";
+@import "../../../../App.scss";
 
 .payroll-table-wrapper {
   width: 100%;
@@ -15,12 +15,13 @@
     border-collapse: collapse;
     table-layout: fixed;
 
-    th, td {
+    th,
+    td {
       padding: 15px;
       text-align: center;
       border: 1px solid #ddd;
       word-wrap: break-word;
-      
+
       &:first-child {
         border-left: none;
       }
@@ -41,12 +42,45 @@
     }
 
     // 각 열의 고정된 너비 설정
-    th:nth-child(1), td:nth-child(1) { width: 15%; }
-    th:nth-child(2), td:nth-child(2) { width: 15%; }
-    th:nth-child(3), td:nth-child(3) { width: 20%; }
-    th:nth-child(4), td:nth-child(4) { width: 25%; }
-    th:nth-child(5), td:nth-child(5) { width: 15%; }
-    th:nth-child(6), td:nth-child(6) { width: 10%; }
+    th:nth-child(1),
+    td:nth-child(1) {
+      width: 10%;
+    }
+    th:nth-child(2),
+    td:nth-child(2) {
+      width: 10%;
+    }
+    th:nth-child(3),
+    td:nth-child(3) {
+      width: 10%;
+    }
+    th:nth-child(4),
+    td:nth-child(4) {
+      width: 15%;
+    }
+    th:nth-child(5),
+    td:nth-child(5) {
+      width: 15%;
+    }
+    th:nth-child(6),
+    td:nth-child(6) {
+      width: 10%;
+    }
+
+    .payroll-name-btn {
+      font-weight: bold;
+      border: none;
+      color: #4a5568;
+      cursor: pointer;
+      padding: 10;
+      font-size: 16px;
+      border: 1px solid #ddd;
+
+      &:hover {
+        text-decoration: underline;
+        color: #2d3748;
+      }
+    }
 
     .payroll-detail-btn {
       appearance: none;

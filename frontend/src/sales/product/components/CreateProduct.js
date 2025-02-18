@@ -41,6 +41,7 @@ const CreateProduct = ({ onClose, onSuccess }) => {
   };
 
   return (
+    <div className="modal-overlay">
     <div className="product-create-form" onClick={onClose}>
       <div
         className="product-create-header"
@@ -54,7 +55,7 @@ const CreateProduct = ({ onClose, onSuccess }) => {
         </button>
       </div>
 
-      <form onSubmit={handleSubmit} onClick={(e) => e.stopPropagation()}>
+      <form onSubmit={handleSubmit} onClick={(e) => e.stopPropagation()} className="product-create-grid">
         <div className="form-group">
           <label>제품명</label>
           <input
@@ -138,6 +139,7 @@ const CreateProduct = ({ onClose, onSuccess }) => {
           <button type="submit">등록</button>
         </div>
       </form>
+    </div>
     </div>
   );
 };

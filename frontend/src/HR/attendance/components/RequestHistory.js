@@ -2,7 +2,6 @@ import React from "react";
 import "../scss/RequestHistory.scss";
 
 const RequestHistory = ({ requests, onApprovalRequest }) => {
-  
   return (
     <div className="history-list-wrapper">
       <div className="history-table-section">
@@ -23,21 +22,21 @@ const RequestHistory = ({ requests, onApprovalRequest }) => {
                   <td>{request.employeeName}</td>
                   <td>{request.date}</td>
                   <td>
-                    {request.status === "LEAVE" 
-                      ? "휴가" 
-                      : request.status === "SICK_LEAVE" 
-                      ? "병가" 
+                    {request.status === "LEAVE"
+                      ? "휴가"
+                      : request.status === "SICK_LEAVE"
+                      ? "병가"
                       : "재택근무"}
                   </td>
                   <td>{request.approvalReason || "N/A"}</td>
                   <td>
-                    <span 
+                    <span
                       className={`status-label ${request.requestStatus.toLowerCase()}`}
                     >
-                      {request.requestStatus === "PENDING" 
-                        ? "승인 대기" 
-                        : request.requestStatus === "APPROVED" 
-                        ? "승인됨" 
+                      {request.requestStatus === "PENDING"
+                        ? "승인 대기"
+                        : request.requestStatus === "APPROVED"
+                        ? "승인됨"
                         : "거부됨"}
                     </span>
                   </td>

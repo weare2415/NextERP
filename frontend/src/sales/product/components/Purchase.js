@@ -146,15 +146,19 @@ const Purchase = ({ isOpen, onClose, selectedProduct }) => {
   };
 
   return (
-    isOpen && (
+    <div className="modal-overlay">
       <div className="product-order-detail-form" onClick={onClose}>
         <div className="product-order-detail-header">
           <h2>구매 요청</h2>
           <button className="close-button" onClick={handleClose}>
-            ×
+            X
           </button>
         </div>
-        <form onClick={(e) => e.stopPropagation()} onSubmit={handleSubmit}>
+        <form
+          onClick={(e) => e.stopPropagation()}
+          onSubmit={handleSubmit}
+          className="product-for-order-grid"
+        >
           <div className="form-group">
             <label>제품 번호</label>
             <input
@@ -269,17 +273,10 @@ const Purchase = ({ isOpen, onClose, selectedProduct }) => {
             <button type="submit" className="update-button">
               구매 요청
             </button>
-            <button
-              type="button"
-              className="close-button"
-              onClick={handleClose}
-            >
-              취소
-            </button>
           </div>
         </form>
       </div>
-    )
+    </div>
   );
 };
 

@@ -19,58 +19,58 @@ body {
   display: block;
 }
 
-.request-product-list-wrapper {
+.request-order-list-wrapper {
   width: 100%;
 }
-.request-product-list-wrapper .product-table-section {
+.request-order-list-wrapper .request-order-table-section {
   background-color: white;
   width: 100%;
   margin-top: 10px;
   border-left: 1px solid #ddd;
 }
-.request-product-list-wrapper .product-table-section table {
+.request-order-list-wrapper .request-order-table-section .request-order-list {
   width: 100%;
   border-collapse: collapse;
   table-layout: fixed;
 }
-.request-product-list-wrapper .product-table-section table th, .request-product-list-wrapper .product-table-section table td {
+.request-order-list-wrapper .request-order-table-section .request-order-list th, .request-order-list-wrapper .request-order-table-section .request-order-list td {
   padding: 15px;
   text-align: center;
   border: 1px solid #ddd;
   word-wrap: break-word;
 }
-.request-product-list-wrapper .product-table-section table th:first-child, .request-product-list-wrapper .product-table-section table td:first-child {
+.request-order-list-wrapper .request-order-table-section .request-order-list th:first-child, .request-order-list-wrapper .request-order-table-section .request-order-list td:first-child {
   border-left: none;
 }
-.request-product-list-wrapper .product-table-section table th {
+.request-order-list-wrapper .request-order-table-section .request-order-list th {
   background-color: #4a5568;
   color: white;
   font-weight: 500;
   border-bottom: 1px solid #2d3748;
   position: relative;
 }
-.request-product-list-wrapper .product-table-section table tr:hover {
+.request-order-list-wrapper .request-order-table-section .request-order-list tr:hover {
   background-color: #f8f9fa;
 }
-.request-product-list-wrapper .product-table-section table th:nth-child(1), .request-product-list-wrapper .product-table-section table td:nth-child(1) {
+.request-order-list-wrapper .request-order-table-section .request-order-list th:nth-child(1), .request-order-list-wrapper .request-order-table-section .request-order-list td:nth-child(1) {
   width: 10%;
 }
-.request-product-list-wrapper .product-table-section table th:nth-child(2), .request-product-list-wrapper .product-table-section table td:nth-child(2) {
-  width: 20%;
-}
-.request-product-list-wrapper .product-table-section table th:nth-child(3), .request-product-list-wrapper .product-table-section table td:nth-child(3) {
-  width: 15%;
-}
-.request-product-list-wrapper .product-table-section table th:nth-child(4), .request-product-list-wrapper .product-table-section table td:nth-child(4) {
+.request-order-list-wrapper .request-order-table-section .request-order-list th:nth-child(2), .request-order-list-wrapper .request-order-table-section .request-order-list td:nth-child(2) {
   width: 25%;
 }
-.request-product-list-wrapper .product-table-section table th:nth-child(5), .request-product-list-wrapper .product-table-section table td:nth-child(5) {
+.request-order-list-wrapper .request-order-table-section .request-order-list th:nth-child(3), .request-order-list-wrapper .request-order-table-section .request-order-list td:nth-child(3) {
+  width: 20%;
+}
+.request-order-list-wrapper .request-order-table-section .request-order-list th:nth-child(4), .request-order-list-wrapper .request-order-table-section .request-order-list td:nth-child(4) {
   width: 15%;
 }
-.request-product-list-wrapper .product-table-section table th:nth-child(6), .request-product-list-wrapper .product-table-section table td:nth-child(6) {
+.request-order-list-wrapper .request-order-table-section .request-order-list th:nth-child(5), .request-order-list-wrapper .request-order-table-section .request-order-list td:nth-child(5) {
   width: 15%;
 }
-.request-product-list-wrapper .product-table-section table .product-table-name-btn {
+.request-order-list-wrapper .request-order-table-section .request-order-list th:nth-child(6), .request-order-list-wrapper .request-order-table-section .request-order-list td:nth-child(6) {
+  width: 15%;
+}
+.request-order-list-wrapper .request-order-table-section .request-order-list .order-list-name-btn {
   appearance: none;
   background: none;
   border: none;
@@ -82,35 +82,9 @@ body {
   font-size: 16px;
   text-decoration: none;
 }
-.request-product-list-wrapper .product-table-section table .product-table-name-btn:hover {
+.request-order-list-wrapper .request-order-table-section .request-order-list .order-list-name-btn:hover {
   text-decoration: underline;
   color: rgb(25.3846153846, 31.0256410256, 40.6153846154);
-}
-.request-product-list-wrapper .pagination-controls {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-top: 20px;
-  gap: 10px;
-}
-.request-product-list-wrapper .pagination-controls button {
-  padding: 8px 16px;
-  background-color: #3c485a;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
-.request-product-list-wrapper .pagination-controls button:disabled {
-  background-color: #cbd5e0;
-  cursor: not-allowed;
-}
-.request-product-list-wrapper .pagination-controls button:hover:not(:disabled) {
-  background-color: rgb(39.6, 47.52, 59.4);
-}
-.request-product-list-wrapper .pagination-controls span {
-  font-size: 1rem;
-  color: #3c485a;
 }
 
 /*# sourceMappingURL=ListRequestOrder.css.map */

@@ -19,7 +19,19 @@ body {
   display: block;
 }
 
-.product-create-form {
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+.modal-overlay .product-create-form {
   background-color: white;
   border-radius: 4px;
   width: 90%;
@@ -30,7 +42,7 @@ body {
   display: flex;
   flex-direction: column;
 }
-.product-create-form .product-create-header {
+.modal-overlay .product-create-form .product-create-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -41,13 +53,13 @@ body {
   border-top-right-radius: 4px;
   width: 100%;
 }
-.product-create-form .product-create-header h2 {
+.modal-overlay .product-create-form .product-create-header h2 {
   margin: 0;
   font-size: 18px;
   font-weight: 500;
   color: white;
 }
-.product-create-form .product-create-header .close-button {
+.modal-overlay .product-create-form .product-create-header .close-button {
   background: none;
   border: none;
   color: white;
@@ -55,10 +67,10 @@ body {
   cursor: pointer;
   padding: 0 5px;
 }
-.product-create-form .product-create-header .close-button:hover {
+.modal-overlay .product-create-form .product-create-header .close-button:hover {
   opacity: 0.8;
 }
-.product-create-form form {
+.modal-overlay .product-create-form .product-create-grid {
   padding: 20px;
   overflow-y: auto;
   display: grid;
@@ -66,12 +78,12 @@ body {
   gap: 0;
   align-items: center;
 }
-.product-create-form form .form-group {
+.modal-overlay .product-create-form .product-create-grid .form-group {
   display: flex;
   align-items: center;
   margin-bottom: 1px;
 }
-.product-create-form form .form-group label {
+.modal-overlay .product-create-form .product-create-grid .form-group label {
   width: 140px;
   background-color: #e9edf4;
   padding: 8px 15px;
@@ -83,9 +95,9 @@ body {
   justify-content: center;
   margin: 0;
 }
-.product-create-form form .form-group input,
-.product-create-form form .form-group select,
-.product-create-form form .form-group textarea {
+.modal-overlay .product-create-form .product-create-grid .form-group input,
+.modal-overlay .product-create-form .product-create-grid .form-group select,
+.modal-overlay .product-create-form .product-create-grid .form-group textarea {
   flex: 1;
   padding: 8px 10px;
   border: 1px solid #e9edf4;
@@ -96,33 +108,33 @@ body {
   border-radius: 0;
   margin: 0;
 }
-.product-create-form form .form-group input:focus,
-.product-create-form form .form-group select:focus,
-.product-create-form form .form-group textarea:focus {
+.modal-overlay .product-create-form .product-create-grid .form-group input:focus,
+.modal-overlay .product-create-form .product-create-grid .form-group select:focus,
+.modal-overlay .product-create-form .product-create-grid .form-group textarea:focus {
   outline: none;
   border-color: #929fb4;
 }
-.product-create-form form .form-group:has(textarea[name=memo]) {
+.modal-overlay .product-create-form .product-create-grid .form-group:has(textarea[name=memo]) {
   grid-column: 1/-1;
   display: flex;
   align-items: flex-start;
 }
-.product-create-form form .form-group:has(textarea[name=memo]) label {
+.modal-overlay .product-create-form .product-create-grid .form-group:has(textarea[name=memo]) label {
   height: 70px;
   justify-content: center;
   line-height: normal;
 }
-.product-create-form form .form-group:has(textarea[name=memo]) textarea {
+.modal-overlay .product-create-form .product-create-grid .form-group:has(textarea[name=memo]) textarea {
   height: 70px;
   resize: none;
 }
-.product-create-form form .product-create-buttons {
+.modal-overlay .product-create-form .product-create-grid .product-create-buttons {
   grid-column: 1/-1;
   display: flex;
   justify-content: center;
   margin-top: 20px;
 }
-.product-create-form form .product-create-buttons button {
+.modal-overlay .product-create-form .product-create-grid .product-create-buttons button {
   width: 100px;
   height: 40px;
   background-color: #3c485a;
@@ -133,7 +145,7 @@ body {
   font-weight: 500;
   cursor: pointer;
 }
-.product-create-form form .product-create-buttons button:hover {
+.modal-overlay .product-create-form .product-create-grid .product-create-buttons button:hover {
   background-color: rgb(39.6, 47.52, 59.4);
 }
 

@@ -68,7 +68,7 @@ export const approveClient = async (clientCode, approvedEmployeeId) => {
   const response = await axiosInstance.put(
     `/api/clients/${clientCode}/approve`,
     null,
-    { params: { approvedEmployeeId } } 
+    { params: { approvedEmployeeId } }
   );
   return response.data;
 };
@@ -78,7 +78,7 @@ export const rejectClient = async (clientCode, approvedEmployeeId) => {
   await axiosInstance.put(
     `/api/clients/${clientCode}/reject`,
     null,
-    { params: { approvedEmployeeId } } 
+    { params: { approvedEmployeeId } } // 쿼리 파라미터 전송
   );
 };
 

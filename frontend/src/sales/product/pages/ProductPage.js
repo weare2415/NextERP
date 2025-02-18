@@ -4,6 +4,7 @@ import ProductDetail from "../components/ProductDetail";
 import ListProduct from "../components/ListProduct";
 import "../scss/ProductPage.scss";
 import BasicLayout from "../../../common/pages/BasicLayout";
+import SearchProduct from "../components/SearchProduct";
 
 const ProductPage = () => {
   const [products, setProducts] = useState([]);
@@ -49,6 +50,7 @@ const ProductPage = () => {
         <div className="page-header">
           <h1>제품 관리</h1>
           <div className="header-right">
+            <SearchProduct />
           <button
             className="new-product-btn"
             onClick={() => setShowCreateForm(true)}
@@ -61,7 +63,7 @@ const ProductPage = () => {
         <ListProduct products={products} onProductSelect={handleProductClick} />
 
         {(showCreateForm || showDetailForm) && (
-          <div className="modal-overlay">
+          <div>
             {showCreateForm && (
               <CreateProduct
                 onClose={() => setShowCreateForm(false)}

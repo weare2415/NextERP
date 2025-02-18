@@ -161,7 +161,7 @@ const ListEmployee = forwardRef(({ searchTerm }, ref) => {
                 <tr key={employee.id}>
                   <td>{employee.id}</td>
                   <td
-                    className="clickable-name"
+                    className="employee-name-btn"
                     onClick={() => setSelectedEmployee(employee)}
                   >
                     {employee.name}

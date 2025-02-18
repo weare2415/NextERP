@@ -19,95 +19,26 @@ body {
   display: block;
 }
 
-.approval-page {
+.approval-page-wrapper {
   max-width: 90%;
   margin: auto;
   position: relative;
+}
+.approval-page-wrapper .page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   margin-top: 20px;
   margin-bottom: 20px;
 }
-.approval-page h1 {
+.approval-page-wrapper .page-header h1 {
   color: #3c485a;
   font-family: "Apple SD Gothic Neo", sans-serif;
   margin: 0;
 }
-.approval-page p {
-  text-align: center;
-  font-size: 1rem;
-  color: #666;
-  padding: 1rem;
-}
-.approval-page table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 20px;
-}
-.approval-page table thead tr {
-  background-color: #4a5568;
-}
-.approval-page table th {
-  color: white;
-  text-align: center;
-  padding: 1rem;
-  border: 1px solid #dee2e6;
-  border-bottom: 1px solid #2d3748;
-  font-size: 1rem;
-}
-.approval-page table td {
-  padding: 1rem;
-  border: 1px solid #dee2e6;
-  text-align: center;
-  font-size: 1rem;
-  background-color: white;
-  line-height: 0;
-}
-.approval-page table td[colspan="5"] {
-  text-align: center;
-  padding: 2rem;
-  color: black;
-  font-size: 1rem;
-}
-.approval-page table .approve-btn,
-.approval-page table .reject-btn {
-  padding: 0.5rem 1rem;
-  border: none;
-  border-radius: 4px;
-  font-size: 0.9rem;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-}
-.approval-page table .approve-btn {
-  background-color: #28a745;
-  color: white;
-  margin-right: 0.5rem;
-}
-.approval-page table .approve-btn:hover {
-  background-color: rgb(30.1449275362, 125.8550724638, 52);
-}
-.approval-page table .reject-btn {
-  background-color: #dc3545;
-  color: white;
-}
-.approval-page table .reject-btn:hover {
-  background-color: rgb(189.2151898734, 32.7848101266, 47.7721518987);
-}
 @media (max-width: 768px) {
-  .approval-page {
+  .approval-page-wrapper {
     padding: 1rem;
-  }
-  .approval-page table {
-    display: block;
-    overflow-x: auto;
-    white-space: nowrap;
-  }
-  .approval-page table th,
-  .approval-page table td {
-    padding: 0.75rem;
-  }
-  .approval-page table .approve-btn,
-  .approval-page table .reject-btn {
-    padding: 0.4rem 0.8rem;
-    font-size: 0.8rem;
   }
 }
 
