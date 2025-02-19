@@ -25,7 +25,7 @@ const Chat = () => {
 
     socket.on("message", (data) => {
       console.log("📩 수신한 메시지:", data);
-      setMessages((prev) => [...prev, data]); // ✅ 여기에서만 메시지 추가
+      setMessages((prev) => [...prev, data]); //  여기에서만 메시지 추가
     });
 
     return () => {
@@ -39,7 +39,10 @@ const Chat = () => {
       return;
     }
 
-    socket.emit("create_chatroom", { user1_id: myUserId, user2_id: parseInt(receiverId) });
+    socket.emit("create_chatroom", {
+      user1_id: myUserId,
+      user2_id: parseInt(receiverId),
+    });
   };
 
   const sendMessage = () => {
@@ -51,13 +54,13 @@ const Chat = () => {
     const messageData = {
       chatRoomId: chatRoomId,
       senderId: myUserId,
-      messageText: message, // ✅ 서버가 기대하는 필드명 확인!
+      messageText: message, //  서버가 기대하는 필드명 확인!
     };
 
     console.log("📤 전송되는 메시지 데이터:", messageData);
 
     socket.emit("message", messageData);
-    setMessage(""); // ✅ 메시지 입력 필드 초기화 (메시지 추가 X)
+    setMessage(""); // 메시지 입력 필드 초기화 (메시지 추가 X)
   };
 
   return (
@@ -76,7 +79,8 @@ const Chat = () => {
       <div>
         {messages.map((msg, index) => (
           <p key={index}>
-            <strong>{msg.senderId}: </strong>{msg.messageText}
+            <strong>{msg.senderId}: </strong>
+            {msg.messageText}
           </p>
         ))}
       </div>

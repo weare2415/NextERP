@@ -42,7 +42,7 @@ const CreateEmployee = ({ onClose, onSuccess }) => {
     setEmployeeData({ ...employeeData, id });
 
     if (id.length === 8) {
-      // ✅ 8자리 체크
+      //  8자리 체크
       const exists = await checkEmployeeIdExists(id);
       if (exists) {
         setIdError("❌ 이미 존재하는 ID입니다.");

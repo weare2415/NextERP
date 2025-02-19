@@ -9,15 +9,16 @@ import {
   leaveChatRoom,
 } from "../api/chatApi";
 import {
-  getAllEmployees,
+  getMessengerEmployees,
   getDepartments,
 } from "../../HR/employee/api/employeeApi";
 import ChatSearch from "./ChatSearch";
+import { useNavigate } from "react-router-dom";
 import ChatCreate from "./ChatCreate"; // ✅ ChatCreate 컴포넌트 import
 
 import io from "socket.io-client";
 
-// ✅ WebSocket 서버 연결
+//  WebSocket 서버 연결
 const socket = io("http://localhost:5000");
 
 const ChatList = () => {
@@ -31,7 +32,8 @@ const ChatList = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [contextMenu, setContextMenu] = useState(null);
-  // ✅ 검색어 변경 시 필터링
+
+  //  검색어 변경 시 필터링
   useEffect(() => {
     if (!searchTerm) {
       setFilteredRooms(roomList);
@@ -45,11 +47,11 @@ const ChatList = () => {
     }
   }, [searchTerm, roomList]);
 
-  // ✅ 채팅방 클릭 시 메시지 읽음 처리 및 이동
+  // 채팅방 클릭 시 메시지 읽음 처리 및 이동
   const handleChatRoomClick = async (chatRoomId) => {
     setUnreadMessages((prev) => ({
       ...prev,
-      [chatRoomId]: 0, // ✅ 클릭 시 즉시 읽음 처리
+      [chatRoomId]: 0, // 클릭 시 즉시 읽음 처리
     }));
 
     try {
@@ -72,7 +74,7 @@ const ChatList = () => {
       console.error("❌ 메시지 읽음 처리 오류:", error);
     }
 
-    // ✅ 새 창에서 채팅방 열기
+    //  새 창에서 채팅방 열기
     window.open(
       `/message/chat/${chatRoomId}`,
       `ChatRoom_${chatRoomId}`,
@@ -86,12 +88,12 @@ const ChatList = () => {
       await leaveChatRoom(chatRoomId);
       console.log(`✅ 채팅방 ${chatRoomId} 나가기 완료`);
 
-      // 🔥 서버에서 isActive=false 처리되었으므로 목록을 새로 불러옴
+      //  서버에서 isActive=false 처리되었으므로 목록을 새로 불러옴
       const updatedRooms = await getActiveChatRooms(myUserId);
       setRoomList(updatedRooms);
       setFilteredRooms(updatedRooms);
 
-      // ✅ 채팅방 목록에서 제거 (함수 내부로 이동)
+      //  채팅방 목록에서 제거 (함수 내부로 이동)
       setRoomList((prevRooms) =>
         prevRooms.filter((room) => room.id !== chatRoomId)
       );
@@ -115,12 +117,12 @@ const ChatList = () => {
     });
   };
 
-  // ✅ 우클릭 메뉴 닫기
+  //  우클릭 메뉴 닫기
   const closeContextMenu = () => {
     setContextMenu(null);
   };
 
-  // ✅ 채팅방 목록, 직원, 부서 정보 불러오기
+  // 채팅방 목록, 직원, 부서 정보 불러오기
   useEffect(() => {
     const fetchData = async () => {
       if (!myUserId) return;
@@ -130,7 +132,7 @@ const ChatList = () => {
           await Promise.all([
             getActiveChatRooms(myUserId),
             getUnreadMessages(myUserId),
-            getAllEmployees(),
+            getMessengerEmployees(),
             getDepartments(),
           ]);
 
@@ -141,7 +143,7 @@ const ChatList = () => {
         allEmployees.forEach((emp) => {
           employeeMap[emp.id] = {
             name: emp.name,
-            departmentId: emp.departmentId,
+            departmentName: emp.departmentName || "부서 없음", //  부서명 직접 저장
           };
         });
 
@@ -185,7 +187,7 @@ const ChatList = () => {
 
   const handleChatRoomCreated = (newChatRoom) => {
     setRoomList((prevRooms) => {
-      // ✅ 이미 존재하는 채팅방인지 확인 후 추가
+      //  이미 존재하는 채팅방인지 확인 후 추가
       if (!prevRooms.some((room) => room.id === newChatRoom.id)) {
         return [newChatRoom, ...prevRooms];
       }
@@ -200,7 +202,6 @@ const ChatList = () => {
     });
   };
 
-  // ✅ WebSocket 메시지 수신 처리
   useEffect(() => {
     if (!myUserId) return;
 
@@ -212,10 +213,13 @@ const ChatList = () => {
       console.log("📩 [실시간 메시지 수신]:", newMessage);
 
       const rawTimestamp = newMessage.timestamp || new Date().toISOString();
-      const formattedTimestamp = formatDate(rawTimestamp);
+      console.log("🕒 [변환된 timestamp]:", rawTimestamp);
 
-      console.log("🕒 [변환된 timestamp]:", formattedTimestamp);
+      console.log(
+        `📥 [메시지 수신] chatRoomId: ${newMessage.chatRoomId}, senderId: ${newMessage.senderId}, receiverId: ${newMessage.receiverId}`
+      );
 
+      //  마지막 메시지 업데이트 (본인 포함)
       setLastMessages((prev) => ({
         ...prev,
         [newMessage.chatRoomId]: {
@@ -224,25 +228,36 @@ const ChatList = () => {
         },
       }));
 
+      // 안 읽은 메시지 업데이트 (본인이 보낸 메시지는 카운트 증가 안 함)
       setUnreadMessages((prev) => ({
         ...prev,
-        [newMessage.chatRoomId]: prev[newMessage.chatRoomId]
-          ? prev[newMessage.chatRoomId] + 1
-          : 1,
+        [newMessage.chatRoomId]:
+          newMessage.senderId === myUserId
+            ? 0
+            : (prev[newMessage.chatRoomId] || 0) + 1,
       }));
 
+      //  채팅방 목록 업데이트 (본인 메시지도 즉시 반영)
       setRoomList((prevRooms) => {
-        const updatedRooms = [...prevRooms];
+        console.log("📌 [이전 roomList]:", prevRooms);
+
+        let updatedRooms = [...prevRooms];
         const targetRoomIndex = updatedRooms.findIndex(
           (room) => room.id === newMessage.chatRoomId
         );
 
         if (targetRoomIndex !== -1) {
-          // ✅ 기존 채팅방을 맨 앞으로 이동
+          //  기존 채팅방을 맨 앞으로 이동하고 lastMessage 업데이트
           const targetRoom = updatedRooms.splice(targetRoomIndex, 1)[0];
+
+          targetRoom.lastMessage = {
+            content: newMessage.messageText || newMessage.content,
+            timestamp: rawTimestamp,
+          };
+
           updatedRooms.unshift(targetRoom);
         } else {
-          // ✅ 새로운 채팅방이면 리스트에 추가
+          // 새로운 채팅방이면 리스트에 추가
           if (
             newMessage.senderId === myUserId ||
             newMessage.receiverId === myUserId
@@ -251,16 +266,49 @@ const ChatList = () => {
               id: newMessage.chatRoomId,
               senderId: newMessage.senderId,
               receiverId: newMessage.receiverId,
+              lastMessage: {
+                content: newMessage.messageText || newMessage.content,
+                timestamp: rawTimestamp,
+              },
             });
           }
         }
 
-        console.log("🔄 [채팅방 목록 업데이트 완료]:", updatedRooms);
+        console.log("🔄 [내 채팅방 목록 업데이트 완료]:", updatedRooms);
+        return updatedRooms;
+      });
 
-        // ✅ 강제 렌더링을 위해 `setFilteredRooms`도 즉시 업데이트
-        setFilteredRooms(updatedRooms);
+      // 본인의 메시지도 filteredRooms에 즉시 반영
+      setFilteredRooms((prevRooms) => {
+        console.log("📌 [이전 filteredRooms]:", prevRooms);
 
-        console.log("🔄 [채팅방 목록 업데이트 완료]:", updatedRooms);
+        let updatedRooms = [...prevRooms];
+        const targetRoomIndex = updatedRooms.findIndex(
+          (room) => room.id === newMessage.chatRoomId
+        );
+
+        if (targetRoomIndex !== -1) {
+          const targetRoom = updatedRooms.splice(targetRoomIndex, 1)[0];
+
+          targetRoom.lastMessage = {
+            content: newMessage.messageText || newMessage.content,
+            timestamp: rawTimestamp,
+          };
+
+          updatedRooms.unshift(targetRoom);
+        } else {
+          updatedRooms.unshift({
+            id: newMessage.chatRoomId,
+            senderId: newMessage.senderId,
+            receiverId: newMessage.receiverId,
+            lastMessage: {
+              content: newMessage.messageText || newMessage.content,
+              timestamp: rawTimestamp,
+            },
+          });
+        }
+
+        console.log("📝 [filteredRooms에 내 메시지 즉시 반영]:", updatedRooms);
         return updatedRooms;
       });
     });
@@ -271,7 +319,9 @@ const ChatList = () => {
     };
   }, [myUserId]);
 
-  // ✅ UI에서 timestamp 변환 함수
+  //  roomList도 의존성 배열에 추가하여 업데이트 유지
+
+  //  UI에서 timestamp 변환 함수
   const formatDate = (timestamp) => {
     if (!timestamp) return "시간 없음";
 
@@ -323,9 +373,10 @@ const ChatList = () => {
                 <div className="chat-content">
                   <div className="chat-name">
                     {user
-                      ? `${user.name} (${departments[user.departmentId]})`
+                      ? `${user.name} (${user.departmentName})`
                       : "불러오는 중..."}
                   </div>
+
                   <div className="chat-preview">
                     <span className="message">{lastMessage.content}</span>
                     <span className="timestamp">
@@ -374,7 +425,7 @@ const ChatList = () => {
 
       <ChatCreate
         isOpen={isCreateModalOpen}
-        onClose={() => setIsCreateModalOpen(false)} // ✅ 여기서 onClose가 함수인지 확인!
+        onClose={() => setIsCreateModalOpen(false)} //  여기서 onClose가 함수인지 확인!
         onChatRoomCreated={handleChatRoomCreated}
       />
     </div>
