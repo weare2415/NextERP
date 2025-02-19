@@ -18,110 +18,126 @@ import "../scss/ListEmployee.scss";
 import Pagination from "../../../common/component/Pagination";
 
 const ListEmployee = forwardRef(({ searchTerm }, ref) => {
-  const [employees, setEmployees] = useState([]); // 직원 목록
-  const [departments, setDepartments] = useState([]); // 부서 목록
-  const [positions, setPositions] = useState([]); // 직급 목록
-  const [selectedEmployee, setSelectedEmployee] = useState(null); // 선택된 직원 상세정보
-  const [currentPage, setCurrentPage] = useState(0); // 현재 페이지 (백엔드는 0부터 시작)
-  const [totalPages, setTotalPages] = useState(1); // 전체 페이지 수
-  const pageSize = 10; // 한 페이지당 직원 수
+  const [employees, setEmployees] = useState([]);
+  const [departments, setDepartments] = useState([]);
+  const [positions, setPositions] = useState([]);
+  const [selectedEmployee, setSelectedEmployee] = useState(null);
+  const [filteredEmployees, setFilteredEmployees] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const pageSize = 10;
 
-  // ✅ 직원 데이터 가져오기 (백엔드 페이징 적용)
-  const fetchEmployees = async (page = 0) => {
-    try {
-      const response = await getAllActiveEmployees(page, pageSize);
-      setEmployees(response.content || []); // 직원 데이터 설정
-      setTotalPages(response.totalPages || 1); // 총 페이지 수 설정
-    } catch (error) {
-      console.error("❌ 직원 목록 불러오기 실패:", error);
-      setEmployees([]);
-      setTotalPages(1);
-    }
-  };
-
-  // ✅ 부서 및 직급 데이터 가져오기
-  const fetchDepartmentsAndPositions = async () => {
+  const fetchAllData = async () => {
     try {
       const deptResponse = await getDepartments();
       setDepartments(deptResponse || []);
 
       const posResponse = await getPositions();
       setPositions(posResponse || []);
+
+      const empResponse = await getAllActiveEmployees();
+      setEmployees(empResponse || []);
+      setFilteredEmployees(empResponse || []);
     } catch (error) {
-      console.error("❌ 부서 및 직급 데이터 가져오기 실패:", error);
-      setDepartments([]);
-      setPositions([]);
+      console.error("❌ 직원 데이터 가져오기 실패:", error);
+      setEmployees([]);
+      setFilteredEmployees([]);
     }
   };
 
-  // ✅ 부서 이름 가져오기 함수
-  const getDepartmentName = (departmentId) => {
-    const department = departments.find((dept) => dept.id === departmentId);
-    return department ? department.name : "알 수 없음";
-  };
+  useEffect(() => {
+    fetchAllData();
+  }, []);
 
-  // ✅ 직급 이름 가져오기 함수
-  const getPositionTitle = (positionId) => {
-    const position = positions.find((pos) => pos.id === positionId);
-    return position ? position.title : "알 수 없음";
-  };
-
-  // ✅ 검색 기능 (페이징 지원)
-  const handleSearch = async (searchTerm, searchCategory, page = 0) => {
+  const handleSearch = async (searchTerm) => {
     if (!searchTerm) {
-      fetchEmployees(0); // 검색어 없으면 전체 조회
+      setFilteredEmployees(employees);
       return;
     }
 
     try {
-      let response;
-      switch (searchCategory) {
-        case "name":
-          response = await getEmployeesByName(searchTerm, page, pageSize);
-          break;
-        case "department":
-          response = await getEmployeesByDepartment(searchTerm, page, pageSize);
-          break;
-        case "position":
-          response = await getEmployeesByPosition(searchTerm, page, pageSize);
-          break;
-        default:
-          response = await getEmployeesByName(searchTerm, page, pageSize);
+      let searchResults = [];
+
+      const nameResults = await getEmployeesByName(searchTerm);
+      searchResults = [...nameResults];
+
+      const departmentMatch = departments.find((dept) =>
+        dept.name.includes(searchTerm)
+      );
+      if (departmentMatch) {
+        const deptResults = await getEmployeesByDepartment(departmentMatch.id);
+        searchResults = [...searchResults, ...deptResults];
       }
 
-      setEmployees(response.content || []);
-      setTotalPages(response.totalPages || 1);
-      setCurrentPage(page); // ✅ 페이지 업데이트
+      const positionMatch = positions.find((pos) =>
+        pos.title.includes(searchTerm)
+      );
+      if (positionMatch) {
+        const posResults = await getEmployeesByPosition(
+          positionMatch.positionId
+        );
+        searchResults = [...searchResults, ...posResults];
+      }
+
+      if (departmentMatch && positionMatch) {
+        const combinedResults = await getEmployeesByDepartmentAndPosition(
+          departmentMatch.id,
+          positionMatch.positionId
+        );
+        searchResults = [...searchResults, ...combinedResults];
+      }
+
+      const uniqueResults = Array.from(
+        new Map(searchResults.map((emp) => [emp.id, emp])).values()
+      );
+
+      setFilteredEmployees(uniqueResults);
     } catch (error) {
       console.error("❌ 검색 실패:", error);
-      setEmployees([]);
-      setTotalPages(1);
+      setFilteredEmployees([]);
     }
   };
 
   // ✅ `EmployeePage`에서 검색 실행 시 이 함수 호출 가능하도록 설정
   useImperativeHandle(ref, () => ({
-    handleCreateSuccess: () => fetchEmployees(currentPage),
-    handleDeleteSuccess: () => fetchEmployees(currentPage),
-    handleUpdateSuccess: () => fetchEmployees(currentPage),
+    handleCreateSuccess: async () => await fetchAllData(),
+    handleDeleteSuccess: async () => await fetchAllData(),
+    handleUpdateSuccess: async () => await fetchAllData(),
     handleSearch,
   }));
 
-  // ✅ 최초 실행 시 데이터 가져오기
-  useEffect(() => {
-    fetchDepartmentsAndPositions();
-    fetchEmployees(currentPage);
-  }, []);
+  // ✅ 부서 이름 가져오기
+  const getDepartmentName = (id) => {
+    const department = departments.find((dept) => dept.id === id);
+    return department ? department.name : "-";
+  };
 
-  // ✅ 페이지 변경 시 직원 데이터 다시 불러오기
+  // ✅ 직급 이름 가져오기
+  const getPositionTitle = (id) => {
+    const position = positions.find((pos) => pos.positionId === id);
+    return position ? position.title : "-";
+  };
+
   useEffect(() => {
-    fetchEmployees(currentPage);
+    fetchAllData();
   }, [currentPage]);
+
+  // ✅ 페이지 변경 함수
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+  };
+
+  // ✅ 페이지에 맞는 직원 데이터 추출
+  const paginate = (data, currentPage, pageSize) => {
+    const startIndex = (currentPage - 1) * pageSize;
+    return data.slice(startIndex, startIndex + pageSize);
+  };
+
+  const paginatedEmployees = paginate(filteredEmployees, currentPage, pageSize);
 
   return (
     <div>
       <div className="employee-list-container">
-        {employees.length === 0 ? (
+        {filteredEmployees.length === 0 ? (
           <p>직원이 없습니다.</p>
         ) : (
           <table className="employee-table">
@@ -141,7 +157,7 @@ const ListEmployee = forwardRef(({ searchTerm }, ref) => {
               </tr>
             </thead>
             <tbody>
-              {employees.map((employee) => (
+              {paginatedEmployees.map((employee) => (
                 <tr key={employee.id}>
                   <td>{employee.id}</td>
                   <td
@@ -155,8 +171,8 @@ const ListEmployee = forwardRef(({ searchTerm }, ref) => {
                   <td>{employee.phone || "-"}</td>
                   <td>{employee.email}</td>
                   <td>{employee.address || "-"}</td>
-                  <td>{getDepartmentName(employee.departmentId)}</td>{" "}
-                  <td>{employee.positionTitle || "알 수 없음"}</td>
+                  <td>{getDepartmentName(employee.departmentId)}</td>
+                  <td>{getPositionTitle(employee.positionId)}</td>
                   <td>{employee.hireDate}</td>
                   <td>{employee.isTerminated ? "✅ 퇴사" : "🔵 재직 중"}</td>
                 </tr>
@@ -169,16 +185,17 @@ const ListEmployee = forwardRef(({ searchTerm }, ref) => {
           <EmployeeDetail
             employee={selectedEmployee}
             onClose={() => setSelectedEmployee(null)}
-            onUpdateSuccess={() => fetchEmployees(currentPage)}
-            onDeleteSuccess={() => fetchEmployees(currentPage)}
+            onUpdateSuccess={fetchAllData}
+            onDeleteSuccess={fetchAllData}
           />
         )}
       </div>
 
-      {/* ✅ Pagination 적용 (백엔드 데이터 기반) */}
+      {/* 페이징 컴포넌트 추가 */}
       <Pagination
         currentPage={currentPage}
-        totalPages={totalPages}
+        totalItems={filteredEmployees.length}
+        pageSize={pageSize}
         onPageChange={setCurrentPage}
       />
     </div>

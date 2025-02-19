@@ -7,21 +7,17 @@ import BasicLayout from "../../../common/pages/BasicLayout";
 const EmployeePage = () => {
   const [showCreateForm, setShowCreateForm] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
-  const [searchCategory, setSearchCategory] = useState("name");
+  const [searchCategory, setSearchCategory] = useState("name"); 
   const listEmployeeRef = useRef();
 
-  // ✅ 검색 실행 (검색 시 페이지를 0으로 초기화)
+  // ✅ 검색 버튼 클릭 시 검색어를 적용
   const handleSearch = () => {
-    if (listEmployeeRef.current) {
-      listEmployeeRef.current.handleSearch(searchTerm, searchCategory, 0);
-    }
+    listEmployeeRef.current?.handleSearch(searchTerm, searchCategory);
   };
 
   // ✅ 직원 등록 성공 시 목록 업데이트
-  const handleCreateSuccess = () => {
-    if (listEmployeeRef.current) {
-      listEmployeeRef.current.handleCreateSuccess();
-    }
+  const handleCreateSuccess = (newEmployee) => {
+    listEmployeeRef.current?.handleCreateSuccess?.(newEmployee);
     setShowCreateForm(false);
   };
 
@@ -37,11 +33,12 @@ const EmployeePage = () => {
               className="search-category-select"
             >
               <option value="name">사원명</option>
+              <option value="id">사원ID</option>
               <option value="department">부서</option>
               <option value="position">직위</option>
             </select>
 
-            {/* 검색 입력창 */}
+            {/* 검색창 */}
             <input
               type="text"
               placeholder="검색어를 입력하세요."
@@ -68,8 +65,8 @@ const EmployeePage = () => {
         {/* 직원 목록 */}
         <ListEmployee
           ref={listEmployeeRef}
-          searchTerm={searchTerm}
-          searchCategory={searchCategory}
+          searchTerm={searchTerm} 
+          searchCategory={searchCategory} 
         />
 
         {/* 직원 등록 모달 */}

@@ -102,6 +102,7 @@ def handle_message(data):
 
 
 
+
 # 서버 시작 시 기존 WebSocket 연결 정보 초기화
 def clear_connected_users():
     global connected_users

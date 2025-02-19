@@ -7,13 +7,9 @@ import com.nexterp.employee.entity.Position;
 import com.nexterp.employee.repository.PositionRepository;
 import com.nexterp.employee.service.EmployeeService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Arrays;
 import java.util.List;
 
 @RestController
@@ -24,11 +20,10 @@ public class EmployeeController {
     private final EmployeeService employeeService;
 
     @PostMapping
-    public ResponseEntity<EmployeeDTO> createEmployee(@RequestBody EmployeeDTO employeeDTO) {
-        EmployeeDTO savedEmployee = employeeService.saveEmployee(employeeDTO);
+    public ResponseEntity<Employee> createEmployee(@RequestBody EmployeeDTO employeeDTO) {
+        Employee savedEmployee = employeeService.saveEmployee(employeeDTO);
         return ResponseEntity.ok(savedEmployee);
     }
-
     /**
      * ✅ 1. 직원 정보 수정 요청 (PENDING 상태로 신규 데이터 생성)
      */
@@ -68,19 +63,12 @@ public class EmployeeController {
         return ResponseEntity.noContent().build();
     }
 
-
-
-    //전체 직원 조회
     @GetMapping
-    public ResponseEntity<Page<EmployeeDTO>> getAllEmployees(
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size) {
-        Pageable pageable = PageRequest.of(page, size);
-        return ResponseEntity.ok(employeeService.getAllEmployees(pageable));
+    public ResponseEntity<List<EmployeeDTO>> getAllEmployees() {
+        List<EmployeeDTO> employees = employeeService.getAllEmployees();
+        return ResponseEntity.ok(employees);
     }
 
-
-    // 특정 지원 조회
     @GetMapping("/{id}")
     public ResponseEntity<EmployeeDTO> getEmployeeById(@PathVariable Integer id) {
         EmployeeDTO employee = employeeService.getEmployeeById(id);
@@ -88,112 +76,76 @@ public class EmployeeController {
     }
 
 
-    // 이름으로 조회
     @GetMapping("/name/{name}")
-    public ResponseEntity<Page<EmployeeDTO>> getEmployeesByName(
-            @PathVariable String name,
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size) {
-        Pageable pageable = PageRequest.of(page, size);
-        return ResponseEntity.ok(employeeService.getEmployeesByName(name, pageable));
+    public ResponseEntity<List<EmployeeDTO>> getEmployeesByName(@PathVariable String  name) {
+        List<EmployeeDTO> employees = employeeService.getEmployeesByName(name);
+        return ResponseEntity.ok(employees);
     }
 
-    //부서별 조회
     @GetMapping("/department/{departmentId}")
-    public ResponseEntity<Page<EmployeeDTO>> getEmployeesByDepartment(
-            @PathVariable Integer departmentId,
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size) {
-        Pageable pageable = PageRequest.of(page, size);
-        return ResponseEntity.ok(employeeService.getEmployeesByDepartment(departmentId, pageable));
+    public ResponseEntity<List<EmployeeDTO>> getEmployeesByDepartment(@PathVariable Integer departmentId) {
+        List<EmployeeDTO> employees = employeeService.getEmployeesByDepartment(departmentId);
+        return ResponseEntity.ok(employees);
     }
 
-    // 직급별 조회
     @GetMapping("/position/{positionId}")
-    public ResponseEntity<Page<EmployeeDTO>> getEmployeesByPosition(
-            @PathVariable Integer positionId,
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size) {
-        Pageable pageable = PageRequest.of(page, size);
-        return ResponseEntity.ok(employeeService.getEmployeesByPosition(positionId, pageable));
+    public ResponseEntity<List<EmployeeDTO>> getEmployeesByPosition(@PathVariable Integer positionId) {
+        List<EmployeeDTO> employees = employeeService.getEmployeesByPosition(positionId);
+        return ResponseEntity.ok(employees);
     }
 
-    //부서 및  직급별 조회
     @GetMapping("/department/{departmentId}/position/{positionId}")
-    public ResponseEntity<Page<EmployeeDTO>> getEmployeesByDepartmentAndPosition(
+    public ResponseEntity<List<EmployeeDTO>> getEmployeesByDepartmentAndPosition(
             @PathVariable Integer departmentId,
-            @PathVariable Integer positionId,
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size) {
-        Pageable pageable = PageRequest.of(page, size);
-        return ResponseEntity.ok(employeeService.getEmployeesByDepartmentAndPosition(departmentId, positionId, pageable));
+            @PathVariable Integer positionId) {
+        List<EmployeeDTO> employees = employeeService.getEmployeesByDepartmentAndPosition(departmentId, positionId);
+        return ResponseEntity.ok(employees);
     }
-
 
     /**
-     *  PENDING 상태의 직원 목록 조회
+     * ✅ 1. PENDING 상태의 직원 목록 조회
      */
     @GetMapping("/pending")
-    public ResponseEntity<Page<EmployeeDTO>> getPendingEmployees(
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size) {
-        Pageable pageable = PageRequest.of(page, size);
-        return ResponseEntity.ok(employeeService.getPendingEmployees(pageable));
+    public ResponseEntity<List<EmployeeDTO>> getPendingEmployees() {
+        return ResponseEntity.ok(employeeService.getPendingEmployees());
     }
 
     /**
-     *  특정 직원이 요청한 승인 목록 조회
+     * ✅ 2. 특정 직원이 요청한 승인 목록 조회
      */
     @GetMapping("/{employeeId}/requests")
-    public ResponseEntity<Page<EmployeeDTO>> getEmployeesByEmployeeId(
-            @PathVariable Integer employeeId,
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size) {
-        Pageable pageable = PageRequest.of(page, size);
-        return ResponseEntity.ok(employeeService.getEmployeesByEmployeeId(employeeId, pageable));
+    public ResponseEntity<List<EmployeeDTO>> getEmployeesByEmployeeId(@PathVariable Integer employeeId) {
+        return ResponseEntity.ok(employeeService.getEmployeesByEmployeeId(employeeId));
     }
 
     /**
-     *  특정 승인 상태(RequestStatus)의 직원 목록 조회
+     * ✅ 3. 특정 승인 상태(RequestStatus)의 직원 목록 조회
      */
     @GetMapping("/status/{status}")
-    public ResponseEntity<Page<EmployeeDTO>> getEmployeesByStatus(
-            @PathVariable RequestStatus status,
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size) {
-        Pageable pageable = PageRequest.of(page, size);
-        return ResponseEntity.ok(employeeService.getEmployeesByStatus(status, pageable));
+    public ResponseEntity<List<EmployeeDTO>> getEmployeesByStatus(@PathVariable RequestStatus status) {
+        return ResponseEntity.ok(employeeService.getEmployeesByStatus(status));
     }
 
     /**
-     *  PENDING 상태가 아닌 직원 목록 조회 (PREPARED, APPROVED, REJECTED)
+     * ✅ 4. PENDING 상태가 아닌 직원 목록 조회 (PREPARED, APPROVED, REJECTED)
      */
     @GetMapping("/active")
-    public ResponseEntity<Page<EmployeeDTO>> getAllActiveEmployees(
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size) {
-        Pageable pageable = PageRequest.of(page, size);
-        return ResponseEntity.ok(employeeService.getAllActiveEmployees(pageable));
+    public ResponseEntity<List<EmployeeDTO>> getAllActiveEmployees() {
+        return ResponseEntity.ok(employeeService.getAllActiveEmployees());
     }
 
-    // 사원 ID 중복 체크 API 추가
+    // ✅ 사원 ID 중복 체크 API 추가
     @GetMapping("/exists/{id}")
     public ResponseEntity<Boolean> checkEmployeeIdExists(@PathVariable Integer id) {
         boolean exists = employeeService.existById(id);
         return ResponseEntity.ok(exists);
     }
 
-    // 자동 퇴사 처리 강제 실행 API (테스트용)
+    // ✅ 자동 퇴사 처리 강제 실행 API (테스트용)
     @PostMapping("/terminate-now")
     public ResponseEntity<String> triggerTerminationNow() {
         employeeService.processEmployeeTerminations(); // ✅ 강제 퇴사 실행
         return ResponseEntity.ok("✅ 즉시 퇴사 처리가 실행되었습니다.");
-    }
-
-    //메신저 용
-    @GetMapping("/messenger-list")
-    public List<EmployeeDTO> getMessengerEmployeeList() {
-        return employeeService.getActiveEmployees();
     }
 }
 

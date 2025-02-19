@@ -23,10 +23,11 @@ const MyVacationSickList = ({
   totalPages,
   onPageChange,
 }) => {
-  //  승인된 휴가 개수 카운트 단 병가는 제외
+  //  승인된 휴가 개수 카운트
   const approvedCount = attendances.filter(
-    (record) => record.requestStatus === "APPROVED" && record.status === "LEAVE"
+    (record) => record.requestStatus === "APPROVED"
   ).length;
+
   //  진행률 (퍼센트 계산)
   const progressPercentage = (approvedCount / TOTAL_VACATION_COUNT) * 100;
 
@@ -50,6 +51,7 @@ const MyVacationSickList = ({
     <div className="attendance-list-section">
       <h2>휴가 & 병가 내역</h2>
 
+   
       <div className="progress-container">
         <div className="progress-bar">
           <div

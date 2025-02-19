@@ -1,76 +1,66 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { createChatRoom } from "../api/chatApi";
 import {
-  getMessengerEmployees, // 메신저용
+  getAllEmployees,
   getDepartments,
   getPositions,
 } from "../../HR/employee/api/employeeApi";
-import "../scss/ChatCreate.scss";
 
-const ChatCreate = ({ isOpen, onClose, onChatRoomCreated }) => {
-  const myUserId = useSelector((state) => state.loginSlice.id);
+const ChatCreate = () => {
+  const myUserId = useSelector((state) => state.loginSlice.id); // 👤 로그인한 사용자 ID (숫자)
   const [employees, setEmployees] = useState([]);
   const [filteredEmployees, setFilteredEmployees] = useState([]);
   const [departments, setDepartments] = useState({});
   const [positions, setPositions] = useState({});
   const [searchQuery, setSearchQuery] = useState("");
-
-  //  선택한 상대방 정보 저장 (확인 버튼을 누른 후 생성되도록 함)
-  const [selectedReceiver, setSelectedReceiver] = useState(null);
-  const [showAlert, setShowAlert] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchEmployees = async () => {
       try {
-        //  PENDING 제외된 직원 목록 가져오기
-        let allEmployees = await getMessengerEmployees();
+        let allEmployees = await getAllEmployees();
 
-        console.log("📌 메신저용 직원 목록 (PENDING 제외됨):", allEmployees);
+        console.log("🔍 전체 직원 목록:", allEmployees);
+        console.log("👤 로그인한 사용자 ID (원본):", myUserId, typeof myUserId);
 
+        // 🔥 ID 비교를 위해 모든 ID를 숫자로 변환
         const myUserIdNumber = Number(myUserId);
+        const filteredList = allEmployees.filter(
+          (emp) => Number(emp.id) !== myUserIdNumber
+        );
+
+        console.log("✅ 로그인한 사용자 제외된 직원 목록:", filteredList);
 
         const departmentData = await getDepartments();
         const positionData = await getPositions();
 
-        //  부서 ID -> 부서 이름 매핑
+        // 부서 및 직급을 객체 형태로 변환 (id → 이름 매핑)
         const departmentMap = {};
         departmentData.forEach((dept) => {
           departmentMap[dept.id] = dept.name;
         });
 
-        //  직급 ID -> 직급 이름 매핑
         const positionMap = {};
         positionData.forEach((pos) => {
           positionMap[pos.id] = pos.name;
         });
-
-        //  필터링 및 부서/직급 정보 추가
-        const filteredList = allEmployees
-          .filter((emp) => Number(emp.id) !== myUserIdNumber)
-          .map((emp) => ({
-            ...emp,
-            departmentName: emp.departmentName || "부서 없음", //  departmentName 직접 사용
-          }));
-
-        console.log("📌 최종 변환된 직원 목록:", filteredList);
-
-        console.log("📌 최종 변환된 직원 목록:", filteredList);
 
         setEmployees(filteredList);
         setFilteredEmployees(filteredList);
         setDepartments(departmentMap);
         setPositions(positionMap);
       } catch (error) {
-        console.error("❌ 메신저 직원 목록 불러오기 오류:", error);
+        console.error("❌ 직원 목록 불러오기 오류:", error);
       }
     };
 
-    if (isOpen) {
-      fetchEmployees();
-    }
-  }, [myUserId, isOpen]);
+    fetchEmployees();
+  }, [myUserId]);
 
+  // 🔍 검색어 입력 시 필터링 기능
   useEffect(() => {
     if (!searchQuery.trim()) {
       setFilteredEmployees(employees);
@@ -84,30 +74,12 @@ const ChatCreate = ({ isOpen, onClose, onChatRoomCreated }) => {
     setFilteredEmployees(filteredList);
   }, [searchQuery, employees]);
 
-  //  사용자가 상대방을 선택하면 알림을 띄우고 확인 버튼을 기다림
-  const handleSelectReceiver = (receiver) => {
-    setSelectedReceiver(receiver);
-    setShowAlert(true);
-  };
-
-  // 확인 버튼을 누르면 채팅방 생성
-  const handleConfirmCreateChatRoom = async () => {
-    setShowAlert(false);
-
-    if (!selectedReceiver) return;
-
+  const handleCreateChatRoom = async (receiverId) => {
     try {
-      const newRoom = await createChatRoom(myUserId, selectedReceiver.id);
+      const newRoom = await createChatRoom(myUserId, receiverId);
       if (newRoom && newRoom.id) {
-        if (onChatRoomCreated) {
-          onChatRoomCreated(newRoom);
-        }
-
-        window.open(
-          `/message/chat/${newRoom.id}`,
-          `ChatRoom_${newRoom.id}`,
-          "width=380,height=600,resizable=no,scrollbars=no"
-        );
+        alert("✅ 채팅방이 생성되었습니다.");
+        navigate(`/message/chat/${newRoom.id}`);
       } else {
         alert("❌ 채팅방 생성에 실패했습니다.");
       }
@@ -115,57 +87,92 @@ const ChatCreate = ({ isOpen, onClose, onChatRoomCreated }) => {
       console.error("❌ 채팅방 생성 오류:", error);
       alert("❌ 채팅방을 생성할 수 없습니다.");
     }
-    onClose();
+    setIsModalOpen(false);
   };
 
-  if (!isOpen) return null;
-
   return (
-    <>
-      <div className="chat-create-modal">
-        <div className="modal-content">
+    <div>
+      <h2>새 채팅방 만들기</h2>
+      <button onClick={() => setIsModalOpen(true)}>채팅 상대 선택</button>
+
+      {/* 모달 창 */}
+      {isModalOpen && (
+        <div
+          style={{
+            position: "fixed",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            width: "400px",
+            background: "white",
+            boxShadow: "0px 4px 6px rgba(0,0,0,0.1)",
+            padding: "20px",
+            borderRadius: "10px",
+            zIndex: 1000,
+          }}
+        >
           <h3>채팅 상대 검색</h3>
           <input
             type="text"
             placeholder="직원 이름 검색"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="search-input"
+            style={{ width: "100%", padding: "8px", marginBottom: "10px" }}
           />
-          <ul className="employee-list">
+          <ul style={{ maxHeight: "200px", overflowY: "auto", padding: 0 }}>
             {filteredEmployees.length > 0 ? (
               filteredEmployees.map((emp) => (
                 <li
                   key={emp.id}
-                  onClick={() => handleSelectReceiver(emp)}
-                  className="employee-item"
+                  onClick={() => handleCreateChatRoom(emp.id)}
+                  style={{
+                    cursor: "pointer",
+                    padding: "10px",
+                    borderBottom: "1px solid #ddd",
+                    listStyle: "none",
+                  }}
                 >
-                  <strong>{emp.name}</strong> ({emp.departmentName} /{" "}
-                  {emp.positionName})
+                  <strong>{emp.name}</strong> ({departments[emp.departmentId]} /{" "}
+                  {positions[emp.positionId]})
                 </li>
               ))
             ) : (
-              <li className="no-results">검색 결과 없음</li>
+              <li style={{ padding: "10px", color: "gray" }}>검색 결과 없음</li>
             )}
           </ul>
-          <button onClick={onClose} className="close-button">
+          <button
+            onClick={() => setIsModalOpen(false)}
+            style={{
+              marginTop: "10px",
+              width: "100%",
+              padding: "8px",
+              background: "#f44336",
+              color: "white",
+              border: "none",
+              cursor: "pointer",
+            }}
+          >
             닫기
           </button>
         </div>
-      </div>
-      <div className="modal-overlay" onClick={onClose} />
-
-      {/*  커스텀 알림 모달 */}
-      {showAlert && selectedReceiver && (
-        <div className="custom-alert">
-          <div className="alert-content">
-            <p>✅ {selectedReceiver.name}님과의 채팅방을 생성하시겠습니까?</p>
-            <button onClick={handleConfirmCreateChatRoom}>확인</button>
-            <button onClick={() => setShowAlert(false)}>취소</button>
-          </div>
-        </div>
       )}
-    </>
+
+      {/* 모달 배경 (클릭하면 닫힘) */}
+      {isModalOpen && (
+        <div
+          onClick={() => setIsModalOpen(false)}
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            width: "100vw",
+            height: "100vh",
+            background: "rgba(0, 0, 0, 0.5)",
+            zIndex: 999,
+          }}
+        />
+      )}
+    </div>
   );
 };
 

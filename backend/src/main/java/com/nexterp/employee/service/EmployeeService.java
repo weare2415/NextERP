@@ -12,8 +12,6 @@ import com.nexterp.member.repository.MemberRepository;
 import com.nexterp.member.service.MemberService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -48,17 +46,21 @@ public class EmployeeService {
     }
 
     @Transactional
-    public EmployeeDTO saveEmployee(EmployeeDTO employeeDTO) {
+    public Employee saveEmployee(EmployeeDTO employeeDTO) {
+        // ✅ 1. ID 중복 확인
         if (existById(employeeDTO.getId())) {
             throw new IllegalArgumentException("이미 존재하는 Employee ID입니다: " + employeeDTO.getId());
         }
 
+        // ✅ 2. 부서 조회
         Department department = departmentRepository.findById(employeeDTO.getDepartmentId())
                 .orElseThrow(() -> new IllegalArgumentException("Invalid department ID"));
 
+        // ✅ 3. 직급 조회
         Position position = positionRepository.findById(employeeDTO.getPositionId())
                 .orElseThrow(() -> new IllegalArgumentException("Invalid position ID"));
 
+        // ✅ 4. Employee 객체 생성
         Employee employee = new Employee();
         employee.setId(employeeDTO.getId());
         employee.setName(employeeDTO.getName());
@@ -73,46 +75,55 @@ public class EmployeeService {
         employee.setTerminationDate(employeeDTO.getTerminationDate());
         employee.setStatus(RequestStatus.PREPARED);
 
+        // ✅ 5. Employee 저장
         Employee savedEmployee = employeeRepository.save(employee);
 
+        // ✅ 6. Member 생성 (MemberService 호출)
         memberService.createMember(savedEmployee);
 
-        return convertToDTO(savedEmployee); //
+        return savedEmployee;
     }
 
     /**
-     *  1. PENDING 상태의 직원 목록 조회
+     * ✅ 1. PENDING 상태의 직원 목록 조회
      */
     @Transactional(readOnly = true)
-    public Page<EmployeeDTO> getPendingEmployees(Pageable pageable) {
-        Page<Employee> pendingList = employeeRepository.findPendingEmployees(pageable);
-        return pendingList.map(this::convertToDTO);
+    public List<EmployeeDTO> getPendingEmployees() {
+        List<Employee> pendingList = employeeRepository.findPendingEmployees();
+        System.out.println("📌 PENDING 직원 목록: " + pendingList); // 👉 콘솔에서 확인
+
+        return pendingList.stream()
+                .map(this::convertToDTO) // ✅ 변경된 `convertToDTO()` 사용
+                .toList();
     }
     /**
-     * 2. 특정 직원 ID의 승인 요청 목록 조회
+     * ✅ 2. 특정 직원 ID의 승인 요청 목록 조회
      */
     @Transactional(readOnly = true)
-    public Page<EmployeeDTO> getEmployeesByEmployeeId(Integer employeeId, Pageable pageable) {
-        Page<Employee> employeePage = employeeRepository.findByEmployeeId(employeeId, pageable);
-        return employeePage.map(this::convertToDTO);
+    public List<EmployeeDTO> getEmployeesByEmployeeId(Integer employeeId) {
+        return employeeRepository.findByEmployeeId(employeeId).stream()
+                .map(this::convertToDTO)
+                .toList();
     }
 
     /**
-     * 3. 특정 승인 상태(RequestStatus)에 해당하는 직원 목록 조회
+     * ✅ 3. 특정 승인 상태(RequestStatus)에 해당하는 직원 목록 조회
      */
     @Transactional(readOnly = true)
-    public Page<EmployeeDTO> getEmployeesByStatus(RequestStatus status, Pageable pageable) {
-        Page<Employee> employeePage = employeeRepository.findByStatus(status, pageable);
-        return employeePage.map(this::convertToDTO);
+    public List<EmployeeDTO> getEmployeesByStatus(RequestStatus status) {
+        return employeeRepository.findByStatus(status).stream()
+                .map(this::convertToDTO)
+                .toList();
     }
 
     /**
-     *  4. PENDING 상태가 아닌 직원 조회 (PREPARED, APPROVED, REJECTED)
+     * ✅ 4. PENDING 상태가 아닌 직원 조회 (PREPARED, APPROVED, REJECTED)
      */
     @Transactional(readOnly = true)
-    public Page<EmployeeDTO> getAllActiveEmployees(Pageable pageable) {
-        Page<Employee> employeePage = employeeRepository.findAllActiveEmployees(pageable);
-        return employeePage.map(this::convertToDTO);
+    public List<EmployeeDTO> getAllActiveEmployees() {
+        return employeeRepository.findAllActiveEmployees().stream()
+                .map(this::convertToDTO)
+                .toList();
     }
 
     @Transactional
@@ -286,11 +297,11 @@ public class EmployeeService {
     }
 
     @Transactional(readOnly = true)
-    public Page<EmployeeDTO> getAllEmployees(Pageable pageable) {
-        Page<Employee> employeePage = employeeRepository.findByIsTerminatedFalse(pageable);
-        return employeePage.map(this::convertToDTO);
+    public List<EmployeeDTO> getAllEmployees() {
+        return employeeRepository.findByIsTerminatedFalse().stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
     }
-
 
     @Transactional(readOnly = true)
     public EmployeeDTO getEmployeeById(Integer id) {
@@ -298,30 +309,33 @@ public class EmployeeService {
                 .orElseThrow(() -> new IllegalArgumentException("Employee not found with ID: " + id));
         return convertToDTO(employee);
     }
-//이름으로 조회
+
     @Transactional(readOnly = true)
-    public Page<EmployeeDTO> getEmployeesByName(String name, Pageable pageable) {
-        Page<Employee> employeePage = employeeRepository.findByName(name, pageable);
-        return employeePage.map(this::convertToDTO);
-    }
-//부서별 직원 조회
-    @Transactional(readOnly = true)
-    public Page<EmployeeDTO> getEmployeesByDepartment(Integer departmentId, Pageable pageable) {
-        Page<Employee> employeePage = employeeRepository.findByDepartmentId(departmentId, pageable);
-        return employeePage.map(this::convertToDTO);
+    public List<EmployeeDTO> getEmployeesByName(String name) {
+        return employeeRepository.findByName(name).stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
     }
 
-//직급별 직원 조회
     @Transactional(readOnly = true)
-    public Page<EmployeeDTO> getEmployeesByPosition(Integer positionId, Pageable pageable) {
-        Page<Employee> employeePage = employeeRepository.findByPositionId(positionId, pageable);
-        return employeePage.map(this::convertToDTO);
+    public List<EmployeeDTO> getEmployeesByDepartment(Integer departmentId) {
+        return employeeRepository.findByDepartmentId(departmentId).stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
     }
-//부서 + 직급별 직원 조회
+
     @Transactional(readOnly = true)
-    public Page<EmployeeDTO> getEmployeesByDepartmentAndPosition(Integer departmentId, Integer positionId, Pageable pageable) {
-        Page<Employee> employeePage = employeeRepository.findByDepartmentAndPosition(departmentId, positionId, pageable);
-        return employeePage.map(this::convertToDTO);
+    public List<EmployeeDTO> getEmployeesByPosition(Integer positionId) {
+        return employeeRepository.findByPositionId(positionId).stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
+    public List<EmployeeDTO> getEmployeesByDepartmentAndPosition(Integer departmentId, Integer positionId) {
+        return employeeRepository.findByDepartmentAndPosition(departmentId, positionId).stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
     }
 
     /**
@@ -447,22 +461,6 @@ public class EmployeeService {
                 changedFields // ✅ 변경된 필드 목록 전달
         );
     }
-    //메신저용
-    public List<EmployeeDTO> getActiveEmployees() {
-        List<Employee> employees = employeeRepository.findEmployeesExcludingPending();
-
-        return employees.stream().map(emp ->
-                new EmployeeDTO(
-                        emp.getId(),
-                        emp.getName(),
-                        emp.getEmail(),
-                        emp.getPhone(),
-                        emp.getDepartment().getName(),
-                        emp.getPosition().getTitle(),
-                        emp.getStatus()
-                )
-        ).collect(Collectors.toList());
-    }
 
 
     public boolean existById(Integer id) {
@@ -497,7 +495,4 @@ public class EmployeeService {
         employeeRepository.flush(); // ✅ 변경 사항 즉시 반영
         System.out.println("✅ [퇴사 스케줄러] 모든 직원 퇴사 처리 완료!");
     }
-
-
-
 }

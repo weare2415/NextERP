@@ -1,6 +1,5 @@
 package com.nexterp.employee.dto;
 
-import com.nexterp.client.entity.RequestStatus;
 import lombok.*;
 
 import java.time.LocalDate;
@@ -32,15 +31,6 @@ public class EmployeeDTO {
 
     private Map<String, Map<String, String>> changedFields; // ✅ 변경된 필드 정보 추가
 
-    // ✅ 메신저 직원 리스트용 생성자 추가
-    public EmployeeDTO(Integer id, String name, String email, String phone, String departmentName, String positionTitle, RequestStatus status) {
-        this.id = id;
-        this.name = name;
-        this.email = email;
-        this.phone = phone;
-        this.departmentName = departmentName;
-        this.positionTitle = positionTitle;
-    }
 
 
     @Override
