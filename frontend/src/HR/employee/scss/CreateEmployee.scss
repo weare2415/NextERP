@@ -100,6 +100,54 @@
           border-color: $secondary-color;
         }
       }
+
+      .input-wrapper {
+        position: relative; // 말풍선 위치를 지정하기 위해 상대적인 위치 설정
+
+        .id-check-message {
+          position: absolute;
+          top: 100%; // 입력창 바로 아래에 배치되도록 수정
+          left: 0;
+          transform: translateY(6px); // 약간의 간격을 두고 아래로 이동
+          padding: 6px 10px;
+          border-radius: 4px;
+          font-size: 14px;
+          white-space: nowrap;
+          background-color: #f2f2f2;
+          color: #333;
+          box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+          z-index: 10;
+
+          &.success {
+            background-color: #c8e6c9; // 성공 메시지에 맞는 배경색
+            color: #388e3c;
+          }
+
+          &.error {
+            background-color: #ffebee; // 에러 메시지에 맞는 배경색
+            color: #d32f2f;
+          }
+
+          &::before {
+            content: "";
+            position: absolute;
+            top: -8px; // 말풍선의 꼬리 부분을 입력창과 말풍선 사이에 배치
+            left: 50%;
+            transform: translateX(-50%); // 가운데 정렬
+            border-left: 8px solid transparent;
+            border-right: 8px solid transparent;
+            border-bottom: 8px solid #f2f2f2; // 말풍선의 꼬리
+          }
+
+          &.success::before {
+            border-bottom-color: #c8e6c9;
+          }
+
+          &.error::before {
+            border-bottom-color: #ffebee;
+          }
+        }
+      }
     }
 
     .button-group {

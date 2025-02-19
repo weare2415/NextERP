@@ -6,7 +6,7 @@ import {
 } from "../api/attendanceApi";
 import "../scss/SearchAttendance.scss";
 
-const SearchAttendance = ({ onSearch }) => {
+const SearchAttendance = ({ setFilteredAttendances }) => {
   const [searchType, setSearchType] = useState("employee");
   const [searchValue, setSearchValue] = useState("");
 
@@ -19,9 +19,7 @@ const SearchAttendance = ({ onSearch }) => {
     재택근무: "REMOTE_WORK",
   };
 
-  const handleSearch = async (e) => {
-    e.preventDefault();
-    
+  const handleSearch = async () => {
     if (!searchValue.trim()) {
       alert("검색어를 입력하세요.");
       return;
@@ -44,7 +42,7 @@ const SearchAttendance = ({ onSearch }) => {
         data = await getAttendancesByStatus(statusKey);
       }
 
-      onSearch(data);
+      setFilteredAttendances(data);
     } catch (error) {
       console.error("검색 실패:", error);
       alert("검색 결과가 없습니다.");
@@ -53,11 +51,11 @@ const SearchAttendance = ({ onSearch }) => {
 
   return (
     <div className="search-attendance-container">
-      <form className="search-attendance-form" onSubmit={handleSearch}>
+      <form className="search-attendance-form">
         <select
           value={searchType}
           onChange={(e) => setSearchType(e.target.value)}
-          className="search-type-attendance"
+          className="search-attendance-type"
         >
           <option value="employee">사원 ID</option>
           <option value="date">날짜</option>

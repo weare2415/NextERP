@@ -39,14 +39,16 @@ const ListEmployee = forwardRef(({ searchTerm }, ref) => {
     }
   };
 
-  // ✅ 부서 및 직급 데이터 가져오기
+  // 부서 및 직급 데이터 가져오기
   const fetchDepartmentsAndPositions = async () => {
     try {
       const deptResponse = await getDepartments();
       setDepartments(deptResponse || []);
+      console.log("부서 데이터:", deptResponse); // 부서 데이터 콘솔
 
       const posResponse = await getPositions();
       setPositions(posResponse || []);
+      console.log("직급 데이터:", posResponse); // 직급 데이터 콘솔
     } catch (error) {
       console.error("❌ 부서 및 직급 데이터 가져오기 실패:", error);
       setDepartments([]);
@@ -60,38 +62,78 @@ const ListEmployee = forwardRef(({ searchTerm }, ref) => {
     return department ? department.name : "알 수 없음";
   };
 
-  // ✅ 직급 이름 가져오기 함수
+  // 직급 이름 가져오기 함수
   const getPositionTitle = (positionId) => {
     const position = positions.find((pos) => pos.id === positionId);
+    console.log("직급 조회:", position); // 직급 조회 콘솔
     return position ? position.title : "알 수 없음";
   };
 
-  // ✅ 검색 기능 (페이징 지원)
   const handleSearch = async (searchTerm, searchCategory, page = 0) => {
-    if (!searchTerm) {
+    if (!searchTerm.trim()) {
       fetchEmployees(0); // 검색어 없으면 전체 조회
       return;
     }
 
     try {
       let response;
+
       switch (searchCategory) {
         case "name":
           response = await getEmployeesByName(searchTerm, page, pageSize);
           break;
-        case "department":
-          response = await getEmployeesByDepartment(searchTerm, page, pageSize);
+
+        case "department": {
+          const department = departments.find(
+            (dept) => dept.name.toLowerCase() === searchTerm.toLowerCase()
+          );
+          console.log("부서 검색:", department); // 부서 검색 콘솔
+
+          if (!department) {
+            console.warn("❌ 해당 부서를 찾을 수 없습니다:", searchTerm);
+            setEmployees([]);
+            setTotalPages(1);
+            return;
+          }
+
+          response = await getEmployeesByDepartment(
+            department.id,
+            page,
+            pageSize
+          );
           break;
-        case "position":
-          response = await getEmployeesByPosition(searchTerm, page, pageSize);
+        }
+
+        case "position": {
+          const trimmedSearchTerm = searchTerm.trim().toLowerCase();
+          const position = positions.find(
+            (pos) => pos.title.toLowerCase() === trimmedSearchTerm
+          );
+          console.log("직급 검색:", position); // 직급 검색 콘솔
+
+          if (!position) {
+            console.warn("❌ 해당 직급을 찾을 수 없습니다:", searchTerm);
+            setEmployees([]);
+            setTotalPages(1);
+            return;
+          }
+
+          // 직급 ID를 position.positionId로 수정
+          response = await getEmployeesByPosition(
+            position.positionId,
+            page,
+            pageSize
+          );
           break;
+        }
+
         default:
           response = await getEmployeesByName(searchTerm, page, pageSize);
       }
 
       setEmployees(response.content || []);
       setTotalPages(response.totalPages || 1);
-      setCurrentPage(page); // ✅ 페이지 업데이트
+      setCurrentPage(page); // 페이지 업데이트
     } catch (error) {
       console.error("❌ 검색 실패:", error);
       setEmployees([]);
@@ -107,7 +149,6 @@ const ListEmployee = forwardRef(({ searchTerm }, ref) => {
     handleSearch,
   }));
 
-  // ✅ 최초 실행 시 데이터 가져오기
   useEffect(() => {
     fetchDepartmentsAndPositions();
     fetchEmployees(currentPage);
