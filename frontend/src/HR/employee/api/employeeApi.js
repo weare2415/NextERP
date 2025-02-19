@@ -1,6 +1,6 @@
 import axiosInstance from "../../../common/api/mainApi";
 
-// ✅ 특정 직원 정보 조회 API 추가
+//  특정 직원 정보 조회 API 추가
 export const getEmployeeById = async (id) => {
   try {
     const response = await axiosInstance.get(`/api/employees/${id}`);
@@ -11,87 +11,89 @@ export const getEmployeeById = async (id) => {
   }
 };
 
-// ✅ 특정 부서에 속한 직원 목록 조회 (백엔드 `/api/employees/department/{departmentId}`와 매핑)
-export const getEmployeesByDepartment = async (departmentId) => {
-  try {
-    const response = await axiosInstance.get(
-      `/api/employees/department/${departmentId}`
-    );
-    return response.data;
-  } catch (error) {
-    console.error(
-      `❌ 부서별 직원 조회 실패 (Department ID: ${departmentId}):`,
-      error
-    );
-    return [];
-  }
+//  특정 부서에 속한 직원 목록 조회 (백엔드 `/api/employees/department/{departmentId}`와 매핑)
+export const getEmployeesByDepartment = async (
+  departmentId,
+  page = 0,
+  size = 10
+) => {
+  const response = await axiosInstance.get(
+    `/api/employees/department/${departmentId}`,
+    {
+      params: { page, size },
+    }
+  );
+  return response.data;
 };
 
-// ✅ 특정 직급에 속한 직원 목록 조회 (백엔드 `/api/employees/position/{positionId}`와 매핑)
-export const getEmployeesByPosition = async (positionId) => {
-  try {
-    const response = await axiosInstance.get(
-      `/api/employees/position/${positionId}`
-    );
-    return response.data;
-  } catch (error) {
-    console.error(
-      `❌ 직급별 직원 조회 실패 (Position ID: ${positionId}):`,
-      error
-    );
-    return [];
-  }
+//  특정 직급에 속한 직원 목록 조회 (백엔드 `/api/employees/position/{positionId}`와 매핑)
+export const getEmployeesByPosition = async (
+  positionId,
+  page = 0,
+  size = 10
+) => {
+  const response = await axiosInstance.get(
+    `/api/employees/position/${positionId}`,
+    {
+      params: { page, size },
+    }
+  );
+  return response.data;
 };
 
-// ✅ 특정 부서 + 특정 직급에 속한 직원 목록 조회 (백엔드 `/api/employees/department/{departmentId}/position/{positionId}`와 매핑)
+//  특정 부서 + 특정 직급에 속한 직원 목록 조회 (백엔드 `/api/employees/department/{departmentId}/position/{positionId}`와 매핑)
 export const getEmployeesByDepartmentAndPosition = async (
   departmentId,
-  positionId
+  positionId,
+  page = 0,
+  size = 10
 ) => {
-  try {
-    const response = await axiosInstance.get(
-      `/api/employees/department/${departmentId}/position/${positionId}`
-    );
-    return response.data;
-  } catch (error) {
-    console.error(
-      `❌ 부서 및 직급별 직원 조회 실패 (Department ID: ${departmentId}, Position ID: ${positionId}):`,
-      error
-    );
-    return [];
-  }
+  const response = await axiosInstance.get(
+    `/api/employees/department/${departmentId}/position/${positionId}`,
+    {
+      params: { page, size },
+    }
+  );
+  return response.data;
 };
 
-// ✅ 직원 생성 API
+//  직원 생성 API
 export const createEmployee = async (employeeData) => {
   const response = await axiosInstance.post("/api/employees", employeeData);
   return response.data;
 };
 
-// ✅ 직원 목록 조회 API
-export const getEmployees = async () => {
-  const response = await axiosInstance.get("/api/employees");
+// 직원 목록 조회 API
+export const getEmployees = async (page = 0, size = 10) => {
+  const response = await axiosInstance.get("/api/employees", {
+    params: { page, size },
+  });
+  return response.data; //
+};
+
+//  직원 이름으로 검색 API
+export const getEmployeesByName = async (name, page = 0, size = 10) => {
+  const response = await axiosInstance.get(`/api/employees/name/${name}`, {
+    params: { page, size },
+  });
   return response.data;
 };
 
-// ✅ 직원 이름으로 검색 API
-export const getEmployeesByName = async (name) => {
-  const response = await axiosInstance.get(`/api/employees/name/${name}`);
-  return response.data;
+//  모든 직원 조회 API
+export const getAllEmployees = async (page = 0, size = 10) => {
+  const response = await axiosInstance.get("/api/employees", {
+    params: { page, size }, // ✅ 백엔드에 페이징 요청
+  });
+
+  return {
+    employees: response.data?.content || [], // ✅ content에서 직원 목록 추출
+    totalPages: response.data?.totalPages || 1, // ✅ 전체 페이지 수
+    totalElements: response.data?.totalElements || 0, // ✅ 전체 직원 수
+    currentPage: response.data?.number || 0, // ✅ 현재 페이지 번호
+  };
 };
 
-// ✅ 모든 직원 조회 API
-export const getAllEmployees = async () => {
-  try {
-    const response = await axiosInstance.get("/api/employees");
-    return response.data || [];
-  } catch (error) {
-    console.error("❌ 직원 목록 조회 실패:", error);
-    return [];
-  }
-};
-
-// ✅ 부서 목록 조회 API
+//  부서 목록 조회 API
 export const getDepartments = async () => {
   try {
     const response = await axiosInstance.get("/api/departments");
@@ -102,7 +104,7 @@ export const getDepartments = async () => {
   }
 };
 
-// ✅ 직급 목록 조회 API
+//  직급 목록 조회 API
 export const getPositions = async () => {
   try {
     const response = await axiosInstance.get("/api/positions");
@@ -113,7 +115,7 @@ export const getPositions = async () => {
   }
 };
 
-// ✅ 직원 정보 수정 요청 (PENDING 상태로 변경)
+//  직원 정보 수정 요청 (PENDING 상태로 변경)
 export const requestUpdateEmployee = async (id, employeeData) => {
   try {
     const response = await axiosInstance.post(
@@ -127,7 +129,7 @@ export const requestUpdateEmployee = async (id, employeeData) => {
   }
 };
 
-// ✅ 승인된 직원 정보 수정 (APPROVED 상태에a서만 가능)
+//  승인된 직원 정보 수정 (APPROVED 상태에a서만 가능)
 export const updateEmployee = async (id, employeeData) => {
   try {
     // 먼저 직원 상태를 조회하여 APPROVED 상태인지 확인
@@ -149,7 +151,7 @@ export const updateEmployee = async (id, employeeData) => {
   }
 };
 
-// ✅ 직원 승인 API
+//  직원 승인 API
 export const approveEmployee = async (id, approvedByEmployeeId) => {
   try {
     const response = await axiosInstance.put(
@@ -162,7 +164,7 @@ export const approveEmployee = async (id, approvedByEmployeeId) => {
   }
 };
 
-// ✅ 직원 반려 API
+//  직원 반려 API
 export const rejectEmployee = async (id, approvedByEmployeeId) => {
   try {
     await axiosInstance.put(
@@ -184,7 +186,7 @@ export const rejectEmployee = async (id, approvedByEmployeeId) => {
 //   }
 // };
 
-// ✅ ID 중복 확인 API
+//  ID 중복 확인 API
 export const checkEmployeeIdExists = async (id) => {
   try {
     const response = await axiosInstance.get(`/api/employees/exists/${id}`);
@@ -195,7 +197,7 @@ export const checkEmployeeIdExists = async (id) => {
   }
 };
 
-// ✅ 즉시 퇴사 처리 API
+//  즉시 퇴사 처리 API
 export const terminateEmployee = async (id) => {
   try {
     const response = await axiosInstance.post(`/api/employees/terminate/${id}`);
@@ -206,48 +208,64 @@ export const terminateEmployee = async (id) => {
   }
 };
 
-export const getPendingEmployees = async () => {
+// pending 상태 직원 조회
+export const getPendingEmployees = async (page = 0, size = 10) => {
   try {
-    const response = await axiosInstance.get("/api/employees/pending");
-    console.log("📌 API 응답 데이터:", response.data); // 👉 응답 데이터 확인
-    return response.data;
+    const response = await axiosInstance.get("/api/employees/pending", {
+      params: { page, size },
+    });
+
+    console.log("📌 getPendingEmployees 응답:", response.data); // 응답 데이터 구조 확인
+
+    // 응답이 객체이므로, content가 배열인지 확인 후 반환
+    return response.data?.content
+      ? response.data
+      : { content: [], totalPages: 1 };
   } catch (error) {
-    console.error("❌ PENDING 상태 직원 조회 실패:", error);
-    return [];
+    console.error("❌ 승인 요청 목록 조회 실패:", error);
+    return { content: [], totalPages: 1 }; // 오류 발생 시 기본값 반환
   }
 };
 
-// ✅ 특정 직원의 승인 요청 목록 조회
-export const getEmployeesByEmployeeId = async (employeeId) => {
-  try {
-    const response = await axiosInstance.get(
-      `/api/employees/${employeeId}/requests`
-    );
-    return response.data;
-  } catch (error) {
-    console.error(`❌ 승인 요청 목록 조회 실패 (ID: ${employeeId}):`, error);
-    return [];
-  }
+//  특정 직원의 승인 요청 목록 조회
+export const getEmployeesByEmployeeId = async (
+  employeeId,
+  page = 0,
+  size = 10
+) => {
+  const response = await axiosInstance.get(
+    `/api/employees/${employeeId}/requests`,
+    {
+      params: { page, size },
+    }
+  );
+  return response.data;
 };
 
-// ✅ 특정 승인 상태의 직원 목록 조회
-export const getEmployeesByStatus = async (status) => {
-  try {
-    const response = await axiosInstance.get(`/api/employees/status/${status}`);
-    return response.data;
-  } catch (error) {
-    console.error(`❌ 승인 상태별 직원 조회 실패 (Status: ${status}):`, error);
-    return [];
-  }
+// 특정 승인 상태의 직원 목록 조회
+export const getEmployeesByStatus = async (status, page = 0, size = 10) => {
+  const response = await axiosInstance.get(`/api/employees/status/${status}`, {
+    params: { page, size },
+  });
+  return response.data;
 };
 
-// ✅ PENDING 상태가 아닌 직원 목록 조회 (PREPARED, APPROVED, REJECTED)
-export const getAllActiveEmployees = async () => {
+// PENDING 상태가 아닌 직원 목록 조회 (PREPARED, APPROVED, REJECTED)
+export const getAllActiveEmployees = async (page = 0, size = 10) => {
+  const response = await axiosInstance.get("/api/employees/active", {
+    params: { page, size },
+  });
+  return response.data;
+};
+
+//메신저용
+// 메신저용 직원 목록 조회 API (PENDING 상태 제외)
+export const getMessengerEmployees = async () => {
   try {
-    const response = await axiosInstance.get("/api/employees/active");
-    return response.data;
+    const response = await axiosInstance.get("/api/employees/messenger-list");
+    return response.data; // 전체 직원 리스트 반환 (페이징 없음)
   } catch (error) {
-    console.error("❌ 활동 중인 직원 조회 실패:", error);
-    return [];
+    console.error("❌ 메신저 직원 목록 조회 실패:", error);
+    return []; // 오류 발생 시 빈 배열 반환
   }
 };

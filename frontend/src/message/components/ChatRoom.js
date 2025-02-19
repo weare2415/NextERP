@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { getMessages, getChatRoomById, sendMessage } from "../api/chatApi";
 import {
-  getAllEmployees,
+  getMessengerEmployees,
   getDepartments,
 } from "../../HR/employee/api/employeeApi";
 import "../scss/ChatRoom.scss";
@@ -23,7 +23,7 @@ const ChatRoom = () => {
   const [employees, setEmployees] = useState({});
   const [departments, setDepartments] = useState({});
 
-  // ✅ 스크롤을 위한 ref 생성
+  //  스크롤을 위한 ref 생성
   const messagesEndRef = useRef(null);
 
   useEffect(() => {
@@ -62,7 +62,7 @@ const ChatRoom = () => {
           return updatedMessages;
         });
 
-        scrollToBottom(); // ✅ 새 메시지 수신 시 자동 스크롤
+        scrollToBottom(); //  새 메시지 수신 시 자동 스크롤
       });
 
       return () => {
@@ -71,7 +71,7 @@ const ChatRoom = () => {
     }
   }, [chatRoomId, myUserId]);
 
-  // ✅ 팝업 창 닫기 버튼 추가
+  //  팝업 창 닫기 버튼 추가
   const handleClose = () => {
     window.close();
   };
@@ -96,7 +96,7 @@ const ChatRoom = () => {
     try {
       const chatMessages = await getMessages(chatRoomId);
 
-      // ✅ 내가 나간 채팅방인지 확인
+      //  내가 나간 채팅방인지 확인
       const leftChatRooms =
         JSON.parse(localStorage.getItem(`leftChatRooms_${myUserId}`)) || [];
 
@@ -114,7 +114,7 @@ const ChatRoom = () => {
         };
       });
 
-      // ✅ 내가 나간 채팅방이라면 기존 메시지 제거
+      // 내가 나간 채팅방이라면 기존 메시지 제거
       if (leftChatRooms.includes(chatRoomId)) {
         updatedMessages = []; // 기존 메시지 초기화
       }
@@ -123,7 +123,7 @@ const ChatRoom = () => {
       setMessages(updatedMessages);
 
       setTimeout(() => {
-        scrollToBottom(); // ✅ 기존 메시지 불러올 때도 스크롤
+        scrollToBottom(); //  기존 메시지 불러올 때도 스크롤
       }, 100);
     } catch (error) {
       console.error("❌ 메시지 불러오기 오류:", error);
@@ -132,14 +132,14 @@ const ChatRoom = () => {
 
   const fetchEmployeesAndDepartments = async () => {
     try {
-      const allEmployees = await getAllEmployees();
+      const allEmployees = await getMessengerEmployees();
       const departmentData = await getDepartments();
 
       const employeeMap = {};
       allEmployees.forEach((emp) => {
         employeeMap[emp.id] = {
           name: emp.name,
-          departmentId: emp.departmentId,
+          departmentName: emp.departmentName || "부서 없음", //  부서명 직접 저장
         };
       });
 
@@ -155,7 +155,7 @@ const ChatRoom = () => {
     }
   };
 
-  // ✅ 메시지 전송 함수
+  //  메시지 전송 함수
   const handleSendMessage = async () => {
     if (!message.trim()) return;
 
@@ -204,11 +204,11 @@ const ChatRoom = () => {
 
     setMessage("");
     setTimeout(() => {
-      scrollToBottom(); // ✅ 메시지 전송 후 자동 스크롤
+      scrollToBottom(); //  메시지 전송 후 자동 스크롤
     }, 100);
   };
 
-  // ✅ 스크롤을 맨 아래로 이동하는 함수
+  //  스크롤을 맨 아래로 이동하는 함수
   const scrollToBottom = () => {
     if (messagesEndRef.current) {
       messagesEndRef.current.scrollIntoView({
@@ -245,8 +245,7 @@ const ChatRoom = () => {
                 <div className="sender-info">
                   {employees[msg.senderId]?.name}
                   <span>
-                    {departments[employees[msg.senderId]?.departmentId] ||
-                      "부서 없음"}
+                    {employees[msg.senderId]?.departmentName || "부서 없음"}
                   </span>
                 </div>
               )}
@@ -259,7 +258,7 @@ const ChatRoom = () => {
           );
         })}
 
-        {/* ✅ 이 부분이 마지막 메시지 아래로 자동 스크롤하는 역할 */}
+        {/*  이 부분이 마지막 메시지 아래로 자동 스크롤하는 역할 */}
         <div ref={messagesEndRef}></div>
       </div>
 
