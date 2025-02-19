@@ -14,6 +14,7 @@ package com.nexterp.accounting.controller;
  */
 
 import com.nexterp.accounting.dto.JournalEntryDTO;
+import com.nexterp.accounting.dto.MonthlyProfitDTO;
 import com.nexterp.accounting.dto.MonthlyCashFlowDTO;
 import com.nexterp.accounting.dto.WeeklyProfitDTO;
 import com.nexterp.accounting.repository.JournalEntryRepository;
@@ -76,5 +77,11 @@ public class JournalEntryController {
   public ResponseEntity<List<WeeklyProfitDTO>> getWeeklyProfit() {
     List<WeeklyProfitDTO> profitData = journalEntryRepository.getWeeklyProfit();
     return ResponseEntity.ok(profitData);
+  }
+
+  @GetMapping("profit/monthly")
+  public ResponseEntity<List<MonthlyProfitDTO>> getMonthlyProfit() {
+    List<MonthlyProfitDTO> data = journalEntryRepository.getMonthlyProfit();
+    return ResponseEntity.ok(data);
   }
 }
