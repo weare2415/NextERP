@@ -3,6 +3,8 @@ import {
   getPendingAttendances,
   getApprovedAttendances,
   requestApproval,
+  getAttendanceByEmployee,
+  getAttendanceByDate,
 } from "../api/attendanceApi";
 import BasicLayout from "../../../common/pages/BasicLayout";
 import Pagination from "../../../common/component/Pagination"; // 페이징 컴포넌트 추가
@@ -21,6 +23,17 @@ const AttendanceHistoryPage = () => {
   const [approvedRequests, setApprovedRequests] = useState([]);
   const [approvedTotalPages, setApprovedTotalPages] = useState(1);
   const [approvedPage, setApprovedPage] = useState(0);
+
+  // 검색 term
+  const [searchTerm, setSearchTerm] = useState("");
+  const [searchCategory, setSearchCategory] = useState("employeeName");
+
+  const approvalStatusMapping = {
+    "승인 대기": "PENDING",
+    "승인됨": "APPROVED",
+    "승인": "APPROVED",
+    "거부됨": "REJECTED",
+  };
 
   useEffect(() => {
     fetchPendingRequests();
@@ -70,11 +83,78 @@ const AttendanceHistoryPage = () => {
     setLoading(false);
   };
 
+  const handleSearch = async () => {
+    setLoading(true);
+    
+    try {
+      let employeeData;
+      let dateData;
+      let mappedStatus;
+  
+      // 검색에 따른 조건을 설정
+      if (searchCategory === "employeeId") {
+        console.log(`📢 사원 ID로 검색: ${searchTerm}`);
+        employeeData = await getAttendanceByEmployee(searchTerm, 0, 5); 
+        console.log("📌 사원 ID로 조회된 데이터:", employeeData);
+        setPendingRequests(employeeData.content);
+        setApprovedRequests(employeeData.content);
+        setPendingTotalPages(employeeData.totalPages);
+        setApprovedTotalPages(employeeData.totalPages);
+      } else if (searchCategory === "date") {
+        console.log(`📢 날짜로 검색: ${searchTerm}`);
+        dateData = await getAttendanceByDate(searchTerm, 0, 5); 
+        console.log("📌 날짜로 조회된 데이터:", dateData);
+        setPendingRequests(dateData.content);
+        setApprovedRequests(dateData.content);
+        setPendingTotalPages(dateData.totalPages);
+        setApprovedTotalPages(dateData.totalPages);
+      } else if (searchCategory === "approvalStatus") {
+        console.log(`📢 승인 상태로 검색: ${searchTerm}`);
+        mappedStatus = approvalStatusMapping[searchTerm] || null;
+        const filteredPending = pendingRequests.filter(request => request.requestStatus === mappedStatus);
+        const filteredApproved = approvedRequests.filter(request => request.requestStatus === mappedStatus);
+        setPendingRequests(filteredPending);
+        setApprovedRequests(filteredApproved);
+      }
+    } catch (error) {
+      console.error("❌ 검색 데이터 조회 실패:", error);
+    }
+    
+    setLoading(false);
+  };
+  
+
   return (
     <BasicLayout>
       <div className="attendance-history-page-container">
         <div className="page-header">
           <h1>근태 신청 내역</h1>
+         {/* 검색창 */}
+         <div className="search-container">
+            <select
+              value={searchCategory}
+              onChange={(e) => setSearchCategory(e.target.value)}
+              className="search-category-select"
+            >
+              <option value="employeeId">사원 ID</option>
+              <option value="date">신청 날짜</option>
+              <option value="approvalStatus">승인 상태</option>
+            </select>
+
+            {/* 검색어 입력 */}
+            <input
+              type="text"
+              placeholder="검색어를 입력하세요."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="search-input"
+            />
+
+            {/* 검색 버튼 */}
+            <button className="search-btn" onClick={handleSearch}>
+              검색
+            </button>
+          </div>
         </div>
 
         {loading ? (
@@ -82,7 +162,6 @@ const AttendanceHistoryPage = () => {
         ) : (
           <>
             {/* 승인 대기 내역 */}
-            <h2>승인 대기 내역</h2>
             <RequestHistory requests={pendingRequests} />
             <Pagination
               currentPage={pendingPage}
@@ -91,7 +170,6 @@ const AttendanceHistoryPage = () => {
             />
 
             {/*  승인 완료 내역 */}
-            <h2>승인 완료 내역</h2>
             <RequestHistory requests={approvedRequests} />
             <Pagination
               currentPage={approvedPage}

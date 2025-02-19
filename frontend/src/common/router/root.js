@@ -9,6 +9,7 @@ import employeeRouter from "./employeeRouter";
 import payrollRouter from "./payrollRouter";
 import announcementRouter from "./announcementRouter";
 import messageRouter from "./messageRouter";
+import chatbotRouter from "./chatbotRouter";
 
 const Loading = () => <div>Loading...</div>;
 
@@ -57,6 +58,10 @@ const root = createBrowserRouter([
   {
     path: "payroll",
     children: payrollRouter(),
+  },
+  {
+    path: "chatbot", // ✅ 챗봇 추가
+    children: chatbotRouter(),
   },
 ]);
 

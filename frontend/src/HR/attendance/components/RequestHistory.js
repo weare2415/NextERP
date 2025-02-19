@@ -2,10 +2,17 @@ import React from "react";
 import "../scss/RequestHistory.scss";
 
 const RequestHistory = ({ requests, onApprovalRequest }) => {
+  console.log("📌 전달된 requests 데이터:", requests);
+
+  const title = requests.length > 0 && requests[0].requestStatus === "PENDING"
+    ? "승인 대기 내역"
+    : "승인 완료 내역";
+
   return (
     <div className="history-list-wrapper">
       <div className="history-table-section">
-        <table>
+      <h3>{title}</h3>
+        <table className="history-grid">
           <thead>
             <tr>
               <th>사원명</th>
@@ -44,7 +51,7 @@ const RequestHistory = ({ requests, onApprovalRequest }) => {
               ))
             ) : (
               <tr>
-                <td colSpan="5">📌 신청 내역이 없습니다.</td>
+                <td colSpan="5">신청 내역이 없습니다.</td>
               </tr>
             )}
           </tbody>
