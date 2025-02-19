@@ -20,9 +20,9 @@ public class AttendanceDTO {
     private LocalTime checkOutTime;
     private BigDecimal overtimeHours;
     private String status;
-    private String overtimeFormatted;  // ✅ "2시간 30분" 형식의 문자열 필드 추가
+    private String overtimeFormatted;  //  "2시간 30분" 형식의 문자열 필드 추가
     private String requestStatus;
-    private String approvalReason; // ✅ 승인 요청 사유
-    private LocalDate requestDate; // ✅ 승인 요청 날짜
-    private Integer approvedByEmployeeId; // ✅ 승인 처리한 관리자 ID
+    private String approvalReason; //  승인 요청 사유
+    private LocalDate requestDate; //  승인 요청 날짜
+    private Integer approvedByEmployeeId; //  승인 처리한 관리자 ID
 }

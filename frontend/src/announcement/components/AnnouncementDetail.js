@@ -21,7 +21,7 @@ const departmentMap = {
 };
 
 const AnnouncementDetail = ({ announcement, onClose, onUpdateTrigger }) => {
-  // ✅ `onUpdateSuccess` 대신 `onUpdateTrigger` 사용
+  //  `onUpdateSuccess` 대신 `onUpdateTrigger` 사용
   const employeeId = useSelector((state) => state.loginSlice?.id || null);
   const isAuthor = Number(announcement?.authorId) === Number(employeeId);
   const [isEditing, setIsEditing] = useState(false);
@@ -43,7 +43,7 @@ const AnnouncementDetail = ({ announcement, onClose, onUpdateTrigger }) => {
     }));
   };
 
-  // ✅ 수정 후 리스트 갱신
+  //  수정 후 리스트 갱신
   const handleUpdate = async () => {
     try {
       console.log("📤 업데이트 요청 데이터:", editedAnnouncement);
@@ -51,7 +51,7 @@ const AnnouncementDetail = ({ announcement, onClose, onUpdateTrigger }) => {
         announcement.id,
         editedAnnouncement
       );
-      console.log("✅ 서버 응답 데이터:", updatedData);
+      console.log(" 서버 응답 데이터:", updatedData);
 
       if (!updatedData || updatedData.error) {
         throw new Error("서버에서 업데이트된 데이터를 반환하지 않았습니다.");
@@ -60,7 +60,7 @@ const AnnouncementDetail = ({ announcement, onClose, onUpdateTrigger }) => {
       alert("✅ 공지사항이 성공적으로 수정되었습니다.");
       if (onUpdateTrigger && typeof onUpdateTrigger === "function") {
         console.log("🔄 fetchAnnouncements 실행됨");
-        onUpdateTrigger(); // ✅ 이제 `fetchAnnouncements()`가 실행됨
+        onUpdateTrigger(); //  이제 `fetchAnnouncements()`가 실행됨
       } else {
         console.error(
           "🚨 fetchAnnouncements가 전달되지 않음!",
@@ -69,7 +69,7 @@ const AnnouncementDetail = ({ announcement, onClose, onUpdateTrigger }) => {
       }
 
       setIsEditing(false);
-      onClose(); // ✅ 모달 닫기 추가
+      onClose(); // 모달 닫기 추가
     } catch (error) {
       console.error(
         "❌ 공지 수정 실패:",
@@ -84,7 +84,7 @@ const AnnouncementDetail = ({ announcement, onClose, onUpdateTrigger }) => {
     try {
       console.log("🗑️ 삭제 요청 ID:", announcement.id);
       const deleteResponse = await deleteAnnouncement(announcement.id);
-      console.log("✅ 삭제 응답:", deleteResponse);
+      console.log("삭제 응답:", deleteResponse);
 
       if (!deleteResponse || deleteResponse.error) {
         throw new Error("서버에서 삭제 결과를 반환하지 않았습니다.");
@@ -93,7 +93,7 @@ const AnnouncementDetail = ({ announcement, onClose, onUpdateTrigger }) => {
       alert("📌 공지사항이 성공적으로 삭제되었습니다.");
       if (onUpdateTrigger && typeof onUpdateTrigger === "function") {
         console.log("🔄 fetchAnnouncements 실행됨");
-        onUpdateTrigger(); // ✅ 이제 `fetchAnnouncements()`가 실행됨
+        onUpdateTrigger(); //  이제 `fetchAnnouncements()`가 실행됨
       } else {
         console.error(
           "🚨 fetchAnnouncements가 전달되지 않음!",
@@ -101,7 +101,7 @@ const AnnouncementDetail = ({ announcement, onClose, onUpdateTrigger }) => {
         );
       }
 
-      onClose(); // ✅ 모달 닫기 추가
+      onClose(); //  모달 닫기 추가
     } catch (error) {
       console.error(
         "❌ 공지 삭제 실패:",

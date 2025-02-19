@@ -10,6 +10,9 @@ import com.nexterp.employee.repository.DepartmentRepository;
 import com.nexterp.employee.repository.EmployeeRepository;
 import com.nexterp.employee.repository.PositionRepository;
 import jakarta.transaction.Transactional;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -86,27 +89,26 @@ public class AnnouncementService {
 
 
 
-    public List<AnnouncementDTO> getAnnouncementsByDepartment(Integer departmentId) {
-        List<Announcement> announcements = announcementRepository.findByDepartment_DepartmentId(departmentId);
-        return announcements.stream().map(this::convertToDTO).collect(Collectors.toList());
+    // ✅ 특정 부서 공지사항 조회 (페이징 적용)
+    public Page<AnnouncementDTO> getAnnouncementsByDepartment(Integer departmentId, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return announcementRepository.findByDepartment_DepartmentId(departmentId, pageable).map(this::convertToDTO);
     }
 
 
-    // ✅ 특정 직위(Position)에 대한 공지사항 조회 (List<Announcement> → List<AnnouncementDTO> 변환)
-    public List<AnnouncementDTO> getAnnouncementsByPosition(Integer positionId) {
-        List<Announcement> announcements = announcementRepository.findByPosition_PositionId(positionId);
-        return announcements.stream().map(this::convertToDTO).collect(Collectors.toList());
+    // ✅ 특정 직위 공지사항 조회 (페이징 적용)
+    public Page<AnnouncementDTO> getAnnouncementsByPosition(Integer positionId, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return announcementRepository.findByPosition_PositionId(positionId, pageable).map(this::convertToDTO);
+
     }
 
 
 
-
-    // 전체 공지사항 조회
-    public List<AnnouncementDTO> getAllAnnouncements() {
-        List<Announcement> announcements = announcementRepository.findAll();
-        return announcements.stream()
-                .map(this::convertToDTO)
-                .collect(Collectors.toList());
+    //  전체 공지사항 조회 (페이징 적용)
+    public Page<AnnouncementDTO> getAllAnnouncements(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return announcementRepository.findAll(pageable).map(this::convertToDTO);
     }
 
     // 특정 공지사항 조회

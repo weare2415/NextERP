@@ -5,54 +5,69 @@ import {
   requestApproval,
 } from "../api/attendanceApi";
 import BasicLayout from "../../../common/pages/BasicLayout";
-import Pagination from "../../../common/component/Pagination"; // ✅ 페이징 컴포넌트 추가
+import Pagination from "../../../common/component/Pagination"; // 페이징 컴포넌트 추가
 import "../scss/AttendanceHistoryPage.scss";
 import RequestHistory from "../components/RequestHistory";
 
 const AttendanceHistoryPage = () => {
   const [loading, setLoading] = useState(false);
-  const [requests, setRequests] = useState([]);
-  const [totalPages, setTotalPages] = useState(1); // 전체 페이지 수
 
-  // ✅ 페이징 관련 상태 추가
-  const [currentPage, setCurrentPage] = useState(0); // 0부터 시작
-  const pageSize = 10; // 한 페이지당 10개
+  //  승인 대기 데이터
+  const [pendingRequests, setPendingRequests] = useState([]);
+  const [pendingTotalPages, setPendingTotalPages] = useState(1);
+  const [pendingPage, setPendingPage] = useState(0);
+
+  // 승인 완료 데이터
+  const [approvedRequests, setApprovedRequests] = useState([]);
+  const [approvedTotalPages, setApprovedTotalPages] = useState(1);
+  const [approvedPage, setApprovedPage] = useState(0);
 
   useEffect(() => {
-    fetchRequests();
-  }, [currentPage]); // ✅ currentPage 변경될 때마다 새 데이터 요청
+    fetchPendingRequests();
+  }, [pendingPage]); //  승인 대기 페이징 변경 시
 
-  const fetchRequests = async () => {
+  useEffect(() => {
+    fetchApprovedRequests();
+  }, [approvedPage]); //  승인 완료 페이징 변경 시
+
+  //  승인 대기 데이터 가져오기
+  const fetchPendingRequests = async () => {
     setLoading(true);
     try {
-      // ✅ 승인 대기 중인 데이터 & 승인된 데이터 병렬 요청
-      const [pendingData, approvedData] = await Promise.all([
-        getPendingAttendances(currentPage, pageSize),
-        getApprovedAttendances(currentPage, pageSize),
-      ]);
-
-      console.log("📌 승인 대기 데이터:", pendingData);
-      console.log("📌 승인된 데이터:", approvedData);
-
-      // ✅ 서버에서 받은 데이터를 그대로 사용
-      setRequests([...pendingData.content, ...approvedData.content]); // 데이터 합치기
-      setTotalPages(Math.max(pendingData.totalPages, approvedData.totalPages)); // 가장 큰 totalPages 사용
+      console.log(`📢 승인 대기 근태 기록 요청: page=${pendingPage}, size=5`);
+      const data = await getPendingAttendances(pendingPage, 5);
+  
+      console.log("📌 받은 승인 대기 데이터 (전체):", data.content);
+      console.log("📌 현재 페이지에서 표시할 데이터 개수:", data.content.length);
+      console.log("📌 totalPages 확인:", data.totalPages);
+  
+      // ✅ 특정 사원 데이터가 포함되는지 확인
+      const employeeCheck = data.content.map(d => `${d.employeeId}: ${d.employeeName}`);
+      console.log("📌 현재 페이지에 포함된 직원 목록:", employeeCheck);
+  
+      setPendingRequests(data.content); 
+      setPendingTotalPages(data.totalPages);
     } catch (error) {
-      console.error("❌ 신청 내역 조회 실패:", error);
-      alert("신청 내역을 불러오지 못했습니다.");
+      console.error("❌ 승인 대기 데이터 조회 실패:", error);
     }
     setLoading(false);
   };
-
-  const handleApprovalRequest = async (id) => {
+  
+  
+  //  승인된 데이터 가져오기
+  const fetchApprovedRequests = async () => {
+    setLoading(true);
     try {
-      await requestApproval(id);
-      alert("승인 요청이 완료되었습니다.");
-      fetchRequests(); // ✅ 데이터 다시 불러오기
+      console.log(`📢 승인된 근태 기록 요청: page=${approvedPage}`);
+      const data = await getApprovedAttendances(approvedPage, 5);
+      console.log("📌 승인된 데이터:", data);
+
+      setApprovedRequests(data.content); //  백엔드 페이징 데이터 적용
+      setApprovedTotalPages(data.totalPages); //  totalPages 그대로 사용
     } catch (error) {
-      console.error("❌ 승인 요청 실패:", error);
-      alert("승인 요청 실패");
+      console.error("❌ 승인된 데이터 조회 실패:", error);
     }
+    setLoading(false);
   };
 
   return (
@@ -61,20 +76,27 @@ const AttendanceHistoryPage = () => {
         <div className="page-header">
           <h1>근태 신청 내역</h1>
         </div>
+
         {loading ? (
           <p>⏳ 로딩 중...</p>
         ) : (
           <>
-            <RequestHistory
-              requests={requests}
-              onApprovalRequest={handleApprovalRequest}
+            {/* 승인 대기 내역 */}
+            <h2>승인 대기 내역</h2>
+            <RequestHistory requests={pendingRequests} />
+            <Pagination
+              currentPage={pendingPage}
+              totalPages={pendingTotalPages}
+              onPageChange={setPendingPage}
             />
 
-            {/* ✅ 페이징 UI 추가 */}
+            {/*  승인 완료 내역 */}
+            <h2>승인 완료 내역</h2>
+            <RequestHistory requests={approvedRequests} />
             <Pagination
-              currentPage={currentPage}
-              totalPages={totalPages}
-              onPageChange={setCurrentPage}
+              currentPage={approvedPage}
+              totalPages={approvedTotalPages}
+              onPageChange={setApprovedPage}
             />
           </>
         )}

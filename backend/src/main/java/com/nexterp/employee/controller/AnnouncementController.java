@@ -2,6 +2,7 @@ package com.nexterp.employee.controller;
 
 import com.nexterp.employee.dto.AnnouncementDTO;
 import com.nexterp.employee.service.AnnouncementService;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,11 +20,15 @@ public class AnnouncementController {
 
 
 
-    // 모든 공지사항 조회
+    // 모든 공지사항 페이징 조회
     @GetMapping
-    public List<AnnouncementDTO> getAllAnnouncements() {
-        return announcementService.getAllAnnouncements();
+    public ResponseEntity<Page<AnnouncementDTO>> getAllAnnouncements(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        Page<AnnouncementDTO> announcements = announcementService.getAllAnnouncements(page, size);
+        return ResponseEntity.ok(announcements);
     }
+
 
     // 특정 공지사항 조회 id
     @GetMapping("/{id}")
@@ -32,16 +37,25 @@ public class AnnouncementController {
         return ResponseEntity.ok(announcementDTO);
     }
 
-    // ✅ 특정 부서에 대한 공지사항 조회
+    //  특정 부서 공지사항 페이징 조회
     @GetMapping("/department/{departmentId}")
-    public List<AnnouncementDTO> getAnnouncementsByDepartment(@PathVariable Integer departmentId) {
-        return announcementService.getAnnouncementsByDepartment(departmentId);
+    public ResponseEntity<Page<AnnouncementDTO>> getAnnouncementsByDepartment(
+            @PathVariable Integer departmentId,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        Page<AnnouncementDTO> announcements = announcementService.getAnnouncementsByDepartment(departmentId, page, size);
+        return ResponseEntity.ok(announcements);
     }
 
-    // ✅ 특정 직위에 대한 공지사항 조회
+
+    // 특정 직위 공지사항 페이징 조회
     @GetMapping("/position/{positionId}")
-    public List<AnnouncementDTO> getAnnouncementsByPosition(@PathVariable Integer positionId) {
-        return announcementService.getAnnouncementsByPosition(positionId);
+    public ResponseEntity<Page<AnnouncementDTO>> getAnnouncementsByPosition(
+            @PathVariable Integer positionId,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        Page<AnnouncementDTO> announcements = announcementService.getAnnouncementsByPosition(positionId, page, size);
+        return ResponseEntity.ok(announcements);
     }
 
 

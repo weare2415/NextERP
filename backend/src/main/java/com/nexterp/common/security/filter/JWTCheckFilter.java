@@ -119,8 +119,13 @@ public class JWTCheckFilter extends OncePerRequestFilter {
     log.info("Checking URI for filtering: {}", path);
 
     // 필터를 적용하지 않을 경로 지정
+    // 필터를 적용하지 않을 경로 지정
     List<String> excludedPaths = List.of("/api/member/login", "/api/member/refresh","/api/member/change-password", "/api/member/forgot-password");
 
+    // `/api/employees/{id}` 경로 제외 (정규식 적용)
+    if (path.matches("^/api/employees/\\d+$")) {  //  사원 ID가 숫자인 경우만 필터 제외
+      return true;
+    }
     return excludedPaths.stream().anyMatch(path::startsWith);
   }
 

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect } from "react";
 import Pagination from "../../../common/component/Pagination";
 import "../scss/MyAttendanceWorkSick.scss";
 
@@ -14,48 +14,44 @@ const requestStatusTextMap = {
   REJECTED: "반려",
 };
 
-//  전체 휴가 개수 설정
-const TOTAL_VACATION_COUNT = 12;
-const ITEMS_PER_PAGE = 5; // 한 페이지당 5개 표시
+const ITEMS_PER_PAGE = 5; // 한 페이지당 표시할 개수
+const TOTAL_VACATION_COUNT = 12; // 전체 휴가 개수 설정
 
-const MyVacationSickList = ({ attendances }) => {
-  // ✅ useMemo를 사용하여 불필요한 재계산 방지
-  const combinedAttendances = useMemo(() => {
-    console.log("✅ combinedAttendances 재계산됨");
-    return attendances
-      .filter(
-        (record) => record.status === "LEAVE" || record.status === "SICK_LEAVE"
-      )
-      .sort((a, b) => new Date(b.date) - new Date(a.date));
-  }, [attendances]); // 🔥 attendances가 변경될 때만 재계산
+const MyVacationSickList = ({
+  attendances,
+  currentPage,
+  totalPages,
+  onPageChange,
+}) => {
+  //  승인된 휴가 개수 카운트
+  const approvedCount = attendances.filter(
+    (record) => record.requestStatus === "APPROVED"
+  ).length;
 
-  // 승인된 휴가 개수 카운트
-  const approvedCount = useMemo(() => {
-    return combinedAttendances.filter(
-      (record) => record.requestStatus === "APPROVED"
-    ).length;
-  }, [combinedAttendances]); // ✅ 메모이제이션 적용
-
-  // 진행률 (퍼센트 계산)
+  //  진행률 (퍼센트 계산)
   const progressPercentage = (approvedCount / TOTAL_VACATION_COUNT) * 100;
 
-  // 페이지네이션 상태 관리
-  const [currentPage, setCurrentPage] = useState(0);
+  //  페이지네이션 상태 관리
   const [pagedData, setPagedData] = useState([]);
 
-  // ✅ useEffect에서 의존성을 최소화하여 무한 루프 방지
   useEffect(() => {
-    console.log("📌 페이지네이션 데이터 업데이트");
-    const start = currentPage * ITEMS_PER_PAGE;
-    const end = start + ITEMS_PER_PAGE;
-    setPagedData(combinedAttendances.slice(start, end));
-  }, [currentPage, combinedAttendances]); // ✅ 의존성 배열 유지
+    console.log(
+      `📌 페이지 데이터 업데이트: currentPage=${currentPage}, totalPages=${totalPages}`
+    );
+
+    if (!attendances || attendances.length === 0) {
+      setPagedData([]);
+      return;
+    }
+
+    setPagedData(attendances);
+  }, [attendances, currentPage, totalPages]);
 
   return (
     <div className="attendance-list-section">
       <h2>휴가 & 병가 내역</h2>
 
-      {/*  프로그레스 바 추가 */}
+   
       <div className="progress-container">
         <div className="progress-bar">
           <div
@@ -97,10 +93,11 @@ const MyVacationSickList = ({ attendances }) => {
             </tbody>
           </table>
 
+          {/*  백엔드에서 받은 totalPages 사용 */}
           <Pagination
             currentPage={currentPage}
-            totalPages={Math.ceil(combinedAttendances.length / ITEMS_PER_PAGE)}
-            onPageChange={setCurrentPage}
+            totalPages={totalPages} // 백엔드에서 전달한 totalPages를 사용
+            onPageChange={onPageChange} //  부모 컴포넌트에서 전달된 onPageChange 함수 사용
           />
         </>
       ) : (
