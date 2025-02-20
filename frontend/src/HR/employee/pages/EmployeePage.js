@@ -38,7 +38,7 @@ const EmployeePage = () => {
             >
               <option value="name">사원명</option>
               <option value="department">부서</option>
-              <option value="position">직위</option>
+              <option value="position">직급</option>
             </select>
 
             {/* 검색 입력창 */}
@@ -48,6 +48,11 @@ const EmployeePage = () => {
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="search-input"
+              onKeyPress={(e) => {
+                if (e.key === "Enter") {
+                  handleSearch();
+                }
+              }}
             />
 
             {/* 검색 버튼 */}

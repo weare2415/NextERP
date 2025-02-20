@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import SpeechToText from "./SpeechToText";
 
+// import ImageChatbot from "./ImageChatbot";
 
 function Chatbot() {
   const [message, setMessage] = useState("");
@@ -43,7 +43,8 @@ function Chatbot() {
         <button type="submit">보내기</button>
       </form>
 
-      <SpeechToText onSend={sendMessage} />
+      {/* 🎤 음성 인식 기능 (주석 처리) */}
+      {/* <SpeechToText onSend={sendMessage} /> */}
 
       <div>
         <p>

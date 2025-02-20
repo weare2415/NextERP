@@ -52,7 +52,7 @@ const CreateEmployee = ({ onClose, onSuccess }) => {
         setIsIdAvailable(true);
       }
     } else {
-      setIdError("❗ 8자리 ID를 입력하세요.");
+      setIdError("❗ 8자리 숫자를 입력하세요.");
       setIsIdAvailable(false);
     }
   };
@@ -60,6 +60,10 @@ const CreateEmployee = ({ onClose, onSuccess }) => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setEmployeeData({ ...employeeData, [name]: value });
+  };
+
+  const handleBlur = () => {
+    setIdError("");
   };
 
   const handleSubmit = async (e) => {
@@ -96,23 +100,26 @@ const CreateEmployee = ({ onClose, onSuccess }) => {
         <form onSubmit={handleSubmit}>
           <div className="form-group">
             <label>사원 번호 (8자리 숫자)</label>
-            <input
-              type="text"
-              name="id"
-              placeholder="8자리 숫자 입력"
-              value={employeeData.id}
-              onChange={handleIdChange}
-              required
-            />
-            {idError && (
-              <p
-                className={`id-check-message ${
-                  isIdAvailable ? "success" : "error"
-                }`}
-              >
-                {idError}
-              </p>
-            )}
+            <div className="input-wrapper">
+              <input
+                type="text"
+                name="id"
+                placeholder="8자리 숫자 입력"
+                value={employeeData.id}
+                onChange={handleIdChange}
+                onBlur={handleBlur}
+                required
+              />
+              {idError && (
+                <p
+                  className={`id-check-message ${
+                    isIdAvailable ? "success" : "error"
+                  }`}
+                >
+                  {idError}
+                </p>
+              )}
+            </div>
           </div>
 
           <div className="form-group">

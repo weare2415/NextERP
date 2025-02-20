@@ -160,12 +160,6 @@ const BasicLayout = ({ children }) => {
           {/* Header */}
           <header className="header">
             <div className="header-buttons">
-            <button
-                onClick={() => navigate("/chatbot")}
-                style={{ cursor: "pointer" }}
-              >
-                챗봇
-              </button>
               <button className="messenger-btn" onClick={handleOpenChatList}>
                 메신저
               </button>

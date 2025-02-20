@@ -44,9 +44,3 @@ export const getWeeklyProfit = async () => {
 	const response = await axiosInstance.get(`/journal-entries/profit/weekly`);
 	return response.data;
 }
-
-// 월별 영업이익
-export const getMonthlyProfit = async () => {
-	const response = await axiosInstance.get(`/journal-entries/profit/monthly`);
-	return response.data;
-}
