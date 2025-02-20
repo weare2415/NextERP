@@ -1,20 +1,19 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "../scss/RequestHistory.scss";
 
-const RequestHistory = ({ requests, onApprovalRequest }) => {
-  console.log("📌 전달된 requests 데이터:", requests);
-
-  const title = requests.length > 0 && requests[0].requestStatus === "PENDING"
-    ? "승인 대기 내역"
-    : "승인 완료 내역";
+const RequestHistory = ({ requests, title }) => {
+  useEffect(() => {
+    console.log("📌 전달된 requests 데이터:", requests);
+  }, [requests]); // requests가 변경될 때만 로그 출력
 
   return (
     <div className="history-list-wrapper">
       <div className="history-table-section">
-      <h3>{title}</h3>
+        <h3>{title}</h3>
         <table className="history-grid">
           <thead>
             <tr>
+              <th>사원ID</th>
               <th>사원명</th>
               <th>신청 날짜</th>
               <th>근태 유형</th>
@@ -26,6 +25,7 @@ const RequestHistory = ({ requests, onApprovalRequest }) => {
             {requests.length > 0 ? (
               requests.map((request) => (
                 <tr key={request.id}>
+                  <td>{request.employeeId}</td>
                   <td>{request.employeeName}</td>
                   <td>{request.date}</td>
                   <td>

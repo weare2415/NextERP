@@ -14,7 +14,6 @@ import {
 import {getMonthlySales} from '../accounting/api/transactionApi';
 import MonthlyProductSalesPieChart from './MonthlyProductSalesPieChart';
 import MonthlyCashFlowChart from './MonthlyCashFlowChart';
-import QuarterProfitRateChart from './QuaterProfitRateChart';
 
 const lineChartData = [
 	{name: "Jan", uv: 4000, pv: 2400, amt: 2400},
@@ -110,13 +109,6 @@ const ExampleCharts = () => {
 					<h1>현금 흐름 및 영업이익 추이</h1>
 					<MonthlyCashFlowChart />
 				</div>
-				<div>-----------------------------------------------------</div>
-
-				<div>
-					<h1>분기별 영업이익률 계산</h1>
-					<QuarterProfitRateChart />
-				</div>
-
 
 			</div>
 	)

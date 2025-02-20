@@ -36,9 +36,51 @@ body {
   font-family: "Apple SD Gothic Neo", sans-serif;
   margin: 0;
 }
-.attendance-history-page-container .page-header .header-right {
+.attendance-history-page-container .page-header .search-container {
   display: flex;
   align-items: center;
+  gap: 8px;
+  margin-left: auto;
+}
+.attendance-history-page-container .page-header .search-category-select {
+  padding: 8px;
+  border: 1px solid #929fb4;
+  border-radius: 4px;
+  font-family: "Apple SD Gothic Neo", sans-serif;
+  background-color: white;
+  cursor: pointer;
+  width: 100px;
+}
+.attendance-history-page-container .page-header .search-category-select:focus {
+  outline: none;
+  border-color: #3c485a;
+}
+.attendance-history-page-container .page-header .search-input {
+  flex: 1;
+  width: 250px;
+  padding: 8px;
+  border: 1px solid #929fb4;
+  border-radius: 4px;
+  font-family: "Apple SD Gothic Neo", sans-serif;
+}
+.attendance-history-page-container .page-header .search-input:focus {
+  outline: none;
+  border-color: #3c485a;
+}
+.attendance-history-page-container .page-header .search-btn {
+  padding: 8px 16px;
+  background-color: #3c485a;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-family: "Apple SD Gothic Neo", sans-serif;
+  height: 36px;
+  display: flex;
+  align-items: center;
+}
+.attendance-history-page-container .page-header .search-btn:hover {
+  background-color: rgb(39.6, 47.52, 59.4);
 }
 
 /*# sourceMappingURL=AttendanceHistoryPage.css.map */

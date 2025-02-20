@@ -43,13 +43,15 @@ body {
   table-layout: fixed;
   border-left: 1px solid #ddd;
 }
-.history-list-wrapper .history-table-section .history-grid th, .history-list-wrapper .history-table-section .history-grid td {
+.history-list-wrapper .history-table-section .history-grid th,
+.history-list-wrapper .history-table-section .history-grid td {
   padding: 15px;
   text-align: center;
   border: 1px solid #ddd;
   word-wrap: break-word;
 }
-.history-list-wrapper .history-table-section .history-grid th:first-child, .history-list-wrapper .history-table-section .history-grid td:first-child {
+.history-list-wrapper .history-table-section .history-grid th:first-child,
+.history-list-wrapper .history-table-section .history-grid td:first-child {
   border-left: none;
 }
 .history-list-wrapper .history-table-section .history-grid th {
@@ -62,20 +64,29 @@ body {
 .history-list-wrapper .history-table-section .history-grid tr:hover {
   background-color: #f8f9fa;
 }
-.history-list-wrapper .history-table-section .history-grid th:nth-child(1), .history-list-wrapper .history-table-section .history-grid td:nth-child(1) {
+.history-list-wrapper .history-table-section .history-grid th:nth-child(1),
+.history-list-wrapper .history-table-section .history-grid td:nth-child(1) {
+  width: 10%;
+}
+.history-list-wrapper .history-table-section .history-grid th:nth-child(2),
+.history-list-wrapper .history-table-section .history-grid td:nth-child(2) {
+  width: 10%;
+}
+.history-list-wrapper .history-table-section .history-grid th:nth-child(3),
+.history-list-wrapper .history-table-section .history-grid td:nth-child(3) {
+  width: 10%;
+}
+.history-list-wrapper .history-table-section .history-grid th:nth-child(4),
+.history-list-wrapper .history-table-section .history-grid td:nth-child(4) {
+  width: 10%;
+}
+.history-list-wrapper .history-table-section .history-grid th:nth-child(5),
+.history-list-wrapper .history-table-section .history-grid td:nth-child(5) {
   width: 15%;
 }
-.history-list-wrapper .history-table-section .history-grid th:nth-child(2), .history-list-wrapper .history-table-section .history-grid td:nth-child(2) {
-  width: 25%;
-}
-.history-list-wrapper .history-table-section .history-grid th:nth-child(3), .history-list-wrapper .history-table-section .history-grid td:nth-child(3) {
-  width: 15%;
-}
-.history-list-wrapper .history-table-section .history-grid th:nth-child(4), .history-list-wrapper .history-table-section .history-grid td:nth-child(4) {
-  width: 30%;
-}
-.history-list-wrapper .history-table-section .history-grid th:nth-child(5), .history-list-wrapper .history-table-section .history-grid td:nth-child(5) {
-  width: 15%;
+.history-list-wrapper .history-table-section .history-grid th:nth-child(6),
+.history-list-wrapper .history-table-section .history-grid td:nth-child(6) {
+  width: 10%;
 }
 
 /*# sourceMappingURL=RequestHistory.css.map */

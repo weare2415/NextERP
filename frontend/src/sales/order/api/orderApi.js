@@ -8,6 +8,7 @@ export const processSaleOrder = async ({
   clientCode,
   paymentAccountId,
   employee,
+  saleDate,
   memo,
 }) => {
   try {
@@ -21,6 +22,7 @@ export const processSaleOrder = async ({
           salePrice,
           clientCode,
           paymentAccountId,
+          saleDate,
           memo,
         },
       }
@@ -40,6 +42,7 @@ export const processPurchaseOrder = async ({
   clientCode,
   paymentAccountId,
   employee,
+  purchaseDate,
   memo,
 }) => {
   try {
@@ -53,6 +56,7 @@ export const processPurchaseOrder = async ({
           purchasePrice,
           clientCode,
           paymentAccountId,
+          purchaseDate,
           memo,
         },
       }

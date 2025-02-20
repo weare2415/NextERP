@@ -8,9 +8,8 @@
     display: flex;
     align-items: center;
     gap: 8px;
-    position: relative;
 
-    .search-type-attendance {
+    .search-attendance-type {
       padding: 8px;
       border: 1px solid $secondary-color;
       border-radius: 4px;
@@ -31,7 +30,6 @@
       border: 1px solid $secondary-color;
       border-radius: 4px;
       font-family: $font-primary;
-      position: relative;
 
       &:focus {
         outline: none;

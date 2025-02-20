@@ -27,9 +27,8 @@ body {
   display: flex;
   align-items: center;
   gap: 8px;
-  position: relative;
 }
-.search-attendance-container .search-attendance-form .search-type-attendance {
+.search-attendance-container .search-attendance-form .search-attendance-type {
   padding: 8px;
   border: 1px solid #929fb4;
   border-radius: 4px;
@@ -37,7 +36,7 @@ body {
   background-color: white;
   cursor: pointer;
 }
-.search-attendance-container .search-attendance-form .search-type-attendance:focus {
+.search-attendance-container .search-attendance-form .search-attendance-type:focus {
   outline: none;
   border-color: #3c485a;
 }
@@ -48,7 +47,6 @@ body {
   border: 1px solid #929fb4;
   border-radius: 4px;
   font-family: "Apple SD Gothic Neo", sans-serif;
-  position: relative;
 }
 .search-attendance-container .search-attendance-form input:focus {
   outline: none;
