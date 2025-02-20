@@ -63,25 +63,27 @@ const MonthlyCashFlowChart = () => {
 					<ComposedChart data={transformedCashFlowData}>
 						<defs>
 							<radialGradient id="scatterGradient" cx="50%" cy="50%" r="50%">
-								<stop offset="0%" stopColor="#8884d8" stopOpacity={0.8} />
+								<stop offset="0%" stopColor="#8884d8" stopOpacity={0.7} />
 								<stop offset="100%" stopColor="#8884d8" stopOpacity={0.1} />
 							</radialGradient>
 						</defs>
 
-						<CartesianGrid strokeDasharray="3 3" />
-						<XAxis dataKey="week" />
+						{/*<CartesianGrid strokeDasharray="1 1" />*/}
+						<XAxis dataKey="week" stroke="none" />
 						<YAxis
 								yAxisId="left"
-								label={{ value: "현금 흐름", angle: -90, position: "insideLeft" }}
+								label={{ value: "주차별 현금 흐름", angle: -90, position: "insideLeft" }}
 								domain={["auto", "auto"]}
+								stroke="none"
 						/>
 						<YAxis
 								yAxisId="right"
 								orientation="right"
-								label={{ value: "영업 이익", angle: -90, position: "insideRight" }}
+								label={{ value: "주차별 영업 이익", angle: -90, position: "insideRight" }}
 								domain={["auto", "auto"]}
+								stroke="none"
 						/>
-						<ZAxis type="number" dataKey="operatingProfit" range={[5000,20000]} />
+						<ZAxis type="number" dataKey="operatingProfit" range={[5000,30000]} />
 						<Tooltip formatter={(value) => value.toLocaleString()}/>
 						<Legend />
 						{/* 현금 흐름 (Line) */}
@@ -89,9 +91,9 @@ const MonthlyCashFlowChart = () => {
 								yAxisId="left"
 								type="monotone"
 								dataKey="cashFlow"
-								stroke="#82ca9d"
+								stroke="#929fb4"
 								name="현금 흐름"
-								dot={{ stroke: '#82ca9d', strokeWidth: 2 }}
+								dot={{ stroke: '#929fb4', strokeWidth: 2 }}
 						/>
 						{/* 영업 이익 (Scatter) */}
 						<Scatter

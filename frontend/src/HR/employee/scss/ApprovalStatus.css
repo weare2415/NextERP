@@ -63,7 +63,7 @@ body {
 }
 .approval-list-wrapper .approval-table-section table th:nth-child(2),
 .approval-list-wrapper .approval-table-section table td:nth-child(2) {
-  width: 7%;
+  width: 8%;
 }
 .approval-list-wrapper .approval-table-section table th:nth-child(3),
 .approval-list-wrapper .approval-table-section table td:nth-child(3) {
