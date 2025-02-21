@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import {
 	getMonthlyCashFlows,
 	getWeeklyProfit
-} from '../accounting/api/transactionApi';
+} from '../../../accounting/api/transactionApi';
 import {
 	CartesianGrid,
 	Legend,
@@ -17,7 +17,7 @@ import {
 } from 'recharts';
 import {
 	getMonthFromWeek,
-} from '../common/hooks/getMonthFromWeek';
+} from '../../hooks/getMonthFromWeek';
 
 const MonthlyCashFlowChart = () => {
 	const [cashFlowData, setCashFlowData] = useState([]);

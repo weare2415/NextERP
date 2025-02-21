@@ -2,7 +2,7 @@ import {useEffect, useState} from "react";
 import {
 	getMonthlyProfit,
 	getMonthlySales,
-} from "../accounting/api/transactionApi";
+} from "../../../accounting/api/transactionApi";
 import QuarterSalesPieChart from "./QuaterSalesPieChart";
 import QuarterProfitGaugeChart from "./QuaterProfitGaugeChart";
 

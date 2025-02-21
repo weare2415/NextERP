@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {getMonthlySales} from '../accounting/api/transactionApi';
+import {getMonthlySales} from '../../../accounting/api/transactionApi';
 import {
 	Bar,
 	CartesianGrid,
@@ -35,8 +35,8 @@ const MonthlySalesChart = () => {
 						<YAxis yAxisId="right" orientation="right" />
 						<Tooltip formatter={(value) => value.toLocaleString()}/>
 						<Legend />
-						<Bar yAxisId="right" dataKey="totalQuantity" fill="#8884d8" barSize={30} name="판매 수량" />
-						<Line yAxisId="left" dataKey="totalAmount" stroke="#ff7300" strokeWidth={2} name="매출" />
+						<Bar yAxisId="right" dataKey="totalQuantity" fill="#3c485a" barSize={30} name="판매 수량" />
+						<Line yAxisId="left" dataKey="totalAmount" stroke="#8884d8" strokeWidth={2} name="매출" />
 					</ComposedChart>
 				</ResponsiveContainer>
 			</div>
