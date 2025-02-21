@@ -12,9 +12,9 @@ import {
 	ResponsiveContainer, Bar, ComposedChart
 } from "recharts";
 import {getMonthlySales} from '../accounting/api/transactionApi';
-import MonthlyProductSalesPieChart from './MonthlyProductSalesPieChart';
-import MonthlyCashFlowChart from './MonthlyCashFlowChart';
-import OrderTreeMap from './OrderTreeMap';
+import MonthlyProductSalesPieChart from '../common/component/recharts/MonthlyProductSalesPieChart';
+import MonthlyCashFlowChart from '../common/component/recharts/MonthlyCashFlowChart';
+import OrderTreeMap from '../common/component/recharts/OrderTreeMap';
 
 const lineChartData = [
 	{name: "Jan", uv: 4000, pv: 2400, amt: 2400},

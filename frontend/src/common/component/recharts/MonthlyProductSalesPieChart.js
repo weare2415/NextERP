@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {getMonthlyProductsSales} from '../accounting/api/transactionApi';
+import {getMonthlyProductsSales} from '../../../accounting/api/transactionApi';
 import CustomActiveShapePieChart from './CustomActiveShapePieChart';
 import './MonthlyProductSalesPieChart.scss'
 

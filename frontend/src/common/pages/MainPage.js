@@ -2,13 +2,13 @@ import React, {useEffect} from 'react';
 import {useCustomLogin} from '../member/hook/useCustomLogin';
 import BasicLayout from './BasicLayout';
 import CalendarComponent from '../component/CalenderComponent';
-import AnnouncementList from '../../announcement/components/AnnouncementList';
-import MonthlySalesChart from '../../test/MonthlySalesChart';
+import MonthlySalesChart from '../component/recharts/MonthlySalesChart';
 import MonthlyProductSalesPieChart
-	from '../../test/MonthlyProductSalesPieChart';
-import QuarterProfitRateChart from '../../test/QuaterProfitRateChart';
-import MonthlyCashFlowChart from '../../test/MonthlyCashFlowChart';
-import OrderTreeMap from '../../test/OrderTreeMap';
+	from '../component/recharts/MonthlyProductSalesPieChart';
+import QuarterProfitRateChart
+	from '../component/recharts/QuaterProfitRateChart';
+import MonthlyCashFlowChart from '../component/recharts/MonthlyCashFlowChart';
+import OrderTreeMap from '../component/recharts/OrderTreeMap';
 
 const MainPage = () => {
 	const {isLogin, moveToLogin} = useCustomLogin()
@@ -87,7 +87,7 @@ const MainPage = () => {
 										flexDirection: 'row',
 										alignItems: 'flex-start',
 										justifyContent: 'space-between',
-										marginTop:'2rem'
+										marginTop: '2rem'
 									}}>
 										<div>
 											<QuarterProfitRateChart/></div>

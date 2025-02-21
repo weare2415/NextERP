@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {getMonthlySales} from '../accounting/api/transactionApi';
+import {getMonthlySales} from '../../../accounting/api/transactionApi';
 import {
 	Bar,
 	CartesianGrid,
