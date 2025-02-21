@@ -108,7 +108,11 @@ export const getVacationAndSickAttendance = async (
 };
 
 //  로그인한 사용자의 재택근무 데이터만 가져오기
-export const getRemoteWorkAttendance = async (employeeId, page = 0, size = 5) => {
+export const getRemoteWorkAttendance = async (
+  employeeId,
+  page = 0,
+  size = 5
+) => {
   try {
     console.log(
       `📢 재택근무 근태 기록 요청: 사원ID=${employeeId}, page=${page}, size=${size}`
@@ -125,7 +129,6 @@ export const getRemoteWorkAttendance = async (employeeId, page = 0, size = 5) =>
     throw error;
   }
 };
-
 
 // 근태 기록 생성 (출근)
 export const saveAttendance = async (attendanceData) => {
@@ -255,7 +258,6 @@ export const getPendingAttendances = async (page = 0, size = 5) => {
   }
 };
 
-
 //승인 완료된 근태 기록 조회 (PREPARED, APPROVED, REJECTED 상태)
 export const getApprovedAttendances = async (page = 0, size = 5) => {
   try {
@@ -300,9 +302,8 @@ export const requestApproval = async (id, status, date, reason) => {
       null,
       {
         params: {
-          
-          status, 
-          date, 
+          status,
+          date,
           reason,
         },
       }

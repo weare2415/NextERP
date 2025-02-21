@@ -6,7 +6,7 @@ import "./scss/ClientPage.scss";
 import BasicLayout from "../../../common/pages/BasicLayout";
 import { getAllClients } from "../api/clientApi";
 import SearchClient from "../component/SearchClient";
-import Pagination from '../../../common/component/Pagination';
+import Pagination from "../../../common/component/Pagination";
 
 const ClientPage = () => {
   const [showCreateForm, setShowCreateForm] = useState(false);
@@ -40,21 +40,21 @@ const ClientPage = () => {
   };
 
   const handleCreateSuccess = (newClient) => {
-    setClients(prevClients => [...prevClients, newClient]);
+    setClients((prevClients) => [...prevClients, newClient]);
     setShowCreateForm(false);
   };
 
   const handleDeleteSuccess = (clientCode) => {
-    setClients(prevClients => 
-      prevClients.filter(client => client.clientCode !== clientCode)
+    setClients((prevClients) =>
+      prevClients.filter((client) => client.clientCode !== clientCode)
     );
     setShowDetailForm(false);
     setSelectedClient(null);
   };
 
   const handleUpdateSuccess = (updatedClient) => {
-    setClients(prevClients => 
-      prevClients.map(client => 
+    setClients((prevClients) =>
+      prevClients.map((client) =>
         client.clientCode === updatedClient.clientCode ? updatedClient : client
       )
     );
@@ -73,25 +73,25 @@ const ClientPage = () => {
         <div className="page-header">
           <h1>거래처 관리</h1>
           <div className="header-right">
-          <SearchClient onSearchResults={handleSearchResults} />
-          <button 
-            className="new-client-btn"
-            onClick={() => setShowCreateForm(true)}
-          >
-            신규등록
-          </button>
+            <SearchClient onSearchResults={handleSearchResults} />
+            <button
+              className="new-client-btn"
+              onClick={() => setShowCreateForm(true)}
+            >
+              신규등록
+            </button>
+          </div>
         </div>
-        </div>
-        
+
         <ListClient
-        clients={searchResults || clients}
-        onClientSelect={handleClientClick}
-           />
-            <Pagination
-                currentPage={page}
-                totalPages={totalPages}
-                onPageChange={setPage}
-            />
+          clients={searchResults || clients}
+          onClientSelect={handleClientClick}
+        />
+        <Pagination
+          currentPage={page}
+          totalPages={totalPages}
+          onPageChange={setPage}
+        />
         {showCreateForm && (
           <div>
             <CreateClient
@@ -100,7 +100,7 @@ const ClientPage = () => {
             />
           </div>
         )}
-        
+
         {showDetailForm && selectedClient && (
           <div>
             <ClientDetail

@@ -2,73 +2,29 @@ import mariadb
 import pandas as pd
 import datetime
 
-# 데이터베이스 연결 정보
+# ✅ 데이터베이스 연결 정보
 DB_CONFIG = {
     "host": "localhost",
     "port": 3306,
     "user": "paesir",
     "password": "386500",
     "database": "next-erp",
-    "local_infile": True  # 반드시 추가해야 함
-}
-
-def load_csv_with_infile(csv_file, table, data):
-    conn = mariadb.connect(**DB_CONFIG)
-    cur = conn.cursor()\
-    
-    # CSV 파일 읽기
-    # skiprows=1, 
-    df = pd.read_csv(csv_file, encoding='cp949', delimiter='\t')  # 첫 번째 행은 헤더이므로 건너뜀
-    column_name = [str(x) for x in df.columns]
-    print(df)
-
-    try:
-        # 데이터 삽입
-        cur.execute(f"""CREATE TABLE {table} (
-        {data}
-        """)
-
-        for _, row in df.iterrows():
-            cur.execute(f"""
-                INSERT INTO {table} (
-                    {column_name}
-                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-            """, tuple(row))
-
-        conn.commit()
-        cur.close()
-        conn.close()
-        print("✅ 데이터 삽입 완료!")
-    except mariadb.Error as e:
-        print(f"❌ 삽입 실패: {e}")
-
-    cur.close()
-    conn.close()
-
-
-import mariadb
-import pandas as pd
-import datetime
-
-# 데이터베이스 연결 정보
-DB_CONFIG = {
-    "host": "localhost",
-    "port": 3306,
-    "user": "paesir",
-    "password": "386500",
-    "database": "next-erp",
-    "local_infile": True  # 반드시 추가해야 함
+    "local_infile": True
 }
 
 def show_data(table):
+    """ 특정 테이블의 데이터를 가져와 Pandas DataFrame으로 변환 """
     conn = None
     try:
         conn = mariadb.connect(**DB_CONFIG)
         cur = conn.cursor()
 
-        # 데이터 조회
+        # ✅ 데이터 조회
         cur.execute(f"SELECT * FROM {table}")
         columns = [x[0] for x in cur.description]
+
+        # ✅ 컬럼명 출력
+        print(f"📌 테이블 '{table}'의 컬럼: {columns}")
 
         rows = cur.fetchall()
         result = []
@@ -77,73 +33,118 @@ def show_data(table):
             for r in rows:
                 new_row = []
                 for v in r:
-                    # ✅ 날짜 타입인지 확인하고 변환
+                    # ✅ 날짜 타입 변환
                     if isinstance(v, (datetime.date, datetime.datetime)):
-                        val = v.strftime("%Y-%m-%d")  # 날짜 변환
+                        val = v.strftime("%Y-%m-%d")
                     else:
-                        val = v  # 날짜가 아니면 그대로 사용
+                        val = v
                     new_row.append(val)
                 result.append(new_row)
 
-        result = pd.DataFrame(result, columns=columns)
-        return result
+        # ✅ Pandas DataFrame 생성
+        df = pd.DataFrame(result, columns=columns)
+        return df
 
     except mariadb.Error as e:
         print(f"❌ 데이터 조회 실패: {e}")
+        return pd.DataFrame()
 
     finally:
         if conn:
             cur.close()
             conn.close()
 
+# 공지사항 테이블
+def get_announcements_data():
+    return show_data("announcement")
 
+
+#  근태 테이블 조회
+# ✅ 근태 테이블 조회 (employee_id 타입 변환 추가)
+def get_attendance_data():
+    df = show_data("attendance")
+
+    if df.empty:
+        return df  # 빈 DataFrame 반환
+
+    # ✅ employee_id를 정수형(int)으로 변환
+    df["employee_id"] = pd.to_numeric(df["employee_id"], errors="coerce").fillna(0).astype(int)
+
+    # ✅ 로그 출력하여 데이터 확인
+    print(f"🔍 근태 데이터 조회 결과:\n{df}")
+    print(f"🔍 근태 데이터 컬럼명: {df.columns}")
+
+    return df
+
+# ✅ 부서 테이블 조회 추가
+def get_department_data():
+    df = show_data("department")
+
+    if df.empty:
+        return df  # 빈 DataFrame 반환
+
+    # ✅ 로그 출력하여 데이터 확인
+    print(f"🔍 부서 데이터 조회 결과:\n{df}")
+    print(f"🔍 부서 데이터 컬럼명: {df.columns}")
+
+    return df
+
+
+# ✅ 사원 테이블 조회 (employee_id 타입 변환 추가)
+def get_employee_data():
+    df = show_data("employee")
+
+    if df.empty:
+        return df  # 빈 DataFrame 반환
+
+    # ✅ employee_id를 정수형(int)으로 변환
+    df["employee_id"] = pd.to_numeric(df["employee_id"], errors="coerce").fillna(0).astype(int)
+
+    # ✅ 로그 출력하여 데이터 확인
+    print(f"🔍 사원 데이터 조회 결과:\n{df}")
+    print(f"🔍 사원 데이터 컬럼명: {df.columns}")
+
+    return df
+
+
+#영업 부분에서는 판매/구매 금액에서 똑같은게 많음(구분 지어야함/ 필터)
+# 재고 개수(영업팀 다 depart) / 판매기록, 구매기록(영업팀 기준으로만) / client 거래처 조회(영업팀기준으로)
 
 
 def get_all_data():
+    """ 데이터베이스의 모든 테이블 데이터를 가져오는 함수 """
     conn = None
     try:
         conn = mariadb.connect(**DB_CONFIG)
         cur = conn.cursor()
 
-        # 데이터 조회
-        cur.execute(f"SHOW Tables")
+        # 테이블 조회
+        cur.execute("SHOW TABLES")
         rows = cur.fetchall()
         
         table_names = [x[0] for x in rows]
-        #print(table_names)
-
         DB = pd.DataFrame()
-        for i in range(len(table_names)):
-            df = show_data(table_names[i])
-            DB = pd.concat([DB, df])
 
-        # print(DB)
-        # DB.to_csv('./temp.csv')
+        # 각 테이블의 데이터를 조회하여 하나의 DataFrame으로 합치기
+        data_frames = []
+        for table in table_names:
+            print(f"🔄 '{table}' 테이블 데이터 조회 중...")
+            df = show_data(table)
+            
+            if not df.empty:  # ✅ 빈 데이터프레임 제외
+                data_frames.append(df)
+
+        # ✅ 빈 데이터프레임 제거 후 concat 수행
+        if data_frames:
+            DB = pd.concat(data_frames, ignore_index=True)
+
         return DB
 
-    
     except mariadb.Error as e:
         print(f"❌ 데이터 조회 실패: {e}")
+        return pd.DataFrame()  # 실패 시 빈 DataFrame 반환
 
     finally:
         if conn:
             cur.close()
             conn.close()
-
-# CSV파일 연결 
-# if __name__ == '__main__':
-#     df = get_all_data()
-#     df.to_csv('./temp2.csv', encoding='cp949')
-#     print(df)
-
-
-    # path='C:/Users/sh/IdeaProjects/front_point/chat_point/부동산.csv'
-    # table='real_estate'
-    # # 컬럼 생성, 타입 설정 
-    # data ='''매물 VARCHAR(20),
-    #         예산 INT NOT NULL,
-    #         대출가능금액 INT NOT NULL,
-    #         위치조건 VARCHAR(20)'''
-    # load_csv_with_infile(path, table, data)
-
-    # show_data('stock')

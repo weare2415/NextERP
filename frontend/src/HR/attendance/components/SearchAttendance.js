@@ -55,6 +55,7 @@ const SearchAttendance = ({ setFilteredAttendances }) => {
         <select
           value={searchType}
           onChange={(e) => setSearchType(e.target.value)}
+          className="search-attendance-type"
         >
           <option value="employee">사원 ID</option>
           <option value="date">날짜</option>
