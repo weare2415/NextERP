@@ -27,13 +27,12 @@ const MonthlySalesChart = () => {
 
 	return (
 			<div>
-				<ResponsiveContainer width="100%" height={400}>
+				<ResponsiveContainer width="100%" height={300}>
 					<ComposedChart data={data.slice(-10)} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
-						<CartesianGrid strokeDasharray="3 3" />
 						<XAxis dataKey="month" />
-						<YAxis yAxisId="left" label={{ value: "매출 (원)", angle: -90, position: "insideLeft" }}
-						       tickFormatter={(value) => value.toLocaleString()}/>
-						<YAxis yAxisId="right" orientation="right" label={{ value: "판매량 (개)", angle: -90, position: "insideRight" }} />
+						<YAxis yAxisId="left"
+						       tickFormatter={(value) => (Math.floor(value / 1000)).toLocaleString()} />
+						<YAxis yAxisId="right" orientation="right" />
 						<Tooltip formatter={(value) => value.toLocaleString()}/>
 						<Legend />
 						<Bar yAxisId="right" dataKey="totalQuantity" fill="#8884d8" barSize={30} name="판매 수량" />

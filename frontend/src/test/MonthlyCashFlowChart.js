@@ -31,6 +31,8 @@ const MonthlyCashFlowChart = () => {
 
 				const profitResponse = await getWeeklyProfit();
 				setProfitData(profitResponse);
+				console.log("Monthly CashFlow : ", response);
+				console.log("Profit Data: ", profitResponse);
 			} catch (err) {
 				console.error("데이터 로딩 실패:", err);
 			}
@@ -58,8 +60,8 @@ const MonthlyCashFlowChart = () => {
 	});
 
 	return (
-			<div style={{ width: '100%', height: 500 }}>
-				<ResponsiveContainer width="100%" height={400}>
+			<div style={{ width: '100%', height: 250 }}>
+				<ResponsiveContainer width="100%" height={250}>
 					<ComposedChart data={transformedCashFlowData}>
 						<defs>
 							<radialGradient id="scatterGradient" cx="50%" cy="50%" r="50%">
@@ -72,18 +74,18 @@ const MonthlyCashFlowChart = () => {
 						<XAxis dataKey="week" stroke="none" />
 						<YAxis
 								yAxisId="left"
-								label={{ value: "주차별 현금 흐름", angle: -90, position: "insideLeft" }}
+								label={{ angle: -90, position: "insideLeft" }}
 								domain={["auto", "auto"]}
 								stroke="none"
 						/>
 						<YAxis
 								yAxisId="right"
 								orientation="right"
-								label={{ value: "주차별 영업 이익", angle: -90, position: "insideRight" }}
+								label={{ angle: -90, position: "insideRight" }}
 								domain={["auto", "auto"]}
 								stroke="none"
 						/>
-						<ZAxis type="number" dataKey="operatingProfit" range={[5000,30000]} />
+						<ZAxis type="number" dataKey="operatingProfit" range={[1000,20000]} />
 						<Tooltip formatter={(value) => value.toLocaleString()}/>
 						<Legend />
 						{/* 현금 흐름 (Line) */}
@@ -92,6 +94,7 @@ const MonthlyCashFlowChart = () => {
 								type="monotone"
 								dataKey="cashFlow"
 								stroke="#929fb4"
+								strokeWidth="2"
 								name="현금 흐름"
 								dot={{ stroke: '#929fb4', strokeWidth: 2 }}
 						/>

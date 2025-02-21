@@ -30,7 +30,7 @@ body {
   height: 100%;
 }
 .basic-layout .main-layout .sidebar {
-  width: 270px;
+  width: 190px;
   background-color: #3c485a;
   color: #fff;
   padding: 0.4rem;
@@ -40,11 +40,10 @@ body {
 }
 .basic-layout .main-layout .sidebar .logo {
   padding: 1rem;
-  margin-bottom: 1rem;
   cursor: pointer;
 }
 .basic-layout .main-layout .sidebar .logo > img {
-  width: 200px;
+  width: 160px;
   height: auto;
 }
 .basic-layout .main-layout .sidebar .user-info {
@@ -123,7 +122,7 @@ body {
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  height: 60px;
+  height: 70px;
   padding: 0.5rem 2rem;
   background-color: #3c485a;
   color: #fff;

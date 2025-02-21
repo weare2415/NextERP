@@ -231,3 +231,14 @@ export const refundSaleOrder = async (transactionId) => {
     throw error;
   }
 };
+
+// 제품 거래 카운트
+export const getOrderCount = async () => {
+  try{
+    const response = await axiosInstance.get(`/api/order/order-counts`);
+    return response.data;
+  }catch(error){
+    console.error("Error counting orders:", error);
+    throw error;
+  }
+}

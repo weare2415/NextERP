@@ -14,6 +14,7 @@ import {
 import {getMonthlySales} from '../accounting/api/transactionApi';
 import MonthlyProductSalesPieChart from './MonthlyProductSalesPieChart';
 import MonthlyCashFlowChart from './MonthlyCashFlowChart';
+import OrderTreeMap from './OrderTreeMap';
 
 const lineChartData = [
 	{name: "Jan", uv: 4000, pv: 2400, amt: 2400},
@@ -109,6 +110,13 @@ const ExampleCharts = () => {
 					<h1>현금 흐름 및 영업이익 추이</h1>
 					<MonthlyCashFlowChart />
 				</div>
+
+				<div>-----------------------------------------------------</div>
+				<div>
+					<h1>거래 카운트 트리맵</h1>
+					<OrderTreeMap />
+				</div>
+
 
 			</div>
 	)

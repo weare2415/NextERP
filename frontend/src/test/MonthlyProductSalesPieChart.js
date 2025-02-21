@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {getMonthlyProductsSales} from '../accounting/api/transactionApi';
 import CustomActiveShapePieChart from './CustomActiveShapePieChart';
+import './MonthlyProductSalesPieChart.scss'
 
 const MonthlyProductSalesPieChart = () => {
 	const [monthlySales, setMonthlySales] = useState({});

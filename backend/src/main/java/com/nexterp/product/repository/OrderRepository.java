@@ -1,6 +1,7 @@
 package com.nexterp.product.repository;
 
 import com.nexterp.client.entity.RequestStatus;
+import com.nexterp.product.dto.ProductOrderCountDTO;
 import com.nexterp.product.entity.Order;
 
 import com.nexterp.product.entity.OrderType;
@@ -46,4 +47,13 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     // APPROVE 상태값에 SALE 혹은 PURCHASE 필터에 Clientcode로 검색하는 코드
     @Query("SELECT o FROM Order o WHERE o.requestStatus = 'APPROVED' AND o.orderType = :orderType AND o.client.clientCode LIKE %:clientCode%")
     Page<Order> findApprovedOrdersByTypeAndClientCode(@Param("clientCode") String clientCode, @Param("orderType") OrderType orderType, Pageable pageable);
+
+
+    //거래처별 거래 데이터 합계
+    @Query("SELECT new com.nexterp.product.dto.ProductOrderCountDTO(o.product.productName, SUM(o.orderCount)) " +
+        "FROM Order o " +
+        "GROUP BY o.product.productName " +
+        "ORDER BY SUM(o.orderCount) DESC")
+    List<ProductOrderCountDTO> getProductOrderCounts();
+
 }
