@@ -4,21 +4,19 @@ const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042", "#AF19FF"];
 
 const CustomActiveShapePieChart = ({ data }) => {
 	return (
-			<PieChart width={400} height={400}>
+			<PieChart width={450} height={300}>
 				<Pie
 						data={data}
-						cx={200}
-						cy={150}
+						cx={225}
+						cy={110}
 						labelLine={false}
-						outerRadius={150}
+						outerRadius={115}
 						fill="#8884d8"
 						dataKey="value"
 				>
 					{data.map((entry, index) => (
 							<Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
 					))}
-					<br/>
-					<br/>
 				</Pie>
 				<Tooltip formatter={(value) => `${value}%`} />
 				<Legend />

@@ -12,7 +12,7 @@ const colorData = [
 ];
 
 const GaugeChart = ({ avgProfitRate }) => {
-	const width = 300; // 차트 크기
+	const width =350; // 차트 크기
 	const totalValue = colorData.reduce((acc, cur) => acc + cur.value, 0);
 
 	// 📌 현재 영업이익률이 속한 색상 구간 찾기
@@ -52,12 +52,8 @@ const GaugeChart = ({ avgProfitRate }) => {
 	const pointerPos = getPointerPosition(avgProfitRate);
 
 	return (
-			<div style={{ textAlign: "center", position: "relative", width: "100%", height: "250px" }}>
+			<div style={{ textAlign: "center", position: "relative", height: "250px" }}>
 				<PieChart width={width} height={width / 2 + 30}>
-					{/* 왼쪽 최저값 (0%) */}
-					<text x={80} y={190} textAnchor="middle" fontSize="14px">0%</text>
-					{/* 오른쪽 최고값 (100%) */}
-					<text x={220} y={190} textAnchor="middle" fontSize="14px">100%</text>
 
 					{/* 게이지 바 (반원) */}
 					<Pie
@@ -82,8 +78,14 @@ const GaugeChart = ({ avgProfitRate }) => {
 							transform={`translate(${pointerPos.x}, ${pointerPos.y}) rotate(${avgProfitRate * 1.8 - 90})`}
 					/>
 					{/* 현재 영업이익률 표시 */}
-					<text x={pointerPos.x} y={pointerPos.y - 10} textAnchor="middle" fontSize="14px" fontWeight="bold">
-						{avgProfitRate.toFixed(1)}%
+					<text
+							x={width / 2 + 10} // 중앙 정렬
+							y={width / 2 -40} // 살짝 아래로 조정
+							textAnchor="middle"
+							fontSize="16px"
+							fontWeight="bold"
+							fill="#333"
+					>{avgProfitRate.toFixed(1)}%
 					</text>
 				</svg>
 			</div>

@@ -1,16 +1,19 @@
-import { BarChart, Bar, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, ComposedChart } from "recharts";
-import {useEffect, useState} from 'react';
+import {useEffect, useState} from "react";
 import {
 	getMonthlyProfit,
-	getMonthlySales
-} from '../accounting/api/transactionApi';
-import QuarterSalesPieChart from './QuaterSalesPieChart';
-import QuarterProfitGaugeChart from './QuaterProfitGaugeChart';
+	getMonthlySales,
+} from "../accounting/api/transactionApi";
+import QuarterSalesPieChart from "./QuaterSalesPieChart";
+import QuarterProfitGaugeChart from "./QuaterProfitGaugeChart";
 
 const QuarterProfitRateChart = () => {
 	const [salesData, setSalesData] = useState([]);
 	const [profitData, setProfitData] = useState([]);
-	const [quarterData, setQuarterData] = useState({ totalSales: 0, avgProfitRate: 0, lastQuarter: "N/A" });
+	const [quarterData, setQuarterData] = useState({
+		totalSales: 0,
+		avgProfitRate: 0,
+		lastQuarter: "N/A",
+	});
 	const [chartData, setChartData] = useState([]);
 
 	useEffect(() => {
@@ -36,9 +39,15 @@ const QuarterProfitRateChart = () => {
 		}
 	}, [salesData, profitData]);
 
-	// 📌 직전 분기의 매출액과 영업이익률 계산 및 차트 데이터 생성
+	// 직전 분기의 매출액과 영업이익률 계산 및 차트 데이터 생성
 	const getLastQuarterData = (sales, profit) => {
-		if (sales.length < 3 || profit.length < 3) return { totalSales: 0, avgProfitRate: 0, lastQuarter: "N/A", chartData: [] };
+		if (sales.length < 3 || profit.length < 3)
+			return {
+				totalSales: 0,
+				avgProfitRate: 0,
+				lastQuarter: "N/A",
+				chartData: []
+			};
 
 		const now = new Date();
 		const currentMonth = now.getMonth() + 1;
@@ -58,43 +67,100 @@ const QuarterProfitRateChart = () => {
 			lastQuarterNumber = "3";
 		}
 
-		// 📌 직전 분기 데이터 필터링 및 변환
-		const lastQuarterData = sales.filter(item => {
-			const month = parseInt(item.month.split('-')[1]);
-			return targetQuarter.includes(month);
-		}).map((item) => {
-			const matchingProfit = profit.find(p => p.month === item.month);
-			const salesAmount = item.totalAmount || 0;
-			const profitAmount = matchingProfit ? matchingProfit.operatingProfit || 0 : 0;
-			const profitRate = salesAmount > 0 ? ((profitAmount / salesAmount) * 100).toFixed(2) : 0;
+		// 직전 분기 데이터 필터링 및 변환
+		const lastQuarterData = sales
+				.filter((item) => {
+					const month = parseInt(item.month.split("-")[1]);
+					return targetQuarter.includes(month);
+				})
+				.map((item) => {
+					const matchingProfit = profit.find((p) => p.month === item.month);
+					const salesAmount = item.totalAmount || 0;
+					const profitAmount = matchingProfit ? matchingProfit.operatingProfit || 0 : 0;
+					const profitRate = salesAmount > 0 ? ((profitAmount / salesAmount) * 100).toFixed(2) : 0;
 
-			return {
-				month: item.month,
-				sales: salesAmount,
-				profit: profitAmount,
-				profitRate: parseFloat(profitRate)
-			};
-		});
+					return {
+						month: item.month,
+						sales: salesAmount,
+						profit: profitAmount,
+						profitRate: parseFloat(profitRate),
+					};
+				});
 
 		const totalSales = lastQuarterData.reduce((sum, item) => sum + item.sales, 0);
-		const avgProfitRate = totalSales > 0
-				? lastQuarterData.reduce((sum, item) => sum + item.profitRate, 0) / lastQuarterData.length
-				: 0;
+		const avgProfitRate =
+				totalSales > 0
+						? lastQuarterData.reduce((sum, item) => sum + item.profitRate, 0) /
+						lastQuarterData.length
+						: 0;
 
-		return { totalSales, avgProfitRate, lastQuarter: lastQuarterNumber, chartData: lastQuarterData };
+		return {
+			totalSales,
+			avgProfitRate,
+			lastQuarter: lastQuarterNumber,
+			chartData: lastQuarterData
+		};
 	};
 
 	return (
-			<div className="quarter-summary">
-				<h3>{quarterData.lastQuarter} 분기 매출액</h3>
-				<p>{quarterData.totalSales.toLocaleString()} 원</p>
-				<QuarterSalesPieChart chartData={chartData} />
+			<div className="quarter-summary"
+			     style={{display: "flex", flexDirection: "row"}}>
+				<div style={{position: "relative", width: "500px", height: "300px"}}>
+					<div style={{
+						display: "flex",
+						justifyContent: "center",
+						flexDirection: 'row'
+					}}>
+						<div>
+						<div style={{display: "flex",
+							justifyContent: "center",
+							alignItems: "center",
+							flexDirection: 'column',
+						}}>
+						<div style={{
+							fontSize: '1.5rem',
+							marginRight: '2rem'
+						}}>{quarterData.lastQuarter} 분기 매출액
+						</div>
+						<div
+								style={{marginRight: '2rem', fontSize:'1.5rem', color:'red'}}>{quarterData.totalSales.toLocaleString()} 원
+						</div>
+						</div>
+					</div>
+						<div style={{display: "flex",
+							justifyContent: "center",
+							alignItems: "center",
+							flexDirection: 'column',
+						}}>
+						<div style={{
+							fontSize: '1.5rem',
+						}}>{quarterData.lastQuarter} 분기 영업이익률
+						</div>
+						<div style={{
+							fontSize: '1.5rem',
+							color:'red',
+						}}>{quarterData.avgProfitRate.toFixed(2)}%</div>
+					</div>
+				</div>
+					{/* 매출 파이 차트 */}
+					<div style={{zIndex:2}}>
+					<QuarterSalesPieChart chartData={chartData}/>
+					</div>
 
-				<h3>{quarterData.lastQuarter} 분기 영업이익률</h3>
-				<p>{quarterData.avgProfitRate.toFixed(2)}%</p>
-				<QuarterProfitGaugeChart avgProfitRate={quarterData.avgProfitRate} />
-
-
+					{/* 게이지 차트*/}
+					<div
+							style={{
+								position: "absolute",
+								top: "70%",
+								left: "49%",
+								transform: "translate(-50%, -50%)",
+								zIndex: 1,
+								pointerEvents: "none",
+							}}
+					>
+						<QuarterProfitGaugeChart avgProfitRate={quarterData.avgProfitRate}/>
+					</div>
+				</div>
 			</div>
 	);
 };

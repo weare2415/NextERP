@@ -13,7 +13,7 @@
 
     // 사이드바 스타일
     .sidebar {
-      width: 270px;
+      width: 190px;
       background-color: $primary-color;
       color: #fff;
       padding: 0.4rem;
@@ -23,11 +23,10 @@
 
       .logo {
         padding: 1rem;
-        margin-bottom: 1rem;
         cursor: pointer;
         
         > img {
-          width: 200px;
+          width: 160px;
           height: auto;
         }
       }
@@ -125,7 +124,7 @@
       display: flex;
       justify-content: flex-end;
       align-items: center;
-      height: 60px;
+      height: 70px;
       padding: 0.5rem 2rem;
       background-color: $primary-color;
       color: #fff;

@@ -7,7 +7,7 @@ const renderCustomizedLabel = ({ percent }) => `${(percent * 100).toFixed(1)}%`;
 
 const QuarterSalesPieChart = ({ chartData }) => {
 	return (
-			<ResponsiveContainer width="100%" height={300}>
+			<ResponsiveContainer height={400}>
 				<PieChart>
 					<Pie
 							data={chartData}
@@ -15,8 +15,8 @@ const QuarterSalesPieChart = ({ chartData }) => {
 							cy="50%"
 							labelLine={false}
 							label={renderCustomizedLabel} // 📌 라벨을 월(month) + 금액으로 표시
-							outerRadius={100}
-							innerRadius={70}
+							outerRadius={140}
+							innerRadius={100}
 							fill="#8884d8"
 							dataKey="sales"
 							nameKey="month" // 📌 각 데이터의 `month` 필드를 라벨로 사용
@@ -25,7 +25,7 @@ const QuarterSalesPieChart = ({ chartData }) => {
 								<Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
 						))}
 					</Pie>
-					<Tooltip formatter={(value) => value.toLocaleString()}/>
+					<Tooltip wrapperStyle={{ zIndex: 4 }} formatter={(value) => value.toLocaleString()}/>
 					<Legend />
 				</PieChart>
 			</ResponsiveContainer>

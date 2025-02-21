@@ -8,6 +8,7 @@ import MonthlyProductSalesPieChart
 	from '../../test/MonthlyProductSalesPieChart';
 import QuarterProfitRateChart from '../../test/QuaterProfitRateChart';
 import MonthlyCashFlowChart from '../../test/MonthlyCashFlowChart';
+import OrderTreeMap from '../../test/OrderTreeMap';
 
 const MainPage = () => {
 	const {isLogin, moveToLogin} = useCustomLogin()
@@ -23,25 +24,33 @@ const MainPage = () => {
 				<div>
 					{isLogin ? (
 							<div style={{display: 'flex', flexDirection: 'column'}}>
+								{/*1열*/}
 								<div>
-									<div style={{
-										display: "flex",
-										justifyContent: "center",
-										alignItems: "flex-start",
-										marginLeft: '1rem',
-										height:'450px'
-									}}>
-										<div style={{width:'100%', marginRight: '1rem', marginTop:'-2rem'}}>
-											{/*<div style={{fontSize: '2rem'}}>영업이익</div>*/}
-											<div>
-											<MonthlyCashFlowChart />
-											</div>
+									<div>
+										<div style={{fontSize: '1.5rem', marginBottom: '1rem'}}>월별
+											매출 현황
 										</div>
-									</div>
-									<div style={{display: 'flex', flexDirection: 'row', alignItems: 'flex-start', justifyContent: 'flex-start', marginTop:'-5rem'}}>
+										<MonthlySalesChart/></div>
+
+									{/*2열*/}
+									<div style={{
+										display: 'flex',
+										flexDirection: 'row',
+										alignItems: 'flex-start',
+										justifyContent: 'space-between',
+										marginTop: '1rem'
+									}}>
 										<div>
-											<div style={{width:'100%', marginRight: '10rem', height:'450px'}}>
-												<div style={{fontSize: '1.5rem', marginBottom:'0.2rem'}}>월별 제품 판매</div>
+											<div style={{
+												width: '100%',
+												marginRight: '1rem',
+												height: '450px'
+											}}>
+												<div style={{
+													fontSize: '1.5rem',
+													marginBottom: '0.2rem'
+												}}>월별 제품 판매
+												</div>
 												<MonthlyProductSalesPieChart/></div>
 										</div>
 										<div>
@@ -50,16 +59,44 @@ const MainPage = () => {
 												<CalendarComponent/>
 											</div>
 										</div>
+										<div>
+											<div style={{
+												width: '450px',
+												height: '400px',
+												marginLeft: '3rem',
+												background: 'gray'
+											}}>챗봇
+											</div>
+										</div>
 									</div>
-									<div style={{display: 'flex', justifyContent: 'center', marginTop:'1rem'}}>
-										<div style={{width:'100%'}}>
-											<div style={{fontSize: '1rem', marginBottom:'1rem' }}>월별 매출 현황</div>
-											<MonthlySalesChart/></div>
 
-{/*										<div style={{width:'100%'}}>
-											<div style={{fontSize: '2rem', marginBottom:'1rem'}}>분기별 매출 및 영업이익</div>
-											<QuarterProfitRateChart/></div>*/}
+									{/*3열*/}
+									<div style={{
+										width: '100%',
+										marginRight: '1rem',
+										marginTop: '-3rem'
+									}}>
+										<div>
+											<MonthlyCashFlowChart/>
+										</div>
+									</div>
 
+									{/*4열*/}
+									<div style={{
+										display: 'flex',
+										flexDirection: 'row',
+										alignItems: 'flex-start',
+										justifyContent: 'space-between',
+										marginTop:'2rem'
+									}}>
+										<div>
+											<QuarterProfitRateChart/></div>
+										<div style={{width: '1000px'}}>
+											<div style={{fontSize: '1.5rem', marginBottom: '1rem'}}>
+												거래 제품 분포
+											</div>
+											<OrderTreeMap/>
+										</div>
 									</div>
 								</div>
 							</div>

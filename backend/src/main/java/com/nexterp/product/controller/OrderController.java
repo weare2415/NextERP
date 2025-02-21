@@ -16,7 +16,9 @@ package com.nexterp.product.controller;
 import com.nexterp.client.entity.RequestStatus;
 import com.nexterp.employee.entity.Employee;
 import com.nexterp.product.dto.OrderDTO;
+import com.nexterp.product.dto.ProductOrderCountDTO;
 import com.nexterp.product.entity.Order;
+import com.nexterp.product.repository.OrderRepository;
 import com.nexterp.product.service.OrderService;
 import com.nexterp.product.service.PurchaseService;
 import com.nexterp.product.service.SaleService;
@@ -30,6 +32,7 @@ import org.springframework.web.bind.annotation.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/order")
@@ -39,6 +42,7 @@ public class OrderController {
   private final OrderService orderService;
   private final PurchaseService purchaseService;
   private final SaleService saleService;
+  private final OrderRepository orderRepository;
 
   // 구매 처리 (초기 승인 요청)
   @PostMapping("/purchase/pending")
@@ -163,4 +167,9 @@ public class OrderController {
     return ResponseEntity.ok("Order refunded successfully.");
   }
 
+  // 제품 거래 카운트
+  @GetMapping("/order-counts")
+  public ResponseEntity<List<ProductOrderCountDTO>> getOrderCounts() {
+    return ResponseEntity.ok(orderRepository.getProductOrderCounts());
+  }
 }
