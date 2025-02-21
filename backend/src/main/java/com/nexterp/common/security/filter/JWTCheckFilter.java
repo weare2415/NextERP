@@ -30,11 +30,15 @@ public class JWTCheckFilter extends OncePerRequestFilter {
 
   @Override
   protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
-      throws ServletException, IOException {
+          throws ServletException, IOException {
 
     log.info("Executing JWTCheckFilter...");
 
     String authHeader = request.getHeader("Authorization");
+
+    // Authorization 헤더 확인 (로그 추가)
+    log.info("Authorization Header: {}", authHeader);
+
     String refreshToken = request.getHeader("Refresh-Token");
 
     if (authHeader == null || !authHeader.startsWith("Bearer ")) {
@@ -43,19 +47,19 @@ public class JWTCheckFilter extends OncePerRequestFilter {
       return;
     }
 
-    String accessToken = authHeader.substring(7);
+    String accessToken = authHeader.substring(7);  // "Bearer " 접두어 제거
 
     try {
-      // 1. Access Token 유효성 확인
+      // Access Token 유효성 확인
       Map<String, Object> claims = jwtUtil.validateToken(accessToken);
       log.info("Valid access token. Claims: {}", claims);
 
-      // Access Token이 유효하다면 SecurityContext 갱신
+      // SecurityContext 갱신
       setAuthentication(claims);
       filterChain.doFilter(request, response);
 
     } catch (CustomJWTException e) {
-      // 2. Access Token 만료 시 Refresh Token 사용
+      // Access Token 만료 시 Refresh Token을 사용
       if ("Expired".equals(e.getMessage())) {
         log.warn("Access token expired. Attempting to refresh...");
 
@@ -66,17 +70,14 @@ public class JWTCheckFilter extends OncePerRequestFilter {
         }
 
         try {
-          // Refresh Token 검증 및 새 Access Token 발급
           Map<String, Object> refreshClaims = jwtUtil.validateToken(refreshToken);
           log.info("Valid refresh token. Claims: {}", refreshClaims);
 
-          String newAccessToken = jwtUtil.generateToken(refreshClaims, 60); // 60분 유효
+          String newAccessToken = jwtUtil.generateToken(refreshClaims, 60);  // 새 Access Token 발급
           log.info("New access token generated.");
 
-          // 헤더에 새 Access Token 추가
           response.setHeader("Authorization", "Bearer " + newAccessToken);
 
-          // SecurityContext 갱신
           setAuthentication(refreshClaims);
 
           filterChain.doFilter(request, response);
@@ -91,6 +92,7 @@ public class JWTCheckFilter extends OncePerRequestFilter {
       }
     }
   }
+
 
   private void setAuthentication(Map<String, Object> claims) {
     String id = claims.get("id").toString();
@@ -121,6 +123,8 @@ public class JWTCheckFilter extends OncePerRequestFilter {
     // 필터를 적용하지 않을 경로 지정
     // 필터를 적용하지 않을 경로 지정
     List<String> excludedPaths = List.of("/api/member/login", "/api/member/refresh","/api/member/change-password", "/api/member/forgot-password");
+
+
 
     // `/api/employees/{id}` 경로 제외 (정규식 적용)
     if (path.matches("^/api/employees/\\d+$")) {  //  사원 ID가 숫자인 경우만 필터 제외
