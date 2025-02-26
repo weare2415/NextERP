@@ -8,6 +8,7 @@
     width: 100%;
     border-left: 1px solid #ddd;
     margin-top: 20px;
+    overflow-x: auto; // 모바일에서 가로 스크롤 가능하게 함
 
     .product-list-grid {
       width: 100%;
@@ -39,6 +40,7 @@
         }
       }
 
+      // 각 열의 고정된 너비
       th:nth-child(1),
       td:nth-child(1) {
         width: 8%;
@@ -63,59 +65,110 @@
       td:nth-child(6) {
         width: 15%;
       }
-    }
 
-    .product-name-btn {
-      font-weight: bold;
-      border: none;
-      color: #4a5568;
-      cursor: pointer;
-      padding: 10;
-      font-size: 16px;
-      border: 1px solid #ddd;
+      .product-name-btn {
+        font-weight: bold;
+        border: none;
+        color: #4a5568;
+        cursor: pointer;
+        padding: 10;
+        font-size: 16px;
+        border: 1px solid #ddd;
 
-      &:hover {
-        text-decoration: underline;
-        color: #2d3748;
+        &:hover {
+          text-decoration: underline;
+          color: #2d3748;
+        }
+      }
+
+      .product-table-detail-btn {
+        appearance: none;
+        background: none;
+        border: none;
+        color: #4a5568;
+        cursor: pointer;
+        padding: 0;
+        font-family: inherit;
+        font-weight: bolder;
+        font-size: 16px;
+        text-decoration: none;
+
+        &:hover {
+          text-decoration: underline;
+          color: #2d3748;
+        }
+      }
+
+      .sale-btn,
+      .purchase-btn {
+        padding: 6px 16px;
+        margin: 0 5px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 14px;
+      }
+
+      .sale-btn {
+        background-color: $secondary-color;
+        color: white;
+      }
+
+      .purchase-btn {
+        background-color: $secondary-color;
+        color: white;
       }
     }
+  }
 
-    .product-table-detail-btn {
-      appearance: none;
-      background: none;
+  // 모바일 반응형 스타일
+  @media (max-width: 768px) {
+    .product-table-section {
+      margin-top: 20px;
       border: none;
-      color: #4a5568;
-      cursor: pointer;
-      padding: 0;
-      font-family: inherit;
-      font-weight: bolder;
-      font-size: 16px;
-      text-decoration: none;
 
-      &:hover {
-        text-decoration: underline;
-        color: #2d3748;
+      .product-list-grid {
+        th,
+        td {
+          padding: 10px;
+          font-size: 0.9rem;
+        }
+
+        // 반응형에서 각 열 너비 조정
+        th:nth-child(1),
+        td:nth-child(1) {
+          display: none;
+        }
+        th:nth-child(2),
+        td:nth-child(2) {
+          width: 22%;
+        }
+        th:nth-child(3),
+        td:nth-child(3) {
+          width: 30%;
+        }
+        th:nth-child(4),
+        td:nth-child(4) {
+          width: 20%;
+        }
+        th:nth-child(5),
+        td:nth-child(5) {
+          width: 20%;
+        }
+        th:nth-child(6),
+        td:nth-child(6) {
+          width: 30%;
+        }
       }
     }
+  }
 
-    .sale-btn,
-    .purchase-btn {
-      padding: 6px 16px;
-      margin: 0 5px;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-      font-size: 14px;
-    }
-
-    .sale-btn {
-      background-color: $secondary-color;
-      color: white;
-    }
-
-    .purchase-btn {
-      background-color: $secondary-color;
-      color: white;
+  // 더 작은 화면에서 스크롤을 허용
+  @media (max-width: 480px) {
+    .product-table-section {
+      .product-list-grid {
+        overflow-x: scroll; /* 더 작은 화면에서 가로 스크롤 허용 */
+      }
     }
   }
 }

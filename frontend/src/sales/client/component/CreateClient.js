@@ -35,7 +35,9 @@ const CreateClient = ({ onClose, onSuccess }) => {
     const fetchEmployeeId = async () => {
       if (name) {
         try {
-          const employees = await getEmployeeByName(name);
+          const response = await getEmployeeByName(name);
+          const employees = response.content;
+          console.log("조회된 사원 리스트:", employees);
           if (employees.length > 0) {
             setClientData((prev) => ({
               ...prev,
@@ -51,14 +53,46 @@ const CreateClient = ({ onClose, onSuccess }) => {
     fetchEmployeeId();
   }, [name]); // name이 변경될 때마다 실행
 
+  // Daum 우편번호 검색 API 스크립트 로드
+  useEffect(() => {
+    const script = document.createElement("script");
+    script.src = "//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js";
+    script.async = true;
+    document.body.appendChild(script);
+
+    return () => {
+      document.body.removeChild(script);
+    };
+  }, []);
+
+  // 우편번호 검색 함수
+  const searchAddress = () => {
+    new window.daum.Postcode({
+      oncomplete: function(data) {
+        // 선택시 입력값 세팅
+        setClientData(prev => ({
+          ...prev,
+          zipCode: data.zonecode, // 우편번호 설정
+          clientAddress: data.address, // 주소 설정
+          clientDetailedAddress: "" // 상세주소 초기화
+        }));
+      }
+    }).open();
+  };
+
   // 거래처 등록 API 호출
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!clientData.employeeId) {
+      alert("담당자 정보가 유효하지 않습니다.");
+      return; // employeeId가 없으면 등록을 진행하지 않음
+    }
     try {
       const newClient = await createClient(clientData);
       alert("거래처가 성공적으로 등록되었습니다.");
       onSuccess(newClient); // 새로 생성된 거래처 데이터를 부모 컴포넌트로 전달
       onClose(); // 폼 닫기
+      window.location.reload();
     } catch (error) {
       console.error("거래처 등록 중 오류 발생:", error);
       alert("거래처 등록에 실패했습니다.");
@@ -127,8 +161,9 @@ const CreateClient = ({ onClose, onSuccess }) => {
               value={clientData.zipCode}
               onChange={handleChange}
               required
+              readOnly
             />
-            <button type="button">우편번호 찾기</button>
+            <button type="button" onClick={searchAddress}>우편번호 찾기</button>
           </div>
 
           <div className="form-group">
@@ -139,6 +174,7 @@ const CreateClient = ({ onClose, onSuccess }) => {
               value={clientData.clientAddress}
               onChange={handleChange}
               required
+              readOnly
             />
           </div>
 

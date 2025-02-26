@@ -36,3 +36,21 @@
     padding: 5px;
   }
 }
+
+.pie-chart-wrapper,
+.recharts-legend {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: 5px;
+}
+
+/* 반응형 스타일 추가 */
+@media (max-width: 768px) {
+  .pie-chart-wrapper,
+  .recharts-legend {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}

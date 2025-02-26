@@ -53,7 +53,7 @@
           opacity: 0.8;
         }
       }
-    }//product-create-header end
+    } //product-create-header end
 
     .product-create-grid {
       padding: 20px;
@@ -81,8 +81,8 @@
           margin: 0;
         }
 
-        input, 
-        select, 
+        input,
+        select,
         textarea {
           flex: 1;
           padding: 8px 10px;
@@ -138,6 +138,59 @@
 
           &:hover {
             background-color: darken($primary-color, 10%);
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .modal-overlay {
+    .product-create-form {
+      width: 95%;
+      max-width: 95%;
+      height: auto;
+      max-height: 90vh;
+
+      .product-create-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 0;
+        padding: 15px;
+
+        .form-group {
+          display: flex;
+          flex-direction: row;
+          width: 100%;
+          margin-bottom: 0;
+
+          label {
+            width: 110px;
+            min-width: 110px;
+            font-size: 13px;
+            padding: 8px 10px;
+          }
+
+          input,
+          select,
+          textarea {
+            flex: 1;
+            height: 35px;
+            font-size: 13px;
+            padding: 8px;
+          }
+        }
+
+        .product-create-buttons {
+          display: flex;
+          justify-content: center;
+          margin-top: 15px;
+
+          button {
+            width: 80px;
+            height: 35px;
+            font-size: 13px;
           }
         }
       }

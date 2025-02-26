@@ -13,7 +13,7 @@ const EmployeePage = () => {
   // ✅ 검색 실행 (검색 시 페이지를 0으로 초기화)
   const handleSearch = () => {
     if (listEmployeeRef.current) {
-      listEmployeeRef.current.handleSearch(searchTerm, searchCategory, 0);
+      listEmployeeRef.current.handleSearch(searchTerm, searchCategory, 0, true);
     }
   };
 

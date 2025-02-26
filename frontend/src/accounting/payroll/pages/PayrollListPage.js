@@ -42,7 +42,7 @@ const PayrollListPage = () => {
     <BasicLayout>
       <div className="payroll-page-container">
         <div className="payroll-page-header">
-          <h1>급여 정보 관리</h1>
+          <h1>급여 관리</h1>
           <div className="header-right">
             <PayrollFilter setPayrolls={setPayrolls} />
             {/* 신규 급여 정보 생성을 위한 모달 호출 버튼 */}
@@ -76,10 +76,8 @@ const PayrollListPage = () => {
           <EmployeeSalaryModal
             onClose={() => setIsCreateModalOpen(false)}
             onSuccess={() => {
-              // 저장 후 데이터 재조회
-              fetchAllEmployeeSalaries()
-                .then((data) => setPayrolls(data))
-                .catch((error) => console.error("급여 정보 로딩 실패:", error));
+              // 저장 후 현재 페이지의 데이터 재조회
+              fetchEmployeeSal(page);
             }}
           />
         )}

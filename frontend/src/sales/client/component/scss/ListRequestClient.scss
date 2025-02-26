@@ -6,7 +6,6 @@
   .request-client-table-section {
     background-color: white;
     width: 100%;
-    margin-top: 10px;
     border-left: 1px solid #ddd;
 
     .request-client-list {
@@ -83,6 +82,48 @@
           text-decoration: underline;
           color: #2d3748;
         }
+      }
+    }
+  }
+}
+
+// 반응형 디자인 (모바일, 태블릿 등)
+@media (max-width: 768px) {
+  .request-client-table-section {
+    margin-top: 10px;
+    border: none;
+
+    .request-client-list {
+      table-layout: auto; /* 열 너비를 자동으로 조정 */
+
+      th,
+      td {
+        padding: 10px;
+      }
+
+      th:nth-child(1),
+      td:nth-child(1) {
+        display: none;
+      }
+      th:nth-child(2),
+      td:nth-child(2) {
+        width: 15%;
+      }
+      th:nth-child(3),
+      td:nth-child(3) {
+        display: none;
+      }
+      th:nth-child(4),
+      td:nth-child(4) {
+        width: 30%;
+      }
+      th:nth-child(5),
+      td:nth-child(5) {
+        display: none;
+      }
+      th:nth-child(6),
+      td:nth-child(6) {
+        width: 20% !important;
       }
     }
   }

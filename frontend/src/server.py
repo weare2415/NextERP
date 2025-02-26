@@ -100,7 +100,64 @@ def handle_message(data):
     # ✅ sender_id에게는 메시지를 보내지 않음 (self-message 차단)
 
 
+@socketio.on("messagesRead")
+def handle_messages_read(data):
+    try:
+        print(f"🚨 [DEBUG] messagesRead 이벤트 핸들러 실행됨! 수신 데이터: {data}")
 
+        if not data:
+            print("❌ [Flask] messagesRead 이벤트 수신 실패: 데이터가 없음")
+            return
+        
+        user_id = data.get("userId")
+        chat_room_id = data.get("chatRoomId")
+        count = data.get("count", 0)
+
+        print(f"👀 [Flask] messagesRead 이벤트 수신: user_id={user_id}, chat_room_id={chat_room_id}, count={count}")
+
+        if not user_id or not chat_room_id:
+            print(f"❌ [Flask] messagesRead 데이터가 유효하지 않음: {data}")
+            return
+
+        print(f"📡 [Flask] messagesRead WebSocket 브로드캐스트 실행!")
+
+        # ✅ WebSocket 메시지를 모든 클라이언트에게 전송 (broadcast 대신 `include_self=False` 사용)
+        socketio.emit("messagesRead", {
+            "userId": user_id,
+            "chatRoomId": chat_room_id,
+            "count": count
+        }, include_self=False)
+
+        socketio.sleep(0)  # 🚀 WebSocket 이벤트 강제 실행
+        print(f"✅ [Flask] messagesRead 이벤트 브로드캐스트 완료!")
+
+        print(f"📡 [Flask] updateUnreadMessages 이벤트 브로드캐스트 실행!!")
+
+        # ✅ `updateUnreadMessages`도 같은 방식으로 수정
+        socketio.emit("updateUnreadMessages", include_self=False)
+
+        socketio.sleep(0)  # 🚀 WebSocket 이벤트 강제 실행
+        print(f"✅ [Flask] updateUnreadMessages 이벤트 브로드캐스트 완료!!")
+
+    except Exception as e:
+        print(f"❌ [Flask] messagesRead 처리 중 오류 발생: {str(e)}")
+
+
+@socketio.on("chat_left")  # leave_chat을 chat_left로 변경
+def handle_chat_left(data):  # 함수 이름도 일관성 있게 변경
+    print(f"🎯 chat_left 이벤트 수신")
+    chat_room_id = data.get("chatRoomId")
+    user_id = data.get("userId")
+    
+    print(f"👋 사용자 {user_id}가 채팅방 {chat_room_id}에서 나감")
+    
+    # 모든 클라이언트에게 채팅방 나가기 이벤트를 브로드캐스트
+    socketio.emit("chat_left", {
+        "chatRoomId": chat_room_id,
+        "userId": user_id
+    })
+    
+    print(f"✅ 채팅방 나가기 이벤트 브로드캐스트 완료")
 
 # 서버 시작 시 기존 WebSocket 연결 정보 초기화
 def clear_connected_users():

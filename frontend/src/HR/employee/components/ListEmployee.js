@@ -17,7 +17,7 @@ import EmployeeDetail from "./EmployeeDetail";
 import "../scss/ListEmployee.scss";
 import Pagination from "../../../common/component/Pagination";
 
-const ListEmployee = forwardRef(({ searchTerm }, ref) => {
+const ListEmployee = forwardRef(({ searchTerm, searchCategory }, ref) => {
   const [employees, setEmployees] = useState([]); // 직원 목록
   const [departments, setDepartments] = useState([]); // 부서 목록
   const [positions, setPositions] = useState([]); // 직급 목록
@@ -156,7 +156,11 @@ const ListEmployee = forwardRef(({ searchTerm }, ref) => {
 
   // ✅ 페이지 변경 시 직원 데이터 다시 불러오기
   useEffect(() => {
-    fetchEmployees(currentPage);
+    if (searchTerm) {
+      handleSearch(searchTerm, searchCategory, currentPage);
+    } else {
+      fetchEmployees(currentPage);
+    }
   }, [currentPage]);
 
   return (

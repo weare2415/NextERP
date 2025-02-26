@@ -113,20 +113,23 @@ const AnnouncementDetail = ({ announcement, onClose, onUpdateTrigger }) => {
 
   return (
     <div className="modal-overlay" onClick={onClose}>
-      <div className="announcement-detail-form" onClick={(e) => e.stopPropagation()}>
+      <div
+        className="announcement-detail-form"
+        onClick={(e) => e.stopPropagation()}
+      >
         <div className="announcement-detail-header">
           <h2>공지사항 상세</h2>
           <button className="close-button" onClick={onClose}>
             X
           </button>
         </div>
-  
+
         <form className="announcement-detail-grid">
           <div className="form-group">
             <label>공지 ID</label>
             <input type="text" value={announcement.id} readOnly />
           </div>
-  
+
           <div className="form-group">
             <label>작성자</label>
             <input
@@ -135,29 +138,33 @@ const AnnouncementDetail = ({ announcement, onClose, onUpdateTrigger }) => {
               readOnly
             />
           </div>
-  
+
           <div className="form-group">
             <label>부서</label>
             <input
               type="text"
-              value={announcement.departmentId
-                ? departmentMap[announcement.departmentId] || "알 수 없음"
-                : "전체"}
+              value={
+                announcement.departmentId
+                  ? departmentMap[announcement.departmentId] || "알 수 없음"
+                  : "전체"
+              }
               readOnly
             />
           </div>
-  
+
           <div className="form-group">
             <label>직위</label>
             <input
               type="text"
-              value={announcement.positionId
-                ? positionMap[announcement.positionId] || "N/A"
-                : "N/A"}
+              value={
+                announcement.positionId
+                  ? positionMap[announcement.positionId] || "N/A"
+                  : "N/A"
+              }
               readOnly
             />
           </div>
-  
+
           <div className="form-group">
             <label>작성일시</label>
             <input
@@ -166,14 +173,16 @@ const AnnouncementDetail = ({ announcement, onClose, onUpdateTrigger }) => {
               readOnly
             />
           </div>
-  
+
           <div className="form-group">
             <label>수정일시</label>
             <input
               type="text"
-              value={announcement.updatedAt
-                ? new Date(announcement.updatedAt).toLocaleString()
-                : "-"}
+              value={
+                announcement.updatedAt
+                  ? new Date(announcement.updatedAt).toLocaleString()
+                  : "-"
+              }
               readOnly
             />
           </div>
@@ -202,15 +211,24 @@ const AnnouncementDetail = ({ announcement, onClose, onUpdateTrigger }) => {
             <>
               <div className="form-group">
                 <label>제목</label>
-                <input type="text" value={announcement.title} name="title" readOnly />
+                <input
+                  type="text"
+                  value={announcement.title}
+                  name="title"
+                  readOnly
+                />
               </div>
               <div className="form-group">
                 <label>내용</label>
-                <textarea name="content" value={announcement.content} readOnly />
+                <textarea
+                  name="content"
+                  value={announcement.content}
+                  readOnly
+                />
               </div>
             </>
           )}
-  
+
           <div className="announcement-detail-buttons">
             {isAuthor &&
               (isEditing ? (
@@ -227,7 +245,10 @@ const AnnouncementDetail = ({ announcement, onClose, onUpdateTrigger }) => {
                 </>
               ) : (
                 <>
-                  <button className="edit-btn" onClick={() => setIsEditing(true)}>
+                  <button
+                    className="edit-btn"
+                    onClick={() => setIsEditing(true)}
+                  >
                     수정
                   </button>
                   <button className="delete-btn" onClick={handleDelete}>

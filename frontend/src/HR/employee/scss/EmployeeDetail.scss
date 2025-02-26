@@ -191,3 +191,107 @@
     }
   }
 }
+
+// 반응형 스타일 추가
+@media (max-width: 768px) {
+  .modal-overlay {
+    .employee-detail-modal {
+      width: 95%;
+      max-width: 95%;
+      height: auto;
+      max-height: 90vh;
+
+      .employee-detail-modal-header {
+        padding: 12px 15px;
+
+        h2 {
+          font-size: 16px;
+        }
+
+        .close-button {
+          font-size: 18px;
+        }
+      }
+
+      .employee-detail-form {
+        padding: 15px;
+
+        .form-grid {
+          display: grid;
+          grid-template-columns: 1fr;
+          gap: 5px;
+
+          .form-group {
+            flex-direction: row;
+            width: 100%;
+
+            label {
+              width: 120px;
+              min-width: 120px;
+              font-size: 13px;
+              padding: 8px 10px;
+            }
+
+            input,
+            select,
+            textarea {
+              flex: 1;
+              height: 35px;
+              font-size: 13px;
+              padding: 8px;
+            }
+
+            &:has(input[name="zipCode"]) {
+              flex-direction: column;
+              align-items: flex-start;
+
+              input {
+                width: 100%;
+              }
+
+              button {
+                width: 100%;
+                margin-left: 0;
+                margin-top: 5px;
+              }
+            }
+
+            &:has(input[name="clientAddress"]),
+            &:has(input[name="clientDetailedAddress"]),
+            &:has(input[name="clientAccountNumber"]),
+            &:has(textarea[name="memo"]) {
+              grid-column: 1 / -1;
+            }
+
+            &:has(textarea[name="memo"]) {
+              flex-direction: column;
+              align-items: flex-start;
+
+              label {
+                height: auto;
+                line-height: normal;
+              }
+
+              textarea {
+                height: 80px;
+              }
+            }
+          }
+        }
+      }
+
+      .employee-detail-button-container {
+        flex-direction: column;
+        align-items: center;
+        padding: 10px;
+        gap: 8px;
+
+        button {
+          width: 100%;
+          height: 38px;
+          font-size: 13px;
+        }
+      }
+    }
+  }
+}

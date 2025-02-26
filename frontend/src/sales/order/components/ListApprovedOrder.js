@@ -3,16 +3,7 @@ import useEmployeeNames from "../../../common/hooks/useEmployeeNames";
 import "./scss/ListApprovedOrder.scss";
 
 const ListApprovedOrder = ({ mergedOrders, clientNames, productNames }) => {
-  const [selectedOrders, setSelectedOrders] = useState([]);
   const employeeName = useEmployeeNames(mergedOrders, "employeeId");
-
-  const handleCheckboxChange = (orderId) => {
-    setSelectedOrders((prevState) =>
-      prevState.includes(orderId)
-        ? prevState.filter((id) => id !== orderId)
-        : [...prevState, orderId]
-    );
-  };
 
   const getOrderTypeLabel = (orderType) => {
     return orderType === "PURCHASE"
@@ -37,22 +28,6 @@ const ListApprovedOrder = ({ mergedOrders, clientNames, productNames }) => {
         <table className="order-list-grid">
           <thead>
             <tr>
-              <th>
-                <input
-                  type="checkbox"
-                  onChange={(e) => {
-                    setSelectedOrders(
-                      e.target.checked
-                        ? mergedOrders.map((order) => order.id)
-                        : []
-                    );
-                  }}
-                  checked={
-                    mergedOrders.length > 0 &&
-                    selectedOrders.length === mergedOrders.length
-                  }
-                />
-              </th>
               <th>거래 ID</th>
               <th>구분</th>
               <th>거래처명</th>
@@ -67,13 +42,6 @@ const ListApprovedOrder = ({ mergedOrders, clientNames, productNames }) => {
             {mergedOrders.length > 0 ? (
               mergedOrders.map((order) => (
                 <tr key={order.id}>
-                  <td>
-                    <input
-                      type="checkbox"
-                      checked={selectedOrders.includes(order.id)}
-                      onChange={() => handleCheckboxChange(order.id)}
-                    />
-                  </td>
                   <td>{order.transactionId}</td>
                   <td>{getOrderTypeLabel(order.orderType)}</td>
                   <td>{clientNames?.[order.clientCode] || "Loading..."}</td>
@@ -86,7 +54,7 @@ const ListApprovedOrder = ({ mergedOrders, clientNames, productNames }) => {
               ))
             ) : (
               <tr>
-                <td colSpan="9" style={{ textAlign: "center" }}>
+                <td colSpan="8" style={{ textAlign: "center" }}>
                   주문 내역이 없습니다.
                 </td>
               </tr>

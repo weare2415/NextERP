@@ -32,11 +32,13 @@ def get_employee_info():
         data = request.json
         employee_id = data.get("employeeId")  # 로그인한 사원 ID
         department_id = data.get("departmentId")  # 로그인한 사원의 부서 ID
+        query_employee_id = data.get("queryEmployeeId", employee_id)  # 조회할 직원 ID (기본값은 본인)
 
         # ✅ employee_id와 department_id를 정수형(int)으로 변환
         try:
             employee_id = int(employee_id)
             department_id = int(department_id)
+            query_employee_id = int(query_employee_id)
         except ValueError:
             return jsonify({"response": "❌ 직원 ID 또는 부서 ID가 올바르지 않습니다."}), 400
 
@@ -58,18 +60,22 @@ def get_employee_info():
         # ✅ 인사팀(부서 ID = 3)일 경우 전체 직원 조회 가능
         if department_id == 3:
             employee_info = merged_df.to_dict(orient="records")
-        else:
-            # ✅ 일반 직원은 본인 정보만 조회 가능
+            return jsonify({"response": employee_info})
+
+        # ✅ 일반 직원이 본인 정보를 조회하는 경우
+        if query_employee_id == employee_id:
             personal_info = merged_df[merged_df["employee_id"] == employee_id]
             if personal_info.empty:
                 return jsonify({"response": "❌ 본인의 사원 정보를 찾을 수 없습니다."})
-            employee_info = personal_info.to_dict(orient="records")
+            return jsonify({"response": personal_info.to_dict(orient="records")})
 
-        return jsonify({"response": employee_info})
+        # ✅ 일반 직원이 다른 직원 정보를 요청하는 경우 차단
+        return jsonify({"response": "❌ 다른 사원의 정보를 조회할 권한이 없습니다."})
 
     except Exception as e:
         print(f"❌ 서버 오류 발생: {str(e)}")
         return jsonify({"response": "🚨 서버 오류가 발생했습니다. 관리자에게 문의하세요."}), 500
+
 
 
 # ------------------ ✅ 부서 정보 조회 ------------------ #
@@ -134,7 +140,7 @@ def get_attendance():
     if df.empty:
         return jsonify({"response": "❌ 근태 데이터를 가져올 수 없습니다."})
 
-    # ✅ 인사팀(3)만 전체 근태 정보 조회 가능
+
     if department_id == 3:
         return jsonify({"response": df.to_dict(orient="records")})
     
@@ -193,6 +199,137 @@ def get_announcements():
        
 
 
+#영업팀 /제품 
+# 영업팀 /제품 /거래내역
+@app.route('/chat/sales', methods=['POST'])
+def chatbot_sales_response():
+    """📌 영업팀 전용 챗봇 요청 처리 (제품 재고 + 거래처 정보 + 거래 내역)"""
+    try:
+        data = request.json
+        print(f"🔍 Flask에서 받은 요청 데이터: {data}")
+
+        user_query = data.get("message", "").strip()
+        employee_id = data.get("employeeId")
+        department_id = data.get("departmentId")
+
+        if not user_query or not employee_id or department_id is None:
+            return jsonify({"response": "❌ 메시지, 직원 ID, 부서 ID 정보를 모두 입력하세요."})
+
+        if department_id != 1:
+            return jsonify({"response": "❌ 영업팀 직원만 이 정보를 조회할 수 있습니다."}), 403
+
+        # ✅ 제품 재고 조회 (영업팀만 가능)
+        if any(keyword in user_query for keyword in ["제품", "재고", "가격"]):
+            inventory_df = db.show_data("product")
+            print(f"🔍 [DEBUG] product 테이블 조회 결과:\n{inventory_df}")
+
+            if inventory_df.empty:
+                inventory_info = "📢 현재 재고 정보가 없습니다."
+            else:
+                inventory_list = [
+                    f"📌 {row['product_name']} - 남은 재고: {row['stock']}개 (규격: {row['specifications']})\n"
+                    f"   💰 매입가: {row['purchase_price']}원 | 판매가: {row['sale_price']}원"
+                    for _, row in inventory_df.iterrows()
+                ]
+                inventory_info = "\n".join(inventory_list)
+
+        else:
+            inventory_info = "📢 제품 관련 요청이 없습니다."
+
+        # ✅ 거래처 정보 조회 (영업팀만 가능)
+        if any(keyword in user_query for keyword in ["거래처", "거래처 목록", "거래처 정보"]):
+            client_df = db.show_data("client")
+    
+            print(f"🔍 [DEBUG] client 테이블 컬럼명: {client_df.columns.tolist()}")
+
+            if client_df.empty:
+                client_info = "📢 현재 등록된 거래처가 없습니다."
+            else:
+                client_list = [
+                    f"🏢 거래처명: {row['client_name']} (코드: {row['client_code']})\n"
+                    f"   📞 연락처: {row['client_phone']}"
+                    for _, row in client_df.iterrows()
+                ]
+                client_info = "\n".join(client_list)
+
+            print(f"🔍 [DEBUG] client 정보 결과:\n{client_info}")
+
+        else:
+            client_info = "📢 거래처 관련 요청이 없습니다."
+
+        # ✅ 거래 내역 조회 (영업팀만 가능)
+        if any(keyword in user_query for keyword in ["거래 내역", "판매 내역", "구매 내역"]):
+            transactions_df = db.show_data("transactions")
+            client_df = db.show_data("client")
+
+            if transactions_df.empty or client_df.empty:
+                transaction_info = "📢 현재 등록된 거래 내역이 없습니다."
+            else:
+                # 거래처 정보와 결합하여 거래 내역 조회
+                merged_df = transactions_df.merge(client_df, left_on="client_code", right_on="client_code", suffixes=("_transaction", "_client"))
+
+                # ✅ 판매 및 구매 내역 구분
+                sales_transactions = merged_df[merged_df["type"] == "SALE"]
+                purchase_transactions = merged_df[merged_df["type"] == "PURCHASE"]
+
+                sales_list = [
+                    f"🏢 거래처명: {row['client_name']} (코드: {row['client_code']})\n"
+                    f"   💰 판매 금액: {row['amount']}원\n"
+                    f"   📅 거래 날짜: {row['date']} | 담당자: {row['employee_id']}"
+                    for _, row in sales_transactions.iterrows()
+                ]
+
+                purchase_list = [
+                    f"🏢 거래처명: {row['client_name']} (코드: {row['client_code']})\n"
+                    f"   💰 구매 금액: {row['amount']}원\n"
+                    f"   📅 거래 날짜: {row['date']} | 담당자: {row['employee_id']}"
+                    for _, row in purchase_transactions.iterrows()
+                ]
+
+                transaction_info = "**✅ 판매 내역:**\n" + "\n\n".join(sales_list) if sales_list else "📌 판매 내역이 없습니다."
+                transaction_info += "\n\n**✅ 구매 내역:**\n" + "\n\n".join(purchase_list) if purchase_list else "\n📌 구매 내역이 없습니다."
+
+            print(f"🔍 [DEBUG] 거래 내역 결과:\n{transaction_info}")
+
+        else:
+            transaction_info = "📢 거래 내역 관련 요청이 없습니다."
+
+        # ✅ OpenAI 프롬프트 생성
+        prompt = f"""
+        너는 기업 내부 시스템의 챗봇이야. 사용자가 제품 재고, 거래처 정보 또는 거래 내역을 요청했어.
+
+        🏢 현재 제품 재고 현황:
+        {inventory_info}
+
+        📌 현재 등록된 거래처 목록:
+        {client_info}
+
+        💳 거래 내역:
+        {transaction_info}
+
+        사용자가 '{user_query}'라고 입력했어.  
+        제품 가격을 물어보면 정보를 제공하고, 특정 제품을 검색할 수 있도록 안내해줘.  
+        거래처 정보를 요청하면 거래처 목록을 제공하고 특정 거래처 검색 방법을 안내해줘.  
+        거래 내역을 요청하면 판매 및 구매 내역을 구분하여 보여줘.
+        """
+
+        # ✅ OpenAI 호출
+        chat = ChatOpenAI(temperature=0.3, model="gpt-4o-mini")
+        response = chat.invoke(prompt)
+
+        # ✅ 응답이 JSON 직렬화 가능하도록 변환
+        final_response = response.content if hasattr(response, "content") else "📢 요청한 정보를 가져올 수 없습니다."
+
+        print(f"📢 Flask에서 응답할 데이터: {final_response}")
+
+        return jsonify({"response": final_response})
+
+    except Exception as e:
+        print(f"❌ 서버 오류 발생: {str(e)}")
+        return jsonify({"response": "🚨 서버 오류가 발생했습니다. 관리자에게 문의하세요."}), 500
+
+
+
 
 
 
@@ -213,7 +350,7 @@ def chatbot_response():
         if not user_query or not employee_id or department_id is None:
             return jsonify({"response": "❌ 메시지, 직원 ID, 부서 ID 정보를 모두 입력하세요."})
 
-        # ✅ employee_id와 department_id를 정수형(int)으로 변환
+        #  employee_id와 department_id를 정수형(int)으로 변환
         try:
             employee_id = int(employee_id)
             department_id = int(department_id)
@@ -222,7 +359,7 @@ def chatbot_response():
 
         print(f"📌 로그인한 사용자 부서 ID: {department_id}")
 
-        # ✅ 부서 ID 매핑
+        #  부서 ID 매핑
         DEPARTMENT_MAPPING = {
             1: "영업팀",
             2: "회계팀",
@@ -230,13 +367,13 @@ def chatbot_response():
         }
         department_name = DEPARTMENT_MAPPING.get(department_id, "알 수 없는 부서")
 
-        # ✅ 사원 정보 조회 (현재 로그인한 사용자만 조회)
+        #  사원 정보 조회 (현재 로그인한 사용자만 조회)
         employee_df = db.show_data("employee")
 
         if employee_df.empty:
             employee_info = "📢 현재 확인할 수 있는 사원 정보가 없습니다."
         else:
-            # ✅ 요청한 사원의 ID가 로그인한 사용자 ID와 다르면 조회 불가
+            #  요청한 사원의 ID가 로그인한 사용자 ID와 다르면 조회 불가
             if "사원" in user_query and str(employee_id) not in user_query:
                 return jsonify({"response": "다른 사원의 정보를 조회할 권한이 없습니다."})
             personal_employee = employee_df[employee_df["employee_id"] == employee_id]
@@ -245,7 +382,7 @@ def chatbot_response():
             else:
                 employee_info = personal_employee.to_dict(orient="records")[0]  # JSON 형태로 변환
 
-        # ✅ OpenAI 프롬프트 생성 (LangChain 활용)
+        # OpenAI 프롬프트 생성 (LangChain 활용)
         if "사원" in user_query or "내 정보" in user_query:
             prompt = f"""
             너는 기업 내부 시스템의 챗봇이야. 사용자가 자신의 사원 정보를 요청했어.
@@ -345,6 +482,77 @@ def chatbot_response():
 
             그리고 추가 질문으로 '공지사항도 확인하시겠어요?' 라고 물어봐.
             """
+
+
+        #  거래처 정보 요청 시 처리 (영업팀만 가능)
+        elif any(keyword in user_query for keyword in ["거래처", "거래처 목록", "거래처 정보"]):
+            print(f"🔍 [DEBUG] 거래처 관련 요청 감지됨: {user_query}")
+            print(f"🔍 [DEBUG] 로그인한 사용자의 부서 ID: {department_id}")
+
+            if department_id != 1:
+                print("❌ [ERROR] 영업팀이 아닌 사용자가 거래처 정보를 조회하려 했음")
+                return jsonify({"response": "❌ 거래처 정보는 영업팀 직원만 조회할 수 있습니다."})
+
+            print("✅ [SUCCESS] 영업팀 사용자가 거래처 정보를 조회하려 함, chatbot_sales_response() 실행")
+            return chatbot_sales_response()  # 🚀 실행
+
+
+        elif any(keyword in user_query for keyword in ["제품", "재고", "주문", "판매", "구매", "가격"]):
+            print(f"🔍 [DEBUG] 제품 관련 요청 감지됨: {user_query}")
+            print(f"🔍 [DEBUG] 로그인한 사용자의 부서 ID: {department_id}")
+            
+
+    #  영업팀 직원만 제품 정보 조회 가능
+            if department_id == 1:
+                print("✅ [SUCCESS] 영업팀 사용자가 제품 정보를 조회하려 함, chatbot_sales_response() 실행")
+                return chatbot_sales_response()  # 🚀 실행
+
+            print("❌ [ERROR] 영업팀이 아닌 사용자가 제품 정보를 조회하려 했음")
+            return jsonify({
+                "response": "❌ 영업팀이 아닌 사용자는 제품 정보를 조회할 수 없습니다."
+    })
+        
+        
+        # ✅ 거래내역 조회 요청 처리 (영업팀만 가능)
+        elif any(keyword in user_query for keyword in ["거래내역", "거래 기록", "거래 리스트"]):
+            print(f"🔍 [DEBUG] 거래내역 조회 요청 감지됨: {user_query}")
+            print(f"🔍 [DEBUG] 로그인한 사용자의 부서 ID: {department_id}")
+
+            if department_id != 1:
+                print("❌ [ERROR] 영업팀이 아닌 사용자가 거래내역을 조회하려 했음")
+                return jsonify({"response": "❌ 거래내역은 영업팀 직원만 조회할 수 있습니다."})
+
+            # ✅ 거래내역 테이블 조회 (client 병합 X)
+            transactions_df = db.show_data("transactions")
+
+            # ✅ 테이블 컬럼 확인 (디버깅용)
+            print(f"📌 테이블 'transactions'의 컬럼: {transactions_df.columns.tolist()}")
+
+            if transactions_df.empty:
+                return jsonify({"response": "📢 현재 등록된 거래내역이 없습니다."})
+
+            # ✅ 거래내역 정보 정리
+            transaction_list = [
+                f"💰 거래 ID: {row['id']}\n"
+                f"   💵 금액: {row['amount']}원 | 유형: {row['type']}\n"
+                f"   📅 거래 날짜: {row['date']}\n"
+                f"   📝 설명: {row['description']}"
+                for _, row in transactions_df.iterrows()
+            ]
+            transaction_info = "\n\n".join(transaction_list)
+
+            print(f"🔍 [DEBUG] 거래내역 정보 결과:\n{transaction_info}")
+
+            return jsonify({"response": transaction_info})
+
+
+
+        
+
+
+
+
+
         else:
             prompt = f"""
             너는 기업 내부 시스템의 챗봇이야. 사용자가 정보를 요청했어.
@@ -354,10 +562,15 @@ def chatbot_response():
             사용자가 '{user_query}'라고 입력했어.
             공지사항, 근태 정보, 부서 정보, 사원 정보 중 어떤 정보를 찾고 계신가요?
 
-            '공지사항', '근태 정보', '부서 정보', '사원 정보' 중 하나를 선택할 수 있도록 안내해줘.
+            그리고 해당 부분을 요청했을때 없으면 없다고 이야기해주면 될거 같아
+            '공지사항', '근태 정보', '부서 정보', '사원 정보','거래 내역' 중 하나를 선택할 수 있도록 안내해줘.
             """
+        
+       
 
-        # ✅ OpenAI 호출
+
+
+        #  OpenAI 호출
         chat = ChatOpenAI(temperature=0.3, model="gpt-4o-mini")
         response = chat.invoke(prompt)
 

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Pagination from "../../../common/component/Pagination";
 import "../scss/MyAttendanceWorkSick.scss";
 
-//  근태 상태 한글 변환
+// 근태 상태 한글 변환
 const statusTextMap = {
   LEAVE: "휴가",
   SICK_LEAVE: "병가",
@@ -21,16 +21,13 @@ const MyVacationSickList = ({
   attendances,
   currentPage,
   totalPages,
+  totalApprovedCount, // 전체 승인된 휴가 개수
   onPageChange,
 }) => {
-  //  승인된 휴가 개수 카운트 단 병가는 제외
-  const approvedCount = attendances.filter(
-    (record) => record.requestStatus === "APPROVED" && record.status === "LEAVE"
-  ).length;
-  //  진행률 (퍼센트 계산)
-  const progressPercentage = (approvedCount / TOTAL_VACATION_COUNT) * 100;
+  // 진행률 (퍼센트 계산)
+  const progressPercentage = (totalApprovedCount / TOTAL_VACATION_COUNT) * 100;
 
-  //  페이지네이션 상태 관리
+  // 페이지네이션 상태 관리
   const [pagedData, setPagedData] = useState([]);
 
   useEffect(() => {
@@ -43,6 +40,7 @@ const MyVacationSickList = ({
       return;
     }
 
+    // 모든 데이터 표시
     setPagedData(attendances);
   }, [attendances, currentPage, totalPages]);
 
@@ -58,7 +56,7 @@ const MyVacationSickList = ({
           ></div>
         </div>
         <p className="progress-text">
-          휴가 쓴 일수: {approvedCount} / {TOTAL_VACATION_COUNT}
+          휴가 쓴 일수: {totalApprovedCount} / {TOTAL_VACATION_COUNT}
         </p>
       </div>
 
@@ -91,15 +89,14 @@ const MyVacationSickList = ({
             </tbody>
           </table>
 
-          {/*  백엔드에서 받은 totalPages 사용 */}
           <Pagination
             currentPage={currentPage}
-            totalPages={totalPages} // 백엔드에서 전달한 totalPages를 사용
-            onPageChange={onPageChange} //  부모 컴포넌트에서 전달된 onPageChange 함수 사용
+            totalPages={totalPages}
+            onPageChange={onPageChange}
           />
         </>
       ) : (
-        <p>📌 등록된 휴가 & 병가 기록이 없습니다.</p>
+        <p>현재 등록된 휴가 및 병가 기록이 없습니다.</p>
       )}
     </div>
   );

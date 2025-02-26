@@ -4,7 +4,7 @@ import "../scss/RequestHistory.scss";
 const RequestHistory = ({ requests, title }) => {
   useEffect(() => {
     console.log("📌 전달된 requests 데이터:", requests);
-  }, [requests]); // requests가 변경될 때만 로그 출력
+  }, [requests]);
 
   return (
     <div className="history-list-wrapper">
@@ -38,20 +38,26 @@ const RequestHistory = ({ requests, title }) => {
                   <td>{request.approvalReason || "N/A"}</td>
                   <td>
                     <span
-                      className={`status-label ${request.requestStatus.toLowerCase()}`}
+                      className={`status-label ${
+                        request.requestStatus
+                          ? request.requestStatus.toLowerCase()
+                          : "default"
+                      }`}
                     >
                       {request.requestStatus === "PENDING"
                         ? "승인 대기"
                         : request.requestStatus === "APPROVED"
                         ? "승인됨"
-                        : "거부됨"}
+                        : request.requestStatus === "REJECTED"
+                        ? "거부됨"
+                        : "상태 없음"}
                     </span>
                   </td>
                 </tr>
               ))
             ) : (
               <tr>
-                <td colSpan="5">신청 내역이 없습니다.</td>
+                <td colSpan="6">신청 내역이 없습니다.</td>
               </tr>
             )}
           </tbody>

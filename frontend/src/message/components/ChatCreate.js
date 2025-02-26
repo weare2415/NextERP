@@ -21,6 +21,12 @@ const ChatCreate = ({ isOpen, onClose, onChatRoomCreated }) => {
   const [showAlert, setShowAlert] = useState(false);
 
   useEffect(() => {
+    if (isOpen) {
+      setSearchQuery(""); // 모달 열릴 때 검색어 초기화
+    }
+  }, [isOpen]);
+
+  useEffect(() => {
     const fetchEmployees = async () => {
       try {
         //  PENDING 제외된 직원 목록 가져오기
@@ -159,7 +165,7 @@ const ChatCreate = ({ isOpen, onClose, onChatRoomCreated }) => {
       {showAlert && selectedReceiver && (
         <div className="custom-alert">
           <div className="alert-content">
-            <p>✅ {selectedReceiver.name}님과의 채팅방을 생성하시겠습니까?</p>
+            <p>{selectedReceiver.name}님과의 채팅방을 생성하시겠습니까?</p>
             <button onClick={handleConfirmCreateChatRoom}>확인</button>
             <button onClick={() => setShowAlert(false)}>취소</button>
           </div>
