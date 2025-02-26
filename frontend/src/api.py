@@ -6,6 +6,9 @@ import db  # ✅ MariaDB 연결 모듈
 import requests
 from langchain_openai import ChatOpenAI
 from langchain_experimental.agents import create_pandas_dataframe_agent
+import sys
+sys.stdout.reconfigure(encoding='utf-8')  # ✅ UTF-8 인코딩 강제 설정
+
 
 SPRING_BOOT_API_BASE = "http://localhost:8080/api"  # ✅ Spring Boot API 주소
 
