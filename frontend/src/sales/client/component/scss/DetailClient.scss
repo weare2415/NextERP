@@ -117,6 +117,7 @@
             background-color: $secondary-color;
             color: white;
             border: none;
+            border-radius: 0;
             font-size: 12px;
             cursor: pointer;
 
@@ -138,13 +139,13 @@
           align-items: flex-start;
 
           label {
-            height: 100px;
+            height: 70px;
             justify-content: center;
             line-height: normal;
           }
 
           textarea {
-            height: 100px;
+            height: 70px;
             resize: none;
           }
         }

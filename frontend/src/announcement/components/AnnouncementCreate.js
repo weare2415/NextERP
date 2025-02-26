@@ -122,11 +122,13 @@ const AnnouncementCreate = ({ onClose, onAddSuccess }) => {
   };
 
   return (
-    <div className="modal-overlay"  onClick={(e) => e.stopPropagation()}>
+    <div className="modal-overlay" onClick={(e) => e.stopPropagation()}>
       <div className="announcement-create-form">
-      <div className="announcement-create-header">
-        <h2>공지사항 생성</h2>
-        <button className="close-button" onClick={onClose}>X</button>
+        <div className="announcement-create-header">
+          <h2>공지사항 생성</h2>
+          <button className="close-button" onClick={onClose}>
+            X
+          </button>
         </div>
         {!employeeId ? (
           <p className="error-message">⚠️ 로그인이 필요합니다.</p>
@@ -154,17 +156,17 @@ const AnnouncementCreate = ({ onClose, onAddSuccess }) => {
 
             {/* 전체 공지사항 체크박스 */}
             {isGlobalAnnouncement && (
-                  <div className="checkbox-container">
-                    <label>
-                      <input
-                        type="checkbox"
-                        checked={announcement.isGlobal}
-                        onChange={handleCheckboxChange}
-                      />
-                      전체 공지사항으로 등록 (이사 이상만 가능)
-                    </label>
-                  </div>
-                )}
+              <div className="checkbox-container">
+                <label>
+                  <input
+                    type="checkbox"
+                    checked={announcement.isGlobal}
+                    onChange={handleCheckboxChange}
+                  />
+                  전체 공지사항으로 등록 (이사 이상만 가능)
+                </label>
+              </div>
+            )}
 
             {/* 로그인된 사용자 정보 자동 입력 (보이지만 수정 불가) */}
             <input

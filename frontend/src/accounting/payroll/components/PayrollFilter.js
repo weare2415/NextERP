@@ -6,14 +6,16 @@ import "./scss/PayrollFilter.scss";
 const PayrollFilter = ({ setPayrolls }) => {
   const [searchTerm, setSearchTerm] = useState("");
 
-  const handleSearch = async () => {
+  const handleSearch = async (e) => {
+    e.preventDefault(); // 페이지 새로고침 방지
     try {
       let payrollData = [];
 
-      //직원 이름으로 직원 목록 가져오기
-      const employees = await getEmployeeByName(searchTerm);
+      // 직원 이름으로 직원 목록 가져오기
+      const response = await getEmployeeByName(searchTerm);
+      const employees = response.content; // content 배열을 사용
 
-      //직원 정보가 있을 경우 급여 정보 가져오기
+      // 직원 정보가 있을 경우 급여 정보 가져오기
       if (Array.isArray(employees) && employees.length > 0) {
         payrollData = await Promise.all(
           employees.map(async (employee) => {
@@ -31,20 +33,21 @@ const PayrollFilter = ({ setPayrolls }) => {
           })
         );
 
-        //null 값 필터링 (오류로 인해 실패한 데이터 제외)
+        // null 값 필터링 (오류로 인해 실패한 데이터 제외)
         payrollData = payrollData.filter((data) => data !== null);
       }
 
+      // 결과를 상태에 반영
       setPayrolls(payrollData);
     } catch (error) {
-      setPayrolls([]);
+      setPayrolls([]); // 오류 발생 시 빈 배열로 초기화
     }
   };
 
   return (
     <div className="search-payroll-container">
       <form className="search-payroll-form">
-        <div className="search-input-wrapper">
+        <div className="search-payroll-wrapper">
           <input
             type="text"
             placeholder="직원 이름 검색"

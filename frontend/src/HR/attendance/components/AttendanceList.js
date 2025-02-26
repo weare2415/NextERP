@@ -50,13 +50,6 @@ const AttendanceList = ({
                     })()}
                   </td>
                   <td>{attendance.overtimeHours}</td>
-                  <td>
-                    {attendance.requestStatus !== "APPROVED" && (
-                      <button onClick={() => onRequestApproval(attendance.id)}>
-                        승인 요청
-                      </button>
-                    )}
-                  </td>
                 </tr>
               ))
             ) : (
@@ -68,7 +61,6 @@ const AttendanceList = ({
         </table>
       </div>
 
-     
       {totalPages > 1 && (
         <Pagination
           currentPage={currentPage}

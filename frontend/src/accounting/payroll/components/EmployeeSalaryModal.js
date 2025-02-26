@@ -23,23 +23,21 @@ const EmployeeSalaryModal = ({ onClose, onSuccess }) => {
   // 직원 검색 API 호출
   const handleSearch = async () => {
     try {
-      const results = await getEmployeesByName(employeeSearch);
-      setEmployeeResults(results);
+      const response = await getEmployeesByName(employeeSearch);
+      if (!response || !response.content) {
+        return;
+      }
+      setEmployeeResults(response.content);
       setError(null);
     } catch (err) {
-      console.error("직원 검색 중 오류 발생:", err);
       setError("직원 검색에 실패했습니다.");
     }
   };
 
-  // 직원 선택 시 처리
   const handleSelectEmployee = (employee) => {
-    setSelectedEmployee(employee);
-    // 선택한 직원의 ID를 salaryData에 설정
-    setSalaryData({
-      ...salaryData,
-      employeeId: employee.id,
-    });
+    setSelectedEmployee(employee); // 선택된 직원 저장
+    setEmployeeSearch(employee.name); // 입력창에 직원 이름 반영
+    setEmployeeResults([]); // 드롭다운 닫기 (검색 결과 비우기)
   };
 
   // 선택된 직원이 변경되면 기존 급여 정보 조회
@@ -106,7 +104,8 @@ const EmployeeSalaryModal = ({ onClose, onSuccess }) => {
       setLoading(true);
       await createEmployeeSalary(salaryData);
       setLoading(false);
-      onSuccess && onSuccess();
+      alert("급여정보 수정이 완료되었습니다."); // 알림창 띄우기
+      onSuccess && onSuccess(); // 데이터 저장 후 onSuccess 호출
       onClose();
     } catch (err) {
       console.error("급여 정보 저장 중 오류 발생:", err);
@@ -132,27 +131,30 @@ const EmployeeSalaryModal = ({ onClose, onSuccess }) => {
               <input
                 type="text"
                 id="employeeSearch"
-                value={error ? error : employeeSearch}
+                value={employeeSearch}
                 onChange={(e) => setEmployeeSearch(e.target.value)}
-                className={error ? "error-message" : ""}
               />
               <button type="button" onClick={handleSearch}>
                 검색
               </button>
             </div>
           </div>
+
           {/* 검색 결과 리스트 */}
-          {employeeResults.length > 0 && (
-            <div className="employee-results">
-              <ul>
-                {employeeResults.map((emp) => (
-                  <li key={emp.id} onClick={() => handleSelectEmployee(emp)}>
-                    {emp.name} (ID: {emp.id})
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
+          <div className="search-left">
+            {employeeResults.length > 0 && (
+              <div className={`employee-results active`}>
+                <ul>
+                  {employeeResults.map((emp) => (
+                    <li key={emp.id} onClick={() => handleSelectEmployee(emp)}>
+                      {emp.name} (ID: {emp.id})
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </div>
+
           {/* 선택된 직원 표시 */}
           {selectedEmployee && (
             <div className="form-group">
@@ -162,6 +164,7 @@ const EmployeeSalaryModal = ({ onClose, onSuccess }) => {
               </span>
             </div>
           )}
+
           {/* 급여 정보 입력 */}
           <div className="form-group">
             <label htmlFor="baseSalary">연봉</label>
@@ -206,7 +209,7 @@ const EmployeeSalaryModal = ({ onClose, onSuccess }) => {
             />
           </div>
           <button type="submit" disabled={loading} className="submit-btn">
-            {loading ? "저장 중..." : "저장"}
+            {loading ? "수정 중..." : "수정"}
           </button>
         </form>
       </div>

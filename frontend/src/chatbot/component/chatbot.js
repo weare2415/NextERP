@@ -1,25 +1,23 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
 import { askChatbot } from "../api/chatbotApi";
 import { getEmployeeById } from "../../HR/employee/api/employeeApi";
+import "../scss/Chatbot.scss";
 
-function Chatbot() {
+function Chatbot({ isEmbedded = false }) {
   const [message, setMessage] = useState("");
-  const [response, setResponse] = useState("");
-  const [department, setDepartment] = useState("");
+  const [chatHistory, setChatHistory] = useState([]);
+  const [department, setDepartment] = useState(""); 
   const [departmentId, setDepartmentId] = useState(null);
+  const chatEndRef = useRef(null);
 
   const employeeId = useSelector((state) => state.loginSlice.id);
   const token = useSelector((state) => state.loginSlice.accessToken);
-
-  console.log("🔍 [React] Redux에서 가져온 토큰:", token);
 
   useEffect(() => {
     const fetchDepartment = async () => {
       try {
         const employeeData = await getEmployeeById(employeeId);
-        console.log("가져온 직원 정보:", employeeData);
-
         if (employeeData) {
           setDepartment(employeeData.departmentName || "기본부서");
           setDepartmentId(employeeData.departmentId || 3);
@@ -34,29 +32,43 @@ function Chatbot() {
     }
   }, [employeeId]);
 
+  // ✅ 내부 스크롤 이동만 적용
+  const scrollToBottom = () => {
+    if (!chatEndRef.current) return;
+    
+    setTimeout(() => {
+      chatEndRef.current.scrollIntoView({
+        behavior: "smooth",
+        block: "nearest", // ✅ 내부 스크롤만 이동
+      });
+    }, 100);
+  };
+
   const sendMessage = async (msg) => {
     if (!msg.trim()) return;
 
+    setChatHistory((prevHistory) => [
+      ...prevHistory,
+      { sender: "user", text: msg },
+    ]);
+
+    scrollToBottom(); // ✅ 사용자 메시지 입력 후 스크롤
+
     const requestData = {
       message: msg,
-      employeeId: employeeId,
-      department: department,
+      employeeId,
+      department,
       departmentId: Number(departmentId),
     };
 
-    console.log("🔄 보내는 데이터:", requestData);
-
     try {
       const chatbotResponse = await askChatbot(requestData, token);
-      console.log("🔵 챗봇 응답:", chatbotResponse);
-      console.log(
-        "📢 chatbotResponse 구조:",
-        JSON.stringify(chatbotResponse, null, 2)
-      );
-
-      // ✅ chatbotResponse를 그대로 사용하도록 수정
       if (chatbotResponse) {
-        setResponse(chatbotResponse); // response 필드 없이 바로 저장
+        setChatHistory((prevHistory) => [
+          ...prevHistory,
+          { sender: "chatbot", text: chatbotResponse },
+        ]);
+        scrollToBottom(); // ✅ 챗봇 응답 후 스크롤
       } else {
         console.error("❌ 응답 데이터가 비어 있습니다:", chatbotResponse);
       }
@@ -66,35 +78,42 @@ function Chatbot() {
   };
 
   useEffect(() => {
-    console.log("📢 UI 업데이트됨! 현재 response:", response);
-  }, [response]);
+    scrollToBottom();
+  }, [chatHistory]); // ✅ chatHistory가 변경될 때만 실행
 
   return (
-    <div>
-      <h2>💬 챗봇</h2>
-      <p>
-        👤 로그인한 직원 ID: {employeeId} {department && `- ${department}`}
-      </p>
+    <div className={`chat-container ${isEmbedded ? "embedded" : ""}`}>
+      <div className="header">
+        <span>Channel✓</span>
+        <button>⋮</button>
+      </div>
+
+      <div className="chat-history">
+        {chatHistory.map((msg, index) => (
+          <div key={index} className={`chat-message ${msg.sender}`}>
+            <strong>{msg.sender === "user" ? "👤 나" : "🤖 챗봇"}</strong>
+            <span>{msg.text}</span>
+          </div>
+        ))}
+        <div ref={chatEndRef} />
+      </div>
+
       <form
+        className="chat-form"
         onSubmit={(e) => {
           e.preventDefault();
           sendMessage(message);
+          setMessage("");
         }}
       >
         <input
           type="text"
-          placeholder="질문을 입력하세요..."
+          placeholder="메시지를 입력하세요..."
           value={message}
           onChange={(e) => setMessage(e.target.value)}
         />
-        <button type="submit">보내기</button>
+        <button type="submit">전송</button>
       </form>
-      <div>
-        <p>
-          <strong>📝 응답:</strong>
-        </p>
-        <pre>{response || "⚠️ 응답을 불러오는 중..."}</pre>
-      </div>
     </div>
   );
 }

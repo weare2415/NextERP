@@ -28,17 +28,16 @@ const AnnouncementPage = () => {
         <div className="page-header">
           <h1>공지사항 관리</h1>
           <div className="header-right">
+            {/* 🔍 검색 기능 추가 */}
+            <AnnouncementSearch onSearch={handleSearchResults} />
 
-          {/* 🔍 검색 기능 추가 */}
-          <AnnouncementSearch onSearch={handleSearchResults} />
-
-          <button
-            className="new-announcement-btn"
-            onClick={() => setShowCreateForm(true)}
-          >
-            공지 작성
-          </button>
-        </div>
+            <button
+              className="new-announcement-btn"
+              onClick={() => setShowCreateForm(true)}
+            >
+              공지 작성
+            </button>
+          </div>
         </div>
 
         <AnnouncementList

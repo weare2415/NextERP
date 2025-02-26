@@ -43,45 +43,35 @@
       // 각 열의 고정된 너비 설정
       th:nth-child(1),
       td:nth-child(1) {
-        width: 5%;
-      } // 체크박스
+        width: 12%; // 거래 ID
+      }
       th:nth-child(2),
       td:nth-child(2) {
-        width: 12%;
-      } // 거래 ID
+        width: 8%; // 구분
+      }
       th:nth-child(3),
       td:nth-child(3) {
-        width: 8%;
-      } // 구분
+        width: 12%; // 거래처명
+      }
       th:nth-child(4),
       td:nth-child(4) {
-        width: 12%;
-      } // 거래처명
+        width: 15%; // 거래일자
+      }
       th:nth-child(5),
       td:nth-child(5) {
-        width: 15%;
-      } // 거래일자
+        width: 18%; // 제품명
+      }
       th:nth-child(6),
       td:nth-child(6) {
-        width: 18%;
-      } // 제품명
+        width: 10%; // 주문 수량
+      }
       th:nth-child(7),
       td:nth-child(7) {
-        width: 10%;
-      } // 주문 수량
+        width: 10%; // 주문 금액
+      }
       th:nth-child(8),
       td:nth-child(8) {
-        width: 10%;
-      } // 주문 금액
-      th:nth-child(9),
-      td:nth-child(9) {
-        width: 10%;
-      } // 주문 담당자
-
-      input[type="checkbox"] {
-        cursor: pointer;
-        width: 18px;
-        height: 18px;
+        width: 10%; // 주문 담당자
       }
 
       button {
@@ -102,6 +92,55 @@
       td .loading-text {
         color: #999;
         font-style: italic;
+      }
+    }
+  }
+
+  // 모바일 반응형 스타일
+  @media (max-width: 768px) {
+    .order-list {
+      margin-top: 10px;
+      border: none;
+
+      .order-list-grid {
+        th,
+        td {
+          padding: 10px;
+          font-size: 0.9rem;
+        }
+
+        th:nth-child(1),
+        td:nth-child(1) {
+          display: none; // 거래 ID 숨김
+        }
+        th:nth-child(2),
+        td:nth-child(2) {
+          width: 15%;
+        }
+        th:nth-child(3),
+        td:nth-child(3) {
+          width: 15%;
+        }
+        th:nth-child(4),
+        td:nth-child(4) {
+          width: 32%;
+        }
+        th:nth-child(5),
+        td:nth-child(5) {
+          width: 20%;
+        }
+        th:nth-child(6),
+        td:nth-child(6) {
+          display: none; // 주문 수량 숨김
+        }
+        th:nth-child(7),
+        td:nth-child(7) {
+          width: 25%;
+        }
+        th:nth-child(8),
+        td:nth-child(8) {
+          width: 20%;
+        }
       }
     }
   }

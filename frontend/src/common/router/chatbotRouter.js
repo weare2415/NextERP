@@ -1,13 +1,12 @@
 import { lazy } from "react";
 
-const ChatbotPage = lazy(() => import("../../chatbot/ChatbotPage"));
+const Chatbot = lazy(() => import("../../chatbot/component/chatbot"));
 
 const chatbotRouter = () => [
   {
-    path: "",
-    element: <ChatbotPage />,
+    path: "", // ✅ "window"로 경로 설정
+    element: <Chatbot />,
   },
 ];
 
 export default chatbotRouter;
-

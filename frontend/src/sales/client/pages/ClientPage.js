@@ -72,7 +72,7 @@ const ClientPage = () => {
       <div className="client-page-container">
         <div className="page-header">
           <h1>거래처 관리</h1>
-          <div className="header-right">
+          <div className="client-header-right">
             <SearchClient onSearchResults={handleSearchResults} />
             <button
               className="new-client-btn"

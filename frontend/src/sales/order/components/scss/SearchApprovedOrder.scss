@@ -3,37 +3,40 @@
 .search-order-container {
   display: flex;
   align-items: center;
+  flex-wrap: wrap; // 화면이 작을 경우 자동으로 줄 바꿈
 
   .search-order-form {
     display: flex;
     align-items: center;
     gap: 8px;
+    flex-wrap: wrap;
+    background-color: transparent;
+    border: none;
 
-    select {
-      padding: 8px;
-      border: 1px solid $secondary-color;
-      border-radius: 4px;
+    label {
       font-family: $font-primary;
-      background-color: white;
-      cursor: pointer;
-
-      &:focus {
-        outline: none;
-        border-color: $primary-color;
-      }
     }
 
-    input {
-      flex: 1;
-      width: 250px;
-      padding: 8px;
-      border: 1px solid $secondary-color;
-      border-radius: 4px;
-      font-family: $font-primary;
+    .date-inputs {
+      display: flex;
+      align-items: center;
+      gap: 8px;
 
-      &:focus {
-        outline: none;
-        border-color: $primary-color;
+      input {
+        width: 200px;
+        padding: 8px;
+        border: 1px solid $secondary-color;
+        border-radius: 4px;
+        font-family: $font-primary;
+
+        &:focus {
+          outline: none;
+          border-color: $primary-color;
+        }
+      }
+
+      span {
+        font-family: $font-primary;
       }
     }
 
@@ -50,6 +53,39 @@
 
       &:hover {
         background-color: darken($primary-color, 10%);
+      }
+    }
+  }
+
+  .error-text {
+    color: red;
+    font-size: 0.9rem;
+    font-family: $font-primary;
+    margin-top: 10px;
+  }
+
+  @media (max-width: 1024px) {
+    .search-order-form {
+      gap: 12px;
+    }
+
+    // 반응형 스타일 추가
+    @media (max-width: 768px) {
+      .search-order-form {
+        flex-direction: row;
+        align-items: stretch;
+        gap: 8px;
+
+        .date-inputs {
+          flex-direction: row; // 날짜 입력 필드를 세로 정렬
+          width: 100%;
+          gap: 8px;
+        }
+
+        button {
+          width: 100%;
+          margin-right: 0;
+        }
       }
     }
   }

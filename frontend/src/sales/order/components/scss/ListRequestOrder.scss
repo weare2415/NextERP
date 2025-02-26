@@ -14,12 +14,13 @@
       border-collapse: collapse;
       table-layout: fixed;
 
-      th, td {
+      th,
+      td {
         padding: 15px;
         text-align: center;
         border: 1px solid #ddd;
         word-wrap: break-word;
-        
+
         &:first-child {
           border-left: none;
         }
@@ -40,12 +41,30 @@
       }
 
       // 각 열의 고정된 너비 설정
-      th:nth-child(1), td:nth-child(1) { width: 10%; }
-      th:nth-child(2), td:nth-child(2) { width: 25%; }
-      th:nth-child(3), td:nth-child(3) { width: 20%; }
-      th:nth-child(4), td:nth-child(4) { width: 15%; }
-      th:nth-child(5), td:nth-child(5) { width: 15%; }
-      th:nth-child(6), td:nth-child(6) { width: 15%; }
+      th:nth-child(1),
+      td:nth-child(1) {
+        width: 10%;
+      }
+      th:nth-child(2),
+      td:nth-child(2) {
+        width: 25%;
+      }
+      th:nth-child(3),
+      td:nth-child(3) {
+        width: 20%;
+      }
+      th:nth-child(4),
+      td:nth-child(4) {
+        width: 15%;
+      }
+      th:nth-child(5),
+      td:nth-child(5) {
+        width: 15%;
+      }
+      th:nth-child(6),
+      td:nth-child(6) {
+        width: 15%;
+      }
 
       .order-list-name-btn {
         appearance: none;
@@ -65,5 +84,46 @@
         }
       }
     }
-  } //product-table-section end
+  }
+  // 반응형 디자인 (모바일, 태블릿 등)
+  @media (max-width: 768px) {
+    .request-order-table-section {
+      margin-top: 10px;
+      border: none;
+
+      .request-order-list {
+        table-layout: auto; /* 열 너비를 자동으로 조정 */
+
+        th,
+        td {
+          padding: 10px;
+        }
+
+        th:nth-child(1),
+        td:nth-child(1) {
+          display: none;
+        }
+        th:nth-child(2),
+        td:nth-child(2) {
+          width: 20%;
+        }
+        th:nth-child(3),
+        td:nth-child(3) {
+          width: 14%;
+        }
+        th:nth-child(4),
+        td:nth-child(4) {
+          width: 15%;
+        }
+        th:nth-child(5),
+        td:nth-child(5) {
+          width: 15%;
+        }
+        th:nth-child(6),
+        td:nth-child(6) {
+          width: 13%;
+        }
+      }
+    }
+  }
 }

@@ -13,6 +13,7 @@ const ProductPage = () => {
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [currentView, setCurrentView] = useState("상태");
+  const [error, setError] = useState(null);
 
   const toggleDropdown = () => {
     setDropdownOpen(!dropdownOpen);
@@ -44,23 +45,34 @@ const ProductPage = () => {
     setSelectedProduct(null);
   };
 
+  const handleSearchResults = (results) => {
+    setProducts(results.length > 0 ? results : []);
+    setError(results.length === 0 ? "검색한 제품이 존재하지 않습니다." : null);
+  };
+
   return (
     <BasicLayout>
       <div className="product-page-container">
         <div className="page-header">
           <h1>제품 관리</h1>
-          <div className="header-right">
-            <SearchProduct />
-          <button
-            className="new-product-btn"
-            onClick={() => setShowCreateForm(true)}
-          >
-            신규등록
-          </button>
+          <div className="product-header-right">
+            <SearchProduct onSearchResults={handleSearchResults} />
+            <button
+              className="new-product-btn"
+              onClick={() => setShowCreateForm(true)}
+            >
+              신규등록
+            </button>
           </div>
         </div>
 
-        <ListProduct products={products} onProductSelect={handleProductClick} />
+        <ListProduct
+          products={products}
+          onProductSelect={(product) => {
+            setSelectedProduct(product);
+            setShowDetailForm(true);
+          }}
+        />
 
         {(showCreateForm || showDetailForm) && (
           <div>
