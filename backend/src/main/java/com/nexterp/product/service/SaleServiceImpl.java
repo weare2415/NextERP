@@ -199,10 +199,10 @@ public class SaleServiceImpl implements SaleService {
 
     // 12. Invoice 생성
     InvoiceDTO invoiceDTO = InvoiceDTO.builder()
-        .invoiceNumber("PRO" + savedTransactionDTO.getId())
+        .invoiceNumber("SALE" + savedTransactionDTO.getId())
         .date(saleDate)
-        .buyer("Client " + clientCode)
-        .seller("My Company")
+        .buyer(clientCode)
+        .seller("Next-ERP")
         .totalAmount(totalAmount)
         .vatAmount(vatAmount)
         .description("판매 명세서, 거래 ID: " + savedTransactionDTO.getId())

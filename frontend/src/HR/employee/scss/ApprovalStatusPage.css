@@ -36,5 +36,24 @@ body {
   font-family: "Apple SD Gothic Neo", sans-serif;
   margin: 0;
 }
+@media (max-width: 768px) {
+  .approval-page-container {
+    max-width: 100%;
+    padding: 0 10px;
+    top: 80px;
+  }
+  .approval-page-container .page-header {
+    flex-direction: column;
+    align-items: center;
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+  .approval-page-container .page-header h1 {
+    font-size: 1.5rem;
+  }
+  .approval-page-container .approval-page-container {
+    padding: 0 15px;
+  }
+}
 
 /*# sourceMappingURL=ApprovalStatusPage.css.map */

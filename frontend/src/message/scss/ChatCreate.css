@@ -1,0 +1,181 @@
+@import url("https://cdn.jsdelivr.net/gh/fonts-archive/AppleSDGothicNeo/AppleSDGothicNeo.css");
+@import url(//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSansNeo.css);
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Apple SD Gothic Neo", sans-serif;
+}
+
+body {
+  width: 100%;
+  height: 100%;
+  background-color: #f5f7fa;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Apple SD Gothic Neo", sans-serif;
+  line-height: 1.6;
+  display: block;
+}
+
+.chat-create-modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 350px;
+  z-index: 1000;
+}
+.chat-create-modal .modal-content {
+  background: white;
+  border-radius: 16px;
+  padding: 15px;
+  box-shadow: 0 10px 25px rgba(60, 72, 90, 0.15);
+}
+.chat-create-modal .modal-content h3 {
+  margin: 0 0 20px 0;
+  font-size: 20px;
+  color: #3c485a;
+  font-weight: 600;
+  font-family: "Spoqa Han Sans Neo", sans-serif;
+}
+.chat-create-modal .modal-content .search-input {
+  width: 100%;
+  padding: 12px 16px;
+  margin-bottom: 16px;
+  border: 2px solid rgba(146, 159, 180, 0.2);
+  border-radius: 10px;
+  font-size: 15px;
+  transition: all 0.3s ease;
+}
+.chat-create-modal .modal-content .search-input:focus {
+  outline: none;
+  border-color: #3c485a;
+  box-shadow: 0 0 0 3px rgba(60, 72, 90, 0.1);
+}
+.chat-create-modal .modal-content .search-input::placeholder {
+  color: #929fb4;
+}
+.chat-create-modal .modal-content .employee-list {
+  max-height: 300px;
+  overflow-y: auto;
+  padding: 0;
+  margin: 0 -24px;
+  border-top: 1px solid rgba(146, 159, 180, 0.1);
+}
+.chat-create-modal .modal-content .employee-list::-webkit-scrollbar {
+  width: 6px;
+}
+.chat-create-modal .modal-content .employee-list::-webkit-scrollbar-track {
+  background: rgba(146, 159, 180, 0.05);
+}
+.chat-create-modal .modal-content .employee-list::-webkit-scrollbar-thumb {
+  background: rgba(146, 159, 180, 0.3);
+  border-radius: 3px;
+}
+.chat-create-modal .modal-content .employee-list .employee-item {
+  cursor: pointer;
+  padding: 16px 24px;
+  list-style: none;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.chat-create-modal .modal-content .employee-list .employee-item strong {
+  color: #3c485a;
+  font-weight: 500;
+}
+.chat-create-modal .modal-content .employee-list .employee-item span {
+  color: #929fb4;
+  font-size: 14px;
+}
+.chat-create-modal .modal-content .employee-list .employee-item:hover {
+  background-color: rgba(60, 72, 90, 0.05);
+}
+.chat-create-modal .modal-content .employee-list .no-results {
+  padding: 24px;
+  color: #929fb4;
+  text-align: center;
+  font-style: italic;
+}
+.chat-create-modal .modal-content .close-button {
+  width: 100%;
+  padding: 12px;
+  margin-top: 20px;
+  background: #3c485a;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 15px;
+  transition: all 0.2s ease;
+}
+.chat-create-modal .modal-content .close-button:hover {
+  background: rgb(49.8, 59.76, 74.7);
+  transform: translateY(-1px);
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(60, 72, 90, 0.4);
+  backdrop-filter: blur(4px);
+  z-index: 999;
+}
+
+.custom-alert {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  padding: 24px;
+  border-radius: 16px;
+  box-shadow: 0 15px 35px rgba(60, 72, 90, 0.2);
+  width: 360px;
+  z-index: 1001;
+}
+.custom-alert .alert-content {
+  text-align: center;
+}
+.custom-alert .alert-content p {
+  margin-bottom: 20px;
+  font-size: 16px;
+  color: #3c485a;
+  line-height: 1.5;
+}
+.custom-alert .alert-content button {
+  background-color: #3c485a;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  margin: 0 8px;
+  font-size: 15px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+.custom-alert .alert-content button:first-of-type {
+  background-color: #3c485a;
+}
+.custom-alert .alert-content button:first-of-type:hover {
+  background-color: rgb(49.8, 59.76, 74.7);
+  transform: translateY(-1px);
+}
+.custom-alert .alert-content button:last-of-type {
+  background-color: transparent;
+  color: #929fb4;
+  border: 1px solid rgba(146, 159, 180, 0.3);
+}
+.custom-alert .alert-content button:last-of-type:hover {
+  background-color: rgba(146, 159, 180, 0.1);
+}
+
+/*# sourceMappingURL=ChatCreate.css.map */

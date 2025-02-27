@@ -1,3 +1,4 @@
+@charset "UTF-8";
 @import url("https://cdn.jsdelivr.net/gh/fonts-archive/AppleSDGothicNeo/AppleSDGothicNeo.css");
 @import url(//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSansNeo.css);
 * {
@@ -27,6 +28,7 @@ body {
   width: 100%;
   border-left: 1px solid #ddd;
   margin-top: 20px;
+  overflow-x: auto;
 }
 .product-list-wrapper .product-table-section .product-list-grid {
   width: 100%;
@@ -77,7 +79,7 @@ body {
 .product-list-wrapper .product-table-section .product-list-grid td:nth-child(6) {
   width: 15%;
 }
-.product-list-wrapper .product-table-section .product-name-btn {
+.product-list-wrapper .product-table-section .product-list-grid .product-name-btn {
   font-weight: bold;
   border: none;
   color: #4a5568;
@@ -86,11 +88,11 @@ body {
   font-size: 16px;
   border: 1px solid #ddd;
 }
-.product-list-wrapper .product-table-section .product-name-btn:hover {
+.product-list-wrapper .product-table-section .product-list-grid .product-name-btn:hover {
   text-decoration: underline;
   color: #2d3748;
 }
-.product-list-wrapper .product-table-section .product-table-detail-btn {
+.product-list-wrapper .product-table-section .product-list-grid .product-table-detail-btn {
   appearance: none;
   background: none;
   border: none;
@@ -102,12 +104,12 @@ body {
   font-size: 16px;
   text-decoration: none;
 }
-.product-list-wrapper .product-table-section .product-table-detail-btn:hover {
+.product-list-wrapper .product-table-section .product-list-grid .product-table-detail-btn:hover {
   text-decoration: underline;
   color: #2d3748;
 }
-.product-list-wrapper .product-table-section .sale-btn,
-.product-list-wrapper .product-table-section .purchase-btn {
+.product-list-wrapper .product-table-section .product-list-grid .sale-btn,
+.product-list-wrapper .product-table-section .product-list-grid .purchase-btn {
   padding: 6px 16px;
   margin: 0 5px;
   border: none;
@@ -115,13 +117,53 @@ body {
   cursor: pointer;
   font-size: 14px;
 }
-.product-list-wrapper .product-table-section .sale-btn {
+.product-list-wrapper .product-table-section .product-list-grid .sale-btn {
   background-color: #929fb4;
   color: white;
 }
-.product-list-wrapper .product-table-section .purchase-btn {
+.product-list-wrapper .product-table-section .product-list-grid .purchase-btn {
   background-color: #929fb4;
   color: white;
+}
+@media (max-width: 768px) {
+  .product-list-wrapper .product-table-section {
+    margin-top: 20px;
+    border: none;
+  }
+  .product-list-wrapper .product-table-section .product-list-grid th,
+  .product-list-wrapper .product-table-section .product-list-grid td {
+    padding: 10px;
+    font-size: 0.9rem;
+  }
+  .product-list-wrapper .product-table-section .product-list-grid th:nth-child(1),
+  .product-list-wrapper .product-table-section .product-list-grid td:nth-child(1) {
+    display: none;
+  }
+  .product-list-wrapper .product-table-section .product-list-grid th:nth-child(2),
+  .product-list-wrapper .product-table-section .product-list-grid td:nth-child(2) {
+    width: 22%;
+  }
+  .product-list-wrapper .product-table-section .product-list-grid th:nth-child(3),
+  .product-list-wrapper .product-table-section .product-list-grid td:nth-child(3) {
+    width: 30%;
+  }
+  .product-list-wrapper .product-table-section .product-list-grid th:nth-child(4),
+  .product-list-wrapper .product-table-section .product-list-grid td:nth-child(4) {
+    width: 20%;
+  }
+  .product-list-wrapper .product-table-section .product-list-grid th:nth-child(5),
+  .product-list-wrapper .product-table-section .product-list-grid td:nth-child(5) {
+    width: 20%;
+  }
+  .product-list-wrapper .product-table-section .product-list-grid th:nth-child(6),
+  .product-list-wrapper .product-table-section .product-list-grid td:nth-child(6) {
+    width: 30%;
+  }
+}
+@media (max-width: 480px) {
+  .product-list-wrapper .product-table-section .product-list-grid {
+    overflow-x: scroll; /* 더 작은 화면에서 가로 스크롤 허용 */
+  }
 }
 
 /*# sourceMappingURL=ListProduct.css.map */

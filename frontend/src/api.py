@@ -17,7 +17,6 @@ CORS(app)
 
 # ✅ OpenAI API Key 설정
 OPENAI_API_KEY = ""
-os.environ["OPENAI_API_KEY"] = OPENAI_API_KEY
 
 # ✅ 부서 ID 매핑 (ID → 부서명)
 DEPARTMENT_MAPPING = {
@@ -188,7 +187,7 @@ def get_attendance():
             overtime = f"{overtime_hours}시간 초과 근무" if overtime_hours > 0 else "초과 근무 없음"
             approval_status = row.get("request_status", "APPROVED")  # ✅ 승인 여부 추가
 
-        
+
 
         print("✅ 근태 정보 응답 준비 완료")
         return jsonify({"response": "\n\n".join(attendance_info_list)})
@@ -232,7 +231,7 @@ def get_announcements():
     # ✅ department_id 필터링 (로그인한 사용자의 부서 ID만)
     filtered_announcements = df[df["department_id"] == department_id]
 
-    
+
 
     # ✅ 필터링된 데이터 로그 확인
     print(f"📢 필터링된 공지사항 데이터 ({department_id}번 부서):\n{filtered_announcements}")
@@ -244,7 +243,7 @@ def get_announcements():
 
 
 
-       
+
 
 
 #영업팀 /제품 
@@ -287,7 +286,7 @@ def chatbot_sales_response():
         # ✅ 거래처 정보 조회 (영업팀만 가능)
         if any(keyword in user_query for keyword in ["거래처", "거래처 목록", "거래처 정보"]):
             client_df = db.show_data("client")
-    
+
             print(f"🔍 [DEBUG] client 테이블 컬럼명: {client_df.columns.tolist()}")
 
             if client_df.empty:
@@ -420,20 +419,24 @@ def chatbot_response():
 
         if employee_df.empty:
             return jsonify({"response": "📢 현재 확인할 수 있는 사원 정보가 없습니다."})
-        
+
         # 사용자가 "다른 사원 정보"를 요청하면 즉시 권한 없음 응답 반환
         if "다른 사원 정보" in user_query:
             return jsonify({"response": "📢 다른 사원의 정보는 조회할 권한이 없습니다."})
-        if any(keyword in user_query for keyword in ["내 정보", "내 사원 정보"]):
-            
-            personal_employee = employee_df[employee_df["employee_id"] == employee_id]
 
-        if personal_employee.empty:
-            return jsonify({"response": "📢 본인의 사원 정보를 찾을 수 없습니다."})
-    
-        employee_info = personal_employee.to_dict(orient="records")[0]  # JSON 형태로 변환
-        # OpenAI 프롬프트 생성 (LangChain 활용)
-        if "사원" in user_query or "내 정보" in user_query:
+        personal_employee =None
+        if any(keyword in user_query for keyword in ["내 정보", "내 사원 정보"]):
+            try:
+                personal_employee = employee_df[employee_df["employee_id"] == employee_id]
+            except Exception as e:
+                print(f"❌ 사원 정보 조회 오류: {e}")
+                return jsonify({"response": "📢 사원 정보를 조회하는 중 오류가 발생했습니다."})
+
+            if personal_employee is None or personal_employee.empty:
+                return jsonify({"response": "📢 본인의 사원 정보를 찾을 수 없습니다."})
+
+            employee_info = personal_employee.to_dict(orient="records")[0]
+
             prompt = f"""
             너는 기업 내부 시스템의 챗봇이야. 사용자가 자신의 사원 정보를 요청했어.
 
@@ -441,15 +444,16 @@ def chatbot_response():
             {employee_info}
 
             사용자가 '{user_query}'라고 입력했어.  
-            그리고 다른 사원의 정보는 보여주면안될거 같아
+            그리고 다른 사원의 정보는 보여주면 안될 거 같아.
             자연스럽게 사원 정보를 정리해서 전달하고, 추가로 '부서 정보도 확인하시겠어요?' 라고 물어봐.
             """
+
         elif "사원" in user_query:
             return jsonify({"response": "📢 다른 사원의 정보는 조회할 권한이 없습니다."})
 
 
 
-            
+
         elif "부서" in user_query or "부서 정보" in user_query:
             department_df = db.show_data("department")
             if department_df.empty:
@@ -476,15 +480,15 @@ def chatbot_response():
                 announcement_info = "📢 공지사항이 없습니다."
             else:
                 announcement_df["department_id"] = pd.to_numeric(
-                announcement_df["department_id"], errors="coerce"
-        ).fillna(0).astype(int)
+                    announcement_df["department_id"], errors="coerce"
+                ).fillna(0).astype(int)
 
                 print(f"📌 변환 후 department_id 데이터:\n{announcement_df[['announcement_id', 'department_id']]}")
-                
+
                 filtered_announcements = announcement_df[
                     (announcement_df["department_id"] == department_id) |
                     (announcement_df["department_id"] == 0)
-                ]
+                    ]
                 if filtered_announcements.empty:
                     announcement_info = f"📢 '{department_name}({department_id}번 부서)'에 해당하는 공지사항이 없습니다."
                 else:
@@ -520,7 +524,7 @@ def chatbot_response():
                     leave_attendance_list = []  # 휴가 정보
                     sick_attendance_list = []  # 병가 정보
                     remote_attendance_list = []  # 재택근무 정보
-                    
+
                     # ✅ 근태 상태 한글 변환 맵핑
                     status_mapping = {
                         "PRESENT": "출근",
@@ -619,9 +623,9 @@ def chatbot_response():
         elif any(keyword in user_query for keyword in ["제품", "재고", "주문", "판매", "구매", "가격"]):
             print(f"🔍 [DEBUG] 제품 관련 요청 감지됨: {user_query}")
             print(f"🔍 [DEBUG] 로그인한 사용자의 부서 ID: {department_id}")
-            
 
-    #  영업팀 직원만 제품 정보 조회 가능
+
+            #  영업팀 직원만 제품 정보 조회 가능
             if department_id == 1:
                 print("✅ [SUCCESS] 영업팀 사용자가 제품 정보를 조회하려 함, chatbot_sales_response() 실행")
                 return chatbot_sales_response()  # 🚀 실행
@@ -629,9 +633,9 @@ def chatbot_response():
             print("❌ [ERROR] 영업팀이 아닌 사용자가 제품 정보를 조회하려 했음")
             return jsonify({
                 "response": "❌ 영업팀이 아닌 사용자는 제품 정보를 조회할 수 없습니다."
-    })
-        
-        
+            })
+
+
         # ✅ 거래내역 조회 요청 처리 (영업팀만 가능)
         elif any(keyword in user_query for keyword in ["거래내역", "거래 기록", "거래 리스트"]):
             print(f"🔍 [DEBUG] 거래내역 조회 요청 감지됨: {user_query}")
@@ -666,7 +670,7 @@ def chatbot_response():
 
 
 
-        
+
 
 
 
@@ -684,8 +688,8 @@ def chatbot_response():
             그리고 해당 부분을 요청했을때 없으면 없다고 이야기해주면 될거 같아
             '공지사항', '근태 정보', '부서 정보', '사원 정보','거래 내역' 중 하나를 선택할 수 있도록 안내해줘.
             """
-        
-       
+
+
 
 
 
@@ -718,4 +722,5 @@ def chatbot_response():
 
 # ------------------ ✅ Flask 실행 ------------------ #
 if __name__ == '__main__':
+    os.environ['OPENAI_API_KEY'] = OPENAI_API_KEY
     app.run(port=6000, debug=True)

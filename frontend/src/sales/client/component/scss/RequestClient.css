@@ -129,6 +129,7 @@ body {
   background-color: #929fb4;
   color: white;
   border: none;
+  border-radius: 0;
   font-size: 12px;
   cursor: pointer;
 }
@@ -175,6 +176,52 @@ body {
 .modal-overlay .request-client-detail-form .form-container .request-client-detail-buttons .reject-button {
   background-color: red;
   color: white;
+}
+
+@media (max-width: 768px) {
+  .modal-overlay .request-client-detail-form {
+    width: 95%;
+    max-width: 95%;
+    height: auto;
+    max-height: 90vh;
+  }
+  .modal-overlay .request-client-detail-form .form-container {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0;
+    padding: 15px;
+  }
+  .modal-overlay .request-client-detail-form .form-container .form-group {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    margin-bottom: 0;
+  }
+  .modal-overlay .request-client-detail-form .form-container .form-group label {
+    width: 110px;
+    min-width: 110px;
+    font-size: 13px;
+    padding: 8px 10px;
+  }
+  .modal-overlay .request-client-detail-form .form-container .form-group input,
+  .modal-overlay .request-client-detail-form .form-container .form-group select,
+  .modal-overlay .request-client-detail-form .form-container .form-group textarea {
+    flex: 1;
+    height: 35px;
+    font-size: 13px;
+    padding: 8px;
+  }
+  .modal-overlay .request-client-detail-form .form-container .request-client-detail-buttons {
+    display: flex;
+    justify-content: center;
+    margin-top: 15px;
+    gap: 8px;
+  }
+  .modal-overlay .request-client-detail-form .form-container .request-client-detail-buttons button {
+    width: 80px;
+    height: 35px;
+    font-size: 13px;
+  }
 }
 
 /*# sourceMappingURL=RequestClient.css.map */

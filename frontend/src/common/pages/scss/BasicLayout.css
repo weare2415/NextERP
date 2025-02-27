@@ -19,6 +19,10 @@ body {
   display: block;
 }
 
+.menu-toggle {
+  display: none;
+}
+
 .basic-layout {
   display: flex;
   width: 100%;
@@ -27,7 +31,6 @@ body {
 .basic-layout .main-layout {
   display: flex;
   flex: 1;
-  height: 100%;
 }
 .basic-layout .main-layout .sidebar {
   width: 190px;
@@ -36,7 +39,16 @@ body {
   padding: 0.4rem;
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
+  transition: transform 0.3s ease;
+}
+.basic-layout .main-layout .sidebar.sticky {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+}
+.basic-layout .main-layout .sidebar.active {
+  transform: translateX(0);
 }
 .basic-layout .main-layout .sidebar .logo {
   padding: 1rem;
@@ -125,11 +137,12 @@ body {
   height: 70px;
   padding: 0.5rem 2rem;
   background-color: #3c485a;
-  color: #fff;
+  z-index: 1000;
+  border-radius: 0;
 }
 .basic-layout .right-container .header .header-buttons {
   display: flex;
-  gap: 1rem;
+  gap: 1.3rem;
 }
 .basic-layout .right-container .header .header-buttons button {
   display: flex;
@@ -138,17 +151,168 @@ body {
   background-color: transparent;
   border: none;
   color: #fff;
-  font-size: 1rem;
+  font-size: 1.2rem;
   cursor: pointer;
   transition: transform 0.2s;
 }
 .basic-layout .right-container .header .header-buttons button:hover {
   transform: scale(1.1);
 }
+.basic-layout .right-container .header .header-buttons button .unread-badge {
+  background: red;
+  color: #f5f7fa;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 13px;
+  min-width: 24px;
+  text-align: center;
+  margin-left: 5px;
+  font-weight: 800;
+  margin-bottom: 18px;
+}
+.basic-layout .right-container .chatbot-btn {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: #3c4856;
+  color: white;
+  font-size: 24px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s ease-in-out;
+}
+.basic-layout .right-container .chatbot-btn:hover {
+  background-color: #007bff;
+}
+.basic-layout .right-container .chat-window {
+  position: fixed;
+  bottom: 80px;
+  right: 20px;
+  width: 350px;
+  height: 500px;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.basic-layout .right-container .chat-iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+}
 .basic-layout .right-container .content {
   flex: 1;
   padding: 2rem;
   background-color: #f5f7fa;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  .main-layout {
+    flex-direction: column;
+  }
+  .sidebar {
+    width: 100%;
+    height: auto;
+    padding: 1rem;
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 1000;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+    height: 100vh;
+  }
+  .sidebar.active {
+    transform: translateX(0);
+  }
+  .sidebar .logo {
+    padding: 1rem;
+    margin-bottom: 1rem;
+    cursor: pointer;
+  }
+  .sidebar .logo > img {
+    width: 150px;
+  }
+  .sidebar .user-info {
+    padding: 0.8rem;
+    margin-bottom: 1.5rem;
+  }
+  .sidebar ul {
+    padding: 0;
+    margin: 0;
+  }
+  .sidebar ul li {
+    margin-bottom: 1rem;
+  }
+  .sidebar ul li .menu-item {
+    padding: 1rem;
+    font-size: 1rem;
+  }
+  .sidebar ul li .menu-item:hover {
+    background-color: rgb(70.2, 84.24, 105.3);
+  }
+  .sidebar ul li .submenu {
+    margin-left: 0.5rem;
+    margin-top: 0.5rem;
+  }
+  .sidebar ul li .submenu li {
+    margin-bottom: 0.5rem;
+  }
+  .sidebar ul li .submenu li a {
+    display: block;
+    padding: 0.5rem 1rem;
+    color: #fff;
+    text-decoration: none;
+    font-size: 0.9rem;
+  }
+  .right-container .header {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 100%;
+    padding: 0.5rem 1rem;
+    background-color: #3c485a;
+    z-index: 1000;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .right-container .header .header-left {
+    position: absolute;
+    left: 0;
+    top: 5;
+    padding: 0.5rem 1rem;
+    z-index: 1100;
+  }
+  .right-container .header .header-left .menu-toggle {
+    display: block;
+    background-color: transparent;
+    border: none;
+    color: #fff;
+    font-size: 1.8rem;
+    cursor: pointer;
+  }
+  .right-container .header .header-buttons {
+    display: flex;
+    gap: 1rem;
+    position: relative;
+  }
+}
+.right-container .header .header-buttons {
+  display: flex;
+  gap: 1rem;
+  position: relative;
 }
 
 /*# sourceMappingURL=BasicLayout.css.map */

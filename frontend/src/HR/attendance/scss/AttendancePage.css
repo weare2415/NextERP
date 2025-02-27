@@ -104,5 +104,58 @@ body {
   color: white;
   font-weight: 500;
 }
+@media (max-width: 768px) {
+  .employee-attendance-page-container {
+    max-width: 100%;
+    padding: 0 10px;
+    top: 30px;
+  }
+  .employee-attendance-page-container .page-header {
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 15px;
+  }
+  .employee-attendance-page-container .page-header h1 {
+    font-size: 1.8rem;
+    margin-bottom: 10px;
+  }
+  .employee-attendance-page-container .page-header .search-content {
+    width: 100%;
+    flex-direction: row;
+    align-items: flex-start;
+  }
+  .employee-attendance-page-container .search-option-select {
+    width: 20%;
+  }
+  .employee-attendance-page-container .search-input {
+    width: 100%;
+  }
+  .employee-attendance-page-container .search-btn {
+    width: 14%;
+  }
+  .employee-attendance-page-container .attendance-list table th,
+  .employee-attendance-page-container .attendance-list table td {
+    padding: 10px;
+    font-size: 0.9rem;
+  }
+}
+@media (max-width: 480px) {
+  .employee-attendance-page-container .page-header h1 {
+    font-size: 1.5rem;
+  }
+  .employee-attendance-page-container .search-option-select,
+  .employee-attendance-page-container .search-input {
+    width: 100%;
+  }
+  .employee-attendance-page-container .attendance-list table th,
+  .employee-attendance-page-container .attendance-list table td {
+    padding: 8px;
+    font-size: 0.8rem;
+  }
+  .employee-attendance-page-container .search-btn {
+    width: 100%;
+    margin-top: 10px;
+  }
+}
 
 /*# sourceMappingURL=AttendancePage.css.map */

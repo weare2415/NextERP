@@ -1,0 +1,35 @@
+@charset "UTF-8";
+/* 반응형 차트 스타일 수정 */
+@media (max-width: 768px) {
+  .quarter-summary {
+    flex-direction: column !important;
+    align-items: center !important;
+    margin: 15px auto !important;
+    /* 메인 컨테이너 */
+    /* 파이 차트 컨테이너 */
+    /* 게이지 차트 컨테이너 - 핵심 변경 부분 */
+  }
+  .quarter-summary > div {
+    width: 100% !important;
+    height: auto !important;
+    min-height: 300px !important;
+    position: relative !important;
+  }
+  .quarter-summary > div > div:nth-of-type(2) {
+    width: 100% !important;
+    display: flex !important;
+    justify-content: center !important;
+    position: relative !important; /* 상대 위치로 설정 */
+  }
+  .quarter-summary > div > div:last-child {
+    position: absolute !important; /* 절대 위치 유지 */
+    top: 40% !important; /* 파이 차트 중앙에 위치하도록 조정 */
+    left: 49% !important;
+    transform: translate(-50%, -50%) !important; /* 중앙 정렬 */
+    width: auto !important; /* 원래 크기 유지 */
+    height: auto !important;
+    z-index: 3 !important; /* 파이 차트 위에 표시되도록 z-index 조정 */
+  }
+}
+
+/*# sourceMappingURL=QuaterProfitRateChart.css.map */

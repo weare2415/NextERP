@@ -98,5 +98,39 @@ body {
   text-decoration: underline;
   color: #2d3748;
 }
+@media (max-width: 768px) {
+  .announcement-list-wrapper .announcement-list-grid th,
+  .announcement-list-wrapper .announcement-list-grid td {
+    padding: 10px;
+    font-size: 0.9rem;
+  }
+  .announcement-list-wrapper .announcement-list-grid th:nth-child(1),
+  .announcement-list-wrapper .announcement-list-grid td:nth-child(1) {
+    display: none;
+  }
+  .announcement-list-wrapper .announcement-list-grid th:nth-child(2),
+  .announcement-list-wrapper .announcement-list-grid td:nth-child(2) {
+    width: 20%;
+  }
+  .announcement-list-wrapper .announcement-list-grid th:nth-child(3),
+  .announcement-list-wrapper .announcement-list-grid td:nth-child(3) {
+    width: 15%;
+  }
+  .announcement-list-wrapper .announcement-list-grid th:nth-child(4),
+  .announcement-list-wrapper .announcement-list-grid td:nth-child(4) {
+    width: 15%;
+  }
+  .announcement-list-wrapper .announcement-list-grid th:nth-child(5),
+  .announcement-list-wrapper .announcement-list-grid td:nth-child(5) {
+    width: 15%;
+  }
+  .announcement-list-wrapper .announcement-list-grid th:nth-child(6),
+  .announcement-list-wrapper .announcement-list-grid td:nth-child(6) {
+    width: 15%;
+  }
+  .announcement-list-wrapper .announcement-title-btn {
+    font-size: 1rem;
+  }
+}
 
 /*# sourceMappingURL=AnnouncementList.css.map */

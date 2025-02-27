@@ -1,3 +1,4 @@
+@charset "UTF-8";
 @import url("https://cdn.jsdelivr.net/gh/fonts-archive/AppleSDGothicNeo/AppleSDGothicNeo.css");
 @import url(//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSansNeo.css);
 * {
@@ -23,6 +24,7 @@ body {
   max-width: 90%;
   margin: auto;
   position: relative;
+  margin-top: 40px; /* 화면을 아래로 내리기 위한 여백 추가 */
 }
 .client-page-container .page-header {
   display: flex;
@@ -35,11 +37,11 @@ body {
   color: #3c485a;
   font-family: "Apple SD Gothic Neo", sans-serif;
   margin: 0;
+  font-size: 2rem;
 }
-.client-page-container .page-header .header-right {
+.client-page-container .page-header .client-header-right {
   display: flex;
   align-items: center;
-  gap: 20px;
 }
 .client-page-container .page-header .new-client-btn {
   padding: 8px 16px;
@@ -55,6 +57,56 @@ body {
 }
 .client-page-container .page-header .new-client-btn:hover {
   background-color: rgb(39.6, 47.52, 59.4);
+}
+@media (max-width: 1024px) {
+  .client-page-container {
+    max-width: 100%;
+    padding: 0 10px;
+  }
+  .client-page-container .page-header {
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+  .client-page-container .page-header h1 {
+    font-size: 1.8rem; /* 화면이 좁아질 때 제목 크기 축소 */
+  }
+  .client-page-container .page-header .header-right {
+    width: 100%;
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
+  .client-page-container .page-header .new-client-btn {
+    width: 100%;
+    justify-content: center;
+    padding: 10px 20px; /* 버튼 크기 조정 */
+  }
+}
+@media (max-width: 768px) {
+  .client-page-container {
+    max-width: 90%;
+    padding: 0 10px;
+    top: 20px;
+  }
+  .client-page-container .page-header {
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+  .client-page-container .page-header h1 {
+    font-size: 1.5rem;
+  }
+  .client-page-container .page-header .client-header-right {
+    width: 100%;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    margin-top: 5px;
+    gap: 20px;
+  }
+  .client-page-container .page-header .new-client-btn {
+    width: 100%;
+    justify-content: center;
+  }
 }
 
 /*# sourceMappingURL=ClientPage.css.map */

@@ -41,5 +41,45 @@ body {
   align-items: center;
   gap: 20px;
 }
+.order-page-container .page-header .new-order-btn {
+  padding: 8px 16px;
+  background-color: #3c485a;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-family: "Apple SD Gothic Neo", sans-serif;
+  height: 38px;
+  display: flex;
+  align-items: center;
+}
+.order-page-container .page-header .new-order-btn:hover {
+  background-color: rgb(39.6, 47.52, 59.4);
+}
+@media (max-width: 768px) {
+  .order-page-container {
+    max-width: 100%;
+    padding: 0 10px;
+    transform: scale(0.9);
+    transform-origin: left;
+  }
+  .order-page-container .page-header {
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+  .order-page-container .page-header h1 {
+    font-size: 1.5rem;
+  }
+  .order-page-container .page-header .header-right {
+    width: 105%;
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
+  .order-page-container .page-header .new-order-btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
 
 /*# sourceMappingURL=ApprovedOrderPage.css.map */

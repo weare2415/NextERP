@@ -57,4 +57,57 @@ body {
   background-color: rgb(39.6, 47.52, 59.4);
 }
 
+@media (max-width: 1024px) {
+  .all-announcement-page-container {
+    max-width: 100%;
+    padding: 0 10px;
+    top: 30px;
+  }
+  .page-header {
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    text-align: center;
+  }
+  .page-header h1 {
+    font-size: 1.5rem;
+  }
+  .page-header .header-right {
+    width: 100%;
+    margin-top: -1rem;
+    flex-direction: column;
+  }
+  .page-header .new-announcement-btn {
+    width: 100%;
+    justify-content: center;
+    margin-top: -1rem;
+  }
+}
+@media (max-width: 768px) {
+  .all-announcement-page-container {
+    max-width: 100%;
+    padding: 0 10px;
+    top: 30px;
+  }
+  .page-header {
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    text-align: center;
+  }
+  .page-header h1 {
+    font-size: 1.5rem;
+  }
+  .page-header .header-right {
+    width: 100%;
+    margin-top: -1rem;
+    flex-direction: column;
+  }
+  .page-header .new-announcement-btn {
+    width: 100%;
+    justify-content: center;
+    margin-top: -1rem;
+  }
+}
+
 /*# sourceMappingURL=AnnouncementPage.css.map */
