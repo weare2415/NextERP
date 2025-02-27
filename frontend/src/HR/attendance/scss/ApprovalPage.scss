@@ -19,7 +19,24 @@
     }
   }
 
+  // 반응형 디자인 (모바일, 태블릿 등)
   @media (max-width: 768px) {
-    padding: 1rem;
+    max-width: 100%;
+    padding: 0 10px;
+    top: 50px;
+
+    .page-header {
+      flex-direction: column;
+      text-align: center;
+
+      h1 {
+        font-size: 1.5rem;
+      }
+    }
+
+    .approval-page-loading {
+      font-size: 1rem;
+      margin-top: 10px;
+    }
   }
 }

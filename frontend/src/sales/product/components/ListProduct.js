@@ -1,43 +1,40 @@
 import React, { useEffect, useState } from "react";
 import "../scss/ListProduct.scss";
-import SearchProduct from "./SearchProduct";
 import Sale from "./Sale";
 import Purchase from "./Purchase";
 import { getAllProducts } from "../api/productApi";
 import Pagination from "../../../common/component/Pagination";
-import { getEmployeeById } from "../../../common/member/api/memberApi";
 import useEmployeeNames from "../../../common/hooks/useEmployeeNames";
 
-const ListProduct = ({ onProductSelect }) => {
+const ListProduct = ({ onProductSelect, products: externalProducts = [] }) => {
   const [products, setProducts] = useState([]);
-  const [selectedProduct, setSelectedProduct] = useState(null);
   const [error, setError] = useState(null);
-  const [isSaleModalOpen, setIsSaleModalOpen] = useState(false);
-  const [isPurchaseModalOpen, setIsPurchaseModalOpen] = useState(false);
   const [page, setPage] = useState(0);
   const [size] = useState(10);
   const [totalPages, setTotalPages] = useState(1);
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [isSaleModalOpen, setIsSaleModalOpen] = useState(false);
+  const [isPurchaseModalOpen, setIsPurchaseModalOpen] = useState(false);
   const employeeNames = useEmployeeNames(products, "employeeId");
 
+  // 외부에서 전달된 products가 있으면 이를 사용, 없으면 전체 목록을 가져옴
   useEffect(() => {
-    fetchAllProducts(page);
-  }, [page]);
+    if (externalProducts && externalProducts.length > 0) {
+      setProducts(externalProducts);
+    } else {
+      fetchAllProducts(page);
+    }
+  }, [externalProducts, page]);
 
   const fetchAllProducts = async (page) => {
     try {
       const response = await getAllProducts(page, size);
-
       setProducts(response.content);
       setTotalPages(response.totalPages);
     } catch (error) {
       setError("제품 목록을 불러오는 중 오류가 발생했습니다.");
       console.error("Error fetching all products:", error);
     }
-  };
-
-  const handleSearchResults = (results) => {
-    setProducts(results.length > 0 ? results : []);
-    setError(results.length === 0 ? "검색한 제품이 존재하지 않습니다." : null);
   };
 
   return (
@@ -87,7 +84,7 @@ const ListProduct = ({ onProductSelect }) => {
                         setSelectedProduct(product);
                       }}
                     >
-                      판매 요청
+                      판매
                     </button>
                     <button
                       className="purchase-btn"
@@ -97,7 +94,7 @@ const ListProduct = ({ onProductSelect }) => {
                         setSelectedProduct(product);
                       }}
                     >
-                      구매 요청
+                      구매
                     </button>
                   </td>
                 </tr>
@@ -112,13 +109,18 @@ const ListProduct = ({ onProductSelect }) => {
           </tbody>
         </table>
       </div>
-      <Pagination
-        currentPage={page}
-        totalPages={totalPages}
-        onPageChange={setPage}
-      />
+
+      {/* 외부 검색 결과가 없을 때만 페이지네이션 표시 */}
+      {(!externalProducts || externalProducts.length === 0) && (
+        <Pagination
+          currentPage={page}
+          totalPages={totalPages}
+          onPageChange={setPage}
+        />
+      )}
+
       {(isSaleModalOpen || isPurchaseModalOpen) && (
-        <div className>
+        <div>
           {isSaleModalOpen && (
             <Sale
               isOpen={isSaleModalOpen}

@@ -89,4 +89,33 @@
       }
     }
   }
+
+  // 반응형 디자인 (모바일, 태블릿 등)
+  @media (max-width: 768px) {
+    max-width: 100%;
+    padding: 0 10px;
+    top: 80px;
+
+    .employee-page-header {
+      flex-direction: column;
+      align-items: center;
+    }
+
+    h1 {
+      font-size: 1.8rem;
+    }
+
+    .search-container {
+      flex-direction: row;
+      width: 100%;
+      margin-top: 10px;
+    }
+
+    .new-employee-btn {
+      width: 100%;
+      justify-content: center;
+      margin-right: 20px;
+      margin-top: 20px;
+    }
+  }
 }

@@ -16,7 +16,7 @@
 
       th,
       td {
-        padding: 15px;
+        padding: 10px;
         text-align: center;
         border: 1px solid #ddd;
         word-wrap: break-word;
@@ -85,6 +85,86 @@
       td:nth-child(10) {
         width: 13%;
       }
+    }
+
+    .approval-table-approve-btn,
+    .approval-table-reject-btn {
+      padding: 6px 16px;
+      border: none;
+      border-radius: 4px;
+      font-size: 14px;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+      margin: 0 5px;
+    }
+
+    .approval-table-approve-btn {
+      background-color: $primary-color;
+      color: white;
+    }
+
+    .approval-table-reject-btn {
+      background-color: $error-color;
+      color: white;
+    }
+  }
+}
+
+// 반응형 처리
+@media (max-width: 768px) {
+  .approval-table-section {
+    table {
+      table-layout: auto; /* 열 너비를 자동으로 조정 */
+    }
+
+    th:nth-child(1),
+    td:nth-child(1) {
+      display: none; /* 첫 번째 열 숨기기 */
+    }
+
+    th:nth-child(2),
+    td:nth-child(2) {
+      width: 15%; /* 두 번째 열 너비 조정 */
+    }
+
+    th:nth-child(3),
+    td:nth-child(3) {
+      display: none; /* 세 번째 열 숨기기 */
+    }
+
+    th:nth-child(4),
+    td:nth-child(4) {
+      display: none; /* 네 번째 열 숨기기 */
+    }
+
+    th:nth-child(5),
+    td:nth-child(5) {
+      display: none; /* 다섯 번째 열 숨기기 */
+    }
+
+    th:nth-child(6),
+    td:nth-child(6) {
+      display: none; /* 여섯 번째 열 숨기기 */
+    }
+
+    th:nth-child(7),
+    td:nth-child(7) {
+      width: 15%; /* 일곱 번째 열 너비 조정 */
+    }
+
+    th:nth-child(8),
+    td:nth-child(8) {
+      width: 13%; /* 여덟 번째 열 너비 조정 */
+    }
+
+    th:nth-child(9),
+    td:nth-child(9) {
+      display: none; /* 아홉 번째 열 숨기기 */
+    }
+
+    th:nth-child(10),
+    td:nth-child(10) {
+      width: 33%; /* 열 너비를 33%로 변경 */
     }
 
     .approval-table-approve-btn,

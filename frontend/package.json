@@ -10,8 +10,10 @@
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
     "axios": "^1.7.9",
+    "concurrently": "^9.1.2",
     "global": "^4.4.0",
     "react": "^18.3.1",
+    "react-calendar": "^5.1.0",
     "react-cookie": "^7.2.2",
     "react-dom": "^18.3.1",
     "react-icons": "^5.4.0",
@@ -27,12 +29,15 @@
     "web-vitals": "^2.1.4",
     "yarn": "^1.22.22"
   },
-  "scripts": {
-    "start": "react-scripts start",
+ "scripts": {
+    "start": "concurrently \"npm run flask-api\" \"npm run flask-chat\" \"react-scripts start\"",
+    "flask-api": "CALL venv\\Scripts\\activate && python src/server.py",
+    "flask-chat": "CALL venv\\Scripts\\activate && python src/api.py",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
-  },
+}
+,
   "eslintConfig": {
     "extends": [
       "react-app",

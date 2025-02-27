@@ -27,11 +27,17 @@ const LoginComponent = () => {
       if (data.error) {
         alert("이메일과 패스워드를 다시 확인하세요");
       } else {
-        alert("로그인 성공");
-        moveToPath("/");
+        // 초기 비밀번호를 사용 중이라면 로그인 성공 알림 없이 바로 이동
+        if (data.isInitialPassword) {
+          moveToPath("/member/change-password");
+        } else {
+          alert("로그인 성공");
+          moveToPath("/");
+        }
       }
     });
   };
+
   return (
     <div className="login-page">
       <div className="login-component">

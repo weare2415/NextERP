@@ -97,4 +97,78 @@
       }
     }
   }
+
+  // 반응형 디자인 (모바일, 태블릿 등)
+  @media (max-width: 768px) {
+    max-width: 100%;
+    padding: 0 10px;
+    top: 30px;
+
+    .page-header {
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 15px;
+
+      h1 {
+        font-size: 1.8rem;
+        margin-bottom: 10px;
+      }
+
+      .search-content {
+        width: 100%;
+        flex-direction: row;
+        align-items: flex-start;
+      }
+    }
+
+    .search-option-select {
+      width: 20%;
+    }
+
+    .search-input {
+      width: 100%;
+    }
+
+    .search-btn {
+      width: 14%;
+    }
+
+    .attendance-list {
+      table {
+        th,
+        td {
+          padding: 10px;
+          font-size: 0.9rem;
+        }
+      }
+    }
+  }
+
+  @media (max-width: 480px) {
+    .page-header {
+      h1 {
+        font-size: 1.5rem;
+      }
+    }
+
+    .search-option-select,
+    .search-input {
+      width: 100%;
+    }
+
+    .attendance-list {
+      table {
+        th,
+        td {
+          padding: 8px;
+          font-size: 0.8rem;
+        }
+      }
+    }
+
+    .search-btn {
+      width: 100%;
+      margin-top: 10px;
+    }
+  }
 }

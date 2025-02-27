@@ -2,12 +2,13 @@ import React, { useEffect, useState, useRef } from "react";
 import io from "socket.io-client";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { getMessages, getChatRoomById, sendMessage } from "../api/chatApi";
+import { getMessages, getChatRoomById, sendMessage, leaveChatRoom } from "../api/chatApi";
 import {
   getMessengerEmployees,
   getDepartments,
 } from "../../HR/employee/api/employeeApi";
 import "../scss/ChatRoom.scss";
+import { IoLogOutOutline } from "react-icons/io5";
 
 // WebSocket 서버와 연결
 const socket = io("http://localhost:5000");
@@ -22,11 +23,60 @@ const ChatRoom = () => {
   const [receiverId, setReceiverId] = useState(null);
   const [employees, setEmployees] = useState({});
   const [departments, setDepartments] = useState({});
+  const [showLeaveModal, setShowLeaveModal] = useState(false);
+  const [leftRooms, setLeftRooms] = useState([]);
 
   //  스크롤을 위한 ref 생성
   const messagesEndRef = useRef(null);
 
   useEffect(() => {
+    const handleStorageChange = (e) => {
+      // localStorage의 leftChatRooms 값이 변경되었을 때만 반응
+      if (e.key === `leftChatRooms_${myUserId}`) {
+        const updatedLeftRooms = JSON.parse(e.newValue) || [];
+        setLeftRooms(updatedLeftRooms);  // 업데이트된 채팅방 목록 상태 변경
+      }
+    };
+  
+    // storage 이벤트 리스너 추가
+    window.addEventListener('storage', handleStorageChange);
+  
+    // cleanup: 컴포넌트가 언마운트 될 때 리스너 제거
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+    };
+  }, [myUserId]); // myUserId가 변경될 때마다 이벤트 리스너를 새로 등록
+  
+  // 채팅방 나가기 처리 함수
+  const handleLeaveChatRoom = async () => {
+    try {
+      console.log(`🚀 채팅방 나가기 시작 - chatRoomId: ${chatRoomId}`);
+      
+      await leaveChatRoom(chatRoomId);
+      console.log(`✅ 채팅방 나가기 완료: chatRoomId: ${chatRoomId}`);
+
+      // 채팅방 나가기 이벤트 발생
+      socket.emit("chat_left", {
+        chatRoomId,
+        userId: myUserId
+      });
+
+      window.close(); 
+    } catch (error) {
+      console.error(`❌ 채팅방 나가기 실패 (chatRoomId: ${chatRoomId})`, error);
+    }
+  };
+
+  // ChatRoom.js에서 이벤트 발생 시 데이터도 로깅
+  const eventData = {
+    chatRoomId,
+    userId: myUserId
+  };
+  console.log('📤 발신할 데이터:', eventData);
+  socket.emit("leave_chat", eventData);
+
+  useEffect(() => {
+    console.log('chatroom에서 사용하는 소켓 인스턴스 : ', socket);
     if (chatRoomId && myUserId) {
       fetchChatRoomInfo();
       fetchMessages();
@@ -59,6 +109,7 @@ const ChatRoom = () => {
             },
           ];
 
+          console.log("업데이트된 메시지: ", updatedMessages);
           return updatedMessages;
         });
 
@@ -113,11 +164,6 @@ const ChatRoom = () => {
             (index === 0 || chatMessages[index - 1].senderId !== msg.senderId),
         };
       });
-
-      // 내가 나간 채팅방이라면 기존 메시지 제거
-      if (leftChatRooms.includes(chatRoomId)) {
-        updatedMessages = []; // 기존 메시지 초기화
-      }
 
       console.log("📩 가져온 메시지:", updatedMessages);
       setMessages(updatedMessages);
@@ -218,6 +264,14 @@ const ChatRoom = () => {
     }
   };
 
+  //  엔터 키로 메시지 전송 처리
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();  // 엔터로 줄바꿈 방지
+      handleSendMessage();
+    }
+  };
+
   const formatTime = (isoString) => {
     if (!isoString) return "";
     const date = new Date(isoString);
@@ -230,6 +284,9 @@ const ChatRoom = () => {
     <div className="chat-room-container">
       <div className="chat-header">
         <h2>채팅방 {chatRoomId}</h2>
+        <button className="leave-button" onClick={() => setShowLeaveModal(true)}>
+          <IoLogOutOutline size={20} />
+        </button>
       </div>
 
       <div className="messages-container">
@@ -268,9 +325,28 @@ const ChatRoom = () => {
           value={message}
           onChange={(e) => setMessage(e.target.value)}
           placeholder="메시지 입력"
+          onKeyDown={handleKeyDown}
         />
         <button onClick={handleSendMessage}>전송</button>
       </div>
+      {/* 나가기 모달 */}
+      {showLeaveModal && (
+        <>
+          <div className="context-menu-overlay" onClick={() => setShowLeaveModal(false)} />
+          <div className="context-menu-modal">
+            <div className="modal-content">
+              <ul>
+                <li
+                  className="leave-chat"
+                  onClick={handleLeaveChatRoom}
+                >
+                  채팅방 나가기
+                </li>
+              </ul>
+            </div>
+          </div>
+        </>
+      )}
     </div>
   );
 };

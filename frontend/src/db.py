@@ -2,7 +2,7 @@ import mariadb
 import pandas as pd
 import datetime
 
-# ✅ 데이터베이스 연결 정보
+# 데이터베이스 연결 정보
 DB_CONFIG = {
     "host": "localhost",
     "port": 3306,
@@ -19,11 +19,11 @@ def show_data(table):
         conn = mariadb.connect(**DB_CONFIG)
         cur = conn.cursor()
 
-        # ✅ 데이터 조회
+        # 데이터 조회
         cur.execute(f"SELECT * FROM {table}")
         columns = [x[0] for x in cur.description]
 
-        # ✅ 컬럼명 출력
+        # 컬럼명 출력
         print(f"📌 테이블 '{table}'의 컬럼: {columns}")
 
         rows = cur.fetchall()
@@ -33,7 +33,7 @@ def show_data(table):
             for r in rows:
                 new_row = []
                 for v in r:
-                    # ✅ 날짜 타입 변환
+                    #  날짜 타입 변환
                     if isinstance(v, (datetime.date, datetime.datetime)):
                         val = v.strftime("%Y-%m-%d")
                     else:
@@ -109,6 +109,61 @@ def get_employee_data():
 
 #영업 부분에서는 판매/구매 금액에서 똑같은게 많음(구분 지어야함/ 필터)
 # 재고 개수(영업팀 다 depart) / 판매기록, 구매기록(영업팀 기준으로만) / client 거래처 조회(영업팀기준으로)
+#  영업팀 데이터 조회
+def get_sales_data():
+    """📌 영업팀 전용 데이터 조회 (주문, 제품, 거래처 정보 + 거래 정보)"""
+    conn = None
+    try:
+        conn = mariadb.connect(**DB_CONFIG)
+        cur = conn.cursor()
+
+        # ✅ 영업팀 관련 테이블 조회 (기존 + transactions 추가)
+        sales_tables = ["orders", "product", "client", "transactions"]
+        data_frames = {}
+
+        for table in sales_tables:
+            print(f"🔄 '{table}' 테이블 데이터 조회 중...")
+            df = show_data(table)
+            if not df.empty:
+                data_frames[table] = df  # 각 테이블 별로 저장
+
+        # ✅ 데이터 병합 (orders + product + client + transactions)
+        if all(table in data_frames for table in sales_tables):
+            orders_df = data_frames["orders"]
+            product_df = data_frames["product"]
+            client_df = data_frames["client"]
+            transactions_df = data_frames["transactions"]
+
+            # ✅ 주문 테이블에 제품 정보 병합
+            orders_df = orders_df.merge(product_df, left_on="product_id", right_on="id", suffixes=("_order", "_product"))
+
+            # ✅ 주문 테이블에 거래처 정보 병합
+            orders_df = orders_df.merge(client_df, left_on="client_code", right_on="client_code", suffixes=("_order", "_client"))
+
+            # ✅ 주문 테이블에 거래 내역 추가
+            orders_df = orders_df.merge(transactions_df, left_on="id_order", right_on="id", suffixes=("_order", "_transaction"))
+
+            sales_data = orders_df
+        else:
+            sales_data = pd.DataFrame()
+
+        # ✅ 로그 출력하여 데이터 확인
+        print(f"🔍 영업팀 데이터 조회 결과:\n{sales_data}")
+        print(f"🔍 영업팀 데이터 컬럼명: {sales_data.columns}")
+
+        return sales_data
+
+    except mariadb.Error as e:
+        print(f"❌ 영업팀 데이터 조회 실패: {e}")
+        return pd.DataFrame()
+
+    finally:
+        if conn:
+            cur.close()
+            conn.close()
+
+
+
 
 
 def get_all_data():

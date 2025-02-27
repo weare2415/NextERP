@@ -79,3 +79,51 @@
     }
   }
 }
+
+// 반응형 디자인 (모바일, 태블릿 등)
+@media (max-width: 768px) {
+  .history-list-wrapper {
+    margin-top: 1rem;
+    padding: 0 10px;
+    flex-direction: column; /* 세로로 정렬 */
+
+    .history-table-section {
+      padding: 1rem; /* padding을 줄여서 공간을 확보 */
+    }
+
+    .history-grid {
+      table-layout: fixed; /* fixed로 설정하여 열 너비를 고정 */
+
+      th,
+      td {
+        width: auto !important; /* 모든 열에 width를 강제로 적용 */
+      }
+
+      th:nth-child(1),
+      td:nth-child(1) {
+        display: none;
+      }
+
+      th:nth-child(2),
+      td:nth-child(2) {
+        width: 25% !important;
+      }
+      th:nth-child(3),
+      td:nth-child(3) {
+        display: none;
+      }
+      th:nth-child(4),
+      td:nth-child(4) {
+        width: 30% !important;
+      }
+      th:nth-child(5),
+      td:nth-child(5) {
+        width: 30% !important;
+      }
+      th:nth-child(6),
+      td:nth-child(6) {
+        width: 30% !important;
+      }
+    }
+  }
+}

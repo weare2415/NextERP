@@ -17,18 +17,16 @@ const SearchProduct = ({ onSearchResults }) => {
   const fetchSuggestions = async (query, searchType) => {
     try {
       let data = [];
-      console.log(query);
+      // console.log(query); // 이 줄을 제거하면 매 입력마다 로그가 찍히지 않습니다.
 
       if (searchType === "id") {
         const response = await getProductById(query);
         data = response.id;
-        console.log(data);
       } else if (searchType === "productName") {
         const response = await searchProductsByName(query);
         data = response.content.map((product) => ({
           productName: product.productName,
         }));
-        console.log(data);
       }
       setSuggestions(data);
     } catch (error) {
@@ -133,18 +131,17 @@ const SearchProduct = ({ onSearchResults }) => {
           <ul className="suggestions-list">
             {suggestions.map((item, index) => (
               <li
-                key={item.id || item.productName || index}
-                className={selectedIndex === index ? "selected" : ""}
+                key={`${item.productName}-${index}`} // 제품명 + index 조합
                 onMouseDown={() => {
                   setIsSelecting(true);
                   setSearchParams((prev) => ({
                     ...prev,
-                    searchTerm: item.id || item.productName,
+                    searchTerm: item.productName,
                   }));
                   setSuggestions([]);
                 }}
               >
-                {item.id || item.productName}
+                {item.productName}
               </li>
             ))}
           </ul>

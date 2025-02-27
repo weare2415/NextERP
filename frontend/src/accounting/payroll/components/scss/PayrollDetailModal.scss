@@ -147,20 +147,6 @@
       font-size: 14px;
       font-weight: 500;
       cursor: pointer;
-
-      &.update-button {
-        background-color: $primary-color;
-        color: white;
-
-        &:hover {
-          background-color: darken($primary-color, 10%);
-        }
-      }
-
-      &.delete-button {
-        background-color: $error-color;
-        color: white;
-      }
     }
   }
 }

@@ -23,14 +23,12 @@ const AttendancePage = () => {
   const [totalPages, setTotalPages] = useState(1);
 
   const [searchTerm, setSearchTerm] = useState("");
-  const [searchCategory, setSearchCategory] = useState("name");
+  const [searchCategory, setSearchCategory] = useState("Id");
 
-  // 컴포넌트가 마운트될 때 전체 데이터를 한 번에 가져옴 (예: 최대 1000건)
   useEffect(() => {
     fetchAttendances();
   }, []);
 
-  // searchTerm이 빈 문자열이면 검색 모드를 해제하고 전체 데이터를 사용
   useEffect(() => {
     if (searchTerm.trim() === "") {
       setFilteredAttendances(null);
@@ -38,7 +36,7 @@ const AttendancePage = () => {
       setTotalPages(pages > 0 ? pages : 1);
       setPage(0);
     }
-  }, [searchTerm, allAttendances]);
+  }, [allAttendances]);
 
   const fetchAttendances = async () => {
     setLoading(true);
@@ -61,12 +59,11 @@ const AttendancePage = () => {
   // 검색 버튼 클릭 시, 전체 데이터에서 필터링 처리
   const handleSearch = () => {
     if (searchTerm.trim() === "") {
-      // 검색어가 없으면 필터링 해제
       setFilteredAttendances(null);
       const pages = Math.ceil(allAttendances.length / 10);
       setTotalPages(pages > 0 ? pages : 1);
       setPage(0);
-      return;
+      return; // 검색어가 없으면 필터링 해제 후 종료
     }
     const filtered = allAttendances.filter((attendance) => {
       switch (searchCategory) {
@@ -106,7 +103,6 @@ const AttendancePage = () => {
     try {
       await requestApproval(id);
       alert("승인 요청이 완료되었습니다.");
-      // 승인 후 전체 데이터를 다시 불러옴
       fetchAttendances();
     } catch (error) {
       console.error("승인 요청 실패:", error);
@@ -114,7 +110,6 @@ const AttendancePage = () => {
     }
   };
 
-  // 검색이 활성화되어 있으면 filteredAttendances, 아니면 전체 데이터를 사용
   const dataToDisplay =
     filteredAttendances !== null ? filteredAttendances : allAttendances;
 

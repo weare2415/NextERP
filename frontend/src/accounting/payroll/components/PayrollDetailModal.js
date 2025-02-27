@@ -75,7 +75,11 @@ const PayrollDetailModal = ({ payroll, onClose }) => {
           <div className="form-grid">
             <div className="form-group">
               <label>직원명</label>
-              <input type="text" value={employeeName} readOnly />
+              <input
+                type="text"
+                value={employeeName[payroll.employeeId]}
+                readOnly
+              />
             </div>
             <div className="form-group">
               <label>연봉</label>
@@ -134,10 +138,6 @@ const PayrollDetailModal = ({ payroll, onClose }) => {
               <label>비고</label>
               <textarea value="급여 상세 설명 입력 (필요시)" readOnly />
             </div>
-          </div>
-          <div className="button-container">
-            <button className="update-button">수정</button>
-            <button className="delete-button">삭제</button>
           </div>
         </div>
       </div>

@@ -8,7 +8,7 @@ const VerifyEmployeeId = () => {
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
-  // ✅ 사원 ID 검증
+  //  사원 ID 검증
   const handleVerify = async (e) => {
     e.preventDefault();
     setError(""); // 기존 에러 초기화

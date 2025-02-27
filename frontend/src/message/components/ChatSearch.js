@@ -10,11 +10,16 @@ const ChatSearch = ({ onSearch }) => {
   const handleSearchChange = async (event) => {
     const term = event.target.value;
     setSearchTerm(term);
-
+  
     if (term.trim().length > 0) {
       try {
-        const employees = await getEmployeesByName(term); // ✅ 직원 검색 API 호출
-        setSuggestions(employees);
+        const response = await getEmployeesByName(term); // ✅ 직원 검색 API 호출
+        const employees = response.content || [];  // content가 없으면 빈 배열로 설정
+        if (Array.isArray(employees)) {
+          setSuggestions(employees);
+        } else {
+          console.error("❌ 직원 검색 결과가 배열이 아닙니다.", employees);
+        }
       } catch (error) {
         console.error("❌ 직원 검색 오류:", error);
       }
@@ -26,12 +31,18 @@ const ChatSearch = ({ onSearch }) => {
   // ✅ 검색 실행
   const handleSearchSubmit = () => {
     if (searchTerm.trim().length > 0) {
-      const selectedEmployee = suggestions.find(
-        (emp) => emp.name === searchTerm
-      );
-      if (selectedEmployee) {
-        onSearch(selectedEmployee.id); // ✅ 검색된 직원 ID로 채팅방 필터링
-        setSuggestions([]);
+      if (Array.isArray(suggestions)) {
+        const selectedEmployee = suggestions.find(
+          (emp) => emp.name === searchTerm
+        );
+        if (selectedEmployee) {
+          onSearch(selectedEmployee.id); // ✅ 검색된 직원 ID로 채팅방 필터링
+          setSuggestions([]); // 검색 후에는 제안 목록 초기화
+        } else {
+          console.log("❌ 해당 이름의 직원이 없습니다.");
+        }
+      } else {
+        console.error("❌ suggestions가 배열이 아닙니다.");
       }
     }
   };
@@ -73,7 +84,7 @@ const ChatSearch = ({ onSearch }) => {
               🔍
             </button>
             <button className="clear-button" onClick={handleClearSearch}>
-              ×
+              X
             </button>
           </>
         )}

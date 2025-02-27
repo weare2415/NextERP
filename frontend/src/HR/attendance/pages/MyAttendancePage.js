@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import {
-  checkIn, //출근 post
+  checkIn, // 출근 post
   checkOut,
-  getAttendancesPresentLateOffWork,
+  getAttendanceByEmployee,
 } from "../../attendance/api/attendanceApi";
 import BasicLayout from "../../../common/pages/BasicLayout";
-import Pagination from "../../../common/component/Pagination"; //
+import Pagination from "../../../common/component/Pagination";
 import "../scss/MyAttendancePage.scss";
 
 const statusTextMap = {
@@ -21,15 +21,23 @@ const MyAttendancePage = () => {
   const [allAttendance, setAllAttendance] = useState([]); // 전체 출퇴근 기록
   const [loading, setLoading] = useState(false);
 
-  const [page, setPage] = useState(0); //  현재 페이지
-  const [size] = useState(5); //  한 페이지당 5개로 설정
-  const [totalPages, setTotalPages] = useState(1); //  전체 페이지 수
+  const [page, setPage] = useState(0); // 현재 페이지
+  const [size] = useState(5); // 한 페이지당 5개로 설정
+  const [totalPages, setTotalPages] = useState(1); // 전체 페이지 수
 
   useEffect(() => {
     if (employeeId) {
       fetchAttendance();
     }
-  }, [employeeId, page]); //  페이지 변경될 때도 실행
+  }, [employeeId, page]); // 페이지 변경될 때마다 실행
+
+  useEffect(() => {
+    // 페이지 로드 시 localStorage에서 todayAttendance 불러오기
+    const savedTodayAttendance = localStorage.getItem("todayAttendance");
+    if (savedTodayAttendance) {
+      setTodayAttendance(JSON.parse(savedTodayAttendance));
+    }
+  }, []);
 
   const fetchAttendance = async () => {
     if (!employeeId) {
@@ -40,10 +48,10 @@ const MyAttendancePage = () => {
     setLoading(true);
     try {
       console.log(
-        `📢 [${employeeId}] 출근/지각/퇴근 근태 기록 요청: page=${page}, size=${size}`
+        `📢 [${employeeId}] 직원 근태 기록 요청: page=${page}, size=${size}`
       );
 
-      const data = await getAttendancesPresentLateOffWork(page, size);
+      const data = await getAttendanceByEmployee(employeeId, page, size);
       console.log("✅ API 응답 데이터:", data);
 
       if (!data || !data.content) {
@@ -51,31 +59,22 @@ const MyAttendancePage = () => {
         return;
       }
 
-      // ✅ employeeId를 숫자로 변환 후 필터링
-      const parsedEmployeeId = Number(employeeId);
-      console.log(
-        "🔍 변환된 employeeId 타입:",
-        typeof parsedEmployeeId,
-        parsedEmployeeId
+      // 날짜를 기준으로 내림차순 정렬 (최신 기록이 앞에 오도록)
+      const sortedData = data.content.sort(
+        (a, b) => new Date(b.date) - new Date(a.date)
       );
 
-      const filteredAttendance = data.content.filter(
-        (record) => record.employeeId === parsedEmployeeId
-      );
+      setAllAttendance(sortedData);
+      setTotalPages(Math.ceil(data.totalElements / size));
 
-      console.log("✅ 필터링된 데이터:", filteredAttendance);
-
-      setAllAttendance(filteredAttendance);
-      setTotalPages(data.totalPages);
-
-      // ✅ 오늘 날짜의 출근 기록만 필터링
+      // 오늘 날짜의 출근 기록 찾기
       const today = new Date().toISOString().split("T")[0]; // YYYY-MM-DD 형식
-      const todayRecord = filteredAttendance.find(
-        (record) => record.date === today
-      );
-
+      const todayRecord = sortedData.find((record) => record.date === today);
       if (todayRecord) {
         setTodayAttendance(todayRecord);
+        localStorage.setItem("todayAttendance", JSON.stringify(todayRecord));
+      } else {
+        localStorage.removeItem("todayAttendance");
       }
     } catch (error) {
       console.error(`❌ [${employeeId}] 근태 기록 조회 실패:`, error);
@@ -163,7 +162,7 @@ const MyAttendancePage = () => {
             )}
           </div>
 
-          {/*  전체 출퇴근 내역 */}
+          {/* 전체 출퇴근 내역 */}
           <div className="right-section">
             <h3>전체 출퇴근 내역</h3>
             {loading ? (
