@@ -24,6 +24,7 @@ body {
   margin: auto;
   position: relative;
   margin-top: 20px;
+  overflow-x: hidden;
 }
 .mypage h1 {
   color: #3c485a;
@@ -49,6 +50,9 @@ body {
   flex-direction: column;
   gap: 2rem;
   margin-top: 1rem;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
 }
 .page-container .left-section,
 .page-container .right-section {
@@ -56,31 +60,31 @@ body {
   background: white;
   padding: 2rem;
   border-radius: 8px;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: auto;
 }
-.page-container .left-section h3,
-.page-container .right-section h3 {
+.page-container h3 {
   color: #3c485a;
   font-size: 1.5rem;
   font-weight: 700;
   margin-bottom: 1rem;
-}
-.page-container .loading {
-  text-align: center;
-  color: #929fb4;
-  font-size: 1.1rem;
-  margin: 2rem 0;
 }
 
 .attendance-table {
   width: 100%;
   border-collapse: collapse;
   margin-top: 1rem;
+  table-layout: fixed;
 }
 .attendance-table th,
 .attendance-table td {
   padding: 1rem;
   text-align: center;
   border: 1px solid #ddd;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .attendance-table th {
   color: white;
@@ -109,8 +113,7 @@ body {
   display: flex;
   gap: 10px;
 }
-
-button {
+.buttons button {
   padding: 0.5rem 1rem;
   background-color: #3c485a;
   color: white;
@@ -118,7 +121,7 @@ button {
   border-radius: 5px;
   cursor: pointer;
 }
-button:disabled {
+.buttons button:disabled {
   background-color: #ccc;
   cursor: not-allowed;
 }
@@ -129,6 +132,58 @@ button:disabled {
 
 .attendance-info p {
   margin-bottom: 1rem;
+}
+
+@media (max-width: 768px) {
+  .mypage {
+    max-width: 100%;
+    padding: 0 1rem;
+    margin: 0;
+    top: 80px;
+  }
+  .mypage h1 {
+    font-size: 1.8rem;
+    text-align: center;
+  }
+  .mypage .user-controls {
+    position: static;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 10px;
+  }
+  .mypage .user-controls p {
+    margin-top: 5px;
+  }
+  .page-container {
+    gap: 1rem;
+    margin: 0;
+    padding: 1rem;
+    width: 100%;
+  }
+  .page-container .left-section,
+  .page-container .right-section {
+    padding: 1rem;
+    margin: 0;
+    width: 100%;
+    overflow-x: auto;
+  }
+  .attendance-table {
+    font-size: 0.875rem;
+  }
+  .attendance-table th,
+  .attendance-table td {
+    padding: 0.5rem;
+    font-size: inherit;
+  }
+  .buttons {
+    flex-direction: column;
+    width: 90%;
+  }
+  .buttons button {
+    width: 100%;
+    text-align: center;
+  }
 }
 
 /*# sourceMappingURL=MyAttendancePage.css.map */

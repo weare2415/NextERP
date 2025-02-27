@@ -66,5 +66,65 @@ body {
   text-decoration: underline;
   color: #2d3748;
 }
+@media (max-width: 768px) {
+  .employee-list-container .employee-table thead th {
+    padding: 10px;
+    font-size: 0.9rem;
+  }
+  .employee-list-container .employee-table tbody tr td {
+    padding: 10px;
+    font-size: 0.9rem;
+  }
+  .employee-list-container h3 {
+    font-size: 1.5rem;
+  }
+  .employee-list-container .employee-table {
+    table-layout: fixed;
+  }
+  .employee-list-container .employee-table th:nth-child(1),
+  .employee-list-container .employee-table td:nth-child(1) {
+    display: none;
+  }
+  .employee-list-container .employee-table th:nth-child(2),
+  .employee-list-container .employee-table td:nth-child(2) {
+    width: 15%;
+  }
+  .employee-list-container .employee-table th:nth-child(3),
+  .employee-list-container .employee-table td:nth-child(3) {
+    display: none;
+  }
+  .employee-list-container .employee-table th:nth-child(4),
+  .employee-list-container .employee-table td:nth-child(4) {
+    width: 10%;
+  }
+  .employee-list-container .employee-table th:nth-child(5),
+  .employee-list-container .employee-table td:nth-child(5) {
+    display: none;
+  }
+  .employee-list-container .employee-table th:nth-child(6),
+  .employee-list-container .employee-table td:nth-child(6) {
+    display: none;
+  }
+  .employee-list-container .employee-table th:nth-child(7),
+  .employee-list-container .employee-table td:nth-child(7) {
+    display: none;
+  }
+  .employee-list-container .employee-table th:nth-child(8),
+  .employee-list-container .employee-table td:nth-child(8) {
+    width: 12%;
+  }
+  .employee-list-container .employee-table th:nth-child(9),
+  .employee-list-container .employee-table td:nth-child(9) {
+    width: 10%;
+  }
+  .employee-list-container .employee-table th:nth-child(10),
+  .employee-list-container .employee-table td:nth-child(10) {
+    display: none;
+  }
+  .employee-list-container .employee-table th:nth-child(11),
+  .employee-list-container .employee-table td:nth-child(11) {
+    width: 15%;
+  }
+}
 
 /*# sourceMappingURL=ListEmployee.css.map */

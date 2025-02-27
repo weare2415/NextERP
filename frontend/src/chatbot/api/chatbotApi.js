@@ -37,6 +37,7 @@ export const askChatbot = async (
     );
 
     // 정상 응답 반환
+    console.log(response);
     return response.data.response;
   } catch (error) {
     // 토큰 만료로 인한 401 오류 처리

@@ -129,6 +129,7 @@ body {
   background-color: #929fb4;
   color: white;
   border: none;
+  border-radius: 0;
   font-size: 12px;
   cursor: pointer;
 }
@@ -144,12 +145,12 @@ body {
   align-items: flex-start;
 }
 .modal-overlay .client-detail-form .client-detail-grid .form-group:has(textarea[name=memo]) label {
-  height: 100px;
+  height: 70px;
   justify-content: center;
   line-height: normal;
 }
 .modal-overlay .client-detail-form .client-detail-grid .form-group:has(textarea[name=memo]) textarea {
-  height: 100px;
+  height: 70px;
   resize: none;
 }
 .modal-overlay .client-detail-form .client-detail-grid .client-detail-buttons {

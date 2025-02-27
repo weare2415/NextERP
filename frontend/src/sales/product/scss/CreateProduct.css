@@ -149,4 +149,49 @@ body {
   background-color: rgb(39.6, 47.52, 59.4);
 }
 
+@media (max-width: 768px) {
+  .modal-overlay .product-create-form {
+    width: 95%;
+    max-width: 95%;
+    height: auto;
+    max-height: 90vh;
+  }
+  .modal-overlay .product-create-form .product-create-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0;
+    padding: 15px;
+  }
+  .modal-overlay .product-create-form .product-create-grid .form-group {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    margin-bottom: 0;
+  }
+  .modal-overlay .product-create-form .product-create-grid .form-group label {
+    width: 110px;
+    min-width: 110px;
+    font-size: 13px;
+    padding: 8px 10px;
+  }
+  .modal-overlay .product-create-form .product-create-grid .form-group input,
+  .modal-overlay .product-create-form .product-create-grid .form-group select,
+  .modal-overlay .product-create-form .product-create-grid .form-group textarea {
+    flex: 1;
+    height: 35px;
+    font-size: 13px;
+    padding: 8px;
+  }
+  .modal-overlay .product-create-form .product-create-grid .product-create-buttons {
+    display: flex;
+    justify-content: center;
+    margin-top: 15px;
+  }
+  .modal-overlay .product-create-form .product-create-grid .product-create-buttons button {
+    width: 80px;
+    height: 35px;
+    font-size: 13px;
+  }
+}
+
 /*# sourceMappingURL=CreateProduct.css.map */

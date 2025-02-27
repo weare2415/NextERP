@@ -98,5 +98,30 @@ body {
 .employee-page-container .employee-page-header .new-employee-btn:hover {
   background-color: rgb(39.6, 47.52, 59.4);
 }
+@media (max-width: 768px) {
+  .employee-page-container {
+    max-width: 100%;
+    padding: 0 10px;
+    top: 80px;
+  }
+  .employee-page-container .employee-page-header {
+    flex-direction: column;
+    align-items: center;
+  }
+  .employee-page-container h1 {
+    font-size: 1.8rem;
+  }
+  .employee-page-container .search-container {
+    flex-direction: row;
+    width: 100%;
+    margin-top: 10px;
+  }
+  .employee-page-container .new-employee-btn {
+    width: 100%;
+    justify-content: center;
+    margin-right: 20px;
+    margin-top: 20px;
+  }
+}
 
 /*# sourceMappingURL=EmployeePage.css.map */

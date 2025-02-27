@@ -1,3 +1,4 @@
+@charset "UTF-8";
 @import url("https://cdn.jsdelivr.net/gh/fonts-archive/AppleSDGothicNeo/AppleSDGothicNeo.css");
 @import url(//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSansNeo.css);
 * {
@@ -77,6 +78,39 @@ body {
 .approval-list-wrapper .approval-list-section .approval-list-grid th:nth-child(6),
 .approval-list-wrapper .approval-list-section .approval-list-grid td:nth-child(6) {
   width: 15%;
+}
+@media (max-width: 768px) {
+  .approval-list-wrapper .approval-list-section .approval-list-grid {
+    table-layout: auto; /* 열 너비를 자동으로 조정 */
+  }
+  .approval-list-wrapper .approval-list-section .approval-list-grid th,
+  .approval-list-wrapper .approval-list-section .approval-list-grid td {
+    padding: 10px;
+  }
+  .approval-list-wrapper .approval-list-section .approval-list-grid th:nth-child(1),
+  .approval-list-wrapper .approval-list-section .approval-list-grid td:nth-child(1) {
+    display: none;
+  }
+  .approval-list-wrapper .approval-list-section .approval-list-grid th:nth-child(2),
+  .approval-list-wrapper .approval-list-section .approval-list-grid td:nth-child(2) {
+    width: 9%;
+  }
+  .approval-list-wrapper .approval-list-section .approval-list-grid th:nth-child(3),
+  .approval-list-wrapper .approval-list-section .approval-list-grid td:nth-child(3) {
+    width: 9%;
+  }
+  .approval-list-wrapper .approval-list-section .approval-list-grid th:nth-child(4),
+  .approval-list-wrapper .approval-list-section .approval-list-grid td:nth-child(4) {
+    display: none;
+  }
+  .approval-list-wrapper .approval-list-section .approval-list-grid th:nth-child(5),
+  .approval-list-wrapper .approval-list-section .approval-list-grid td:nth-child(5) {
+    width: 15%;
+  }
+  .approval-list-wrapper .approval-list-section .approval-list-grid th:nth-child(6),
+  .approval-list-wrapper .approval-list-section .approval-list-grid td:nth-child(6) {
+    width: 25% !important;
+  }
 }
 .approval-list-wrapper .approval-table-approve-btn {
   display: inline-block;

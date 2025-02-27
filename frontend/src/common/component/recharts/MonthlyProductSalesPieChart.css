@@ -1,3 +1,4 @@
+@charset "UTF-8";
 @import url("https://cdn.jsdelivr.net/gh/fonts-archive/AppleSDGothicNeo/AppleSDGothicNeo.css");
 @import url(//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSansNeo.css);
 * {
@@ -50,6 +51,24 @@ body {
   color: #333;
   font-size: 0.8rem;
   padding: 5px;
+}
+
+.pie-chart-wrapper,
+.recharts-legend {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: 5px;
+}
+
+/* 반응형 스타일 추가 */
+@media (max-width: 768px) {
+  .pie-chart-wrapper,
+  .recharts-legend {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 }
 
 /*# sourceMappingURL=MonthlyProductSalesPieChart.css.map */

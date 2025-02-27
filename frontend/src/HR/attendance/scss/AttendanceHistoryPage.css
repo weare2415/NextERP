@@ -1,3 +1,4 @@
+@charset "UTF-8";
 @import url("https://cdn.jsdelivr.net/gh/fonts-archive/AppleSDGothicNeo/AppleSDGothicNeo.css");
 @import url(//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSansNeo.css);
 * {
@@ -81,6 +82,32 @@ body {
 }
 .attendance-history-page-container .page-header .search-btn:hover {
   background-color: rgb(39.6, 47.52, 59.4);
+}
+
+@media (max-width: 768px) {
+  .attendance-history-page-container {
+    padding: 0 10px;
+    max-width: 100%; /* 기본 너비를 100%로 설정 */
+    top: 30px;
+  }
+  .attendance-history-page-container .page-header {
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 15px;
+  }
+  .attendance-history-page-container .page-header h1 {
+    font-size: 1.8rem;
+  }
+  .attendance-history-page-container .page-header .search-container {
+    width: 95%;
+    flex-direction: row; /* 반응형에서만 row 방향으로 설정 */
+    align-items: center;
+    margin-right: 10px;
+    gap: 10px; /* 요소들 간 간격 설정 */
+  }
+  .attendance-history-page-container .search-btn {
+    width: 15%;
+  }
 }
 
 /*# sourceMappingURL=AttendanceHistoryPage.css.map */
