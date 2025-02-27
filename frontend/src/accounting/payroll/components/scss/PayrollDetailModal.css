@@ -154,16 +154,5 @@ body {
   font-weight: 500;
   cursor: pointer;
 }
-.payroll-modal-container .button-container button.update-button {
-  background-color: #3c485a;
-  color: white;
-}
-.payroll-modal-container .button-container button.update-button:hover {
-  background-color: rgb(39.6, 47.52, 59.4);
-}
-.payroll-modal-container .button-container button.delete-button {
-  background-color: red;
-  color: white;
-}
 
 /*# sourceMappingURL=PayrollDetailModal.css.map */

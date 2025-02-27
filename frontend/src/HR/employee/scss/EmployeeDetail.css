@@ -186,4 +186,85 @@ body {
   color: white;
 }
 
+@media (max-width: 768px) {
+  .modal-overlay .employee-detail-modal {
+    width: 95%;
+    max-width: 95%;
+    height: auto;
+    max-height: 90vh;
+  }
+  .modal-overlay .employee-detail-modal .employee-detail-modal-header {
+    padding: 12px 15px;
+  }
+  .modal-overlay .employee-detail-modal .employee-detail-modal-header h2 {
+    font-size: 16px;
+  }
+  .modal-overlay .employee-detail-modal .employee-detail-modal-header .close-button {
+    font-size: 18px;
+  }
+  .modal-overlay .employee-detail-modal .employee-detail-form {
+    padding: 15px;
+  }
+  .modal-overlay .employee-detail-modal .employee-detail-form .form-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 5px;
+  }
+  .modal-overlay .employee-detail-modal .employee-detail-form .form-grid .form-group {
+    flex-direction: row;
+    width: 100%;
+  }
+  .modal-overlay .employee-detail-modal .employee-detail-form .form-grid .form-group label {
+    width: 120px;
+    min-width: 120px;
+    font-size: 13px;
+    padding: 8px 10px;
+  }
+  .modal-overlay .employee-detail-modal .employee-detail-form .form-grid .form-group input,
+  .modal-overlay .employee-detail-modal .employee-detail-form .form-grid .form-group select,
+  .modal-overlay .employee-detail-modal .employee-detail-form .form-grid .form-group textarea {
+    flex: 1;
+    height: 35px;
+    font-size: 13px;
+    padding: 8px;
+  }
+  .modal-overlay .employee-detail-modal .employee-detail-form .form-grid .form-group:has(input[name=zipCode]) {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .modal-overlay .employee-detail-modal .employee-detail-form .form-grid .form-group:has(input[name=zipCode]) input {
+    width: 100%;
+  }
+  .modal-overlay .employee-detail-modal .employee-detail-form .form-grid .form-group:has(input[name=zipCode]) button {
+    width: 100%;
+    margin-left: 0;
+    margin-top: 5px;
+  }
+  .modal-overlay .employee-detail-modal .employee-detail-form .form-grid .form-group:has(input[name=clientAddress]), .modal-overlay .employee-detail-modal .employee-detail-form .form-grid .form-group:has(input[name=clientDetailedAddress]), .modal-overlay .employee-detail-modal .employee-detail-form .form-grid .form-group:has(input[name=clientAccountNumber]), .modal-overlay .employee-detail-modal .employee-detail-form .form-grid .form-group:has(textarea[name=memo]) {
+    grid-column: 1/-1;
+  }
+  .modal-overlay .employee-detail-modal .employee-detail-form .form-grid .form-group:has(textarea[name=memo]) {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .modal-overlay .employee-detail-modal .employee-detail-form .form-grid .form-group:has(textarea[name=memo]) label {
+    height: auto;
+    line-height: normal;
+  }
+  .modal-overlay .employee-detail-modal .employee-detail-form .form-grid .form-group:has(textarea[name=memo]) textarea {
+    height: 80px;
+  }
+  .modal-overlay .employee-detail-modal .employee-detail-button-container {
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+    gap: 8px;
+  }
+  .modal-overlay .employee-detail-modal .employee-detail-button-container button {
+    width: 100%;
+    height: 38px;
+    font-size: 13px;
+  }
+}
+
 /*# sourceMappingURL=EmployeeDetail.css.map */

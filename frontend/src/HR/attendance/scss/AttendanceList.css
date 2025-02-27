@@ -23,63 +23,100 @@ body {
   width: 100%;
   position: relative;
 }
-
-.search-attendance-container {
+.attendance-list-wrapper .search-attendance-container {
   position: absolute;
   top: -60px;
   right: 0;
 }
-
-.attendance-table-section {
+.attendance-list-wrapper .attendance-table-section {
   background-color: white;
   width: 100%;
   margin-top: 20px;
   border-left: 1px solid #ddd;
 }
-.attendance-table-section table {
+.attendance-list-wrapper .attendance-table-section table {
   width: 100%;
   border-collapse: collapse;
   table-layout: fixed;
 }
-.attendance-table-section table th, .attendance-table-section table td {
+.attendance-list-wrapper .attendance-table-section table th,
+.attendance-list-wrapper .attendance-table-section table td {
   padding: 15px;
   text-align: center;
   border: 1px solid #ddd;
   word-wrap: break-word;
 }
-.attendance-table-section table th:first-child, .attendance-table-section table td:first-child {
+.attendance-list-wrapper .attendance-table-section table th:first-child,
+.attendance-list-wrapper .attendance-table-section table td:first-child {
   border-left: none;
 }
-.attendance-table-section table th {
+.attendance-list-wrapper .attendance-table-section table th {
   background-color: #4a5568;
   color: white;
   font-weight: 500;
   border-bottom: 1px solid #2d3748;
   position: relative;
 }
-.attendance-table-section table tr:hover {
+.attendance-list-wrapper .attendance-table-section table tr:hover {
   background-color: #f8f9fa;
 }
-.attendance-table-section table th:nth-child(1), .attendance-table-section table td:nth-child(1) {
+.attendance-list-wrapper .attendance-table-section table th:nth-child(1),
+.attendance-list-wrapper .attendance-table-section table td:nth-child(1) {
   width: 15%;
 }
-.attendance-table-section table th:nth-child(2), .attendance-table-section table td:nth-child(2) {
+.attendance-list-wrapper .attendance-table-section table th:nth-child(2),
+.attendance-list-wrapper .attendance-table-section table td:nth-child(2) {
   width: 10%;
 }
-.attendance-table-section table th:nth-child(3), .attendance-table-section table td:nth-child(3) {
+.attendance-list-wrapper .attendance-table-section table th:nth-child(3),
+.attendance-list-wrapper .attendance-table-section table td:nth-child(3) {
   width: 15%;
 }
-.attendance-table-section table th:nth-child(4), .attendance-table-section table td:nth-child(4) {
+.attendance-list-wrapper .attendance-table-section table th:nth-child(4),
+.attendance-list-wrapper .attendance-table-section table td:nth-child(4) {
   width: 15%;
 }
-.attendance-table-section table th:nth-child(5), .attendance-table-section table td:nth-child(5) {
+.attendance-list-wrapper .attendance-table-section table th:nth-child(5),
+.attendance-list-wrapper .attendance-table-section table td:nth-child(5) {
   width: 15%;
 }
-.attendance-table-section table th:nth-child(6), .attendance-table-section table td:nth-child(6) {
+.attendance-list-wrapper .attendance-table-section table th:nth-child(6),
+.attendance-list-wrapper .attendance-table-section table td:nth-child(6) {
   width: 15%;
 }
-.attendance-table-section table th:nth-child(7), .attendance-table-section table td:nth-child(7) {
+.attendance-list-wrapper .attendance-table-section table th:nth-child(7),
+.attendance-list-wrapper .attendance-table-section table td:nth-child(7) {
   width: 15%;
+}
+@media (max-width: 768px) {
+  .attendance-list-wrapper .attendance-table-section table th:nth-child(1),
+  .attendance-list-wrapper .attendance-table-section table td:nth-child(1) {
+    display: none;
+  }
+  .attendance-list-wrapper .attendance-table-section table th:nth-child(2),
+  .attendance-list-wrapper .attendance-table-section table td:nth-child(2) {
+    width: 22%;
+  }
+  .attendance-list-wrapper .attendance-table-section table th:nth-child(3),
+  .attendance-list-wrapper .attendance-table-section table td:nth-child(3) {
+    width: 22%;
+  }
+  .attendance-list-wrapper .attendance-table-section table th:nth-child(4),
+  .attendance-list-wrapper .attendance-table-section table td:nth-child(4) {
+    width: 20%;
+  }
+  .attendance-list-wrapper .attendance-table-section table th:nth-child(5),
+  .attendance-list-wrapper .attendance-table-section table td:nth-child(5) {
+    width: 20%;
+  }
+  .attendance-list-wrapper .attendance-table-section table th:nth-child(6),
+  .attendance-list-wrapper .attendance-table-section table td:nth-child(6) {
+    width: 15%;
+  }
+  .attendance-list-wrapper .attendance-table-section table th:nth-child(7),
+  .attendance-list-wrapper .attendance-table-section table td:nth-child(7) {
+    width: 20%;
+  }
 }
 
 /*# sourceMappingURL=AttendanceList.css.map */

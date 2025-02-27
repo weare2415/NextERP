@@ -1,3 +1,4 @@
+@charset "UTF-8";
 @import url("https://cdn.jsdelivr.net/gh/fonts-archive/AppleSDGothicNeo/AppleSDGothicNeo.css");
 @import url(//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSansNeo.css);
 * {
@@ -87,6 +88,48 @@ body {
 .history-list-wrapper .history-table-section .history-grid th:nth-child(6),
 .history-list-wrapper .history-table-section .history-grid td:nth-child(6) {
   width: 10%;
+}
+
+@media (max-width: 768px) {
+  .history-list-wrapper {
+    margin-top: 1rem;
+    padding: 0 10px;
+    flex-direction: column; /* 세로로 정렬 */
+  }
+  .history-list-wrapper .history-table-section {
+    padding: 1rem; /* padding을 줄여서 공간을 확보 */
+  }
+  .history-list-wrapper .history-grid {
+    table-layout: fixed; /* fixed로 설정하여 열 너비를 고정 */
+  }
+  .history-list-wrapper .history-grid th,
+  .history-list-wrapper .history-grid td {
+    width: auto !important; /* 모든 열에 width를 강제로 적용 */
+  }
+  .history-list-wrapper .history-grid th:nth-child(1),
+  .history-list-wrapper .history-grid td:nth-child(1) {
+    display: none;
+  }
+  .history-list-wrapper .history-grid th:nth-child(2),
+  .history-list-wrapper .history-grid td:nth-child(2) {
+    width: 25% !important;
+  }
+  .history-list-wrapper .history-grid th:nth-child(3),
+  .history-list-wrapper .history-grid td:nth-child(3) {
+    display: none;
+  }
+  .history-list-wrapper .history-grid th:nth-child(4),
+  .history-list-wrapper .history-grid td:nth-child(4) {
+    width: 30% !important;
+  }
+  .history-list-wrapper .history-grid th:nth-child(5),
+  .history-list-wrapper .history-grid td:nth-child(5) {
+    width: 30% !important;
+  }
+  .history-list-wrapper .history-grid th:nth-child(6),
+  .history-list-wrapper .history-grid td:nth-child(6) {
+    width: 30% !important;
+  }
 }
 
 /*# sourceMappingURL=RequestHistory.css.map */

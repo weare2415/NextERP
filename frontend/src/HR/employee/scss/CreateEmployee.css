@@ -178,4 +178,73 @@ body {
   background-color: rgb(39.6, 47.52, 59.4);
 }
 
+@media (max-width: 768px) {
+  .modal-overlay .create-employee-form {
+    width: 95%;
+    max-width: 95%;
+    height: auto;
+    max-height: 90vh;
+  }
+  .modal-overlay .create-employee-form form {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0;
+    padding: 15px;
+  }
+  .modal-overlay .create-employee-form form .form-group {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    margin-bottom: 0;
+  }
+  .modal-overlay .create-employee-form form .form-group label {
+    width: 140px;
+    min-width: 140px;
+    font-size: 13px;
+    padding: 8px 10px;
+  }
+  .modal-overlay .create-employee-form form .form-group input,
+  .modal-overlay .create-employee-form form .form-group select,
+  .modal-overlay .create-employee-form form .form-group textarea {
+    flex: 1;
+    height: 35px;
+    font-size: 13px;
+    padding: 8px;
+  }
+  .modal-overlay .create-employee-form form .form-group .input-wrapper {
+    width: 100%;
+  }
+  .modal-overlay .create-employee-form form .form-group .input-wrapper input {
+    width: 100%;
+    font-size: 14px;
+    padding: 10px;
+  }
+  .modal-overlay .create-employee-form form .form-group .input-wrapper .id-check-message {
+    font-size: 12px;
+    padding: 4px 8px;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    transform: translateY(4px);
+    white-space: nowrap;
+  }
+  .modal-overlay .create-employee-form form .form-group .input-wrapper .id-check-message::before {
+    top: -6px;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-bottom: 6px solid #f2f2f2;
+  }
+  .modal-overlay .create-employee-form form .button-group {
+    display: flex;
+    justify-content: center;
+    margin-top: 15px;
+    gap: 8px;
+  }
+  .modal-overlay .create-employee-form form .button-group button {
+    width: 80px;
+    height: 35px;
+    font-size: 13px;
+  }
+}
+
 /*# sourceMappingURL=CreateEmployee.css.map */

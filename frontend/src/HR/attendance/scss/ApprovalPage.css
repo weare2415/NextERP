@@ -38,7 +38,20 @@ body {
 }
 @media (max-width: 768px) {
   .approval-page-wrapper {
-    padding: 1rem;
+    max-width: 100%;
+    padding: 0 10px;
+    top: 50px;
+  }
+  .approval-page-wrapper .page-header {
+    flex-direction: column;
+    text-align: center;
+  }
+  .approval-page-wrapper .page-header h1 {
+    font-size: 1.5rem;
+  }
+  .approval-page-wrapper .approval-page-loading {
+    font-size: 1rem;
+    margin-top: 10px;
   }
 }
 

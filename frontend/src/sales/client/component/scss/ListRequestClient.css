@@ -1,3 +1,4 @@
+@charset "UTF-8";
 @import url("https://cdn.jsdelivr.net/gh/fonts-archive/AppleSDGothicNeo/AppleSDGothicNeo.css");
 @import url(//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSansNeo.css);
 * {
@@ -25,7 +26,6 @@ body {
 .request-client-list-wrapper .request-client-table-section {
   background-color: white;
   width: 100%;
-  margin-top: 10px;
   border-left: 1px solid #ddd;
 }
 .request-client-list-wrapper .request-client-table-section .request-client-list {
@@ -94,6 +94,44 @@ body {
 .request-client-list-wrapper .request-client-table-section .request-client-list .client-table-name-btn:hover {
   text-decoration: underline;
   color: #2d3748;
+}
+
+@media (max-width: 768px) {
+  .request-client-table-section {
+    margin-top: 10px;
+    border: none;
+  }
+  .request-client-table-section .request-client-list {
+    table-layout: auto; /* 열 너비를 자동으로 조정 */
+  }
+  .request-client-table-section .request-client-list th,
+  .request-client-table-section .request-client-list td {
+    padding: 10px;
+  }
+  .request-client-table-section .request-client-list th:nth-child(1),
+  .request-client-table-section .request-client-list td:nth-child(1) {
+    display: none;
+  }
+  .request-client-table-section .request-client-list th:nth-child(2),
+  .request-client-table-section .request-client-list td:nth-child(2) {
+    width: 15%;
+  }
+  .request-client-table-section .request-client-list th:nth-child(3),
+  .request-client-table-section .request-client-list td:nth-child(3) {
+    display: none;
+  }
+  .request-client-table-section .request-client-list th:nth-child(4),
+  .request-client-table-section .request-client-list td:nth-child(4) {
+    width: 30%;
+  }
+  .request-client-table-section .request-client-list th:nth-child(5),
+  .request-client-table-section .request-client-list td:nth-child(5) {
+    display: none;
+  }
+  .request-client-table-section .request-client-list th:nth-child(6),
+  .request-client-table-section .request-client-list td:nth-child(6) {
+    width: 20% !important;
+  }
 }
 
 /*# sourceMappingURL=ListRequestClient.css.map */

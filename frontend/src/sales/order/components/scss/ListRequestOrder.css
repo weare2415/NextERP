@@ -1,3 +1,4 @@
+@charset "UTF-8";
 @import url("https://cdn.jsdelivr.net/gh/fonts-archive/AppleSDGothicNeo/AppleSDGothicNeo.css");
 @import url(//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSansNeo.css);
 * {
@@ -33,13 +34,15 @@ body {
   border-collapse: collapse;
   table-layout: fixed;
 }
-.request-order-list-wrapper .request-order-table-section .request-order-list th, .request-order-list-wrapper .request-order-table-section .request-order-list td {
+.request-order-list-wrapper .request-order-table-section .request-order-list th,
+.request-order-list-wrapper .request-order-table-section .request-order-list td {
   padding: 15px;
   text-align: center;
   border: 1px solid #ddd;
   word-wrap: break-word;
 }
-.request-order-list-wrapper .request-order-table-section .request-order-list th:first-child, .request-order-list-wrapper .request-order-table-section .request-order-list td:first-child {
+.request-order-list-wrapper .request-order-table-section .request-order-list th:first-child,
+.request-order-list-wrapper .request-order-table-section .request-order-list td:first-child {
   border-left: none;
 }
 .request-order-list-wrapper .request-order-table-section .request-order-list th {
@@ -52,22 +55,28 @@ body {
 .request-order-list-wrapper .request-order-table-section .request-order-list tr:hover {
   background-color: #f8f9fa;
 }
-.request-order-list-wrapper .request-order-table-section .request-order-list th:nth-child(1), .request-order-list-wrapper .request-order-table-section .request-order-list td:nth-child(1) {
+.request-order-list-wrapper .request-order-table-section .request-order-list th:nth-child(1),
+.request-order-list-wrapper .request-order-table-section .request-order-list td:nth-child(1) {
   width: 10%;
 }
-.request-order-list-wrapper .request-order-table-section .request-order-list th:nth-child(2), .request-order-list-wrapper .request-order-table-section .request-order-list td:nth-child(2) {
+.request-order-list-wrapper .request-order-table-section .request-order-list th:nth-child(2),
+.request-order-list-wrapper .request-order-table-section .request-order-list td:nth-child(2) {
   width: 25%;
 }
-.request-order-list-wrapper .request-order-table-section .request-order-list th:nth-child(3), .request-order-list-wrapper .request-order-table-section .request-order-list td:nth-child(3) {
+.request-order-list-wrapper .request-order-table-section .request-order-list th:nth-child(3),
+.request-order-list-wrapper .request-order-table-section .request-order-list td:nth-child(3) {
   width: 20%;
 }
-.request-order-list-wrapper .request-order-table-section .request-order-list th:nth-child(4), .request-order-list-wrapper .request-order-table-section .request-order-list td:nth-child(4) {
+.request-order-list-wrapper .request-order-table-section .request-order-list th:nth-child(4),
+.request-order-list-wrapper .request-order-table-section .request-order-list td:nth-child(4) {
   width: 15%;
 }
-.request-order-list-wrapper .request-order-table-section .request-order-list th:nth-child(5), .request-order-list-wrapper .request-order-table-section .request-order-list td:nth-child(5) {
+.request-order-list-wrapper .request-order-table-section .request-order-list th:nth-child(5),
+.request-order-list-wrapper .request-order-table-section .request-order-list td:nth-child(5) {
   width: 15%;
 }
-.request-order-list-wrapper .request-order-table-section .request-order-list th:nth-child(6), .request-order-list-wrapper .request-order-table-section .request-order-list td:nth-child(6) {
+.request-order-list-wrapper .request-order-table-section .request-order-list th:nth-child(6),
+.request-order-list-wrapper .request-order-table-section .request-order-list td:nth-child(6) {
   width: 15%;
 }
 .request-order-list-wrapper .request-order-table-section .request-order-list .order-list-name-btn {
@@ -85,6 +94,43 @@ body {
 .request-order-list-wrapper .request-order-table-section .request-order-list .order-list-name-btn:hover {
   text-decoration: underline;
   color: rgb(25.3846153846, 31.0256410256, 40.6153846154);
+}
+@media (max-width: 768px) {
+  .request-order-list-wrapper .request-order-table-section {
+    margin-top: 10px;
+    border: none;
+  }
+  .request-order-list-wrapper .request-order-table-section .request-order-list {
+    table-layout: auto; /* 열 너비를 자동으로 조정 */
+  }
+  .request-order-list-wrapper .request-order-table-section .request-order-list th,
+  .request-order-list-wrapper .request-order-table-section .request-order-list td {
+    padding: 10px;
+  }
+  .request-order-list-wrapper .request-order-table-section .request-order-list th:nth-child(1),
+  .request-order-list-wrapper .request-order-table-section .request-order-list td:nth-child(1) {
+    display: none;
+  }
+  .request-order-list-wrapper .request-order-table-section .request-order-list th:nth-child(2),
+  .request-order-list-wrapper .request-order-table-section .request-order-list td:nth-child(2) {
+    width: 20%;
+  }
+  .request-order-list-wrapper .request-order-table-section .request-order-list th:nth-child(3),
+  .request-order-list-wrapper .request-order-table-section .request-order-list td:nth-child(3) {
+    width: 14%;
+  }
+  .request-order-list-wrapper .request-order-table-section .request-order-list th:nth-child(4),
+  .request-order-list-wrapper .request-order-table-section .request-order-list td:nth-child(4) {
+    width: 15%;
+  }
+  .request-order-list-wrapper .request-order-table-section .request-order-list th:nth-child(5),
+  .request-order-list-wrapper .request-order-table-section .request-order-list td:nth-child(5) {
+    width: 15%;
+  }
+  .request-order-list-wrapper .request-order-table-section .request-order-list th:nth-child(6),
+  .request-order-list-wrapper .request-order-table-section .request-order-list td:nth-child(6) {
+    width: 13%;
+  }
 }
 
 /*# sourceMappingURL=ListRequestOrder.css.map */

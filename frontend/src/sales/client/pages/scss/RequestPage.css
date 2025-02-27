@@ -1,3 +1,4 @@
+@charset "UTF-8";
 @import url("https://cdn.jsdelivr.net/gh/fonts-archive/AppleSDGothicNeo/AppleSDGothicNeo.css");
 @import url(//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSansNeo.css);
 * {
@@ -29,12 +30,51 @@ body {
   justify-content: space-between;
   align-items: center;
   margin-top: 20px;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 }
 .request-client-page-container .page-header h1 {
   color: #3c485a;
   font-family: "Apple SD Gothic Neo", sans-serif;
   margin: 0;
+  font-size: 2rem; /* 기본 폰트 크기 */
+}
+.request-client-page-container .request-client-list-wrapper {
+  margin-top: 2rem;
+}
+.request-client-page-container .pagination-wrapper {
+  margin-top: 1.5rem;
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+}
+@media (max-width: 768px) {
+  .request-client-page-container {
+    max-width: 100%;
+    padding: 0 10px;
+    top: 50px;
+  }
+  .request-client-page-container .request-client-page-container {
+    max-width: 100%; /* 화면에 맞게 크기 조정 */
+    padding: 0 10px; /* 양옆 여백 줄이기 */
+  }
+  .request-client-page-container .page-header {
+    flex-direction: column;
+    align-items: center; /* 헤더 내용 세로 중앙 정렬 */
+    margin-bottom: 15px;
+    text-align: center; /* 텍스트 가운데 정렬 */
+  }
+  .request-client-page-container .page-header h1 {
+    font-size: 1.8rem; /* 작은 화면에 맞는 폰트 크기 */
+    text-align: center; /* 텍스트 가운데 정렬 */
+  }
+  .request-client-page-container .request-client-list-wrapper {
+    margin-top: 1.5rem;
+    padding: 0 10px;
+  }
+  .request-client-page-container .pagination-wrapper {
+    flex-direction: column;
+    gap: 10px;
+  }
 }
 
 /*# sourceMappingURL=RequestPage.css.map */

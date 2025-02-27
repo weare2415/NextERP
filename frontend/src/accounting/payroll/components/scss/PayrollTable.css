@@ -110,4 +110,31 @@ body {
   color: #2d3748;
 }
 
+@media (max-width: 768px) {
+  .payroll-table-section table th:nth-child(1),
+  .payroll-table-section table td:nth-child(1) {
+    display: none;
+  }
+  .payroll-table-section table th:nth-child(2),
+  .payroll-table-section table td:nth-child(2) {
+    width: 15%;
+  }
+  .payroll-table-section table th:nth-child(3),
+  .payroll-table-section table td:nth-child(3) {
+    width: 11%;
+  }
+  .payroll-table-section table th:nth-child(4),
+  .payroll-table-section table td:nth-child(4) {
+    width: 25%;
+  }
+  .payroll-table-section table th:nth-child(5),
+  .payroll-table-section table td:nth-child(5) {
+    width: 22%;
+  }
+  .payroll-table-section table th:nth-child(6),
+  .payroll-table-section table td:nth-child(6) {
+    display: none;
+  }
+}
+
 /*# sourceMappingURL=PayrollTable.css.map */
