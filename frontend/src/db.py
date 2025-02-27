@@ -2,7 +2,7 @@ import mariadb
 import pandas as pd
 import datetime
 
-# ✅ 데이터베이스 연결 정보
+# 데이터베이스 연결 정보
 DB_CONFIG = {
     "host": "localhost",
     "port": 3306,
@@ -19,11 +19,11 @@ def show_data(table):
         conn = mariadb.connect(**DB_CONFIG)
         cur = conn.cursor()
 
-        # ✅ 데이터 조회
+        # 데이터 조회
         cur.execute(f"SELECT * FROM {table}")
         columns = [x[0] for x in cur.description]
 
-        # ✅ 컬럼명 출력
+        # 컬럼명 출력
         print(f"📌 테이블 '{table}'의 컬럼: {columns}")
 
         rows = cur.fetchall()
@@ -33,7 +33,7 @@ def show_data(table):
             for r in rows:
                 new_row = []
                 for v in r:
-                    # ✅ 날짜 타입 변환
+                    #  날짜 타입 변환
                     if isinstance(v, (datetime.date, datetime.datetime)):
                         val = v.strftime("%Y-%m-%d")
                     else:

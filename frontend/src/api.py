@@ -132,26 +132,71 @@ def get_department_info():
 @app.route('/attendance', methods=['POST'])
 def get_attendance():
     """ 📌 직원 근태 정보 조회 (본인만 조회 가능) 또는 전체 조회 (인사팀만 가능) """
-    data = request.json
-    employee_id = data.get("employeeId")
-    department_id = data.get("departmentId")
+    try:
+        data = request.json
+        print(f"🔍 Flask에서 받은 요청 데이터: {data}")
 
-    # ✅ 근태 테이블에서 데이터 가져오기
-    df = db.get_attendance_data()
-    print(f"🔍 근태 데이터 조회 결과:\n{df}")  # ⬅ 데이터 출력 확인
+        # ✅ 데이터 정수 변환
+        try:
+            employee_id = int(data.get("employeeId"))
+            department_id = int(data.get("departmentId"))
+        except ValueError as e:
+            print(f"❌ [오류] employeeId 또는 departmentId 변환 실패: {e}")
+            return jsonify({"response": "❌ 직원 ID 또는 부서 ID가 올바르지 않습니다."}), 400
 
-    if df.empty:
-        return jsonify({"response": "❌ 근태 데이터를 가져올 수 없습니다."})
+        # ✅ 근태 데이터 조회
+        df = db.get_attendance_data()
+        print(f"📌 근태 데이터 조회 완료 (총 {len(df)}개)")
 
+        if df.empty:
+            print("❌ 근태 데이터가 없습니다.")
+            return jsonify({"response": "❌ 근태 데이터를 가져올 수 없습니다."})
 
-    if department_id == 3:
-        return jsonify({"response": df.to_dict(orient="records")})
-    
-    # ✅ 일반 직원은 본인 근태 정보만 조회 가능
-    personal_attendance = df[df["employee_id"] == employee_id]
-    print(f"🔍 필터링된 근태 데이터:\n{personal_attendance}")  # ⬅ 필터링된 데이터 확인
+        # ✅ 데이터프레임 컬럼 확인
+        print(f"🔍 데이터프레임 컬럼 목록: {df.columns.tolist()}")
 
-    return jsonify({"response": personal_attendance.to_dict(orient="records")}) if not personal_attendance.empty else jsonify({"response": "❌ 본인의 근태 정보를 찾을 수 없습니다."})
+        # ✅ overtime_hours 변환 전 출력
+        print("🔍 변환 전 데이터:")
+        print(df[["overtime_hours"]].to_string(index=False))  # ✅ 데이터 출력 강제
+
+        # ✅ overtime_hours 변환 (None → 0 변환)
+        df["overtime_hours"] = pd.to_numeric(df["overtime_hours"], errors="coerce").fillna(0).astype(float)
+
+        # ✅ 변환 후 출력
+        print("✅ 변환 후 데이터:")
+        print(df[["overtime_hours"]].to_string(index=False))
+
+        # ✅ status 필드 변환
+        df["status"] = df["status"].astype(str).str.strip().fillna("UNKNOWN")
+        print(f"🔍 status 필드 값 목록:\n{df['status'].unique()}")
+
+        # ✅ 일반 직원은 본인 근태 정보만 조회 가능
+        personal_attendance = df[df["employee_id"] == employee_id]
+        print(f"🔍 필터링된 근태 데이터 (총 {len(personal_attendance)}개):\n{personal_attendance}")
+
+        if personal_attendance.empty:
+            print("❌ 본인의 근태 정보가 없습니다.")
+            return jsonify({"response": "❌ 본인의 근태 정보를 찾을 수 없습니다."})
+
+        # ✅ 근태 데이터 처리
+        attendance_info_list = []
+        for _, row in personal_attendance.iterrows():
+            status = row["status"]
+            check_in = row["check_in_time"] if pd.notna(row["check_in_time"]) else "출근 기록 없음"
+            check_out = row["check_out_time"] if pd.notna(row["check_out_time"]) else "퇴근 기록 없음"
+            overtime_hours = row["overtime_hours"] if pd.notna(row["overtime_hours"]) else 0
+            overtime = f"{overtime_hours}시간 초과 근무" if overtime_hours > 0 else "초과 근무 없음"
+            approval_status = row.get("request_status", "APPROVED")  # ✅ 승인 여부 추가
+
+        
+
+        print("✅ 근태 정보 응답 준비 완료")
+        return jsonify({"response": "\n\n".join(attendance_info_list)})
+
+    except Exception as e:
+        print(f"❌ 서버 오류 발생: {str(e)}", flush=True)  # ✅ 콘솔 출력 강제
+        return jsonify({"response": "🚨 서버 오류가 발생했습니다. 관리자에게 문의하세요."}), 500
+
 
 
 
@@ -374,17 +419,19 @@ def chatbot_response():
         employee_df = db.show_data("employee")
 
         if employee_df.empty:
-            employee_info = "📢 현재 확인할 수 있는 사원 정보가 없습니다."
-        else:
-            #  요청한 사원의 ID가 로그인한 사용자 ID와 다르면 조회 불가
-            if "사원" in user_query and str(employee_id) not in user_query:
-                return jsonify({"response": "다른 사원의 정보를 조회할 권한이 없습니다."})
+            return jsonify({"response": "📢 현재 확인할 수 있는 사원 정보가 없습니다."})
+        
+        # 사용자가 "다른 사원 정보"를 요청하면 즉시 권한 없음 응답 반환
+        if "다른 사원 정보" in user_query:
+            return jsonify({"response": "📢 다른 사원의 정보는 조회할 권한이 없습니다."})
+        if any(keyword in user_query for keyword in ["내 정보", "내 사원 정보"]):
+            
             personal_employee = employee_df[employee_df["employee_id"] == employee_id]
-            if personal_employee.empty:
-                employee_info = "📢 본인의 사원 정보를 찾을 수 없습니다."
-            else:
-                employee_info = personal_employee.to_dict(orient="records")[0]  # JSON 형태로 변환
 
+        if personal_employee.empty:
+            return jsonify({"response": "📢 본인의 사원 정보를 찾을 수 없습니다."})
+    
+        employee_info = personal_employee.to_dict(orient="records")[0]  # JSON 형태로 변환
         # OpenAI 프롬프트 생성 (LangChain 활용)
         if "사원" in user_query or "내 정보" in user_query:
             prompt = f"""
@@ -397,6 +444,12 @@ def chatbot_response():
             그리고 다른 사원의 정보는 보여주면안될거 같아
             자연스럽게 사원 정보를 정리해서 전달하고, 추가로 '부서 정보도 확인하시겠어요?' 라고 물어봐.
             """
+        elif "사원" in user_query:
+            return jsonify({"response": "📢 다른 사원의 정보는 조회할 권한이 없습니다."})
+
+
+
+            
         elif "부서" in user_query or "부서 정보" in user_query:
             department_df = db.show_data("department")
             if department_df.empty:
@@ -454,7 +507,7 @@ def chatbot_response():
 
             그리고 추가 질문으로 '근태 정보도 확인하시겠어요?' 라고 물어봐.
             """
-        elif "근태" in user_query or "출퇴근" in user_query:
+        elif "근태" in user_query or "출퇴근" in user_query or "휴가" in user_query or "병가" in user_query or "재택" in user_query:
             attendance_df = db.get_attendance_data()
             if attendance_df.empty:
                 attendance_info = "📌 근태 정보가 없습니다."
@@ -463,14 +516,76 @@ def chatbot_response():
                 if personal_attendance.empty:
                     attendance_info = "📌 본인의 근태 정보를 찾을 수 없습니다."
                 else:
-                    attendance_info_list = []
+                    work_attendance_list = []  # 출퇴근 정보
+                    leave_attendance_list = []  # 휴가 정보
+                    sick_attendance_list = []  # 병가 정보
+                    remote_attendance_list = []  # 재택근무 정보
+                    
+                    # ✅ 근태 상태 한글 변환 맵핑
+                    status_mapping = {
+                        "PRESENT": "출근",
+                        "LATE": "지각",
+                        "OFF_WORK": "퇴근",
+                        "LEAVE": "휴가",
+                        "SICK_LEAVE": "병가",
+                        "REMOTE_WORK": "재택근무"
+                    }
+
                     for _, row in personal_attendance.iterrows():
-                        check_in = row['check_in_time']
+                        status = status_mapping.get(row['status'], "알 수 없음")  # ✅ 한글 변환
+                        check_in = row['check_in_time'] if pd.notna(row['check_in_time']) else "출근 기록 없음"
                         check_out = row['check_out_time'] if pd.notna(row['check_out_time']) else "아직 퇴근하지 않음"
-                        overtime = f"{row['overtime_hours']}시간 초과 근무" if row['overtime_hours'] > 0 else "초과 근무 없음"
-                        status = row['status']
-                        attendance_info_list.append(f"📅 {row['date']}에 {status} 상태로 출근하였으며, 출근 시간은 {check_in}, 퇴근 시간은 {check_out}입니다. {overtime}.")
-                    attendance_info = "\n".join(attendance_info_list)
+                        overtime_hours = row['overtime_hours'] if pd.notna(row['overtime_hours']) else 0
+                        overtime = f"{overtime_hours}시간 초과 근무" if overtime_hours > 0 else "초과 근무 없음"
+                        approval_status = row.get("request_status", "APPROVED")  # ✅ 승인 상태
+
+                        # ✅ 승인 상태 한글 변환
+                        approval_mapping = {
+                            "APPROVED": "승인 완료",
+                            "PENDING": "승인 대기",
+                            "REJECTED": "반려됨"
+                        }
+                        approval_status_kor = approval_mapping.get(approval_status, "승인 상태 없음")
+
+                        # ✅ 출퇴근 정보만 보기 (출근, 지각, 퇴근)
+                        if "출퇴근" in user_query and row["status"] in ["PRESENT", "LATE", "OFF_WORK"]:
+                            work_attendance_list.append(
+                                f"📅 {row['date']}: **{status}**\n"
+                                f"   🕒 출근 시간: {check_in}, 퇴근 시간: {check_out}, {overtime}"
+                            )
+
+                        # ✅ 휴가 정보만 보기
+                        elif "휴가" in user_query and row["status"] == "LEAVE":
+                            leave_attendance_list.append(
+                                f"📅 {row['date']}: **{status}** 신청됨\n"
+                                f"   ✅ 승인 상태: {approval_status_kor}"
+                            )
+
+                        # ✅ 병가 정보만 보기
+                        elif "병가" in user_query and row["status"] == "SICK_LEAVE":
+                            sick_attendance_list.append(
+                                f"📅 {row['date']}: **{status}** 신청됨\n"
+                                f"   ✅ 승인 상태: {approval_status_kor}"
+                            )
+
+                        # ✅ 재택근무 정보만 보기
+                        elif "재택" in user_query and row["status"] == "REMOTE_WORK":
+                            remote_attendance_list.append(
+                                f"📅 {row['date']}: **{status}** 신청됨\n"
+                                f"   ✅ 승인 상태: {approval_status_kor}"
+                            )
+
+                    # ✅ 최종 출력 메시지 구성
+                    if "출퇴근" in user_query:
+                        attendance_info = "\n\n".join(work_attendance_list) if work_attendance_list else "📌 출퇴근 기록이 없습니다."
+                    elif "휴가" in user_query:
+                        attendance_info = "\n\n".join(leave_attendance_list) if leave_attendance_list else "📌 휴가 기록이 없습니다."
+                    elif "병가" in user_query:
+                        attendance_info = "\n\n".join(sick_attendance_list) if sick_attendance_list else "📌 병가 기록이 없습니다."
+                    elif "재택" in user_query:
+                        attendance_info = "\n\n".join(remote_attendance_list) if remote_attendance_list else "📌 재택근무 기록이 없습니다."
+                    else:
+                        attendance_info = "📌 근태 정보를 찾을 수 없습니다."
 
             prompt = f"""
             너는 기업 내부 시스템의 챗봇이야. 사용자가 근태 정보를 요청했어.
@@ -485,6 +600,7 @@ def chatbot_response():
 
             그리고 추가 질문으로 '공지사항도 확인하시겠어요?' 라고 물어봐.
             """
+
 
 
         #  거래처 정보 요청 시 처리 (영업팀만 가능)

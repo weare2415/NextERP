@@ -85,20 +85,20 @@ def handle_message(data):
         "receiverId": receiver_id,
         "messageText": message_text,
         "content": message_text,  # React에서 사용
-        "timestamp": datetime.datetime.now().isoformat(),  # ✅ 현재 시간 추가
+        "timestamp": datetime.datetime.now().isoformat(),  #  현재 시간 추가
     }
 
-    # ✅ 수신자(receiver_id)에게만 메시지 전송 (보낸 사람에게는 안 보냄)
+    # 수신자(receiver_id)에게만 메시지 전송 (보낸 사람에게는 안 보냄)
     if receiver_id in connected_users:
         for sid in connected_users[receiver_id]:
             print(f" WebSocket 메시지 전송 → 수신자 {receiver_id}, SID: {sid}")
             socketio.emit("message", websocket_message, room=sid)
             socketio.sleep(0)  # WebSocket 이벤트 강제 실행
-        print(f"📡 WebSocket 메시지 전송 완료 → 수신자 {receiver_id}")
+        print(f" WebSocket 메시지 전송 완료 → 수신자 {receiver_id}")
     else:
-        print(f"⚠️ 수신자 {receiver_id}가 WebSocket에 연결되지 않음.")
+        print(f" 수신자 {receiver_id}가 WebSocket에 연결되지 않음.")
 
-    # ✅ sender_id에게는 메시지를 보내지 않음 (self-message 차단)
+    #  sender_id에게는 메시지를 보내지 않음 (self-message 차단)
 
 
 @socketio.on("messagesRead")
