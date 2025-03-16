@@ -61,8 +61,7 @@
 
 ## 🎥 [유튜브 시연영상](https://www.youtube.com/watch?si=pwBtcg6jGeqpiEuJ&v=M5hPxD0m3Sk&feature=youtu.be)
 
-## 📋 [PDF 보기](https://nbviewer.org/github/paesir-i-am/Wanderlust/blob/main/Wanderlust_%E1%84%89%E1%85%AE%E1%84%8C%E1%85%A5%E1%86%BC.pdf)
-
+## 📋 [PDF 보기](https://github.com/weare2415/NextERP/blob/develop/NEXTERP(%EA%B0%9C%EC%9D%B8%20pdf).pdf)
 
 ## 계층구조
 
