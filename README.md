@@ -11,7 +11,7 @@
 | [<img src="https://avatars.githubusercontent.com/u/183713556?v=4" width="200" />](https://github.com/paesir-i-am) | [<img src="https://avatars.githubusercontent.com/u/184890981?v=4" width="200" />](https://github.com/Namsu-park) | [<img src="https://avatars.githubusercontent.com/u/183588723?v=4" width="200" />](https://github.com/SuLim0813) | [<img src="https://avatars.githubusercontent.com/u/177728506?v=4" width="200" />](https://github.com/weare2415) |
 
 
-## 나의역할 및 🛠️ 주요기능
+## 🛠️ 나의역할 및  주요기능
 
 - **채팅봇**: OpenAI 및 LangChain을 사용하여 자연어 처리를 수행하고, 사용자의 질문에 맞는 정보를 제공합니다.
 - **사내 메신저**: Python과 Socket, RESTful을 사용하여 실시간 메시지 전달 기능을 구현합니다.
