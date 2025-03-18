@@ -82,7 +82,8 @@ Python을 사용해서 OpenAI 및 LangChain을 사용하여 자연어 처리를 
 
 Python과 Socket, RESTful을 사용하여 실시간으로 메시지를 전달할 수 있도록 구현하였습니다. 생성된 채팅방과 그 채팅방에 나눈 대화는 DB에 저장되며, 채팅방을 나갔다가 다시 생성할 때 이전 기록이 남아 있어 이전 채팅 내역을 확인할 수 있습니다. 읽지 않은 메시지는 베이직 레이아웃에 있는 '메신저' 옆, 채팅 목록에서 실시간으로 확인할 수 있습니다.
 
-<img src="https://github.com/user-attachments/assets/your_messenger_image.png" width="512" /><br/>
+<img src="https://github.com/user-attachments/assets/0d25cd17-79dc-4b87-95c8-035019e0c801" width="512" />
+<br/>
 
 ### SMTP
 
