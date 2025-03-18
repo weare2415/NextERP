@@ -73,7 +73,8 @@
 Python을 사용해서 OpenAI 및 LangChain을 사용하여 자연어 처리를 수행하고, 사용자의 질문에 맞는 정보를 제공하도록 구현하였습니다. 각 부서, 직급별 권한을 고려하여 맞춤형 답변 및 OpenAI 프롬프트를 통해 자연스럽게 응답 처리하며, MariaDB 데이터를 조회하여 근태, 공지사항, 직원 정보, 거래내역을 실시간으로 확인할 수 있습니다.
 
 
-<img src="https://github.com/user-attachments/assets/c3b258ef-7fc4-42f0-ae28-e7bd5b2444bf" width="512" /><br/>
+<img src="https://github.com/user-attachments/assets/0d25cd17-79dc-4b87-95c8-035019e0c801" width="512" /><br/>
+
 
 
 
