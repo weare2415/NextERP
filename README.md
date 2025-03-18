@@ -89,7 +89,8 @@ Python과 Socket, RESTful을 사용하여 실시간으로 메시지를 전달할
 
 비밀번호를 잊어버린 사용자가 비밀번호를 찾기 위해 1차적으로 사원 ID를 입력하여 회사의 사원임을 인증합니다. 이후 이름과 이메일을 입력해서 2차 검증을 받은 후 사용자가 입력한 메일주소로 임시 비밀번호를 전송합니다. 전송된 임시 비밀번호를 입력하면 로그인할 수 있습니다.
 
-<img src="https://github.com/user-attachments/assets/your_smtp_image.png" width="512" /><br/>
+<img src="https://github.com/user-attachments/assets/0d25cd17-79dc-4b87-95c8-035019e0c801" alt="Image" width="512" /><br/>
+
 
 ### CRUD
 
