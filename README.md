@@ -104,7 +104,8 @@ Python과 Socket, RESTful을 사용하여 실시간으로 메시지를 전달할
 
 로그인 시 Redux의 로그인 슬라이스를 활용하여 사용자 정보를 조회하고, 해당 회원의 부서 ID 및 직급 ID를 식별하여 동적으로 권한을 부여하도록 구현하였습니다. 이를 통해 각 사용자가 소속된 부서 및 직급에 따라 접근 가능한 메뉴 및 기능을 제어하며, 사용자별 맞춤형 시스템 환경을 제공합니다.
 
-<img src="https://github.com/user-attachments/assets/your_permission_image.png" width="512" /><br/>
+<img src="https://github.com/user-attachments/assets/ba7d2463-9882-4d93-836b-136307dc6ca0" alt="Image" width="512" /><br/>
+
 
 ---
 
