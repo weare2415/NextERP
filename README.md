@@ -115,7 +115,8 @@ Python과 Socket, RESTful을 사용하여 실시간으로 메시지를 전달할
 
 반응형 웹페이지 및 무한스크롤을 구현하여 모바일 시장에 맞춘 사용자 이용성 증가
 
-<img src="https://github.com/user-attachments/assets/c3b258ef-7fc4-42f0-ae28-e7bd5b2444bf" width="512" /><br/>
+<img src="https://github.com/user-attachments/assets/58fc520d-bfec-47ac-84ab-08c4d6c93e7d" alt="Image" width="512" /><br/>
+
 
 
 ---
