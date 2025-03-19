@@ -98,7 +98,8 @@ Python과 Socket, RESTful을 사용하여 실시간으로 메시지를 전달할
 
 인사팀(공지사항, 근태 관리, 직원 관리)의 기본적인 CRUD 기능을 구현하였습니다. 스케줄러를 이용한 퇴사 자동처리 기능도 구현하였으며, 수정을 할 때에는 권한 설정이 되어 있어 바로 수정이 불가능하고 수정에 대한 승인 요청을 보내야 실제 데이터가 수정됩니다. 페이지네이션을 컴포넌트화하여 여러 컴포넌트에서 손쉽게 페이지네이션 기능을 적용할 수 있습니다.
 
-<img src="https://github.com/user-attachments/assets/f1a58150-69a2-44ba-b783-648c34670c0c" alt="Image" width="512" /><br/>
+<img src="https://github.com/user-attachments/assets/f02ee225-daaf-42fc-bb9e-6699e1f2acd2" alt="Image" width="512" /><br/>
+
 
 ### 권한 처리
 
